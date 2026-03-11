@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ground — Breathe with Intention</title>
+<meta name="description" content="Personalized breathwork guided by how you feel. AI-powered sessions, voice cloning, and 12+ expert techniques. From the mind into the body.">
+<meta name="theme-color" content="#1A110E">
+
+<!-- Open Graph -->
+<meta property="og:title" content="Ground — Breathe with Intention">
+<meta property="og:description" content="Personalized breathwork guided by how you feel. AI-powered sessions, voice cloning, and 12+ expert techniques.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://groundapp.live">
+<meta property="og:image" content="https://groundapp.live/og-image.png">
+<meta property="og:site_name" content="Ground">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ground — Breathe with Intention">
+<meta name="twitter:description" content="Personalized breathwork guided by how you feel.">
+<meta name="twitter:image" content="https://groundapp.live/og-image.png">
+
+<link rel="canonical" href="https://groundapp.live">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='none' stroke='%23C4935A' stroke-width='3'/><circle cx='50' cy='50' r='25' fill='none' stroke='%23D4A574' stroke-width='2'/><circle cx='50' cy='50' r='10' fill='%23C4935A'/></svg>">
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --gold: #C4935A;
+  --terracotta: #8B5E3C;
+  --amber: #D4A574;
+  --obsidian: #1A110E;
+  --obsidian-mid: #231916;
+  --obsidian-light: #2D201A;
+  --bone: #E8DDD0;
+  --driftwood: #A89585;
+  --sandstone: #6B5B4E;
+  --sage: #7A8B6F;
+  --ritual-red: #5A2028;
+  --glow: rgba(196, 147, 90, 0.12);
+  --glow-strong: rgba(196, 147, 90, 0.25);
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--obsidian);
+  color: var(--bone);
+  font-family: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+body {
+  background: var(--obsidian);
+  min-height: 100vh;
+}
+
+/* ─── Grain overlay ─── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 256px;
+}
+
+/* ─── Typography ─── */
+.serif { font-family: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif; }
+.sans { font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif; }
+
+/* ─── Reveal animations ─── */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.9s cubic-bezier(0.23, 1, 0.32, 1), transform 0.9s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 0.12s; }
+.reveal-delay-2 { transition-delay: 0.24s; }
+.reveal-delay-3 { transition-delay: 0.36s; }
+.reveal-delay-4 { transition-delay: 0.48s; }
+
+/* ─── NAV ─── */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 1.5rem 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background 0.4s, backdrop-filter 0.4s, padding 0.4s;
+}
+nav.scrolled {
+  background: rgba(26, 17, 14, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 1rem 2.5rem;
+  border-bottom: 1px solid rgba(196, 147, 90, 0.08);
+}
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  text-decoration: none;
+  color: var(--bone);
+}
+.nav-logo-icon {
+  width: 32px;
+  height: 32px;
+}
+.nav-logo span {
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.nav-links {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+}
+.nav-links a {
+  color: var(--driftwood);
+  text-decoration: none;
+  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--gold); }
+.nav-cta {
+  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.6rem 1.6rem;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  text-decoration: none;
+  border-radius: 100px;
+  transition: background 0.3s, color 0.3s;
+}
+.nav-cta:hover {
+  background: var(--gold);
+  color: var(--obsidian);
+}
+
+/* ─── HERO ─── */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  padding: 2rem;
+}
+
+/* Radial glow */
+.hero::before {
+  content: '';
+  position: absolute;
+  width: 900px;
+  height: 900px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(196, 147, 90, 0.07) 0%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* Particle canvas */
+#particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Breathing rings */
+.breath-container {
+  position: relative;
+  width: 320px;
+  height: 320px;
+  margin-bottom: 3.5rem;
+}
+.breath-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: breathe 8s ease-in-out infinite;
+}
+.breath-ring:nth-child(1) {
+  width: 80px; height: 80px;
+  border-color: rgba(196, 147, 90, 0.7);
+  animation-delay: 0s;
+}
+.breath-ring:nth-child(2) {
+  width: 130px; height: 130px;
+  border-color: rgba(196, 147, 90, 0.45);
+  animation-delay: 0.3s;
+}
+.breath-ring:nth-child(3) {
+  width: 185px; height: 185px;
+  border-color: rgba(196, 147, 90, 0.28);
+  animation-delay: 0.6s;
+}
+.breath-ring:nth-child(4) {
+  width: 240px; height: 240px;
+  border-color: rgba(196, 147, 90, 0.15);
+  animation-delay: 0.9s;
+}
+.breath-ring:nth-child(5) {
+  width: 300px; height: 300px;
+  border-color: rgba(196, 147, 90, 0.07);
+  animation-delay: 1.2s;
+}
+.breath-core {
+  position: absolute;
+  width: 24px; height: 24px;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--gold) 0%, var(--terracotta) 100%);
+  box-shadow: 0 0 40px rgba(196, 147, 90, 0.4), 0 0 80px rgba(196, 147, 90, 0.15);
+  animation: breatheCore 8s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%, 100% { transform: translate(-50%, -50%) scale(0.85); opacity: 1; }
+  50% { transform: translate(-50%, -50%) scale(1.15); opacity: 0.6; }
+}
+@keyframes breatheCore {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 40px rgba(196, 147, 90, 0.4), 0 0 80px rgba(196, 147, 90, 0.15); }
+  50% { transform: translate(-50%, -50%) scale(1.3); box-shadow: 0 0 60px rgba(196, 147, 90, 0.6), 0 0 120px rgba(196, 147, 90, 0.25); }
+}
+
+.hero-tagline {
+  font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  color: var(--bone);
+  margin-bottom: 1.2rem;
+}
+.hero-tagline em {
+  font-style: italic;
+  color: var(--gold);
+}
+.hero-subtitle {
+  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: var(--driftwood);
+  font-weight: 300;
+  max-width: 480px;
+  line-height: 1.6;
+  margin-bottom: 3rem;
+}
+.hero-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+}
+.btn-appstore {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--bone);
+  color: var(--obsidian);
+  text-decoration: none;
+  padding: 0.85rem 2rem;
+  border-radius: 14px;
+  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.btn-appstore:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(232, 221, 208, 0.15);
+}
+.btn-appstore svg { width: 22px; height: 22px; }
+.hero-note {
+  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+  font-size: 0.8rem;
+  color: var(--sandstone);
+  letter-spacing: 0.04em;
+}
+
+/* Scroll indicator */
+.scroll-hint {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--sandstone);
+  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  animation: float 3s ease-in-out infinite;
+}
+.scroll-line {
+  width: 1px;
+  height: 36px;
+  background: linear-gradient(to bottom, var(--sandstone), transparent);
+}
+@keyframes float {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(8px); }
+}
+
+/* ─── SECTION SPACING ─── */
+section { padding: 8rem 2rem; }
+.section-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.section-label {
+  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+}
+.section-heading {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+  color: var(--bone);
+}
+.section-desc {
+  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--driftwood);
+  max-width: 600px;
+}
+
+/* ─── FEATURES ─── */
+.features-section {
+  background: linear-gradient(180deg, var(--obsidian) 0%, var(--obsidian-mid) 50%, var(--obsidian) 100%);
+}
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  margin-top: 4rem;
+}
+.feature-card {
+  padding: 2.8rem 2.4rem;
+  background: rgba(35, 25, 22, 0.5);
+  border: 1px solid rgba(196, 147, 90, 0.06);
+  transition: border-color 0.4s, background 0.4s;
+  position: relative;
+}
+.feature-card:hover {
+  border-color: rgba(196, 147, 90, 0.15);
+  background: rgba(45, 32, 26, 0.5);
+}
+.feature-icon {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 2rem;
+  color: var(--gold);
+}
+.feature-title {
+  font-size: 1.3rem;
+  font-weight: 400;
+  margin-bottom: 1rem;
+  color: var(--bone);
+}
+.feature-text {
+  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--driftwood);
+}
+
+/* ─── HOW IT WORKS ─── */
+.steps-section {
+  position: relative;
+}
+.steps-list {
+  margin-top: 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.step {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 2.5rem;
+  padding: 3rem 0;
+  border-top: 1px solid rgba(196, 147, 90, 0.08);
+  align-items: start;
+}
+.step:last-child {
+  border-bottom: 1px solid rgba(196, 147, 90, 0.08);
+}
+.step-num {
+  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  padding-top: 0.4rem;
+}
+.step-content {}
+.step-title {
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin-bottom: 0.75rem;
+  color: var(--bone);
+}
+.step-desc {
+  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--driftwood);
+  max-width: 520px;
+}
+
+/* ─── COMMUNITY ─── */
+.community-section {
+  background: var(--obsidian-mid);
+  position: relative;
+  overflow: hidden;
+}
+.community-section::before {
+  content: '';
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(122, 139, 111, 0.06) 0%, transparent 70%);
+  top: -200px;
+  right: -200px;
+  pointer-events: none;
+}
+.community-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-top: 3.5rem;
+}
+.community-stat {
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+  border: 1px solid rgba(196, 147, 90, 0.08);
+  border-radius: 2px;
+  transition: border-color 0.3s;
+}
+.community-stat:hover {
+  border-color: rgba(196, 147, 90, 0.2);
+}
+.stat-icon {
+  width: 36px;
+  height: 36px;
+  margin: 0 auto 1.2rem;
+  color: var(--gold);
+}
+.stat-label {
+  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--driftwood);
+  margin-bottom: 0.5rem;
+}
+.stat-desc {
+  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--sandstone);
+}
+
+/* ─── QUOTE ─── */
+.quote-section {
+  padding: 10rem 2rem;
+  text-align: center;
+  position: relative;
+}
+.quote-section::before {
+  content: '';
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(196, 147, 90, 0.04) 0%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.quote-mark {
+  font-size: 4rem;
+  color: var(--gold);
+  opacity: 0.3;
+  line-height: 1;
+  margin-bottom: 1rem;
+}
+.quote-text {
+  font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.4;
+  max-width: 750px;
+  margin: 0 auto;
+  color: var(--bone);
+}
+.quote-line {
+  width: 60px;
+  height: 1px;
+  background: var(--gold);
+  margin: 2.5rem auto 0;
+  opacity: 0.4;
+}
+
+/* ─── CTA / SIGNUP ─── */
+.cta-section {
+  text-align: center;
+  padding: 8rem 2rem 4rem;
+}
+.cta-heading {
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 400;
+  margin-bottom: 1rem;
+}
+.cta-desc {
+  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+  font-size: 1rem;
+  color: var(--driftwood);
+  margin-bottom: 2.5rem;
+  max-width: 460px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+.signup-form {
+  display: flex;
+  max-width: 460px;
+  margin: 0 auto 2rem;
+  gap: 0;
+  border: 1px solid rgba(196, 147, 90, 0.2);
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(35, 25, 22, 0.5);
+  transition: border-color 0.3s;
+}
+.signup-form:focus-within {
+  border-color: var(--gold);
+}
+.signup-form input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 1rem 1.4rem;
+  color: var(--bone);
+  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+  font-size: 0.95rem;
+}
+.signup-form input::placeholder { color: var(--sandstone); }
+.signup-form button {
+  background: var(--gold);
+  border: none;
+  color: var(--obsidian);
+  padding: 1rem 1.8rem;
+  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background 0.3s;
+  white-space: nowrap;
+}
+.signup-form button:hover { background: var(--amber); }
+.signup-note {
+  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+  font-size: 0.78rem;
+  color: var(--sandstone);
+  margin-top: 1rem;
+}
+.signup-success {
+  display: none;
+  color: var(--sage);
+  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+  font-size: 0.95rem;
+  margin-top: 1rem;
+}
+
+/* ─── FOOTER ─── */
+footer {
+  border-top: 1px solid rgba(196, 147, 90, 0.06);
+  padding: 3rem 2rem;
+  text-align: center;
+}
+.footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--sandstone);
+  font-size: 0.85rem;
+}
+.footer-brand svg { width: 20px; height: 20px; }
+.footer-copy {
+  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+  font-size: 0.78rem;
+  color: var(--sandstone);
+}
+
+/* ─── MOBILE ─── */
+@media (max-width: 900px) {
+  .features-grid { grid-template-columns: 1fr; gap: 0; }
+  .community-grid { grid-template-columns: repeat(2, 1fr); }
+  .nav-links { display: none; }
+}
+@media (max-width: 600px) {
+  section { padding: 5rem 1.5rem; }
+  .hero { padding: 1.5rem; }
+  .breath-container { width: 240px; height: 240px; margin-bottom: 2.5rem; }
+  .breath-ring:nth-child(1) { width: 60px; height: 60px; }
+  .breath-ring:nth-child(2) { width: 100px; height: 100px; }
+  .breath-ring:nth-child(3) { width: 140px; height: 140px; }
+  .breath-ring:nth-child(4) { width: 180px; height: 180px; }
+  .breath-ring:nth-child(5) { width: 225px; height: 225px; }
+  .breath-core { width: 18px; height: 18px; }
+  .step { grid-template-columns: 1fr; gap: 0.5rem; }
+  .community-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .signup-form { flex-direction: column; border-radius: 14px; }
+  .signup-form button { border-radius: 0; }
+  .footer-inner { flex-direction: column; gap: 1rem; }
+  .quote-section { padding: 6rem 1.5rem; }
+  nav { padding: 1rem 1.2rem; }
+  nav.scrolled { padding: 0.8rem 1.2rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">
+    <svg class="nav-logo-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="50" cy="50" r="38" stroke="#C4935A" stroke-width="2"/>
+      <circle cx="50" cy="50" r="24" stroke="#D4A574" stroke-width="1.5"/>
+      <circle cx="50" cy="50" r="10" fill="#C4935A"/>
+    </svg>
+    <span class="sans">Ground</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#how-it-works">How It Works</a></li>
+    <li><a href="#community">Community</a></li>
+  </ul>
+  <a href="#download" class="nav-cta">Get the App</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <canvas id="particles"></canvas>
+
+  <div class="breath-container reveal">
+    <div class="breath-core"></div>
+    <div class="breath-ring"></div>
+    <div class="breath-ring"></div>
+    <div class="breath-ring"></div>
+    <div class="breath-ring"></div>
+    <div class="breath-ring"></div>
+  </div>
+
+  <h1 class="hero-tagline reveal reveal-delay-1">Breathe with <em>Intention</em></h1>
+  <p class="hero-subtitle reveal reveal-delay-2">Personalized breathwork guided by how you feel</p>
+
+  <div class="hero-actions reveal reveal-delay-3">
+    <a href="#download" class="btn-appstore">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+      Download on the App Store
+    </a>
+    <span class="hero-note sans">Free on iOS &middot; Coming soon</span>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Explore</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section" id="features">
+  <div class="section-inner">
+    <div class="section-label reveal">What Makes Ground Different</div>
+    <h2 class="section-heading reveal reveal-delay-1">Your practice, <em>personalized</em></h2>
+    <p class="section-desc reveal reveal-delay-2">Ground uses AI and voice technology to create breathwork sessions that adapt to your state, your goals, and even your own voice.</p>
+
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="24" cy="24" r="18"/>
+          <path d="M24 12v6m0 12v6M12 24h6m12 0h6" stroke-linecap="round"/>
+          <circle cx="24" cy="24" r="6"/>
+          <path d="M18 18l2 2m8 8l2 2m0-12l-2 2m-8 8l-2 2"/>
+        </svg>
+        <h3 class="feature-title">AI-Powered Personalization</h3>
+        <p class="feature-text">Tell Ground how you feel, and our AI creates the perfect breathing session — technique, timing, and narration tailored to your nervous system.</p>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-1">
+        <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M24 8c-3 0-5 3-5 8 0 4 2 8 5 10 3-2 5-6 5-10 0-5-2-8-5-8z"/>
+          <path d="M16 20c0 5 3.5 10 8 14 4.5-4 8-9 8-14" stroke-linecap="round"/>
+          <circle cx="24" cy="38" r="3"/>
+          <path d="M10 24c2-1 4-1.5 6-1m16 1c2 .5 4 0 6 1" stroke-linecap="round" opacity="0.5"/>
+        </svg>
+        <h3 class="feature-title">Clone Your Voice</h3>
+        <p class="feature-text">Record 30 seconds. Ground clones your voice and guides you through sessions in your own words. The most personal breathwork experience ever built.</p>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-2">
+        <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="8" y="8" width="32" height="32" rx="4"/>
+          <path d="M16 16h4v4h-4zm6 0h4v4h-4zm6 0h4v4h-4zM16 22h4v4h-4zm6 0h4v4h-4zm6 0h4v4h-4zM16 28h4v4h-4zm6 0h4v4h-4zm6 0h4v4h-4z" opacity="0.4"/>
+          <path d="M16 16h4v4h-4zm12 6h4v4h-4zm-6 6h4v4h-4z" fill="currentColor" opacity="0.3"/>
+        </svg>
+        <h3 class="feature-title">12+ Expert Techniques</h3>
+        <p class="feature-text">From Box Breathing to Wim Hof, each protocol is designed by certified practitioners with precise phase timing and voice-guided narration.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="steps-section" id="how-it-works">
+  <div class="section-inner">
+    <div class="section-label reveal">How It Works</div>
+    <h2 class="section-heading reveal reveal-delay-1">Four breaths to a better practice</h2>
+
+    <div class="steps-list">
+      <div class="step reveal">
+        <div class="step-num">Step 01</div>
+        <div class="step-content">
+          <h3 class="step-title">Tell us how you feel</h3>
+          <p class="step-desc">Open Ground and speak or type naturally. "I'm anxious before a meeting" or "I need energy for my workout." No menus, no guessing.</p>
+        </div>
+      </div>
+
+      <div class="step reveal reveal-delay-1">
+        <div class="step-num">Step 02</div>
+        <div class="step-content">
+          <h3 class="step-title">Get a personalized session</h3>
+          <p class="step-desc">Our AI analyzes your state and matches you with the right technique — calming, energizing, or balancing — with timing tuned to your experience level.</p>
+        </div>
+      </div>
+
+      <div class="step reveal reveal-delay-2">
+        <div class="step-num">Step 03</div>
+        <div class="step-content">
+          <h3 class="step-title">Breathe with your guide</h3>
+          <p class="step-desc">Follow voice-guided sessions with real-time phase indicators. Inhale, hold, exhale — each breath narrated by a soothing voice, or your own clone.</p>
+        </div>
+      </div>
+
+      <div class="step reveal reveal-delay-3">
+        <div class="step-num">Step 04</div>
+        <div class="step-content">
+          <h3 class="step-title">Track your progress</h3>
+          <p class="step-desc">Build streaks, review your session history, and watch your practice grow. Share sessions with the community and climb the leaderboard.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMMUNITY -->
+<section class="community-section" id="community">
+  <div class="section-inner">
+    <div class="section-label reveal">Community</div>
+    <h2 class="section-heading reveal reveal-delay-1">Breathe together</h2>
+    <p class="section-desc reveal reveal-delay-2">Ground isn't just a solo practice. Join a community of practitioners who share, support, and grow together.</p>
+
+    <div class="community-grid">
+      <div class="community-stat reveal">
+        <svg class="stat-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M18 4v28M4 18h28" stroke-linecap="round" opacity="0.3"/>
+          <circle cx="18" cy="18" r="12"/>
+          <circle cx="18" cy="14" r="4"/>
+          <path d="M10 28c0-4.4 3.6-8 8-8s8 3.6 8 8"/>
+        </svg>
+        <div class="stat-label">Community Feed</div>
+        <p class="stat-desc">Share your sessions and celebrate with others</p>
+      </div>
+
+      <div class="community-stat reveal reveal-delay-1">
+        <svg class="stat-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M6 28l6-8 5 4 7-10 6 8" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="30" cy="8" r="3"/>
+        </svg>
+        <div class="stat-label">Leaderboards</div>
+        <p class="stat-desc">Compete on minutes, sessions, and streaks</p>
+      </div>
+
+      <div class="community-stat reveal reveal-delay-2">
+        <svg class="stat-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M18 6l4 8h8l-6.5 5 2.5 9L18 22l-8 6 2.5-9L6 14h8z"/>
+        </svg>
+        <div class="stat-label">Session Sharing</div>
+        <p class="stat-desc">Beautiful share cards for Stories and Messages</p>
+      </div>
+
+      <div class="community-stat reveal reveal-delay-3">
+        <svg class="stat-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M6 30V12m8 18V8m8 22V16m8 14V6" stroke-linecap="round" stroke-width="3" opacity="0.6"/>
+        </svg>
+        <div class="stat-label">Streak Tracking</div>
+        <p class="stat-desc">Daily reminders keep your practice alive</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<section class="quote-section">
+  <div class="reveal">
+    <div class="quote-mark">&ldquo;</div>
+    <blockquote class="quote-text">From the mind into the body, this is where we feel grounded</blockquote>
+    <div class="quote-line"></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="download">
+  <div class="section-inner">
+    <h2 class="cta-heading reveal">Begin your practice</h2>
+    <p class="cta-desc reveal reveal-delay-1">Join the waitlist and be the first to experience breathwork that truly knows you.</p>
+
+    <form class="signup-form reveal reveal-delay-2" id="signupForm">
+      <input type="email" placeholder="your@email.com" required aria-label="Email address">
+      <button type="submit">Join Waitlist</button>
+    </form>
+    <div class="signup-success" id="signupSuccess">You're in. We'll be in touch.</div>
+    <p class="signup-note reveal reveal-delay-3 sans">No spam. Just a heads-up when Ground launches.</p>
+
+    <div style="margin-top: 3rem;" class="reveal reveal-delay-3">
+      <a href="#" class="btn-appstore" style="display: inline-flex;">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        Download on the App Store
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <svg viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="38" stroke="#6B5B4E" stroke-width="2"/><circle cx="50" cy="50" r="10" fill="#6B5B4E"/></svg>
+      <span class="sans">Ground</span>
+    </div>
+    <div class="footer-copy">&copy; 2026 Ground. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+// ─── Particles ───
+(function() {
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  let w, h;
+
+  function resize() {
+    w = canvas.width = canvas.offsetWidth;
+    h = canvas.height = canvas.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  class Particle {
+    constructor() {
+      this.reset();
+    }
+    reset() {
+      this.x = Math.random() * w;
+      this.y = Math.random() * h;
+      this.r = Math.random() * 1.5 + 0.3;
+      this.vx = (Math.random() - 0.5) * 0.15;
+      this.vy = (Math.random() - 0.5) * 0.15;
+      this.alpha = Math.random() * 0.3 + 0.05;
+      this.pulse = Math.random() * Math.PI * 2;
+    }
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      this.pulse += 0.008;
+      if (this.x < -10 || this.x > w + 10 || this.y < -10 || this.y > h + 10) this.reset();
+    }
+    draw() {
+      const a = this.alpha * (0.5 + 0.5 * Math.sin(this.pulse));
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(196, 147, 90, ${a})`;
+      ctx.fill();
+    }
+  }
+
+  for (let i = 0; i < 60; i++) particles.push(new Particle());
+
+  function animate() {
+    ctx.clearRect(0, 0, w, h);
+    particles.forEach(p => { p.update(); p.draw(); });
+    requestAnimationFrame(animate);
+  }
+  animate();
+})();
+
+// ─── Scroll reveals ───
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ─── Nav scroll effect ───
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
+
+// ─── Signup form ───
+document.getElementById('signupForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  this.style.display = 'none';
+  document.getElementById('signupSuccess').style.display = 'block';
+});
+
+// ─── Smooth scroll for anchor links ───
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>
+
+</body>
+</html>
