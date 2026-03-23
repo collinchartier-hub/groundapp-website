@@ -1553,13 +1553,13 @@ const SoundEngine = (() => {
 
     rings.forEach((ring, i) => {
       const delay = i * 0.08;
-      ring.style.transitionDuration = `${p.duration * 0.8}ms`;
+      ring.style.transitionDuration = `${p.duration}ms`;
       ring.style.transitionDelay = `${delay}s`;
       ring.style.transform = `translate(-50%, -50%) scale(${p.scale})`;
       ring.style.opacity = p.scale > 1 ? '0.6' : '1';
     });
 
-    core.style.transitionDuration = `${p.duration * 0.8}ms`;
+    core.style.transitionDuration = `${p.duration}ms`;
     core.style.transform = `translate(-50%, -50%) scale(${p.coreScale})`;
     core.style.boxShadow = p.coreScale > 1
       ? '0 0 60px rgba(196, 147, 90, 0.6), 0 0 120px rgba(196, 147, 90, 0.25)'
@@ -1770,13 +1770,13 @@ document.querySelectorAll('.feature-card').forEach(card => {
     const scale = isExpand ? 1.15 : isContract ? 0.85 : (phaseIndex > 0 && techniques[currentTechnique].phases[phaseIndex - 1].name === 'Inhale') ? 1.15 : 0.85;
 
     rings.forEach((ring, i) => {
-      ring.style.transitionDuration = `${phase.duration * 0.8}s`;
+      ring.style.transitionDuration = `${phase.duration}s`;
       ring.style.transitionDelay = `${i * 0.06}s`;
       ring.style.transform = `translate(-50%, -50%) scale(${scale})`;
     });
 
     const coreScale = scale > 1 ? 1.3 : 1;
-    core.style.transitionDuration = `${phase.duration * 0.8}s`;
+    core.style.transitionDuration = `${phase.duration}s`;
     core.style.transform = `translate(-50%, -50%) scale(${coreScale})`;
     core.style.boxShadow = coreScale > 1
       ? '0 0 50px rgba(196, 147, 90, 0.6)'
