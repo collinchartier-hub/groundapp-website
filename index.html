@@ -23,6 +23,7 @@
 
 <link rel="canonical" href="https://groundapp.live">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='none' stroke='%23C4935A' stroke-width='3'/><circle cx='50' cy='50' r='25' fill='none' stroke='%23D4A574' stroke-width='2'/><circle cx='50' cy='50' r='10' fill='%23C4935A'/></svg>">
+<link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAYRJREFUWEftl7FOwzAQhv+LKAMDAwMLCxISj8DCI/AILCwMDAwMSEgdkpv+k86yk9hpBxal8uX8+e78u0kQ/vkn/rk+NgG2HdgE2HaA7YRPXwB8AvAiIn7bTnhdBDjPGBE5nFqbDOBYRB4BHE0FYAB8WGBPIuKv05+1roicTN0v2YE3AM4APInI89x9dQeOROQ3gLfOATMAHonIi6VnSx3oA/gG4EREvi2BpQBOReRcRHqx8j0AftYaGMsBUwB0Yp8i8rMqQAngTESu+oA9v/SXANAJisiZiFzXxNXvNjpwKSJXTaH7QM8ORORGRHwLagGwHuBdRPxJANgG8MafwJ+I+OsC2ADwDeBLRPwJANhB+CQiXlcT4FhEbkXkYEzG0QOAZ8b/KSL+BIBtBw5F5G5qB3YBvAJ4FxG/tgN7IvIgIr71VgFsAfj2ewB+RMSfALDtwIGI+AAOB1kx5mAXwBuADxHxJwBsB9gXkccpADsA3gC8iYg/AeB/d+AfHr6vIfM1MkMAAAAASUVORK5CYII=">
 
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -203,12 +204,12 @@ nav.scrolled {
   pointer-events: none;
 }
 
-/* Breathing rings */
+/* Breathing rings — now JS-controlled */
 .breath-container {
   position: relative;
   width: 320px;
   height: 320px;
-  margin-bottom: 3.5rem;
+  margin-bottom: 2rem;
 }
 .breath-ring {
   position: absolute;
@@ -216,33 +217,28 @@ nav.scrolled {
   border: 1px solid;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  animation: breathe 8s ease-in-out infinite;
+  transform: translate(-50%, -50%) scale(0.85);
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.4s;
 }
 .breath-ring:nth-child(1) {
   width: 80px; height: 80px;
   border-color: rgba(196, 147, 90, 0.7);
-  animation-delay: 0s;
 }
 .breath-ring:nth-child(2) {
   width: 130px; height: 130px;
   border-color: rgba(196, 147, 90, 0.45);
-  animation-delay: 0.3s;
 }
 .breath-ring:nth-child(3) {
   width: 185px; height: 185px;
   border-color: rgba(196, 147, 90, 0.28);
-  animation-delay: 0.6s;
 }
 .breath-ring:nth-child(4) {
   width: 240px; height: 240px;
   border-color: rgba(196, 147, 90, 0.15);
-  animation-delay: 0.9s;
 }
 .breath-ring:nth-child(5) {
   width: 300px; height: 300px;
   border-color: rgba(196, 147, 90, 0.07);
-  animation-delay: 1.2s;
 }
 .breath-core {
   position: absolute;
@@ -252,16 +248,20 @@ nav.scrolled {
   border-radius: 50%;
   background: radial-gradient(circle, var(--gold) 0%, var(--terracotta) 100%);
   box-shadow: 0 0 40px rgba(196, 147, 90, 0.4), 0 0 80px rgba(196, 147, 90, 0.15);
-  animation: breatheCore 8s ease-in-out infinite;
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s;
 }
 
-@keyframes breathe {
-  0%, 100% { transform: translate(-50%, -50%) scale(0.85); opacity: 1; }
-  50% { transform: translate(-50%, -50%) scale(1.15); opacity: 0.6; }
-}
-@keyframes breatheCore {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 40px rgba(196, 147, 90, 0.4), 0 0 80px rgba(196, 147, 90, 0.15); }
-  50% { transform: translate(-50%, -50%) scale(1.3); box-shadow: 0 0 60px rgba(196, 147, 90, 0.6), 0 0 120px rgba(196, 147, 90, 0.25); }
+/* Breath phase label */
+.breath-phase-label {
+  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.8;
+  margin-bottom: 1.5rem;
+  min-height: 1.2em;
+  transition: opacity 0.3s;
 }
 
 .hero-tagline {
@@ -374,7 +374,7 @@ section { padding: 8rem 2rem; }
   max-width: 600px;
 }
 
-/* ─── FEATURES ─── */
+/* ─── FEATURES with glow trail ─── */
 .features-section {
   background: linear-gradient(180deg, var(--obsidian) 0%, var(--obsidian-mid) 50%, var(--obsidian) 100%);
 }
@@ -390,6 +390,24 @@ section { padding: 8rem 2rem; }
   border: 1px solid rgba(196, 147, 90, 0.06);
   transition: border-color 0.4s, background 0.4s;
   position: relative;
+  overflow: hidden;
+}
+.feature-card::before {
+  content: '';
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(196, 147, 90, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.4s;
+  left: var(--mouse-x, 50%);
+  top: var(--mouse-y, 50%);
+}
+.feature-card:hover::before {
+  opacity: 1;
 }
 .feature-card:hover {
   border-color: rgba(196, 147, 90, 0.15);
@@ -414,7 +432,7 @@ section { padding: 8rem 2rem; }
   color: var(--driftwood);
 }
 
-/* ─── HOW IT WORKS ─── */
+/* ─── HOW IT WORKS with progress line ─── */
 .steps-section {
   position: relative;
 }
@@ -423,6 +441,26 @@ section { padding: 8rem 2rem; }
   display: flex;
   flex-direction: column;
   gap: 0;
+  position: relative;
+}
+/* Vertical progress line */
+.steps-progress-track {
+  position: absolute;
+  left: 39px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: rgba(196, 147, 90, 0.08);
+}
+.steps-progress-fill {
+  position: absolute;
+  left: 39px;
+  top: 0;
+  width: 2px;
+  height: 0;
+  background: linear-gradient(to bottom, var(--gold), var(--amber));
+  transition: height 0.1s linear;
+  box-shadow: 0 0 8px rgba(196, 147, 90, 0.4);
 }
 .step {
   display: grid;
@@ -442,6 +480,8 @@ section { padding: 8rem 2rem; }
   text-transform: uppercase;
   color: var(--gold);
   padding-top: 0.4rem;
+  position: relative;
+  z-index: 1;
 }
 .step-content {}
 .step-title {
@@ -456,6 +496,151 @@ section { padding: 8rem 2rem; }
   line-height: 1.7;
   color: var(--driftwood);
   max-width: 520px;
+}
+
+/* ─── TRY A BREATH DEMO ─── */
+.demo-section {
+  background: linear-gradient(180deg, var(--obsidian) 0%, var(--obsidian-mid) 30%, var(--obsidian-mid) 70%, var(--obsidian) 100%);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.demo-section::before {
+  content: '';
+  position: absolute;
+  width: 800px;
+  height: 800px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(196, 147, 90, 0.05) 0%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.demo-container {
+  max-width: 500px;
+  margin: 0 auto;
+  position: relative;
+}
+.demo-ring-container {
+  position: relative;
+  width: 260px;
+  height: 260px;
+  margin: 3rem auto;
+}
+.demo-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1.5px solid;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.85);
+  transition: transform 1.5s cubic-bezier(0.23, 1, 0.32, 1), opacity 1.5s, border-color 0.5s;
+}
+.demo-ring:nth-child(1) {
+  width: 60px; height: 60px;
+  border-color: rgba(196, 147, 90, 0.7);
+}
+.demo-ring:nth-child(2) {
+  width: 110px; height: 110px;
+  border-color: rgba(196, 147, 90, 0.45);
+}
+.demo-ring:nth-child(3) {
+  width: 160px; height: 160px;
+  border-color: rgba(196, 147, 90, 0.28);
+}
+.demo-ring:nth-child(4) {
+  width: 210px; height: 210px;
+  border-color: rgba(196, 147, 90, 0.15);
+}
+.demo-ring:nth-child(5) {
+  width: 250px; height: 250px;
+  border-color: rgba(196, 147, 90, 0.07);
+}
+.demo-core {
+  position: absolute;
+  width: 20px; height: 20px;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--gold) 0%, var(--terracotta) 100%);
+  box-shadow: 0 0 30px rgba(196, 147, 90, 0.4);
+  transition: transform 1.5s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 1.5s;
+}
+.demo-phase {
+  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+  font-size: 1.4rem;
+  font-weight: 300;
+  color: var(--gold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  min-height: 1.6em;
+}
+.demo-timer {
+  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+  font-size: 3rem;
+  font-weight: 200;
+  color: var(--bone);
+  margin-bottom: 0.5rem;
+  font-variant-numeric: tabular-nums;
+}
+.demo-cycle-count {
+  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+  font-size: 0.8rem;
+  color: var(--sandstone);
+  letter-spacing: 0.08em;
+  margin-bottom: 2.5rem;
+}
+.demo-btn {
+  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.9rem 2.8rem;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  background: transparent;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s, transform 0.2s;
+}
+.demo-btn:hover {
+  background: var(--gold);
+  color: var(--obsidian);
+  transform: translateY(-1px);
+}
+.demo-btn.active {
+  background: var(--gold);
+  color: var(--obsidian);
+}
+.demo-technique-selector {
+  display: flex;
+  justify-content: center;
+  gap: 0.8rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+.demo-technique-btn {
+  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  padding: 0.5rem 1.2rem;
+  border: 1px solid rgba(196, 147, 90, 0.15);
+  color: var(--driftwood);
+  background: transparent;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: border-color 0.3s, color 0.3s, background 0.3s;
+}
+.demo-technique-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+.demo-technique-btn.active {
+  border-color: var(--gold);
+  color: var(--obsidian);
+  background: var(--gold);
 }
 
 /* ─── COMMUNITY ─── */
@@ -599,7 +784,7 @@ section { padding: 8rem 2rem; }
   .testimonial-card { width: 300px; padding: 2rem; }
 }
 
-/* ─── QUOTE ─── */
+/* ─── QUOTE (scroll-driven blur) ─── */
 .quote-section {
   padding: 10rem 2rem;
   text-align: center;
@@ -616,6 +801,9 @@ section { padding: 8rem 2rem; }
   left: 50%;
   transform: translate(-50%, -50%);
   pointer-events: none;
+}
+.quote-inner {
+  transition: filter 0.1s, opacity 0.1s;
 }
 .quote-mark {
   font-size: 4rem;
@@ -721,6 +909,53 @@ section { padding: 8rem 2rem; }
   font-size: 0.95rem;
   margin-top: 1rem;
 }
+.signup-error {
+  display: none;
+  color: var(--ritual-red);
+  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+  font-size: 0.88rem;
+  margin-top: 0.8rem;
+  background: rgba(90, 32, 40, 0.15);
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  max-width: 460px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ─── SOUND TOGGLE ─── */
+.sound-toggle {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 99;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(196, 147, 90, 0.2);
+  background: rgba(26, 17, 14, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--driftwood);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.3s, color 0.3s, transform 0.2s;
+}
+.sound-toggle:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  transform: scale(1.05);
+}
+.sound-toggle.active {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+.sound-toggle svg {
+  width: 20px;
+  height: 20px;
+}
 
 /* ─── FOOTER ─── */
 footer {
@@ -754,11 +989,13 @@ footer {
   .features-grid { grid-template-columns: 1fr; gap: 0; }
   .community-grid { grid-template-columns: repeat(2, 1fr); }
   .nav-links { display: none; }
+  .steps-progress-track,
+  .steps-progress-fill { left: 10px; }
 }
 @media (max-width: 600px) {
   section { padding: 5rem 1.5rem; }
   .hero { padding: 1.5rem; }
-  .breath-container { width: 240px; height: 240px; margin-bottom: 2.5rem; }
+  .breath-container { width: 240px; height: 240px; margin-bottom: 1.5rem; }
   .breath-ring:nth-child(1) { width: 60px; height: 60px; }
   .breath-ring:nth-child(2) { width: 100px; height: 100px; }
   .breath-ring:nth-child(3) { width: 140px; height: 140px; }
@@ -766,21 +1003,44 @@ footer {
   .breath-ring:nth-child(5) { width: 225px; height: 225px; }
   .breath-core { width: 18px; height: 18px; }
   .step { grid-template-columns: 1fr; gap: 0.5rem; }
+  .steps-progress-track,
+  .steps-progress-fill { display: none; }
   .community-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
   .signup-form { border-radius: 14px; }
   .footer-inner { flex-direction: column; gap: 1rem; }
   .quote-section { padding: 6rem 1.5rem; }
   nav { padding: 1rem 1.2rem; }
   nav.scrolled { padding: 0.8rem 1.2rem; }
+  .demo-ring-container { width: 200px; height: 200px; }
+  .demo-ring:nth-child(1) { width: 50px; height: 50px; }
+  .demo-ring:nth-child(2) { width: 90px; height: 90px; }
+  .demo-ring:nth-child(3) { width: 130px; height: 130px; }
+  .demo-ring:nth-child(4) { width: 165px; height: 165px; }
+  .demo-ring:nth-child(5) { width: 195px; height: 195px; }
+  .demo-timer { font-size: 2.4rem; }
 }
 </style>
 </head>
 <body>
 
+<!-- SOUND TOGGLE -->
+<button class="sound-toggle" id="soundToggle" title="Toggle ambient sound" aria-label="Toggle sound">
+  <svg id="soundIconOff" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+    <line x1="23" y1="9" x2="17" y2="15"/>
+    <line x1="17" y1="9" x2="23" y2="15"/>
+  </svg>
+  <svg id="soundIconOn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+    <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+    <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+    <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+  </svg>
+</button>
+
 <!-- NAV -->
 <nav id="nav">
   <a href="#" class="nav-logo">
-    <svg class="nav-logo-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg class="nav-logo-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ground logo">
       <circle cx="50" cy="50" r="38" stroke="#C4935A" stroke-width="2"/>
       <circle cx="50" cy="50" r="24" stroke="#D4A574" stroke-width="1.5"/>
       <circle cx="50" cy="50" r="10" fill="#C4935A"/>
@@ -793,9 +1053,10 @@ footer {
   <ul class="nav-links">
     <li><a href="#features">Features</a></li>
     <li><a href="#how-it-works">How It Works</a></li>
+    <li><a href="#try-a-breath">Try a Breath</a></li>
     <li><a href="#community">Community</a></li>
   </ul>
-  <a href="#download" class="nav-cta">Get the App</a>
+  <a href="#download" class="nav-cta">Join Waitlist</a>
 </nav>
 
 <!-- HERO -->
@@ -811,15 +1072,17 @@ footer {
     <div class="breath-ring"></div>
   </div>
 
+  <div class="breath-phase-label reveal reveal-delay-1" id="heroPhaseLabel">Inhale</div>
+
   <h1 class="hero-tagline reveal reveal-delay-1">Breathe with <em>Intention</em></h1>
   <p class="hero-subtitle reveal reveal-delay-2">Personalized breathwork guided by how you feel — created by breathwork instructor Collin Chartier</p>
 
   <div class="hero-actions reveal reveal-delay-3">
     <a href="#download" class="btn-appstore">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-      Download on the App Store
+      Coming Soon on the App Store
     </a>
-    <span class="hero-note sans">Free on iOS &middot; Coming soon</span>
+    <span class="hero-note sans">Free on iOS &middot; Join the waitlist below</span>
   </div>
 
   <div class="scroll-hint">
@@ -837,7 +1100,7 @@ footer {
 
     <div class="features-grid">
       <div class="feature-card reveal">
-        <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+        <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
           <circle cx="24" cy="24" r="18"/>
           <path d="M24 12v6m0 12v6M12 24h6m12 0h6" stroke-linecap="round"/>
           <circle cx="24" cy="24" r="6"/>
@@ -848,7 +1111,7 @@ footer {
       </div>
 
       <div class="feature-card reveal reveal-delay-1">
-        <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+        <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
           <path d="M24 8c-3 0-5 3-5 8 0 4 2 8 5 10 3-2 5-6 5-10 0-5-2-8-5-8z"/>
           <path d="M16 20c0 5 3.5 10 8 14 4.5-4 8-9 8-14" stroke-linecap="round"/>
           <circle cx="24" cy="38" r="3"/>
@@ -859,7 +1122,7 @@ footer {
       </div>
 
       <div class="feature-card reveal reveal-delay-2">
-        <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+        <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
           <rect x="8" y="8" width="32" height="32" rx="4"/>
           <path d="M16 16h4v4h-4zm6 0h4v4h-4zm6 0h4v4h-4zM16 22h4v4h-4zm6 0h4v4h-4zm6 0h4v4h-4zM16 28h4v4h-4zm6 0h4v4h-4zm6 0h4v4h-4z" opacity="0.4"/>
           <path d="M16 16h4v4h-4zm12 6h4v4h-4zm-6 6h4v4h-4z" fill="currentColor" opacity="0.3"/>
@@ -877,7 +1140,10 @@ footer {
     <div class="section-label reveal">How It Works</div>
     <h2 class="section-heading reveal reveal-delay-1">Four breaths to a better practice</h2>
 
-    <div class="steps-list">
+    <div class="steps-list" id="stepsList">
+      <div class="steps-progress-track"></div>
+      <div class="steps-progress-fill" id="stepsProgressFill"></div>
+
       <div class="step reveal">
         <div class="step-num">Step 01</div>
         <div class="step-content">
@@ -913,6 +1179,38 @@ footer {
   </div>
 </section>
 
+<!-- TRY A BREATH -->
+<section class="demo-section" id="try-a-breath">
+  <div class="section-inner">
+    <div class="section-label reveal">Experience It Now</div>
+    <h2 class="section-heading reveal reveal-delay-1">Try a breath</h2>
+    <p class="section-desc reveal reveal-delay-2" style="margin: 0 auto 0;">Close your eyes, follow the rhythm, and feel the difference in just one cycle.</p>
+
+    <div class="demo-container reveal reveal-delay-3">
+      <div class="demo-ring-container" id="demoRings">
+        <div class="demo-core" id="demoCore"></div>
+        <div class="demo-ring"></div>
+        <div class="demo-ring"></div>
+        <div class="demo-ring"></div>
+        <div class="demo-ring"></div>
+        <div class="demo-ring"></div>
+      </div>
+
+      <div class="demo-phase" id="demoPhase">Ready</div>
+      <div class="demo-timer" id="demoTimer">0:00</div>
+      <div class="demo-cycle-count" id="demoCycleCount"></div>
+
+      <button class="demo-btn" id="demoBtn">Begin</button>
+
+      <div class="demo-technique-selector">
+        <button class="demo-technique-btn active" data-technique="box">Box Breathing</button>
+        <button class="demo-technique-btn" data-technique="478">4-7-8</button>
+        <button class="demo-technique-btn" data-technique="coherent">Coherent</button>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- COMMUNITY -->
 <section class="community-section" id="community">
   <div class="section-inner">
@@ -922,7 +1220,7 @@ footer {
 
     <div class="community-grid">
       <div class="community-stat reveal">
-        <svg class="stat-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5">
+        <svg class="stat-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
           <path d="M18 4v28M4 18h28" stroke-linecap="round" opacity="0.3"/>
           <circle cx="18" cy="18" r="12"/>
           <circle cx="18" cy="14" r="4"/>
@@ -933,7 +1231,7 @@ footer {
       </div>
 
       <div class="community-stat reveal reveal-delay-1">
-        <svg class="stat-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5">
+        <svg class="stat-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
           <path d="M6 28l6-8 5 4 7-10 6 8" stroke-linecap="round" stroke-linejoin="round"/>
           <circle cx="30" cy="8" r="3"/>
         </svg>
@@ -942,7 +1240,7 @@ footer {
       </div>
 
       <div class="community-stat reveal reveal-delay-2">
-        <svg class="stat-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5">
+        <svg class="stat-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
           <path d="M18 6l4 8h8l-6.5 5 2.5 9L18 22l-8 6 2.5-9L6 14h8z"/>
         </svg>
         <div class="stat-label">Session Sharing</div>
@@ -950,7 +1248,7 @@ footer {
       </div>
 
       <div class="community-stat reveal reveal-delay-3">
-        <svg class="stat-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5">
+        <svg class="stat-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
           <path d="M6 30V12m8 18V8m8 22V16m8 14V6" stroke-linecap="round" stroke-width="3" opacity="0.6"/>
         </svg>
         <div class="stat-label">Streak Tracking</div>
@@ -1050,8 +1348,8 @@ footer {
 </section>
 
 <!-- QUOTE -->
-<section class="quote-section">
-  <div class="reveal">
+<section class="quote-section" id="quoteSection">
+  <div class="reveal quote-inner" id="quoteInner">
     <div class="quote-mark">&ldquo;</div>
     <blockquote class="quote-text">From the mind into the body, this is where we feel grounded</blockquote>
     <div class="quote-line"></div>
@@ -1073,14 +1371,8 @@ footer {
       <button type="submit">Join Waitlist</button>
     </form>
     <div class="signup-success" id="signupSuccess">You're in. We'll be in touch.</div>
+    <div class="signup-error" id="signupError">Something went wrong. Please try again.</div>
     <p class="signup-note reveal reveal-delay-3 sans">No spam. Just a heads-up when Ground launches.</p>
-
-    <div style="margin-top: 3rem;" class="reveal reveal-delay-3">
-      <a href="#" class="btn-appstore" style="display: inline-flex;">
-        <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-        Download on the App Store
-      </a>
-    </div>
   </div>
 </section>
 
@@ -1096,7 +1388,208 @@ footer {
 </footer>
 
 <script>
-// ─── Particles ───
+// ═══════════════════════════════════════════
+// WEB AUDIO API — Sound System
+// ═══════════════════════════════════════════
+const SoundEngine = (() => {
+  let ctx = null;
+  let enabled = false;
+  let droneGain = null;
+  let droneOscs = [];
+  let masterGain = null;
+
+  function init() {
+    if (ctx) return;
+    ctx = new (window.AudioContext || window.webkitAudioContext)();
+    masterGain = ctx.createGain();
+    masterGain.gain.value = 0;
+    masterGain.connect(ctx.destination);
+  }
+
+  function startDrone() {
+    if (!ctx) return;
+    droneGain = ctx.createGain();
+    droneGain.gain.value = 0;
+    droneGain.connect(masterGain);
+
+    // Layer multiple sine waves for a warm, rich drone
+    const freqs = [55, 82.5, 110, 165]; // A1, E2, A2, E3
+    freqs.forEach((f, i) => {
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = f;
+      g.gain.value = [0.25, 0.15, 0.1, 0.05][i];
+      osc.connect(g);
+      g.connect(droneGain);
+      osc.start();
+      droneOscs.push({ osc, gain: g });
+    });
+  }
+
+  function enable() {
+    init();
+    if (ctx.state === 'suspended') ctx.resume();
+    if (droneOscs.length === 0) startDrone();
+    masterGain.gain.cancelScheduledValues(ctx.currentTime);
+    masterGain.gain.setTargetAtTime(1, ctx.currentTime, 0.5);
+    droneGain.gain.setTargetAtTime(0.06, ctx.currentTime, 1.5);
+    enabled = true;
+  }
+
+  function disable() {
+    if (!ctx || !droneGain) return;
+    masterGain.gain.setTargetAtTime(0, ctx.currentTime, 0.8);
+    // Stop drone oscillators to prevent memory leak
+    setTimeout(() => {
+      droneOscs.forEach(({ osc }) => { try { osc.stop(); } catch(e) {} });
+      droneOscs = [];
+    }, 2000);
+    enabled = false;
+  }
+
+  function playChime(freq, duration) {
+    if (!ctx || !enabled) return;
+    const osc = ctx.createOscillator();
+    const g = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = freq || 880;
+    g.gain.value = 0;
+    g.gain.setTargetAtTime(0.08, ctx.currentTime, 0.02);
+    g.gain.setTargetAtTime(0, ctx.currentTime + (duration || 0.3), 0.15);
+    osc.connect(g);
+    g.connect(masterGain);
+    osc.start();
+    osc.stop(ctx.currentTime + (duration || 0.3) + 0.5);
+  }
+
+  function playBreathIn() {
+    if (!ctx || !enabled) return;
+    // Filtered noise for breath-in sound
+    const bufferSize = ctx.sampleRate * 2;
+    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+
+    const source = ctx.createBufferSource();
+    source.buffer = buffer;
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.value = 400;
+    filter.Q.value = 0.5;
+    const g = ctx.createGain();
+    g.gain.value = 0;
+    g.gain.setTargetAtTime(0.025, ctx.currentTime, 0.3);
+    g.gain.setTargetAtTime(0, ctx.currentTime + 3.5, 0.5);
+    source.connect(filter);
+    filter.connect(g);
+    g.connect(masterGain);
+    source.start();
+    source.stop(ctx.currentTime + 5);
+  }
+
+  function playBreathOut() {
+    if (!ctx || !enabled) return;
+    const bufferSize = ctx.sampleRate * 2;
+    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+
+    const source = ctx.createBufferSource();
+    source.buffer = buffer;
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.value = 300;
+    filter.Q.value = 0.3;
+    const g = ctx.createGain();
+    g.gain.value = 0;
+    g.gain.setTargetAtTime(0.03, ctx.currentTime, 0.2);
+    g.gain.setTargetAtTime(0, ctx.currentTime + 3, 0.8);
+    source.connect(filter);
+    filter.connect(g);
+    g.connect(masterGain);
+    source.start();
+    source.stop(ctx.currentTime + 5);
+  }
+
+  function playSuccess() {
+    if (!ctx || !enabled) return;
+    [523.25, 659.25, 783.99].forEach((f, i) => {
+      setTimeout(() => playChime(f, 0.4), i * 120);
+    });
+  }
+
+  function playTransition() {
+    if (!ctx || !enabled) return;
+    playChime(440, 0.15);
+  }
+
+  return { enable, disable, playChime, playBreathIn, playBreathOut, playSuccess, playTransition, isEnabled: () => enabled };
+})();
+
+// ═══════════════════════════════════════════
+// HERO BREATHING RING — Synced to real cycle
+// ═══════════════════════════════════════════
+(function() {
+  const rings = document.querySelectorAll('.breath-container .breath-ring');
+  const core = document.querySelector('.breath-core');
+  const label = document.getElementById('heroPhaseLabel');
+
+  // 4s inhale, 4s hold, 4s exhale, 4s hold
+  const phases = [
+    { name: 'Inhale', duration: 4000, scale: 1.15, coreScale: 1.3 },
+    { name: 'Hold', duration: 4000, scale: 1.15, coreScale: 1.3 },
+    { name: 'Exhale', duration: 4000, scale: 0.85, coreScale: 1 },
+    { name: 'Hold', duration: 4000, scale: 0.85, coreScale: 1 },
+  ];
+
+  let phaseIndex = 0;
+  let lastPhase = '';
+  let heroTimeout = null;
+
+  function setPhase(phase) {
+    const p = phases[phase];
+    if (label) label.textContent = p.name;
+
+    rings.forEach((ring, i) => {
+      const delay = i * 0.08;
+      ring.style.transitionDuration = `${p.duration * 0.8}ms`;
+      ring.style.transitionDelay = `${delay}s`;
+      ring.style.transform = `translate(-50%, -50%) scale(${p.scale})`;
+      ring.style.opacity = p.scale > 1 ? '0.6' : '1';
+    });
+
+    core.style.transitionDuration = `${p.duration * 0.8}ms`;
+    core.style.transform = `translate(-50%, -50%) scale(${p.coreScale})`;
+    core.style.boxShadow = p.coreScale > 1
+      ? '0 0 60px rgba(196, 147, 90, 0.6), 0 0 120px rgba(196, 147, 90, 0.25)'
+      : '0 0 40px rgba(196, 147, 90, 0.4), 0 0 80px rgba(196, 147, 90, 0.15)';
+
+    // Trigger breath sound on phase change
+    if (p.name === 'Inhale' && lastPhase !== 'Inhale') SoundEngine.playBreathIn();
+    if (p.name === 'Exhale' && lastPhase !== 'Exhale') SoundEngine.playBreathOut();
+    lastPhase = p.name;
+  }
+
+  function cycle() {
+    setPhase(phaseIndex);
+    heroTimeout = setTimeout(() => {
+      phaseIndex = (phaseIndex + 1) % phases.length;
+      cycle();
+    }, phases[phaseIndex].duration);
+  }
+  cycle();
+
+  // Cleanup on page hide to prevent background processing
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) { clearTimeout(heroTimeout); }
+    else { cycle(); }
+  });
+})();
+
+// ═══════════════════════════════════════════
+// PARTICLES
+// ═══════════════════════════════════════════
 (function() {
   const canvas = document.getElementById('particles');
   const ctx = canvas.getContext('2d');
@@ -1111,9 +1604,7 @@ footer {
   window.addEventListener('resize', resize);
 
   class Particle {
-    constructor() {
-      this.reset();
-    }
+    constructor() { this.reset(); }
     reset() {
       this.x = Math.random() * w;
       this.y = Math.random() * h;
@@ -1148,7 +1639,9 @@ footer {
   animate();
 })();
 
-// ─── Scroll reveals ───
+// ═══════════════════════════════════════════
+// SCROLL REVEALS
+// ═══════════════════════════════════════════
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(e => {
     if (e.isIntersecting) {
@@ -1159,44 +1652,309 @@ const observer = new IntersectionObserver((entries) => {
 
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-// ─── Nav scroll effect ───
+// ═══════════════════════════════════════════
+// NAV SCROLL EFFECT
+// ═══════════════════════════════════════════
 const nav = document.getElementById('nav');
 window.addEventListener('scroll', () => {
   nav.classList.toggle('scrolled', window.scrollY > 60);
 }, { passive: true });
 
-// ─── Signup form → Google Sheets ───
+// ═══════════════════════════════════════════
+// FEATURE CARD GLOW TRAIL
+// ═══════════════════════════════════════════
+document.querySelectorAll('.feature-card').forEach(card => {
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+    card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+    card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+  });
+});
+
+// ═══════════════════════════════════════════
+// STEPS PROGRESS LINE (scroll-driven)
+// ═══════════════════════════════════════════
+(function() {
+  const stepsList = document.getElementById('stepsList');
+  const fill = document.getElementById('stepsProgressFill');
+  if (!stepsList || !fill) return;
+
+  function updateProgress() {
+    const rect = stepsList.getBoundingClientRect();
+    const viewportH = window.innerHeight;
+    const sectionTop = rect.top;
+    const sectionH = rect.height;
+
+    // Start filling when top of section reaches middle of viewport
+    const progress = Math.max(0, Math.min(1,
+      (viewportH * 0.5 - sectionTop) / sectionH
+    ));
+
+    fill.style.height = `${progress * sectionH}px`;
+  }
+
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+})();
+
+// ═══════════════════════════════════════════
+// QUOTE SECTION — Scroll-driven blur-to-sharp
+// ═══════════════════════════════════════════
+(function() {
+  const quoteSection = document.getElementById('quoteSection');
+  const quoteInner = document.getElementById('quoteInner');
+  if (!quoteSection || !quoteInner) return;
+
+  function updateBlur() {
+    const rect = quoteSection.getBoundingClientRect();
+    const viewportH = window.innerHeight;
+
+    // Calculate how far into the viewport the section is
+    const progress = Math.max(0, Math.min(1,
+      (viewportH - rect.top) / (viewportH + rect.height * 0.3)
+    ));
+
+    // Map progress to blur: starts blurred (8px), becomes sharp (0px)
+    const blur = Math.max(0, 8 * (1 - progress * 1.3));
+    const opacity = Math.min(1, progress * 1.25);
+
+    quoteInner.style.filter = `blur(${blur}px)`;
+    quoteInner.style.opacity = opacity;
+  }
+
+  window.addEventListener('scroll', updateBlur, { passive: true });
+  updateBlur();
+})();
+
+// ═══════════════════════════════════════════
+// TRY A BREATH — Interactive Demo
+// ═══════════════════════════════════════════
+(function() {
+  const techniques = {
+    box: { name: 'Box Breathing', phases: [
+      { name: 'Inhale', duration: 4 },
+      { name: 'Hold', duration: 4 },
+      { name: 'Exhale', duration: 4 },
+      { name: 'Hold', duration: 4 },
+    ]},
+    '478': { name: '4-7-8', phases: [
+      { name: 'Inhale', duration: 4 },
+      { name: 'Hold', duration: 7 },
+      { name: 'Exhale', duration: 8 },
+    ]},
+    coherent: { name: 'Coherent Breathing', phases: [
+      { name: 'Inhale', duration: 5.5 },
+      { name: 'Exhale', duration: 5.5 },
+    ]},
+  };
+
+  let currentTechnique = 'box';
+  let running = false;
+  let phaseIndex = 0;
+  let cycleCount = 0;
+  let phaseTimer = null;
+  let countdownTimer = null;
+  let secondsLeft = 0;
+
+  const phaseEl = document.getElementById('demoPhase');
+  const timerEl = document.getElementById('demoTimer');
+  const cycleEl = document.getElementById('demoCycleCount');
+  const btn = document.getElementById('demoBtn');
+  const rings = document.querySelectorAll('#demoRings .demo-ring');
+  const core = document.getElementById('demoCore');
+  const techBtns = document.querySelectorAll('.demo-technique-btn');
+
+  function updateVisuals(phase) {
+    const isExpand = phase.name === 'Inhale';
+    const isContract = phase.name === 'Exhale';
+    const scale = isExpand ? 1.15 : isContract ? 0.85 : (phaseIndex > 0 && techniques[currentTechnique].phases[phaseIndex - 1].name === 'Inhale') ? 1.15 : 0.85;
+
+    rings.forEach((ring, i) => {
+      ring.style.transitionDuration = `${phase.duration * 0.8}s`;
+      ring.style.transitionDelay = `${i * 0.06}s`;
+      ring.style.transform = `translate(-50%, -50%) scale(${scale})`;
+    });
+
+    const coreScale = scale > 1 ? 1.3 : 1;
+    core.style.transitionDuration = `${phase.duration * 0.8}s`;
+    core.style.transform = `translate(-50%, -50%) scale(${coreScale})`;
+    core.style.boxShadow = coreScale > 1
+      ? '0 0 50px rgba(196, 147, 90, 0.6)'
+      : '0 0 30px rgba(196, 147, 90, 0.4)';
+  }
+
+  function formatTime(s) {
+    return `${Math.floor(s / 60)}:${String(Math.floor(s) % 60).padStart(2, '0')}`;
+  }
+
+  function startPhase() {
+    if (!running) return;
+    const technique = techniques[currentTechnique];
+    const phase = technique.phases[phaseIndex];
+
+    phaseEl.textContent = phase.name;
+    secondsLeft = phase.duration;
+    timerEl.textContent = formatTime(secondsLeft);
+
+    updateVisuals(phase);
+
+    // Trigger sounds
+    if (phase.name === 'Inhale') SoundEngine.playBreathIn();
+    else if (phase.name === 'Exhale') SoundEngine.playBreathOut();
+    else SoundEngine.playTransition();
+
+    clearInterval(countdownTimer);
+    countdownTimer = setInterval(() => {
+      secondsLeft = Math.max(0, secondsLeft - 0.1);
+      timerEl.textContent = formatTime(Math.ceil(secondsLeft));
+    }, 100);
+
+    clearTimeout(phaseTimer);
+    phaseTimer = setTimeout(() => {
+      phaseIndex++;
+      if (phaseIndex >= technique.phases.length) {
+        phaseIndex = 0;
+        cycleCount++;
+        cycleEl.textContent = `Cycle ${cycleCount}`;
+        SoundEngine.playTransition();
+      }
+      startPhase();
+    }, phase.duration * 1000);
+  }
+
+  function start() {
+    running = true;
+    phaseIndex = 0;
+    cycleCount = 1;
+    cycleEl.textContent = 'Cycle 1';
+    btn.textContent = 'Stop';
+    btn.classList.add('active');
+    startPhase();
+  }
+
+  function stop() {
+    running = false;
+    clearTimeout(phaseTimer);
+    clearInterval(countdownTimer);
+    phaseEl.textContent = 'Ready';
+    timerEl.textContent = '0:00';
+    cycleEl.textContent = '';
+    btn.textContent = 'Begin';
+    btn.classList.remove('active');
+
+    // Reset rings
+    rings.forEach(ring => {
+      ring.style.transitionDuration = '0.6s';
+      ring.style.transform = 'translate(-50%, -50%) scale(0.85)';
+    });
+    core.style.transitionDuration = '0.6s';
+    core.style.transform = 'translate(-50%, -50%) scale(1)';
+    core.style.boxShadow = '0 0 30px rgba(196, 147, 90, 0.4)';
+  }
+
+  btn.addEventListener('click', () => {
+    if (running) stop(); else start();
+  });
+
+  techBtns.forEach(b => {
+    b.addEventListener('click', () => {
+      techBtns.forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      currentTechnique = b.dataset.technique;
+      if (running) { stop(); start(); }
+    });
+  });
+})();
+
+// ═══════════════════════════════════════════
+// SOUND TOGGLE
+// ═══════════════════════════════════════════
+(function() {
+  const toggle = document.getElementById('soundToggle');
+  const iconOn = document.getElementById('soundIconOn');
+  const iconOff = document.getElementById('soundIconOff');
+
+  toggle.addEventListener('click', () => {
+    if (SoundEngine.isEnabled()) {
+      SoundEngine.disable();
+      toggle.classList.remove('active');
+      iconOn.style.display = 'none';
+      iconOff.style.display = 'block';
+    } else {
+      SoundEngine.enable();
+      toggle.classList.add('active');
+      iconOn.style.display = 'block';
+      iconOff.style.display = 'none';
+    }
+  });
+})();
+
+// ═══════════════════════════════════════════
+// UI MICRO-SOUNDS
+// ═══════════════════════════════════════════
+document.querySelectorAll('.nav-cta, .btn-appstore, .demo-btn').forEach(el => {
+  el.addEventListener('mouseenter', () => SoundEngine.playChime(660, 0.1));
+});
+
+// ═══════════════════════════════════════════
+// SIGNUP FORM — with proper error handling
+// ═══════════════════════════════════════════
 document.getElementById('signupForm').addEventListener('submit', function(e) {
   e.preventDefault();
   const form = this;
   const btn = form.querySelector('button');
   const name = form.querySelector('input[name="name"]').value.trim();
   const email = form.querySelector('input[name="email"]').value.trim();
+  const errorEl = document.getElementById('signupError');
+  const successEl = document.getElementById('signupSuccess');
+
   if (!name || !email) return;
 
+  // Basic email validation
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    errorEl.textContent = 'Please enter a valid email address.';
+    errorEl.style.display = 'block';
+    return;
+  }
+
+  errorEl.style.display = 'none';
   btn.disabled = true;
   btn.textContent = 'Joining...';
 
-  // REPLACE THIS URL with your Google Apps Script web app URL
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwnVkDxZzz18UeMrNEGJVED6M4f3Ie_jvHeyccyMOyySYiSxqUjCd8nXt2nfo94jSbK8w/exec';
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 10000);
 
   fetch(SCRIPT_URL, {
     method: 'POST',
     mode: 'no-cors',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name: name, email: email })
+    body: JSON.stringify({ name: name, email: email }),
+    signal: controller.signal
   })
   .then(() => {
+    clearTimeout(timeout);
     form.style.display = 'none';
-    document.getElementById('signupSuccess').style.display = 'block';
+    successEl.style.display = 'block';
+    SoundEngine.playSuccess();
   })
-  .catch(() => {
-    form.style.display = 'none';
-    document.getElementById('signupSuccess').style.display = 'block';
+  .catch((err) => {
+    clearTimeout(timeout);
+    btn.disabled = false;
+    btn.textContent = 'Join Waitlist';
+    if (err.name === 'AbortError') {
+      errorEl.textContent = 'Request timed out. Please try again.';
+    } else {
+      errorEl.textContent = 'Something went wrong. Please try again.';
+    }
+    errorEl.style.display = 'block';
   });
 });
 
-// ─── Smooth scroll for anchor links ───
+// ═══════════════════════════════════════════
+// SMOOTH SCROLL
+// ═══════════════════════════════════════════
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
     e.preventDefault();
