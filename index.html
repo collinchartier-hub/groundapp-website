@@ -1455,61 +1455,12 @@ const SoundEngine = (() => {
     osc.type = 'sine';
     osc.frequency.value = freq || 880;
     g.gain.value = 0;
-    g.gain.setTargetAtTime(0.08, ctx.currentTime, 0.02);
+    g.gain.setTargetAtTime(0.068, ctx.currentTime, 0.02);
     g.gain.setTargetAtTime(0, ctx.currentTime + (duration || 0.3), 0.15);
     osc.connect(g);
     g.connect(masterGain);
     osc.start();
     osc.stop(ctx.currentTime + (duration || 0.3) + 0.5);
-  }
-
-  function playBreathIn() {
-    if (!ctx || !enabled) return;
-    // Filtered noise for breath-in sound
-    const bufferSize = ctx.sampleRate * 2;
-    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
-
-    const source = ctx.createBufferSource();
-    source.buffer = buffer;
-    const filter = ctx.createBiquadFilter();
-    filter.type = 'bandpass';
-    filter.frequency.value = 400;
-    filter.Q.value = 0.5;
-    const g = ctx.createGain();
-    g.gain.value = 0;
-    g.gain.setTargetAtTime(0.025, ctx.currentTime, 0.3);
-    g.gain.setTargetAtTime(0, ctx.currentTime + 3.5, 0.5);
-    source.connect(filter);
-    filter.connect(g);
-    g.connect(masterGain);
-    source.start();
-    source.stop(ctx.currentTime + 5);
-  }
-
-  function playBreathOut() {
-    if (!ctx || !enabled) return;
-    const bufferSize = ctx.sampleRate * 2;
-    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
-
-    const source = ctx.createBufferSource();
-    source.buffer = buffer;
-    const filter = ctx.createBiquadFilter();
-    filter.type = 'lowpass';
-    filter.frequency.value = 300;
-    filter.Q.value = 0.3;
-    const g = ctx.createGain();
-    g.gain.value = 0;
-    g.gain.setTargetAtTime(0.03, ctx.currentTime, 0.2);
-    g.gain.setTargetAtTime(0, ctx.currentTime + 3, 0.8);
-    source.connect(filter);
-    filter.connect(g);
-    g.connect(masterGain);
-    source.start();
-    source.stop(ctx.currentTime + 5);
   }
 
   function playSuccess() {
@@ -1524,7 +1475,7 @@ const SoundEngine = (() => {
     playChime(440, 0.15);
   }
 
-  return { enable, disable, playChime, playBreathIn, playBreathOut, playSuccess, playTransition, isEnabled: () => enabled };
+  return { enable, disable, playChime, playSuccess, playTransition, isEnabled: () => enabled };
 })();
 
 // ═══════════════════════════════════════════
@@ -1559,15 +1510,12 @@ const SoundEngine = (() => {
       ring.style.opacity = p.scale > 1 ? '0.6' : '1';
     });
 
-    core.style.transitionDuration = `${p.duration}ms`;
+    core.style.transitionDuration = `${p.duration * 0.8}ms`;
     core.style.transform = `translate(-50%, -50%) scale(${p.coreScale})`;
     core.style.boxShadow = p.coreScale > 1
       ? '0 0 60px rgba(196, 147, 90, 0.6), 0 0 120px rgba(196, 147, 90, 0.25)'
       : '0 0 40px rgba(196, 147, 90, 0.4), 0 0 80px rgba(196, 147, 90, 0.15)';
 
-    // Trigger breath sound on phase change
-    if (p.name === 'Inhale' && lastPhase !== 'Inhale') SoundEngine.playBreathIn();
-    if (p.name === 'Exhale' && lastPhase !== 'Exhale') SoundEngine.playBreathOut();
     lastPhase = p.name;
   }
 
@@ -1770,13 +1718,13 @@ document.querySelectorAll('.feature-card').forEach(card => {
     const scale = isExpand ? 1.15 : isContract ? 0.85 : (phaseIndex > 0 && techniques[currentTechnique].phases[phaseIndex - 1].name === 'Inhale') ? 1.15 : 0.85;
 
     rings.forEach((ring, i) => {
-      ring.style.transitionDuration = `${phase.duration}s`;
+      ring.style.transitionDuration = `${phase.duration * 0.8}s`;
       ring.style.transitionDelay = `${i * 0.06}s`;
       ring.style.transform = `translate(-50%, -50%) scale(${scale})`;
     });
 
     const coreScale = scale > 1 ? 1.3 : 1;
-    core.style.transitionDuration = `${phase.duration}s`;
+    core.style.transitionDuration = `${phase.duration * 0.8}s`;
     core.style.transform = `translate(-50%, -50%) scale(${coreScale})`;
     core.style.boxShadow = coreScale > 1
       ? '0 0 50px rgba(196, 147, 90, 0.6)'
@@ -1798,10 +1746,8 @@ document.querySelectorAll('.feature-card').forEach(card => {
 
     updateVisuals(phase);
 
-    // Trigger sounds
-    if (phase.name === 'Inhale') SoundEngine.playBreathIn();
-    else if (phase.name === 'Exhale') SoundEngine.playBreathOut();
-    else SoundEngine.playTransition();
+    // Trigger transition chime on phase change
+    SoundEngine.playTransition();
 
     clearInterval(countdownTimer);
     countdownTimer = setInterval(() => {
@@ -1874,7 +1820,22 @@ document.querySelectorAll('.feature-card').forEach(card => {
   const iconOn = document.getElementById('soundIconOn');
   const iconOff = document.getElementById('soundIconOff');
 
-  toggle.addEventListener('click', () => {
+  // Default sound ON — enable on first user interaction (browser requirement)
+  function enableOnInteraction() {
+    SoundEngine.enable();
+    toggle.classList.add('active');
+    iconOn.style.display = 'block';
+    iconOff.style.display = 'none';
+    document.removeEventListener('click', enableOnInteraction);
+    document.removeEventListener('scroll', enableOnInteraction);
+    document.removeEventListener('keydown', enableOnInteraction);
+  }
+  document.addEventListener('click', enableOnInteraction, { once: false });
+  document.addEventListener('scroll', enableOnInteraction, { once: false, passive: true });
+  document.addEventListener('keydown', enableOnInteraction, { once: false });
+
+  toggle.addEventListener('click', (e) => {
+    e.stopPropagation();
     if (SoundEngine.isEnabled()) {
       SoundEngine.disable();
       toggle.classList.remove('active');
