@@ -1433,7 +1433,7 @@ const SoundEngine = (() => {
     if (droneOscs.length === 0) startDrone();
     masterGain.gain.cancelScheduledValues(ctx.currentTime);
     masterGain.gain.setTargetAtTime(1, ctx.currentTime, 0.5);
-    droneGain.gain.setTargetAtTime(0.06, ctx.currentTime, 1.5);
+    droneGain.gain.setTargetAtTime(0.069, ctx.currentTime, 1.5);
     enabled = true;
   }
 
