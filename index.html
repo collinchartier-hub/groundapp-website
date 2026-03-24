@@ -1433,7 +1433,7 @@ const SoundEngine = (() => {
     if (droneOscs.length === 0) startDrone();
     masterGain.gain.cancelScheduledValues(ctx.currentTime);
     masterGain.gain.setTargetAtTime(1, ctx.currentTime, 0.5);
-    droneGain.gain.setTargetAtTime(0.06, ctx.currentTime, 1.5);
+    droneGain.gain.setTargetAtTime(0.069, ctx.currentTime, 1.5);
     enabled = true;
   }
 
@@ -1450,81 +1450,54 @@ const SoundEngine = (() => {
 
   function playChime(freq, duration) {
     if (!ctx || !enabled) return;
-    const osc = ctx.createOscillator();
-    const g = ctx.createGain();
-    osc.type = 'sine';
-    osc.frequency.value = freq || 880;
-    g.gain.value = 0;
-    g.gain.setTargetAtTime(0.08, ctx.currentTime, 0.02);
-    g.gain.setTargetAtTime(0, ctx.currentTime + (duration || 0.3), 0.15);
-    osc.connect(g);
-    g.connect(masterGain);
-    osc.start();
-    osc.stop(ctx.currentTime + (duration || 0.3) + 0.5);
-  }
+    const dur = duration || 2.5;
+    const t = ctx.currentTime;
+    const base = freq || 293.66; // D4 — common singing bowl pitch
 
-  function playBreathIn() {
-    if (!ctx || !enabled) return;
-    // Filtered noise for breath-in sound
-    const bufferSize = ctx.sampleRate * 2;
-    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+    // Singing bowl: fundamental + harmonics with slight detuning for beating
+    const partials = [
+      { ratio: 1,    detune: 0,   amp: 0.04 },   // fundamental
+      { ratio: 1,    detune: 1.5, amp: 0.035 },   // slight detune for beating
+      { ratio: 2.71, detune: 0,   amp: 0.025 },   // 1st harmonic (bowl-specific)
+      { ratio: 2.71, detune: 2,   amp: 0.02 },    // detuned pair
+      { ratio: 4.98, detune: 0,   amp: 0.012 },   // 2nd harmonic
+      { ratio: 7.81, detune: 0,   amp: 0.006 },   // 3rd harmonic (shimmer)
+    ];
 
-    const source = ctx.createBufferSource();
-    source.buffer = buffer;
-    const filter = ctx.createBiquadFilter();
-    filter.type = 'bandpass';
-    filter.frequency.value = 400;
-    filter.Q.value = 0.5;
-    const g = ctx.createGain();
-    g.gain.value = 0;
-    g.gain.setTargetAtTime(0.025, ctx.currentTime, 0.3);
-    g.gain.setTargetAtTime(0, ctx.currentTime + 3.5, 0.5);
-    source.connect(filter);
-    filter.connect(g);
-    g.connect(masterGain);
-    source.start();
-    source.stop(ctx.currentTime + 5);
-  }
+    partials.forEach(p => {
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = base * p.ratio;
+      osc.detune.value = p.detune;
 
-  function playBreathOut() {
-    if (!ctx || !enabled) return;
-    const bufferSize = ctx.sampleRate * 2;
-    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+      // Slow attack, long exponential decay — like a struck bowl
+      g.gain.value = 0;
+      g.gain.setTargetAtTime(p.amp, t, 0.008);          // fast strike attack
+      g.gain.setTargetAtTime(p.amp * 0.6, t + 0.05, 0.1); // slight dip after strike
+      g.gain.setTargetAtTime(0, t + dur * 0.3, dur * 0.4); // long ring-out decay
 
-    const source = ctx.createBufferSource();
-    source.buffer = buffer;
-    const filter = ctx.createBiquadFilter();
-    filter.type = 'lowpass';
-    filter.frequency.value = 300;
-    filter.Q.value = 0.3;
-    const g = ctx.createGain();
-    g.gain.value = 0;
-    g.gain.setTargetAtTime(0.03, ctx.currentTime, 0.2);
-    g.gain.setTargetAtTime(0, ctx.currentTime + 3, 0.8);
-    source.connect(filter);
-    filter.connect(g);
-    g.connect(masterGain);
-    source.start();
-    source.stop(ctx.currentTime + 5);
+      osc.connect(g);
+      g.connect(masterGain);
+      osc.start(t);
+      osc.stop(t + dur + 1);
+    });
   }
 
   function playSuccess() {
     if (!ctx || !enabled) return;
-    [523.25, 659.25, 783.99].forEach((f, i) => {
-      setTimeout(() => playChime(f, 0.4), i * 120);
+    [293.66, 369.99, 440].forEach((f, i) => {
+      setTimeout(() => playChime(f, 3), i * 300);
     });
   }
 
-  function playTransition() {
+  function playInhaleStrike() {
     if (!ctx || !enabled) return;
-    playChime(440, 0.15);
+    // Sharp, high-pitched bowl strike to mark the start of each round
+    playChime(523.66, 1.5);
   }
 
-  return { enable, disable, playChime, playBreathIn, playBreathOut, playSuccess, playTransition, isEnabled: () => enabled };
+  return { enable, disable, playChime, playSuccess, playInhaleStrike, isEnabled: () => enabled };
 })();
 
 // ═══════════════════════════════════════════
@@ -1553,21 +1526,18 @@ const SoundEngine = (() => {
 
     rings.forEach((ring, i) => {
       const delay = i * 0.08;
-      ring.style.transitionDuration = `${p.duration * 0.8}ms`;
+      ring.style.transitionDuration = `${p.duration}ms`;
       ring.style.transitionDelay = `${delay}s`;
       ring.style.transform = `translate(-50%, -50%) scale(${p.scale})`;
       ring.style.opacity = p.scale > 1 ? '0.6' : '1';
     });
 
-    core.style.transitionDuration = `${p.duration * 0.8}ms`;
+    core.style.transitionDuration = `${p.duration}ms`;
     core.style.transform = `translate(-50%, -50%) scale(${p.coreScale})`;
     core.style.boxShadow = p.coreScale > 1
       ? '0 0 60px rgba(196, 147, 90, 0.6), 0 0 120px rgba(196, 147, 90, 0.25)'
       : '0 0 40px rgba(196, 147, 90, 0.4), 0 0 80px rgba(196, 147, 90, 0.15)';
 
-    // Trigger breath sound on phase change
-    if (p.name === 'Inhale' && lastPhase !== 'Inhale') SoundEngine.playBreathIn();
-    if (p.name === 'Exhale' && lastPhase !== 'Exhale') SoundEngine.playBreathOut();
     lastPhase = p.name;
   }
 
@@ -1582,8 +1552,8 @@ const SoundEngine = (() => {
 
   // Cleanup on page hide to prevent background processing
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) { clearTimeout(heroTimeout); }
-    else { cycle(); }
+    clearTimeout(heroTimeout);
+    if (!document.hidden) cycle();
   });
 })();
 
@@ -1770,13 +1740,13 @@ document.querySelectorAll('.feature-card').forEach(card => {
     const scale = isExpand ? 1.15 : isContract ? 0.85 : (phaseIndex > 0 && techniques[currentTechnique].phases[phaseIndex - 1].name === 'Inhale') ? 1.15 : 0.85;
 
     rings.forEach((ring, i) => {
-      ring.style.transitionDuration = `${phase.duration * 0.8}s`;
+      ring.style.transitionDuration = `${phase.duration}s`;
       ring.style.transitionDelay = `${i * 0.06}s`;
       ring.style.transform = `translate(-50%, -50%) scale(${scale})`;
     });
 
     const coreScale = scale > 1 ? 1.3 : 1;
-    core.style.transitionDuration = `${phase.duration * 0.8}s`;
+    core.style.transitionDuration = `${phase.duration}s`;
     core.style.transform = `translate(-50%, -50%) scale(${coreScale})`;
     core.style.boxShadow = coreScale > 1
       ? '0 0 50px rgba(196, 147, 90, 0.6)'
@@ -1798,10 +1768,8 @@ document.querySelectorAll('.feature-card').forEach(card => {
 
     updateVisuals(phase);
 
-    // Trigger sounds
-    if (phase.name === 'Inhale') SoundEngine.playBreathIn();
-    else if (phase.name === 'Exhale') SoundEngine.playBreathOut();
-    else SoundEngine.playTransition();
+    // Bowl sound only on Inhale (start of each cycle)
+    if (phase.name === 'Inhale') SoundEngine.playInhaleStrike();
 
     clearInterval(countdownTimer);
     countdownTimer = setInterval(() => {
@@ -1816,7 +1784,6 @@ document.querySelectorAll('.feature-card').forEach(card => {
         phaseIndex = 0;
         cycleCount++;
         cycleEl.textContent = `Cycle ${cycleCount}`;
-        SoundEngine.playTransition();
       }
       startPhase();
     }, phase.duration * 1000);
@@ -1874,7 +1841,22 @@ document.querySelectorAll('.feature-card').forEach(card => {
   const iconOn = document.getElementById('soundIconOn');
   const iconOff = document.getElementById('soundIconOff');
 
-  toggle.addEventListener('click', () => {
+  // Default sound ON — enable on first user interaction (browser requirement)
+  function enableOnInteraction() {
+    SoundEngine.enable();
+    toggle.classList.add('active');
+    iconOn.style.display = 'block';
+    iconOff.style.display = 'none';
+    document.removeEventListener('click', enableOnInteraction);
+    document.removeEventListener('scroll', enableOnInteraction);
+    document.removeEventListener('keydown', enableOnInteraction);
+  }
+  document.addEventListener('click', enableOnInteraction, { once: false });
+  document.addEventListener('scroll', enableOnInteraction, { once: false, passive: true });
+  document.addEventListener('keydown', enableOnInteraction, { once: false });
+
+  toggle.addEventListener('click', (e) => {
+    e.stopPropagation();
     if (SoundEngine.isEnabled()) {
       SoundEngine.disable();
       toggle.classList.remove('active');
@@ -1892,9 +1874,7 @@ document.querySelectorAll('.feature-card').forEach(card => {
 // ═══════════════════════════════════════════
 // UI MICRO-SOUNDS
 // ═══════════════════════════════════════════
-document.querySelectorAll('.nav-cta, .btn-appstore, .demo-btn').forEach(el => {
-  el.addEventListener('mouseenter', () => SoundEngine.playChime(660, 0.1));
-});
+// No hover sounds — bowl is reserved for breathing cycle transitions
 
 // ═══════════════════════════════════════════
 // SIGNUP FORM — with proper error handling
