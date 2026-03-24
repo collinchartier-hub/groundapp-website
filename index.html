@@ -1064,12 +1064,12 @@ footer {
   <canvas id="particles"></canvas>
 
   <div class="breath-container reveal">
+    <div class="breath-ring"></div>
+    <div class="breath-ring"></div>
+    <div class="breath-ring"></div>
+    <div class="breath-ring"></div>
+    <div class="breath-ring"></div>
     <div class="breath-core"></div>
-    <div class="breath-ring"></div>
-    <div class="breath-ring"></div>
-    <div class="breath-ring"></div>
-    <div class="breath-ring"></div>
-    <div class="breath-ring"></div>
   </div>
 
   <div class="breath-phase-label reveal reveal-delay-1" id="heroPhaseLabel">Inhale</div>
@@ -1188,12 +1188,12 @@ footer {
 
     <div class="demo-container reveal reveal-delay-3">
       <div class="demo-ring-container" id="demoRings">
+        <div class="demo-ring"></div>
+        <div class="demo-ring"></div>
+        <div class="demo-ring"></div>
+        <div class="demo-ring"></div>
+        <div class="demo-ring"></div>
         <div class="demo-core" id="demoCore"></div>
-        <div class="demo-ring"></div>
-        <div class="demo-ring"></div>
-        <div class="demo-ring"></div>
-        <div class="demo-ring"></div>
-        <div class="demo-ring"></div>
       </div>
 
       <div class="demo-phase" id="demoPhase">Ready</div>
@@ -1848,10 +1848,12 @@ document.querySelectorAll('.feature-card').forEach(card => {
     iconOn.style.display = 'block';
     iconOff.style.display = 'none';
     document.removeEventListener('click', enableOnInteraction);
+    document.removeEventListener('touchstart', enableOnInteraction);
     document.removeEventListener('scroll', enableOnInteraction);
     document.removeEventListener('keydown', enableOnInteraction);
   }
   document.addEventListener('click', enableOnInteraction, { once: false });
+  document.addEventListener('touchstart', enableOnInteraction, { once: false, passive: true });
   document.addEventListener('scroll', enableOnInteraction, { once: false, passive: true });
   document.addEventListener('keydown', enableOnInteraction, { once: false });
 
