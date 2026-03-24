@@ -1767,8 +1767,8 @@ document.querySelectorAll('.feature-card').forEach(card => {
 
     updateVisuals(phase);
 
-    // Trigger transition chime on phase change
-    SoundEngine.playTransition();
+    // Bowl sound only on Inhale (start of each cycle)
+    if (phase.name === 'Inhale') SoundEngine.playTransition();
 
     clearInterval(countdownTimer);
     countdownTimer = setInterval(() => {
@@ -1783,7 +1783,6 @@ document.querySelectorAll('.feature-card').forEach(card => {
         phaseIndex = 0;
         cycleCount++;
         cycleEl.textContent = `Cycle ${cycleCount}`;
-        SoundEngine.playTransition();
       }
       startPhase();
     }, phase.duration * 1000);
@@ -1874,9 +1873,7 @@ document.querySelectorAll('.feature-card').forEach(card => {
 // ═══════════════════════════════════════════
 // UI MICRO-SOUNDS
 // ═══════════════════════════════════════════
-document.querySelectorAll('.nav-cta, .btn-appstore, .demo-btn').forEach(el => {
-  el.addEventListener('mouseenter', () => SoundEngine.playChime(440, 1.2));
-});
+// No hover sounds — bowl is reserved for breathing cycle transitions
 
 // ═══════════════════════════════════════════
 // SIGNUP FORM — with proper error handling
