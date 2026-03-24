@@ -1491,12 +1491,13 @@ const SoundEngine = (() => {
     });
   }
 
-  function playTransition() {
+  function playInhaleStrike() {
     if (!ctx || !enabled) return;
-    playChime(293.66, 1.5);
+    // Sharp, high-pitched bowl strike to mark the start of each round
+    playChime(523.25, 1.8); // C5 — bright and clear
   }
 
-  return { enable, disable, playChime, playSuccess, playTransition, isEnabled: () => enabled };
+  return { enable, disable, playChime, playSuccess, playInhaleStrike, isEnabled: () => enabled };
 })();
 
 // ═══════════════════════════════════════════
@@ -1767,8 +1768,8 @@ document.querySelectorAll('.feature-card').forEach(card => {
 
     updateVisuals(phase);
 
-    // Bowl sound only on Inhale (start of each cycle)
-    if (phase.name === 'Inhale') SoundEngine.playTransition();
+    // Sharp bowl strike on Inhale only — marks the start of each round
+    if (phase.name === 'Inhale') SoundEngine.playInhaleStrike();
 
     clearInterval(countdownTimer);
     countdownTimer = setInterval(() => {
@@ -1873,7 +1874,9 @@ document.querySelectorAll('.feature-card').forEach(card => {
 // ═══════════════════════════════════════════
 // UI MICRO-SOUNDS
 // ═══════════════════════════════════════════
-// No hover sounds — bowl is reserved for breathing cycle transitions
+document.querySelectorAll('.nav-cta, .btn-appstore, .demo-btn').forEach(el => {
+  el.addEventListener('mouseenter', () => SoundEngine.playChime(440, 1.2));
+});
 
 // ═══════════════════════════════════════════
 // SIGNUP FORM — with proper error handling
