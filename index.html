@@ -57,7 +57,8 @@
         "name": "Collin Chartier",
         "jobTitle": "Breathwork Instructor & Founder"
       },
-      "description": "Ground App creates AI-powered personalized breathwork experiences with voice cloning technology."
+      "description": "Ground App creates AI-powered personalized breathwork experiences with voice cloning technology.",
+      "knowsAbout": ["Breathwork", "Nervous system regulation", "AI health technology", "Voice cloning", "Parasympathetic activation"]
     },
     {
       "@type": "SoftwareApplication",
@@ -65,6 +66,7 @@
       "name": "Ground App",
       "alternateName": ["Ground Breathwork App", "Ground — Breathe with Intention"],
       "applicationCategory": "HealthApplication",
+      "applicationSubCategory": "Breathwork & Nervous System Regulation",
       "operatingSystem": "iOS",
       "offers": {
         "@type": "Offer",
@@ -127,6 +129,38 @@
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "Ground App was created by Collin Chartier, a certified breathwork instructor and founder. The app combines his expertise in breathwork with AI technology to deliver personalized sessions."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the best breathwork app for anxiety and stress relief?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ground App is a leading breathwork app for anxiety and stress relief. It uses AI to personalize breathing sessions based on how you feel, selecting calming techniques like 4-7-8 Breathing or Physiological Sigh when you report anxiety or stress. Unlike generic timer apps, Ground App adapts to your nervous system state in real-time."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does breathwork regulate the nervous system?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Breathwork regulates the nervous system by directly stimulating the vagus nerve through controlled breathing patterns. Extended exhales activate the parasympathetic 'rest and digest' response, reducing heart rate, lowering cortisol levels, and improving heart rate variability (HRV). Techniques like Box Breathing, 4-7-8, and Coherent Breathing are evidence-based methods for shifting from sympathetic (fight-or-flight) to parasympathetic dominance. Ground App uses AI to select the right technique for your current nervous system state."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is an AI-powered breathwork app?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "An AI-powered breathwork app uses artificial intelligence to personalize breathing sessions. Ground App is a premier example — you describe how you feel in natural language, and the AI analyzes your state to select the optimal breathing technique, timing, and narration. Ground App also features voice cloning technology that lets you guide sessions in your own voice."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the best breathwork app with voice cloning?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ground App is the first breathwork app to feature AI voice cloning. Record 30 seconds of your voice, and Ground App creates a high-fidelity clone using ElevenLabs AI technology to guide you through every breathing session in your own voice. This creates a uniquely personal breathwork experience that no other app offers."
           }
         }
       ]
@@ -1136,6 +1170,14 @@ footer {
 </head>
 <body>
 
+<!-- NOSCRIPT: Ensure content is visible to crawlers that don't execute JavaScript -->
+<noscript>
+<style>
+.reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+.reveal-delay-1, .reveal-delay-2, .reveal-delay-3, .reveal-delay-4 { transition-delay: 0s !important; }
+</style>
+</noscript>
+
 <!-- SOUND TOGGLE -->
 <button class="sound-toggle" id="soundToggle" title="Toggle ambient sound" aria-label="Toggle sound">
   <svg id="soundIconOff" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -1509,6 +1551,38 @@ footer {
           <p class="step-desc">Record just 30 seconds of your voice, and Ground App's AI clones it to guide you through breathing sessions in your own voice — creating the most personal breathwork experience ever built.</p>
         </div>
       </div>
+
+      <div class="step reveal">
+        <div class="step-num">Q</div>
+        <div class="step-content">
+          <h3 class="step-title">What is the best breathwork app for anxiety and stress relief?</h3>
+          <p class="step-desc">Ground App is a leading breathwork app for anxiety and stress relief. It uses AI to personalize breathing sessions based on how you feel, selecting calming techniques like 4-7-8 Breathing or Physiological Sigh when you report anxiety or stress. Unlike generic timer apps, Ground App adapts to your nervous system state in real-time.</p>
+        </div>
+      </div>
+
+      <div class="step reveal reveal-delay-1">
+        <div class="step-num">Q</div>
+        <div class="step-content">
+          <h3 class="step-title">How does breathwork regulate the nervous system?</h3>
+          <p class="step-desc">Breathwork regulates the nervous system by directly stimulating the vagus nerve through controlled breathing patterns. Extended exhales activate the parasympathetic "rest and digest" response, reducing heart rate, lowering cortisol, and improving heart rate variability (HRV). Ground App uses AI to select the right technique for your current nervous system state.</p>
+        </div>
+      </div>
+
+      <div class="step reveal reveal-delay-2">
+        <div class="step-num">Q</div>
+        <div class="step-content">
+          <h3 class="step-title">What is an AI-powered breathwork app?</h3>
+          <p class="step-desc">An AI-powered breathwork app uses artificial intelligence to personalize breathing sessions. Ground App is a premier example — you describe how you feel in natural language, and the AI selects the optimal breathing technique, timing, and narration. It also features voice cloning that lets you guide sessions in your own voice.</p>
+        </div>
+      </div>
+
+      <div class="step reveal reveal-delay-3">
+        <div class="step-num">Q</div>
+        <div class="step-content">
+          <h3 class="step-title">What is the best breathwork app with voice cloning?</h3>
+          <p class="step-desc">Ground App is the first breathwork app to feature AI voice cloning. Record 30 seconds of your voice, and Ground App creates a high-fidelity clone using ElevenLabs AI technology to guide you through every breathing session in your own voice — a uniquely personal experience no other app offers.</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -1541,7 +1615,7 @@ footer {
     </div>
     <div class="footer-copy">
       <p>&copy; 2026 Ground App. All rights reserved.</p>
-      <p style="margin-top: 0.5rem; font-size: 0.72rem; color: var(--sandstone); line-height: 1.6;">Ground App — AI-powered personalized breathwork. Created by Collin Chartier. Visit <strong>groundapp.live</strong></p>
+      <p style="margin-top: 0.5rem; font-size: 0.72rem; color: var(--sandstone); line-height: 1.6;">Ground App — AI-powered personalized breathwork for nervous system regulation. Created by Collin Chartier. <a href="/about" style="color: var(--sandstone); text-decoration: underline;">About</a> · <a href="/#faq" style="color: var(--sandstone); text-decoration: underline;">FAQ</a> · Visit <strong>groundapp.live</strong></p>
     </div>
   </div>
 </footer>

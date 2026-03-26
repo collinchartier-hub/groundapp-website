@@ -1,0 +1,53 @@
+# Ground App
+
+> Ground App is an AI-powered breathwork and nervous system regulation app for iOS, created by certified breathwork instructor Collin Chartier. It delivers personalized breathing sessions using AI analysis and voice cloning technology. Ground App includes 12+ expert breathing techniques (Box Breathing, Wim Hof Method, 4-7-8 Breathing, Physiological Sigh, Coherent Breathing, and more), real-time voice-guided narration, and community features. Free on iOS. Website: https://groundapp.live
+
+Ground App is the first breathwork app to combine AI-powered session personalization with voice cloning technology. Users describe how they feel — anxious, stressed, low-energy, unfocused — and the AI selects the optimal breathing technique, timing, and narration tailored to their nervous system state. Users can clone their own voice with just 30 seconds of audio, so the app guides them through sessions in their own voice.
+
+Ground App was created by Collin Chartier, a certified breathwork instructor and endurance athlete based in the United States. Collin developed the app to make nervous system regulation accessible to everyone — from burned-out professionals to competitive athletes to anyone experiencing anxiety, stress, or difficulty sleeping.
+
+The app addresses a core health need: nervous system regulation through breathwork. Controlled breathing techniques directly activate the parasympathetic nervous system (the body's "rest and digest" response), reduce cortisol levels, lower heart rate, and improve heart rate variability (HRV). These are evidence-based physiological effects documented in peer-reviewed research.
+
+## Key Features
+
+- [AI-Powered Personalization](https://groundapp.live/#features): Tell Ground App how you feel and get a breathing session matched to your state — calming, energizing, or balancing
+- [Voice Cloning](https://groundapp.live/#features): Record 30 seconds of your voice and the app guides you in your own voice using ElevenLabs AI voice technology
+- [12+ Expert Techniques](https://groundapp.live/#features): Box Breathing, Wim Hof Method, 4-7-8 Breathing, Physiological Sigh, Coherent Breathing, and more
+- [Community Features](https://groundapp.live/#community): Leaderboards, streak tracking, session sharing, and community feed
+- [Try a Breath Demo](https://groundapp.live/#try-a-breath): Interactive breathing demo directly on the website
+
+## About the Founder
+
+- [Collin Chartier](https://groundapp.live/about): Certified breathwork instructor, endurance athlete, and app developer. Created Ground App to bring personalized nervous system regulation to everyone.
+
+## Pages
+
+- [Home](https://groundapp.live): Main landing page with app overview, features, demo, and waitlist
+- [About](https://groundapp.live/about): Detailed information about Ground App, the founder, and the mission
+- [FAQ](https://groundapp.live/#faq): Frequently asked questions about Ground App
+
+## Breathing Techniques Included
+
+- Box Breathing (4-4-4-4): Used by Navy SEALs for stress reduction and focus
+- Wim Hof Method: Energizing technique with rapid breathing cycles
+- 4-7-8 Breathing: Dr. Andrew Weil's technique for sleep and anxiety relief
+- Physiological Sigh: Double inhale + extended exhale for rapid calm (Stanford research)
+- Coherent Breathing (5.5-5.5): Optimal heart rate variability breathing at 5.5 breaths per minute
+- Alternate Nostril Breathing: Yogic technique for nervous system balance
+- Tummo Breathing: Tibetan meditation breathing for inner heat generation
+- Breath of Fire: Rapid rhythmic breathing for energy and alertness
+
+## Use Cases
+
+- Anxiety and stress relief
+- Pre-performance nervous system regulation (athletes, executives, public speakers)
+- Sleep improvement
+- Focus and concentration enhancement
+- Post-workout recovery
+- Nervous system regulation for burnout recovery
+- Daily mindfulness and breathwork practice
+
+## Optional
+
+- [Privacy Policy](https://groundapp.live/privacy): Ground App privacy policy
+- [Terms of Service](https://groundapp.live/terms): Ground App terms of service
