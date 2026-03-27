@@ -1162,6 +1162,207 @@ footer {
   color: var(--sandstone);
 }
 
+/* ─── APP SHOWCASE (3-phone mockup) ─── */
+.showcase-section {
+  padding: 6rem 2rem 8rem;
+  background: linear-gradient(180deg, var(--obsidian) 0%, rgba(26, 17, 14, 0.95) 50%, var(--obsidian) 100%);
+  overflow: hidden;
+}
+.showcase-phones {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 3.5rem;
+  perspective: 1200px;
+  transform-style: preserve-3d;
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.phone-frame {
+  position: relative;
+  width: 260px;
+  border-radius: 36px;
+  background: #111;
+  padding: 12px;
+  box-shadow:
+    0 0 0 1px rgba(196, 147, 90, 0.12),
+    0 25px 60px rgba(0, 0, 0, 0.5),
+    0 0 80px rgba(196, 147, 90, 0.04);
+  will-change: transform;
+}
+.phone-frame img {
+  width: 100%;
+  border-radius: 26px;
+  display: block;
+}
+
+/* ── Entrance: phones start off-screen and rotated ── */
+.phone-frame.phone-enter {
+  opacity: 0;
+  filter: blur(3px);
+  transition: opacity 4s linear,
+              filter 4.5s linear,
+              transform 4s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+.phone-frame--left.phone-enter {
+  transform: rotateY(12deg) scale(0.92) translateY(14px);
+}
+.phone-frame--center.phone-enter {
+  transform: scale(1.05) translateY(4px);
+}
+.phone-frame--right.phone-enter {
+  transform: rotateY(-12deg) scale(0.92) translateY(14px);
+}
+.phone-frame.phone-settled {
+  filter: blur(0px);
+}
+
+/* ── Settled state with floating animation ── */
+.phone-frame--left.phone-settled {
+  opacity: 1;
+  transform: rotateY(12deg) scale(0.92);
+  z-index: 1;
+  --sway-from: 16deg;
+  --sway-to: 4deg;
+  animation: phoneSway 7s ease-in-out infinite;
+}
+.phone-frame--center.phone-settled {
+  opacity: 1;
+  transform: scale(1.05) translateY(-10px);
+  z-index: 3;
+  animation: phoneSwayCenter 7s ease-in-out infinite;
+  animation-delay: -2.3s;
+}
+.phone-frame--right.phone-settled {
+  opacity: 1;
+  transform: rotateY(-12deg) scale(0.92);
+  z-index: 1;
+  --sway-from: -16deg;
+  --sway-to: -4deg;
+  animation: phoneSway 7s ease-in-out infinite;
+  animation-delay: -4.6s;
+}
+
+/* ── Sway keyframes with dynamic glow ── */
+@keyframes phoneSway {
+  0%   { transform: rotateY(var(--sway-from)) scale(var(--phone-s, 0.92));
+         box-shadow: 0 0 0 1px rgba(196,147,90,0.08), 0 20px 50px rgba(0,0,0,0.4), 0 0 40px rgba(196,147,90,0.03); }
+  50%  { transform: rotateY(var(--sway-to))   scale(var(--phone-s, 0.92));
+         box-shadow: 0 0 0 1px rgba(196,147,90,0.2), 0 25px 60px rgba(0,0,0,0.5), 0 0 90px rgba(196,147,90,0.12); }
+  100% { transform: rotateY(var(--sway-from)) scale(var(--phone-s, 0.92));
+         box-shadow: 0 0 0 1px rgba(196,147,90,0.08), 0 20px 50px rgba(0,0,0,0.4), 0 0 40px rgba(196,147,90,0.03); }
+}
+@keyframes phoneSwayCenter {
+  0%   { transform: rotateY(-6deg) scale(1.05) translateY(-10px);
+         box-shadow: 0 0 0 1px rgba(196,147,90,0.15), 0 30px 70px rgba(0,0,0,0.5), 0 0 80px rgba(196,147,90,0.06); }
+  50%  { transform: rotateY(6deg)  scale(1.05) translateY(-10px);
+         box-shadow: 0 0 0 1px rgba(196,147,90,0.3), 0 35px 80px rgba(0,0,0,0.6), 0 0 140px rgba(196,147,90,0.18); }
+  100% { transform: rotateY(-6deg) scale(1.05) translateY(-10px);
+         box-shadow: 0 0 0 1px rgba(196,147,90,0.15), 0 30px 70px rgba(0,0,0,0.5), 0 0 80px rgba(196,147,90,0.06); }
+}
+
+/* ── Center phone glow pulse ── */
+.phone-frame--center.phone-settled::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 38px;
+  background: radial-gradient(ellipse at 50% 100%, rgba(196, 147, 90, 0.15) 0%, transparent 60%);
+  pointer-events: none;
+  animation: glowPulse 4s ease-in-out infinite;
+  z-index: -1;
+}
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.4; }
+  50%      { opacity: 1; }
+}
+
+.phone-label {
+  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--driftwood);
+  text-align: center;
+  margin-top: 1rem;
+  opacity: 0;
+  transition: opacity 2s 2s linear;
+}
+.phone-settled .phone-label { opacity: 0.7; }
+
+/* ── Reduce motion: skip animations ── */
+@media (prefers-reduced-motion: reduce) {
+  .phone-frame { animation: none !important; }
+  .phone-frame::after { animation: none !important; }
+  .phone-frame.phone-enter {
+    opacity: 1;
+    transition: none;
+  }
+  .phone-frame--left.phone-enter  { transform: rotateY(12deg) scale(0.92); }
+  .phone-frame--center.phone-enter { transform: scale(1.05) translateY(-10px); }
+  .phone-frame--right.phone-enter  { transform: rotateY(-12deg) scale(0.92); }
+}
+
+@media (max-width: 900px) {
+  .showcase-phones { gap: 1rem; }
+  .phone-frame { width: 180px; border-radius: 28px; padding: 8px; }
+  .phone-frame img { border-radius: 20px; }
+  .phone-frame--center.phone-settled { transform: scale(1.02) translateY(-6px); }
+  .phone-frame--left.phone-settled { transform: rotateY(8deg) scale(0.9); --sway-from: 12deg; --sway-to: 3deg; }
+  .phone-frame--right.phone-settled { transform: rotateY(-8deg) scale(0.9); --sway-from: -12deg; --sway-to: -3deg; }
+  .phone-frame--center.phone-settled::after { border-radius: 30px; }
+  /* Entrance: less movement on tablet */
+  .phone-frame--left.phone-enter { transform: rotateY(8deg) scale(0.9) translateY(12px); }
+  .phone-frame--center.phone-enter { transform: scale(1.02) translateY(4px); }
+  .phone-frame--right.phone-enter { transform: rotateY(-8deg) scale(0.9) translateY(12px); }
+  @keyframes phoneSwayCenter {
+    0%   { transform: rotateY(-5deg) scale(1.02) translateY(-6px);
+           box-shadow: 0 0 0 1px rgba(196,147,90,0.12), 0 20px 50px rgba(0,0,0,0.4), 0 0 50px rgba(196,147,90,0.05); }
+    50%  { transform: rotateY(5deg)  scale(1.02) translateY(-6px);
+           box-shadow: 0 0 0 1px rgba(196,147,90,0.25), 0 25px 60px rgba(0,0,0,0.5), 0 0 100px rgba(196,147,90,0.14); }
+    100% { transform: rotateY(-5deg) scale(1.02) translateY(-6px);
+           box-shadow: 0 0 0 1px rgba(196,147,90,0.12), 0 20px 50px rgba(0,0,0,0.4), 0 0 50px rgba(196,147,90,0.05); }
+  }
+}
+@media (max-width: 600px) {
+  .showcase-section { padding: 4rem 1rem 4rem; }
+  .showcase-phones { gap: 0.4rem; perspective: 800px; }
+  .phone-frame { width: 110px; border-radius: 18px; padding: 4px; }
+  .phone-frame img { border-radius: 14px; }
+  .phone-frame--center.phone-settled { transform: scale(1.02) translateY(-4px); }
+  .phone-frame--left.phone-settled { transform: rotateY(6deg) scale(0.88); --sway-from: 10deg; --sway-to: 2deg; }
+  .phone-frame--right.phone-settled { transform: rotateY(-6deg) scale(0.88); --sway-from: -10deg; --sway-to: -2deg; }
+  .phone-frame--center.phone-settled::after { border-radius: 20px; inset: -1px; }
+  .phone-label { font-size: 0.58rem; margin-top: 0.4rem; letter-spacing: 0.08em; }
+  /* Entrance: minimal movement on mobile */
+  .phone-frame--left.phone-enter { transform: rotateY(6deg) scale(0.88) translateY(10px); }
+  .phone-frame--center.phone-enter { transform: scale(1.02) translateY(4px); }
+  .phone-frame--right.phone-enter { transform: rotateY(-6deg) scale(0.88) translateY(10px); }
+  /* Tighter glow on small screens */
+  @keyframes phoneSway {
+    0%   { transform: rotateY(var(--sway-from)) scale(var(--phone-s, 0.88));
+           box-shadow: 0 0 0 1px rgba(196,147,90,0.06), 0 10px 30px rgba(0,0,0,0.3), 0 0 20px rgba(196,147,90,0.02); }
+    50%  { transform: rotateY(var(--sway-to))   scale(var(--phone-s, 0.88));
+           box-shadow: 0 0 0 1px rgba(196,147,90,0.15), 0 15px 40px rgba(0,0,0,0.4), 0 0 50px rgba(196,147,90,0.08); }
+    100% { transform: rotateY(var(--sway-from)) scale(var(--phone-s, 0.88));
+           box-shadow: 0 0 0 1px rgba(196,147,90,0.06), 0 10px 30px rgba(0,0,0,0.3), 0 0 20px rgba(196,147,90,0.02); }
+  }
+  @keyframes phoneSwayCenter {
+    0%   { transform: rotateY(-4deg) scale(1.02) translateY(-4px);
+           box-shadow: 0 0 0 1px rgba(196,147,90,0.1), 0 15px 40px rgba(0,0,0,0.4), 0 0 40px rgba(196,147,90,0.04); }
+    50%  { transform: rotateY(4deg)  scale(1.02) translateY(-4px);
+           box-shadow: 0 0 0 1px rgba(196,147,90,0.22), 0 20px 50px rgba(0,0,0,0.5), 0 0 80px rgba(196,147,90,0.12); }
+    100% { transform: rotateY(-4deg) scale(1.02) translateY(-4px);
+           box-shadow: 0 0 0 1px rgba(196,147,90,0.1), 0 15px 40px rgba(0,0,0,0.4), 0 0 40px rgba(196,147,90,0.04); }
+  }
+}
+/* Very small screens (iPhone SE, etc.) */
+@media (max-width: 380px) {
+  .phone-frame { width: 95px; border-radius: 14px; padding: 3px; }
+  .phone-frame img { border-radius: 11px; }
+  .showcase-phones { gap: 0.3rem; }
+}
+
 /* ─── MOBILE ─── */
 /* ─── HAMBURGER MENU ─── */
 .nav-hamburger {
@@ -1299,6 +1500,7 @@ footer {
   </a>
   <ul class="nav-links" id="navLinks">
     <li><a href="#features">Features</a></li>
+    <li><a href="#app-preview">App</a></li>
     <li><a href="#how-it-works">How It Works</a></li>
     <li><a href="#try-a-breath">Try a Breath</a></li>
     <li><a href="#community">Community</a></li>
@@ -1383,6 +1585,30 @@ footer {
         </svg>
         <h3 class="feature-title">12+ Expert Techniques</h3>
         <p class="feature-text">From Box Breathing to Wim Hof, each protocol is designed by certified practitioners with precise phase timing and voice-guided narration.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APP SHOWCASE -->
+<section class="showcase-section" id="app-preview">
+  <div class="section-inner">
+    <div class="section-label reveal">See It in Action</div>
+    <h2 class="section-heading reveal reveal-delay-1">Designed to feel like <em>home</em></h2>
+    <p class="section-desc reveal reveal-delay-2">From your first breath to your hundredth session. Every screen is crafted to keep you present, not distracted.</p>
+
+    <div class="showcase-phones" id="showcasePhones">
+      <div class="phone-frame phone-frame--left phone-enter" style="--phone-ry:12deg;--phone-s:0.92;">
+        <img src="screenshot-home.jpg" alt="Ground App home screen showing personalized greeting, daily intention, and breathing animation" loading="lazy">
+        <div class="phone-label">Home</div>
+      </div>
+      <div class="phone-frame phone-frame--center phone-enter">
+        <img src="screenshot-session.jpg" alt="Ground App active breathwork session showing inhale phase, lung animation, and cycle timer" loading="lazy">
+        <div class="phone-label">Session</div>
+      </div>
+      <div class="phone-frame phone-frame--right phone-enter" style="--phone-ry:-12deg;--phone-s:0.92;">
+        <img src="screenshot-checkin.jpg" alt="Ground App emotion check-in wheel for personalized breathwork recommendations" loading="lazy">
+        <div class="phone-label">Check-in</div>
       </div>
     </div>
   </div>
@@ -2310,6 +2536,50 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
       document.body.style.overflow = '';
     });
   });
+})();
+
+// ═══════════════════════════════════════════
+// PHONE SHOWCASE ANIMATIONS
+// ═══════════════════════════════════════════
+(function() {
+  const container = document.getElementById('showcasePhones');
+  if (!container) return;
+  const phones = container.querySelectorAll('.phone-frame');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // 1) Scroll-triggered staggered entrance
+  let hasEntered = false;
+  const phoneObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting && !hasEntered) {
+        hasEntered = true;
+        phones.forEach((phone, i) => {
+          setTimeout(() => {
+            phone.classList.remove('phone-enter');
+            phone.classList.add('phone-settled');
+          }, reducedMotion ? 0 : i * 800);
+        });
+        phoneObserver.disconnect();
+      }
+    });
+  }, { threshold: 0.2 });
+  phoneObserver.observe(container);
+
+  // 2) Mouse parallax tilt (desktop only, respects reduced motion)
+  if (!reducedMotion && window.matchMedia('(pointer: fine)').matches) {
+    const section = container.closest('.showcase-section');
+    section.addEventListener('mousemove', (e) => {
+      const rect = section.getBoundingClientRect();
+      const cx = (e.clientX - rect.left) / rect.width - 0.5;   // -0.5 to 0.5
+      const cy = (e.clientY - rect.top) / rect.height - 0.5;
+      // Subtle tilt: max ~4deg horizontal, ~3deg vertical
+      container.style.transform =
+        `rotateY(${cx * 8}deg) rotateX(${cy * -4}deg)`;
+    });
+    section.addEventListener('mouseleave', () => {
+      container.style.transform = '';
+    });
+  }
 })();
 </script>
 
