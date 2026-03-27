@@ -245,6 +245,28 @@ body::after {
 .reveal-delay-3 { transition-delay: 0.36s; }
 .reveal-delay-4 { transition-delay: 0.48s; }
 
+/* ─── CSS fallback: auto-reveal if JS fails ─── */
+@keyframes revealFallback {
+  to { opacity: 1; transform: translateY(0); }
+}
+.reveal {
+  animation: revealFallback 0.8s ease 2.5s forwards;
+}
+.reveal-delay-1 { animation-delay: 2.62s; }
+.reveal-delay-2 { animation-delay: 2.74s; }
+.reveal-delay-3 { animation-delay: 2.86s; }
+.reveal-delay-4 { animation-delay: 2.98s; }
+/* JS adds this class to disable fallback animation */
+.js-loaded .reveal {
+  animation: none;
+}
+.js-loaded .reveal-delay-1,
+.js-loaded .reveal-delay-2,
+.js-loaded .reveal-delay-3,
+.js-loaded .reveal-delay-4 {
+  animation: none;
+}
+
 /* ─── NAV ─── */
 nav {
   position: fixed;
@@ -1141,10 +1163,71 @@ footer {
 }
 
 /* ─── MOBILE ─── */
+/* ─── HAMBURGER MENU ─── */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  z-index: 102;
+}
+.nav-hamburger span {
+  display: block;
+  width: 100%;
+  height: 1.5px;
+  background: var(--driftwood);
+  border-radius: 1px;
+  transition: transform 0.3s, opacity 0.3s;
+}
+.nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
 @media (max-width: 900px) {
   .features-grid { grid-template-columns: 1fr; gap: 0; }
   .community-grid { grid-template-columns: repeat(2, 1fr); }
-  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+  .nav-links {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(26, 17, 14, 0.97);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
+    z-index: 101;
+  }
+  .nav-links.open {
+    display: flex;
+  }
+  .nav-links a {
+    font-size: 1.2rem;
+    color: var(--bone);
+  }
+  .nav-cta { display: none; }
+  .nav-links-cta { display: none; }
+  .nav-links.open .nav-links-cta { display: block; }
+  .nav-links-cta a {
+    padding: 0.7rem 2rem;
+    border: 1px solid var(--gold);
+    border-radius: 100px;
+    color: var(--gold) !important;
+    font-size: 0.9rem !important;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
   .steps-progress-track,
   .steps-progress-fill { left: 10px; }
 }
@@ -1214,14 +1297,20 @@ footer {
       <span class="nav-logo-byline">By Collin Chartier</span>
     </div>
   </a>
-  <ul class="nav-links">
+  <ul class="nav-links" id="navLinks">
     <li><a href="#features">Features</a></li>
     <li><a href="#how-it-works">How It Works</a></li>
     <li><a href="#try-a-breath">Try a Breath</a></li>
     <li><a href="#community">Community</a></li>
     <li><a href="#faq">FAQ</a></li>
+    <li class="nav-links-cta"><a href="#download">Join Waitlist</a></li>
   </ul>
   <a href="#download" class="nav-cta">Join Waitlist</a>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Toggle menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
 </nav>
 
 <!-- HERO -->
@@ -1638,6 +1727,9 @@ footer {
 </footer>
 
 <script>
+// Mark JS as loaded immediately — disables CSS fallback animations
+document.documentElement.classList.add('js-loaded');
+
 // ═══════════════════════════════════════════
 // WEB AUDIO API — Sound System
 // ═══════════════════════════════════════════
@@ -1753,7 +1845,7 @@ const SoundEngine = (() => {
 // ═══════════════════════════════════════════
 // HERO BREATHING RING — Synced to real cycle
 // ═══════════════════════════════════════════
-(function() {
+try { (function() {
   const rings = document.querySelectorAll('.breath-container .breath-ring');
   const core = document.querySelector('.breath-core');
   const label = document.getElementById('heroPhaseLabel');
@@ -1805,12 +1897,12 @@ const SoundEngine = (() => {
     clearTimeout(heroTimeout);
     if (!document.hidden) cycle();
   });
-})();
+})(); } catch(e) { console.warn('Hero ring error:', e); }
 
 // ═══════════════════════════════════════════
 // PARTICLES
 // ═══════════════════════════════════════════
-(function() {
+try { (function() {
   const canvas = document.getElementById('particles');
   const ctx = canvas.getContext('2d');
   let particles = [];
@@ -1857,7 +1949,7 @@ const SoundEngine = (() => {
     requestAnimationFrame(animate);
   }
   animate();
-})();
+})(); } catch(e) { console.warn('Particles error:', e); }
 
 // ═══════════════════════════════════════════
 // SCROLL REVEALS
@@ -1894,7 +1986,7 @@ document.querySelectorAll('.feature-card').forEach(card => {
 // ═══════════════════════════════════════════
 // STEPS PROGRESS LINE (scroll-driven)
 // ═══════════════════════════════════════════
-(function() {
+try { (function() {
   const stepsList = document.getElementById('stepsList');
   const fill = document.getElementById('stepsProgressFill');
   if (!stepsList || !fill) return;
@@ -1915,12 +2007,12 @@ document.querySelectorAll('.feature-card').forEach(card => {
 
   window.addEventListener('scroll', updateProgress, { passive: true });
   updateProgress();
-})();
+})(); } catch(e) { console.warn('Steps progress error:', e); }
 
 // ═══════════════════════════════════════════
 // QUOTE SECTION — Scroll-driven blur-to-sharp
 // ═══════════════════════════════════════════
-(function() {
+try { (function() {
   const quoteSection = document.getElementById('quoteSection');
   const quoteInner = document.getElementById('quoteInner');
   if (!quoteSection || !quoteInner) return;
@@ -1944,12 +2036,12 @@ document.querySelectorAll('.feature-card').forEach(card => {
 
   window.addEventListener('scroll', updateBlur, { passive: true });
   updateBlur();
-})();
+})(); } catch(e) { console.warn('Quote blur error:', e); }
 
 // ═══════════════════════════════════════════
 // TRY A BREATH — Interactive Demo
 // ═══════════════════════════════════════════
-(function() {
+try { (function() {
   const techniques = {
     box: { name: 'Box Breathing', phases: [
       { name: 'Inhale', duration: 4 },
@@ -2081,12 +2173,12 @@ document.querySelectorAll('.feature-card').forEach(card => {
       if (running) { stop(); start(); }
     });
   });
-})();
+})(); } catch(e) { console.warn('Demo error:', e); }
 
 // ═══════════════════════════════════════════
 // SOUND TOGGLE
 // ═══════════════════════════════════════════
-(function() {
+try { (function() {
   const toggle = document.getElementById('soundToggle');
   const iconOn = document.getElementById('soundIconOn');
   const iconOff = document.getElementById('soundIconOff');
@@ -2121,7 +2213,7 @@ document.querySelectorAll('.feature-card').forEach(card => {
       iconOff.style.display = 'none';
     }
   });
-})();
+})(); } catch(e) { console.warn('Sound toggle error:', e); }
 
 // ═══════════════════════════════════════════
 // UI MICRO-SOUNDS
@@ -2131,7 +2223,7 @@ document.querySelectorAll('.feature-card').forEach(card => {
 // ═══════════════════════════════════════════
 // SIGNUP FORM — with proper error handling
 // ═══════════════════════════════════════════
-document.getElementById('signupForm').addEventListener('submit', function(e) {
+try { document.getElementById('signupForm').addEventListener('submit', function(e) {
   e.preventDefault();
   const form = this;
   const btn = form.querySelector('button');
@@ -2182,18 +2274,43 @@ document.getElementById('signupForm').addEventListener('submit', function(e) {
     }
     errorEl.style.display = 'block';
   });
-});
+}); } catch(e) { console.warn('Signup form error:', e); }
 
 // ═══════════════════════════════════════════
 // SMOOTH SCROLL
 // ═══════════════════════════════════════════
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
+    const href = a.getAttribute('href');
+    if (!href || href === '#') return;
     e.preventDefault();
-    const target = document.querySelector(a.getAttribute('href'));
+    const target = document.querySelector(href);
     if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 });
+
+// ═══════════════════════════════════════════
+// HAMBURGER MENU
+// ═══════════════════════════════════════════
+(function() {
+  const hamburger = document.getElementById('navHamburger');
+  const navLinks = document.getElementById('navLinks');
+  if (!hamburger || !navLinks) return;
+
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    navLinks.classList.toggle('open');
+    document.body.style.overflow = navLinks.classList.contains('open') ? 'hidden' : '';
+  });
+
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      navLinks.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+})();
 </script>
 
 </body>
