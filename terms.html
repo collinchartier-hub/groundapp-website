@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terms of Service — Ground App</title>
+<meta name="description" content="Ground App Terms of Service. Read the terms and conditions for using Ground App, including medical disclaimers, subscription terms, and liability information.">
+<meta name="robots" content="index, follow">
+
+<!-- Open Graph -->
+<meta property="og:title" content="Terms of Service — Ground App">
+<meta property="og:description" content="Terms and conditions for using Ground App, the AI-powered breathwork application.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://groundapp.live/terms">
+<meta property="og:image" content="https://groundapp.live/og-image.png">
+<meta property="og:site_name" content="Ground App">
+
+<link rel="canonical" href="https://groundapp.live/terms">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='none' stroke='%23C4935A' stroke-width='3'/><circle cx='50' cy='50' r='25' fill='none' stroke='%23D4A574' stroke-width='2'/><circle cx='50' cy='50' r='10' fill='%23C4935A'/></svg>">
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --gold: #C4935A;
+  --terracotta: #8B5E3C;
+  --amber: #D4A574;
+  --obsidian: #1A110E;
+  --obsidian-mid: #231916;
+  --obsidian-light: #2D201A;
+  --bone: #E8DDD0;
+  --driftwood: #A89585;
+  --sandstone: #6B5B4E;
+  --sage: #7A8B6F;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--obsidian);
+  color: var(--bone);
+  font-family: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+body { background: var(--obsidian); min-height: 100vh; }
+
+.sans { font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif; }
+
+/* Nav */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 1.5rem 2.5rem;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(26, 17, 14, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(196, 147, 90, 0.08);
+}
+.nav-logo { display: flex; align-items: center; gap: 0.65rem; text-decoration: none; color: var(--bone); }
+.nav-logo-icon { width: 32px; height: 32px; }
+.nav-logo-text span:first-child { font-size: 1.2rem; font-weight: 600; letter-spacing: 0.04em; }
+.nav-logo-byline { font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif; font-size: 0.68rem; color: var(--driftwood); letter-spacing: 0.06em; margin-top: 1px; opacity: 0.8; }
+.nav-cta {
+  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+  font-size: 0.82rem; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 0.6rem 1.6rem; border: 1px solid var(--gold); color: var(--gold);
+  text-decoration: none; border-radius: 100px; transition: background 0.3s, color 0.3s;
+}
+.nav-cta:hover { background: var(--gold); color: var(--obsidian); }
+
+/* Page Content */
+.page-hero {
+  padding: 10rem 2rem 3rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.page-hero h1 {
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 0.75rem;
+}
+.page-hero h1 em { font-style: italic; color: var(--gold); }
+.page-hero .meta {
+  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+  font-size: 0.85rem;
+  color: var(--driftwood);
+}
+
+.page-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 2rem 6rem;
+}
+.page-content h2 {
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin: 2.5rem 0 0.75rem;
+  color: var(--bone);
+  border-bottom: 1px solid rgba(196, 147, 90, 0.15);
+  padding-bottom: 0.5rem;
+}
+.page-content h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 1.5rem 0 0.5rem;
+  color: var(--amber);
+}
+.page-content p {
+  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: var(--driftwood);
+  margin-bottom: 1rem;
+}
+.page-content ul, .page-content ol {
+  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: var(--driftwood);
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+.page-content li { margin-bottom: 0.35rem; }
+.page-content strong { color: var(--bone); font-weight: 600; }
+.page-content a { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; }
+.page-content a:hover { color: var(--amber); }
+
+.warning-box {
+  background: rgba(196, 147, 90, 0.08);
+  border: 1px solid rgba(196, 147, 90, 0.2);
+  padding: 1.25rem 1.5rem;
+  margin: 1rem 0 1.5rem;
+  border-radius: 8px;
+}
+.warning-box p { margin-bottom: 0.5rem; }
+.warning-box p:last-child { margin-bottom: 0; }
+.warning-box .warning-title {
+  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+
+.caps-text {
+  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+  font-size: 0.88rem;
+  line-height: 1.75;
+  color: var(--driftwood);
+  margin-bottom: 1rem;
+}
+
+/* Footer */
+footer {
+  border-top: 1px solid rgba(196, 147, 90, 0.08);
+  padding: 2rem 2.5rem;
+}
+.footer-inner { max-width: 800px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+.footer-brand { display: flex; align-items: center; gap: 0.5rem; color: var(--sandstone); font-size: 0.85rem; }
+.footer-brand svg { width: 20px; height: 20px; }
+.footer-copy { font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif; font-size: 0.78rem; color: var(--sandstone); text-align: right; }
+.footer-links { margin-top: 0.5rem; }
+.footer-links a { color: var(--sandstone); text-decoration: none; margin-left: 1rem; font-size: 0.75rem; }
+.footer-links a:hover { color: var(--gold); }
+
+@media (max-width: 600px) {
+  nav { padding: 1rem 1.25rem; }
+  .page-hero { padding: 8rem 1.25rem 2rem; }
+  .page-content { padding: 0 1.25rem 4rem; }
+  .footer-inner { flex-direction: column; gap: 1rem; }
+  .footer-copy { text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="/">
+    <svg class="nav-logo-icon" viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="38" stroke="#C4935A" stroke-width="2.5"/><circle cx="50" cy="50" r="22" stroke="#D4A574" stroke-width="1.5"/><circle cx="50" cy="50" r="8" fill="#C4935A"/></svg>
+    <div class="nav-logo-text">
+      <span>Ground</span>
+      <div class="nav-logo-byline">BREATHE WITH INTENTION</div>
+    </div>
+  </a>
+  <a class="nav-cta" href="/">Back to Home</a>
+</nav>
+
+<!-- HERO -->
+<div class="page-hero">
+  <h1>Terms of <em>Service</em></h1>
+  <p class="meta sans">Ground App &middot; Effective Date: April 2, 2026 &middot; Last Updated: April 2, 2026</p>
+</div>
+
+<!-- CONTENT -->
+<div class="page-content">
+
+  <h2>1. Acceptance of Terms</h2>
+  <p>By downloading, installing, or using the Ground App ("App," "Service," "we," "our," or "us"), you ("User," "you," or "your") agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, do not use the App.</p>
+  <p>We reserve the right to modify these Terms at any time. Material changes will be communicated through the App or via email. Your continued use of the App following any changes constitutes acceptance of the revised Terms.</p>
+
+  <h2>2. Description of Service</h2>
+  <p>Ground App is a mobile wellness application that provides:</p>
+  <ul>
+    <li>Guided breathing exercises and techniques</li>
+    <li>Personalized session recommendations based on user preferences and biometric data</li>
+    <li>Integration with wearable devices (Apple Watch, Oura Ring, Garmin) and Apple Health</li>
+    <li>Nervous system state assessment and adaptive wellness suggestions</li>
+    <li>Voice-guided sessions with text-to-speech and optional voice cloning</li>
+    <li>Session tracking, progress history, and community features</li>
+  </ul>
+
+  <h2>3. Medical Disclaimer</h2>
+
+  <div class="warning-box">
+    <p class="warning-title">This is the most important section of these terms. Please read it carefully.</p>
+  </div>
+
+  <h3>3.1 Not Medical Advice</h3>
+  <p>The App is a <strong>wellness tool</strong>, not a medical device. The App does <strong>not</strong> provide medical advice, diagnosis, or treatment. All content, features, recommendations, and biometric assessments provided through the App are for <strong>informational and educational purposes only</strong>.</p>
+  <p>The nervous system state assessments, biometric interpretations, and breathwork recommendations generated by the App, whether derived from artificial intelligence, wearable device data, or algorithmic analysis, are <strong>not</strong> clinical evaluations and should <strong>not</strong> be used as a substitute for professional medical judgment.</p>
+
+  <h3>3.2 Not a Medical Device</h3>
+  <p>The App is <strong>not</strong> a medical device as defined by the U.S. Food and Drug Administration (FDA) or any equivalent regulatory body. The App is not intended to diagnose, treat, cure, or prevent any disease or medical condition. Biometric data displayed within the App (including but not limited to heart rate variability, heart rate, respiratory rate, sleep analysis, stress scores, and readiness scores) is presented for general wellness purposes only and has not been validated for clinical use.</p>
+
+  <h3>3.3 Consult Your Healthcare Provider</h3>
+  <p>You should consult a qualified healthcare professional before:</p>
+  <ul>
+    <li>Beginning any breathwork practice, especially if you have a pre-existing medical condition</li>
+    <li>Making any health decisions based on information provided by the App</li>
+    <li>Using the App if you are pregnant, have cardiovascular disease, epilepsy, seizure disorders, respiratory conditions, or any condition listed in the App's Health & Safety disclaimer</li>
+    <li>Relying on any biometric data or nervous system assessment for health-related decisions</li>
+  </ul>
+
+  <div class="warning-box">
+    <p><strong>If you are experiencing a medical emergency, call your local emergency number immediately. Do not rely on the App for emergency medical guidance.</strong></p>
+  </div>
+
+  <h3>3.4 Assumption of Risk</h3>
+  <p>Breathwork practices involve intentional modification of breathing patterns, which may cause dizziness, lightheadedness, tingling, emotional release, or other physical and psychological responses. By using the App, you acknowledge that you understand these risks and voluntarily assume all risks associated with your use of the App and participation in breathwork exercises.</p>
+  <p>You agree that:</p>
+  <ul>
+    <li>You are in adequate physical and mental health to participate in breathwork exercises</li>
+    <li>You will discontinue any exercise immediately if you experience pain, discomfort, or adverse symptoms</li>
+    <li>You are solely responsible for determining whether any particular technique is appropriate for you</li>
+    <li>The App's recommendations are suggestions, not prescriptions</li>
+  </ul>
+
+  <h2>4. Eligibility</h2>
+  <p>You must be at least 13 years of age to use the App. If you are under 18, you represent that you have your parent's or legal guardian's consent to use the App. We do not knowingly collect personal information from children under 13.</p>
+
+  <h2>5. User Accounts</h2>
+
+  <h3>5.1 Account Creation</h3>
+  <p>Certain features of the App require account creation. You agree to:</p>
+  <ul>
+    <li>Provide accurate, current, and complete information</li>
+    <li>Maintain the security of your account credentials</li>
+    <li>Notify us promptly of any unauthorized access</li>
+    <li>Accept responsibility for all activity under your account</li>
+  </ul>
+
+  <h3>5.2 Account Termination</h3>
+  <p>You may delete your account at any time through the App's Settings. We may suspend or terminate your account if you violate these Terms or engage in conduct that we determine is harmful to other users or the Service.</p>
+
+  <h2>6. Wearable Device Integrations</h2>
+
+  <h3>6.1 Third-Party Services</h3>
+  <p>The App integrates with third-party hardware and platforms including Apple Health (HealthKit), Oura Ring (Oura Cloud API), and Garmin (Garmin Health API). These integrations are subject to the respective terms of service and privacy policies of each third party:</p>
+  <ul>
+    <li><a href="https://www.apple.com/legal/sla/" target="_blank" rel="noopener">Apple HealthKit Terms</a></li>
+    <li><a href="https://ouraring.com/terms-of-service" target="_blank" rel="noopener">Oura Terms of Service</a></li>
+    <li><a href="https://www.garmin.com/en-US/legal/tos/" target="_blank" rel="noopener">Garmin Terms of Use</a></li>
+  </ul>
+
+  <h3>6.2 Data Accuracy</h3>
+  <p>Biometric data obtained from wearable devices and health platforms is provided by third-party hardware and software. We do <strong>not</strong> guarantee the accuracy, completeness, or reliability of any biometric data, health metrics, or derived assessments. Wearable device measurements may be affected by sensor placement, device condition, user activity, environmental factors, and other variables beyond our control.</p>
+
+  <h3>6.3 Connection and Disconnection</h3>
+  <p>You may connect and disconnect wearable devices at any time through the App's Settings. Disconnecting a device will:</p>
+  <ul>
+    <li>Stop the App from accessing new data from that device</li>
+    <li>Revoke stored authentication tokens</li>
+    <li>Delete locally cached data from that device</li>
+  </ul>
+  <p>Historical session data that incorporated biometric context will be retained unless you explicitly delete your session history.</p>
+
+  <h2>7. Artificial Intelligence Features</h2>
+
+  <h3>7.1 AI-Generated Content</h3>
+  <p>The App uses artificial intelligence (Anthropic's Claude) to generate personalized breathwork recommendations, session scripts, and wellness insights. You acknowledge that:</p>
+  <ul>
+    <li>AI-generated content is produced algorithmically and may contain inaccuracies</li>
+    <li>AI recommendations are not a substitute for professional guidance</li>
+    <li>AI outputs may vary and are not guaranteed to be consistent or reproducible</li>
+    <li>We do not guarantee any specific health outcome from following AI-generated recommendations</li>
+  </ul>
+
+  <h3>7.2 Voice Cloning</h3>
+  <p>The App offers optional voice cloning powered by ElevenLabs. By using this feature, you:</p>
+  <ul>
+    <li>Consent to the recording and processing of your voice</li>
+    <li>Confirm that the voice you are cloning is your own or that you have explicit permission from the voice's owner</li>
+    <li>Acknowledge that the cloned voice is used solely within the App for session narration</li>
+    <li>May delete your voice clone at any time, which removes the voice profile from our systems</li>
+  </ul>
+
+  <h2>8. Acceptable Use</h2>
+  <p>You agree not to:</p>
+  <ul>
+    <li>Use the App for any unlawful purpose</li>
+    <li>Attempt to reverse engineer, decompile, or disassemble the App</li>
+    <li>Interfere with or disrupt the App's infrastructure or other users' experience</li>
+    <li>Use the App to collect data about other users without their consent</li>
+    <li>Share, redistribute, or commercially exploit the App's content without authorization</li>
+    <li>Misrepresent your identity or impersonate another person</li>
+    <li>Use voice cloning features to clone voices without the owner's consent</li>
+    <li>Post harmful, abusive, or inappropriate content in community features</li>
+    <li>Attempt to gain unauthorized access to other users' accounts or data</li>
+  </ul>
+
+  <h2>9. Intellectual Property</h2>
+
+  <h3>9.1 Our Property</h3>
+  <p>The App, including its design, code, algorithms, content, breathing techniques library, graphics, and trademarks, is owned by Ground App and protected by applicable intellectual property laws. These Terms do not grant you any rights to our intellectual property except the limited right to use the App as described herein.</p>
+
+  <h3>9.2 Your Content</h3>
+  <p>You retain ownership of content you create within the App, including session notes, voice recordings, and community posts. By posting content to community features, you grant us a non-exclusive, royalty-free license to display that content within the App to other users.</p>
+
+  <h2>10. Subscription and Payments</h2>
+
+  <h3>10.1 Pricing</h3>
+  <p>Certain features of the App may require a paid subscription. Subscription pricing, features, and terms will be clearly presented before purchase.</p>
+
+  <h3>10.2 Billing</h3>
+  <p>Subscriptions are billed through Apple's App Store. All billing, renewals, and cancellations are governed by Apple's terms. We do not directly process payments or store payment information.</p>
+
+  <h3>10.3 Refunds</h3>
+  <p>Refund requests are handled by Apple in accordance with their refund policies. Contact Apple Support for refund inquiries.</p>
+
+  <h2>11. Limitation of Liability</h2>
+
+  <p class="caps-text"><strong>TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW:</strong></p>
+
+  <p>The App is provided on an "AS IS" and "AS AVAILABLE" basis without warranties of any kind, whether express, implied, or statutory, including but not limited to implied warranties of merchantability, fitness for a particular purpose, and non-infringement.</p>
+
+  <p>We do not warrant that:</p>
+  <ul>
+    <li>The App will meet your specific requirements or expectations</li>
+    <li>The App will be uninterrupted, timely, secure, or error-free</li>
+    <li>Biometric data, health assessments, or recommendations will be accurate or reliable</li>
+    <li>Any specific health, wellness, or therapeutic outcome will result from using the App</li>
+    <li>The App will be compatible with all devices, operating systems, or wearable hardware</li>
+  </ul>
+
+  <p class="caps-text"><strong>IN NO EVENT SHALL GROUND APP, ITS OFFICERS, DIRECTORS, EMPLOYEES, AGENTS, OR AFFILIATES BE LIABLE FOR:</strong></p>
+  <ul>
+    <li>Any indirect, incidental, special, consequential, or punitive damages</li>
+    <li>Any loss of profits, data, use, goodwill, or other intangible losses</li>
+    <li>Any damages arising from your use of or inability to use the App</li>
+    <li>Any damages arising from biometric data inaccuracies or misinterpretation</li>
+    <li>Any personal injury or health consequences resulting from breathwork practices performed using the App</li>
+    <li>Any unauthorized access to or alteration of your data</li>
+  </ul>
+
+  <p class="caps-text"><strong>OUR TOTAL AGGREGATE LIABILITY FOR ALL CLAIMS ARISING FROM OR RELATING TO THE APP SHALL NOT EXCEED THE AMOUNT YOU PAID FOR THE APP IN THE TWELVE (12) MONTHS PRECEDING THE CLAIM, OR FIFTY U.S. DOLLARS ($50.00), WHICHEVER IS GREATER.</strong></p>
+
+  <h2>12. Indemnification</h2>
+  <p>You agree to indemnify, defend, and hold harmless Ground App and its officers, directors, employees, agents, and affiliates from and against any claims, liabilities, damages, losses, costs, or expenses (including reasonable attorneys' fees) arising from:</p>
+  <ul>
+    <li>Your use of the App</li>
+    <li>Your violation of these Terms</li>
+    <li>Your violation of any third party's rights</li>
+    <li>Any content you submit or share through the App</li>
+    <li>Any health consequences resulting from your use of the App</li>
+  </ul>
+
+  <h2>13. Dispute Resolution</h2>
+
+  <h3>13.1 Informal Resolution</h3>
+  <p>Before initiating formal proceedings, you agree to contact us at <a href="mailto:legal@groundapp.live">legal@groundapp.live</a> to attempt to resolve any dispute informally within 30 days.</p>
+
+  <h3>13.2 Arbitration</h3>
+  <p>Any dispute not resolved informally shall be settled by binding arbitration administered by the American Arbitration Association (AAA) under its Consumer Arbitration Rules. Arbitration will be conducted on an individual basis. Class actions and class arbitrations are not permitted.</p>
+
+  <h3>13.3 Exceptions</h3>
+  <p>Either party may bring claims in small claims court if the claim qualifies. Either party may seek injunctive relief in any court of competent jurisdiction for violations of intellectual property rights.</p>
+
+  <h2>14. Governing Law</h2>
+  <p>These Terms shall be governed by and construed in accordance with the laws of the State of Colorado, United States, without regard to conflict of law principles.</p>
+
+  <h2>15. Severability</h2>
+  <p>If any provision of these Terms is found to be unenforceable or invalid, that provision shall be modified to the minimum extent necessary to make it enforceable, and the remaining provisions shall continue in full force and effect.</p>
+
+  <h2>16. Entire Agreement</h2>
+  <p>These Terms, together with our <a href="/privacy">Privacy Policy</a>, constitute the entire agreement between you and Ground App regarding your use of the App and supersede all prior agreements and understandings.</p>
+
+  <h2>17. Contact Information</h2>
+  <p>For questions about these Terms:</p>
+  <p><strong>Email:</strong> <a href="mailto:legal@groundapp.live">legal@groundapp.live</a></p>
+  <p><strong>Website:</strong> <a href="https://groundapp.live/terms">https://groundapp.live/terms</a></p>
+
+  <p style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid rgba(196, 147, 90, 0.1); font-style: italic; font-size: 0.9rem;">By using the Ground App, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service.</p>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <svg viewBox="0 0 100 100" fill="none" role="img" aria-label="Ground App logo"><circle cx="50" cy="50" r="38" stroke="#6B5B4E" stroke-width="2"/><circle cx="50" cy="50" r="10" fill="#6B5B4E"/></svg>
+      <span class="sans">Ground App</span>
+    </div>
+    <div class="footer-copy">
+      <p>&copy; 2026 Ground App. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Service</a>
+        <a href="/about">About</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "03e507bb97d74e78bc8de83dc6b261ec"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — Ground App</title>
+<meta name="description" content="Ground App Privacy Policy. Learn how we collect, use, store, and protect your data, including health and biometric data from wearable devices.">
+<meta name="robots" content="index, follow">
+
+<!-- Open Graph -->
+<meta property="og:title" content="Privacy Policy — Ground App">
+<meta property="og:description" content="Learn how Ground App handles your data, including health and biometric information from connected devices.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://groundapp.live/privacy">
+<meta property="og:image" content="https://groundapp.live/og-image.png">
+<meta property="og:site_name" content="Ground App">
+
+<link rel="canonical" href="https://groundapp.live/privacy">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='none' stroke='%23C4935A' stroke-width='3'/><circle cx='50' cy='50' r='25' fill='none' stroke='%23D4A574' stroke-width='2'/><circle cx='50' cy='50' r='10' fill='%23C4935A'/></svg>">
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --gold: #C4935A;
+  --terracotta: #8B5E3C;
+  --amber: #D4A574;
+  --obsidian: #1A110E;
+  --obsidian-mid: #231916;
+  --obsidian-light: #2D201A;
+  --bone: #E8DDD0;
+  --driftwood: #A89585;
+  --sandstone: #6B5B4E;
+  --sage: #7A8B6F;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--obsidian);
+  color: var(--bone);
+  font-family: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+body { background: var(--obsidian); min-height: 100vh; }
+
+.sans { font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif; }
+
+/* Nav */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 1.5rem 2.5rem;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(26, 17, 14, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(196, 147, 90, 0.08);
+}
+.nav-logo { display: flex; align-items: center; gap: 0.65rem; text-decoration: none; color: var(--bone); }
+.nav-logo-icon { width: 32px; height: 32px; }
+.nav-logo-text span:first-child { font-size: 1.2rem; font-weight: 600; letter-spacing: 0.04em; }
+.nav-logo-byline { font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif; font-size: 0.68rem; color: var(--driftwood); letter-spacing: 0.06em; margin-top: 1px; opacity: 0.8; }
+.nav-cta {
+  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+  font-size: 0.82rem; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 0.6rem 1.6rem; border: 1px solid var(--gold); color: var(--gold);
+  text-decoration: none; border-radius: 100px; transition: background 0.3s, color 0.3s;
+}
+.nav-cta:hover { background: var(--gold); color: var(--obsidian); }
+
+/* Page Content */
+.page-hero {
+  padding: 10rem 2rem 3rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.page-hero h1 {
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 0.75rem;
+}
+.page-hero h1 em { font-style: italic; color: var(--gold); }
+.page-hero .meta {
+  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+  font-size: 0.85rem;
+  color: var(--driftwood);
+}
+
+.page-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 2rem 6rem;
+}
+.page-content h2 {
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin: 2.5rem 0 0.75rem;
+  color: var(--bone);
+  border-bottom: 1px solid rgba(196, 147, 90, 0.15);
+  padding-bottom: 0.5rem;
+}
+.page-content h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 1.5rem 0 0.5rem;
+  color: var(--amber);
+}
+.page-content p {
+  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: var(--driftwood);
+  margin-bottom: 1rem;
+}
+.page-content ul, .page-content ol {
+  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: var(--driftwood);
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+.page-content li { margin-bottom: 0.35rem; }
+.page-content strong { color: var(--bone); font-weight: 600; }
+.page-content a { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; }
+.page-content a:hover { color: var(--amber); }
+
+.page-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0 1.5rem;
+  font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif;
+  font-size: 0.88rem;
+}
+.page-content th {
+  text-align: left;
+  padding: 0.65rem 1rem;
+  background: var(--obsidian-light);
+  color: var(--bone);
+  font-weight: 600;
+  border-bottom: 1px solid rgba(196, 147, 90, 0.15);
+}
+.page-content td {
+  padding: 0.65rem 1rem;
+  color: var(--driftwood);
+  border-bottom: 1px solid rgba(196, 147, 90, 0.06);
+  vertical-align: top;
+}
+
+.highlight-box {
+  background: var(--obsidian-light);
+  border-left: 3px solid var(--gold);
+  padding: 1rem 1.25rem;
+  margin: 1rem 0 1.5rem;
+  border-radius: 0 8px 8px 0;
+}
+.highlight-box p { margin-bottom: 0; }
+
+/* Footer */
+footer {
+  border-top: 1px solid rgba(196, 147, 90, 0.08);
+  padding: 2rem 2.5rem;
+}
+.footer-inner { max-width: 800px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+.footer-brand { display: flex; align-items: center; gap: 0.5rem; color: var(--sandstone); font-size: 0.85rem; }
+.footer-brand svg { width: 20px; height: 20px; }
+.footer-copy { font-family: -apple-system, 'Helvetica Neue', system-ui, sans-serif; font-size: 0.78rem; color: var(--sandstone); text-align: right; }
+.footer-links { margin-top: 0.5rem; }
+.footer-links a { color: var(--sandstone); text-decoration: none; margin-left: 1rem; font-size: 0.75rem; }
+.footer-links a:hover { color: var(--gold); }
+
+@media (max-width: 600px) {
+  nav { padding: 1rem 1.25rem; }
+  .page-hero { padding: 8rem 1.25rem 2rem; }
+  .page-content { padding: 0 1.25rem 4rem; }
+  .footer-inner { flex-direction: column; gap: 1rem; }
+  .footer-copy { text-align: center; }
+  .page-content table { font-size: 0.8rem; }
+  .page-content th, .page-content td { padding: 0.5rem 0.65rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="/">
+    <svg class="nav-logo-icon" viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="38" stroke="#C4935A" stroke-width="2.5"/><circle cx="50" cy="50" r="22" stroke="#D4A574" stroke-width="1.5"/><circle cx="50" cy="50" r="8" fill="#C4935A"/></svg>
+    <div class="nav-logo-text">
+      <span>Ground</span>
+      <div class="nav-logo-byline">BREATHE WITH INTENTION</div>
+    </div>
+  </a>
+  <a class="nav-cta" href="/">Back to Home</a>
+</nav>
+
+<!-- HERO -->
+<div class="page-hero">
+  <h1>Privacy <em>Policy</em></h1>
+  <p class="meta sans">Ground App &middot; Effective Date: April 2, 2026 &middot; Last Updated: April 2, 2026</p>
+</div>
+
+<!-- CONTENT -->
+<div class="page-content">
+
+  <h2>1. Introduction</h2>
+  <p>Ground App ("we," "our," or "the App") is a mobile application designed to guide users through personalized breathing exercises for nervous system regulation. This Privacy Policy describes how we collect, use, store, and protect your information, including health and biometric data obtained from wearable devices and health platforms.</p>
+  <p>By using the App, you consent to the practices described in this policy. If you do not agree, please discontinue use of the App.</p>
+
+  <h2>2. Information We Collect</h2>
+
+  <h3>2.1 Information You Provide Directly</h3>
+  <ul>
+    <li><strong>Account information:</strong> Name, email address (when creating an account)</li>
+    <li><strong>Onboarding preferences:</strong> Breathwork goals, experience level</li>
+    <li><strong>Session feedback:</strong> Mood ratings, session notes</li>
+    <li><strong>Voice recordings:</strong> Audio samples provided voluntarily for voice cloning features</li>
+  </ul>
+
+  <h3>2.2 Health and Biometric Data</h3>
+  <p>With your explicit consent, we access the following data from connected devices and platforms:</p>
+
+  <p><strong>Apple Health (HealthKit):</strong></p>
+  <ul>
+    <li>Heart rate and resting heart rate</li>
+    <li>Heart rate variability (HRV)</li>
+    <li>Respiratory rate</li>
+    <li>Sleep analysis (duration, stages, efficiency)</li>
+    <li>Blood oxygen saturation (SpO2)</li>
+    <li>Wrist temperature</li>
+    <li>Active energy burned and step count</li>
+    <li>Mindful session records</li>
+  </ul>
+
+  <p><strong>Oura Ring (via Oura Cloud API):</strong></p>
+  <ul>
+    <li>Daily readiness scores and contributors</li>
+    <li>Sleep scores, staging, and duration</li>
+    <li>Daily stress levels and recovery metrics</li>
+    <li>Resilience scores</li>
+    <li>Heart rate data</li>
+  </ul>
+
+  <p><strong>Garmin (via Garmin Health API / HealthKit):</strong></p>
+  <ul>
+    <li>Stress scores</li>
+    <li>Body Battery energy levels</li>
+    <li>Respiration rate</li>
+    <li>Pulse oximetry</li>
+    <li>Activity and sleep data</li>
+  </ul>
+
+  <h3>2.3 Automatically Collected Information</h3>
+  <ul>
+    <li><strong>Usage data:</strong> Session history, techniques used, session duration, app feature usage</li>
+    <li><strong>Device information:</strong> Device model, operating system version (used for compatibility and debugging)</li>
+  </ul>
+
+  <h3>2.4 Information We Do NOT Collect</h3>
+  <ul>
+    <li>Precise geolocation</li>
+    <li>Contacts or address book data</li>
+    <li>Browsing history</li>
+    <li>Financial or payment information (handled entirely by Apple)</li>
+    <li>Advertising identifiers</li>
+  </ul>
+
+  <h2>3. How We Use Your Information</h2>
+  <p>We use your data exclusively to provide and improve the App's core functionality:</p>
+
+  <table>
+    <thead>
+      <tr><th>Purpose</th><th>Data Used</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Personalized breathwork recommendations</strong></td><td>HRV, resting heart rate, sleep data, readiness scores, stress levels</td></tr>
+      <tr><td><strong>Nervous system state assessment</strong></td><td>Aggregated biometric data from connected devices</td></tr>
+      <tr><td><strong>Proactive wellness notifications</strong></td><td>Biometric trends and anomaly detection</td></tr>
+      <tr><td><strong>Session history and progress tracking</strong></td><td>Session records, mood ratings, technique usage</td></tr>
+      <tr><td><strong>Voice-guided sessions</strong></td><td>Voice recordings (for voice cloning, with explicit consent)</td></tr>
+      <tr><td><strong>App improvement</strong></td><td>Anonymized, aggregated usage patterns</td></tr>
+    </tbody>
+  </table>
+
+  <div class="highlight-box">
+    <p>We do <strong>not</strong> use your health data for advertising, marketing to third parties, or any purpose unrelated to providing you personalized breathwork guidance.</p>
+  </div>
+
+  <h2>4. How We Store and Protect Your Data</h2>
+
+  <h3>4.1 On-Device Storage</h3>
+  <ul>
+    <li>Health and biometric data is processed and stored <strong>on your device</strong> by default</li>
+    <li>Personal baselines and nervous system assessments are computed locally</li>
+    <li>Sensitive credentials (API tokens for Oura, Garmin) are stored in the iOS Keychain</li>
+    <li>Health data files are excluded from iCloud backup</li>
+  </ul>
+
+  <h3>4.2 Cloud Storage (Optional)</h3>
+  <p>If you create an account and enable cloud sync:</p>
+  <ul>
+    <li>Session history and preferences are stored on our servers (hosted via Supabase with PostgreSQL)</li>
+    <li>All data in transit is encrypted using TLS 1.2+</li>
+    <li>All data at rest is encrypted using AES-256</li>
+    <li>Row-level security ensures you can only access your own data</li>
+    <li>Cloud sync of health/biometric data is <strong>opt-in</strong> and disabled by default</li>
+  </ul>
+
+  <h3>4.3 Third-Party Services</h3>
+  <table>
+    <thead>
+      <tr><th>Service</th><th>Purpose</th><th>Data Shared</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Apple HealthKit</strong></td><td>Read/write health metrics</td><td>Accessed on-device only; never transmitted to our servers without consent</td></tr>
+      <tr><td><strong>Oura Cloud API</strong></td><td>Retrieve readiness, sleep, and stress data</td><td>OAuth token stored in Keychain; data fetched directly to your device</td></tr>
+      <tr><td><strong>Garmin Health API</strong></td><td>Retrieve stress, Body Battery, and respiration data</td><td>OAuth token stored in Keychain; data fetched directly to your device</td></tr>
+      <tr><td><strong>Anthropic (Claude API)</strong></td><td>Generate personalized session recommendations</td><td>Anonymized nervous system state summary (no raw biometric values); no personally identifiable information</td></tr>
+      <tr><td><strong>ElevenLabs</strong></td><td>Text-to-speech for voice-guided sessions</td><td>Voice recordings for cloning (with explicit consent); session narration text</td></tr>
+      <tr><td><strong>Supabase</strong></td><td>Account authentication and optional cloud sync</td><td>Account info, session history (if sync enabled)</td></tr>
+    </tbody>
+  </table>
+
+  <div class="highlight-box">
+    <p><strong>Important:</strong> Raw biometric data (heart rate values, HRV readings, sleep staging) is <strong>never</strong> sent to Anthropic, ElevenLabs, or any AI service. Only computed, anonymized summaries (e.g., "nervous system state: mildly stressed") are used for generating recommendations.</p>
+  </div>
+
+  <h2>5. Apple HealthKit Compliance</h2>
+  <p>In accordance with Apple's HealthKit guidelines:</p>
+  <ul>
+    <li>We <strong>do not</strong> use HealthKit data for advertising or similar services</li>
+    <li>We <strong>do not</strong> sell HealthKit data to third parties, including advertising platforms, data brokers, or information resellers</li>
+    <li>We <strong>do not</strong> use HealthKit data for any purpose other than providing health and wellness services directly to the user</li>
+    <li>We <strong>do not</strong> disclose HealthKit data to third parties without explicit user consent</li>
+    <li>HealthKit data is <strong>not</strong> stored in iCloud or any unsecured storage mechanism</li>
+    <li>Users can revoke HealthKit access at any time through iOS Settings</li>
+  </ul>
+
+  <h2>6. Oura Data Usage Compliance</h2>
+  <p>In accordance with Oura's API Terms of Service:</p>
+  <ul>
+    <li>Oura data is accessed only with your explicit authorization via OAuth 2.0</li>
+    <li>We request only the minimum scopes necessary (daily readiness, sleep, heart rate, stress, SpO2)</li>
+    <li>Oura data is used exclusively to assess your nervous system state and provide personalized breathwork recommendations</li>
+    <li>You can disconnect your Oura Ring at any time from the App's Settings, which revokes access and deletes locally stored Oura data</li>
+    <li>We <strong>do not</strong> sell, license, or share your Oura data with any third party</li>
+  </ul>
+
+  <h2>7. Garmin Data Usage Compliance</h2>
+  <p>In accordance with Garmin's Health API Terms:</p>
+  <ul>
+    <li>Garmin data is accessed only with your explicit authorization</li>
+    <li>Data is used exclusively for providing personalized breathwork and wellness recommendations</li>
+    <li>You can disconnect your Garmin device at any time from the App's Settings</li>
+    <li>We <strong>do not</strong> sell, license, or share your Garmin data with any third party</li>
+  </ul>
+
+  <h2>8. Your Rights and Controls</h2>
+  <p>You have full control over your data:</p>
+
+  <table>
+    <thead>
+      <tr><th>Action</th><th>How</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Disconnect a device</strong></td><td>Settings > Connected Devices > Toggle off</td></tr>
+      <tr><td><strong>Revoke HealthKit access</strong></td><td>iOS Settings > Privacy & Security > Health > Ground</td></tr>
+      <tr><td><strong>Revoke Oura access</strong></td><td>App Settings or cloud.ouraring.com > Connected Apps</td></tr>
+      <tr><td><strong>Revoke Garmin access</strong></td><td>App Settings or Garmin Connect > Account > Connected Apps</td></tr>
+      <tr><td><strong>Delete session history</strong></td><td>Settings > Delete Account / Reset Data</td></tr>
+      <tr><td><strong>Delete voice clone</strong></td><td>Settings > Voice Guide > Manage Voice Clone > Delete</td></tr>
+      <tr><td><strong>Delete all data</strong></td><td>Settings > Delete Account (removes all cloud-stored data)</td></tr>
+      <tr><td><strong>Export your data</strong></td><td>Contact us at the email below</td></tr>
+    </tbody>
+  </table>
+
+  <p>Upon account deletion, all associated data is permanently removed from our servers within 30 days. On-device data is removed immediately.</p>
+
+  <h2>9. Data Retention</h2>
+  <ul>
+    <li><strong>On-device data:</strong> Retained until you delete the App or clear data in Settings</li>
+    <li><strong>Cloud-synced data:</strong> Retained while your account is active; deleted within 30 days of account deletion</li>
+    <li><strong>Voice recordings:</strong> Stored with ElevenLabs while voice clone is active; deleted when you delete your voice clone</li>
+    <li><strong>Oura/Garmin tokens:</strong> Deleted immediately when you disconnect the device</li>
+  </ul>
+
+  <h2>10. Children's Privacy</h2>
+  <p>The App is not directed at children under 13. We do not knowingly collect personal information from children under 13. If you believe a child under 13 has provided us with personal information, please contact us and we will delete it.</p>
+
+  <h2>11. Changes to This Policy</h2>
+  <p>We may update this Privacy Policy from time to time. We will notify you of material changes by posting the updated policy within the App and updating the "Last Updated" date. Continued use of the App after changes constitutes acceptance of the revised policy.</p>
+
+  <h2>12. Contact Us</h2>
+  <p>If you have questions about this Privacy Policy or your data, contact us at:</p>
+  <p><strong>Email:</strong> <a href="mailto:privacy@groundapp.live">privacy@groundapp.live</a></p>
+  <p><strong>Website:</strong> <a href="https://groundapp.live/privacy">https://groundapp.live/privacy</a></p>
+
+  <h2>13. Jurisdiction</h2>
+  <p>This Privacy Policy is governed by the laws of the United States. For users in the European Economic Area (EEA), we process data under the legal basis of explicit consent (Article 6(1)(a) GDPR) for health data and legitimate interest for basic app functionality.</p>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <svg viewBox="0 0 100 100" fill="none" role="img" aria-label="Ground App logo"><circle cx="50" cy="50" r="38" stroke="#6B5B4E" stroke-width="2"/><circle cx="50" cy="50" r="10" fill="#6B5B4E"/></svg>
+      <span class="sans">Ground App</span>
+    </div>
+    <div class="footer-copy">
+      <p>&copy; 2026 Ground App. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Service</a>
+        <a href="/about">About</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "03e507bb97d74e78bc8de83dc6b261ec"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>
