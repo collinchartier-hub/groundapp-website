@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <defs>
+    <filter id="sage-glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3.5" result="blur"/>
+      <feColorMatrix in="blur" type="matrix"
+        values="0 0 0 0 0.769
+                0 0 0 0 0.576
+                0 0 0 0 0.353
+                0 0 0 0.45 0" result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <radialGradient id="sage-radiance" cx="50%" cy="45%" r="50%">
+      <stop offset="0%" stop-color="#C4935A" stop-opacity="0.2"/>
+      <stop offset="60%" stop-color="#C4935A" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="#C4935A" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="sage-trunk" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#C4935A" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#8B5E3C" stop-opacity="0.5"/>
+    </linearGradient>
+    <linearGradient id="sage-canopy" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%" stop-color="#C4935A" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#C4935A" stop-opacity="0.05"/>
+    </linearGradient>
+  </defs>
+  <g filter="url(#sage-glow)">
+    <!-- Outer radiance circle -->
+    <circle cx="60" cy="55" r="48" fill="url(#sage-radiance)"/>
+    <!-- Outer ring -->
+    <circle cx="60" cy="55" r="46" stroke="#C4935A" stroke-width="1" opacity="0.2"/>
+    <!-- Inner sacred circle -->
+    <circle cx="60" cy="55" r="40" stroke="#C4935A" stroke-width="1.5" opacity="0.3"/>
+    <!-- Radiance rays (12 rays around the circle) -->
+    <line x1="60" y1="8" x2="60" y2="13" stroke="#C4935A" stroke-width="1" stroke-linecap="round" opacity="0.4"/>
+    <line x1="60" y1="97" x2="60" y2="102" stroke="#C4935A" stroke-width="1" stroke-linecap="round" opacity="0.3"/>
+    <line x1="13" y1="55" x2="18" y2="55" stroke="#C4935A" stroke-width="1" stroke-linecap="round" opacity="0.35"/>
+    <line x1="102" y1="55" x2="107" y2="55" stroke="#C4935A" stroke-width="1" stroke-linecap="round" opacity="0.35"/>
+    <line x1="26.7" y1="21.7" x2="30.2" y2="25.2" stroke="#C4935A" stroke-width="1" stroke-linecap="round" opacity="0.3"/>
+    <line x1="89.8" y1="25.2" x2="93.3" y2="21.7" stroke="#C4935A" stroke-width="1" stroke-linecap="round" opacity="0.3"/>
+    <line x1="26.7" y1="88.3" x2="30.2" y2="84.8" stroke="#C4935A" stroke-width="1" stroke-linecap="round" opacity="0.25"/>
+    <line x1="89.8" y1="84.8" x2="93.3" y2="88.3" stroke="#C4935A" stroke-width="1" stroke-linecap="round" opacity="0.25"/>
+    <!-- Short intermediate rays -->
+    <line x1="38" y1="12" x2="40" y2="16" stroke="#C4935A" stroke-width="0.8" stroke-linecap="round" opacity="0.2"/>
+    <line x1="80" y1="16" x2="82" y2="12" stroke="#C4935A" stroke-width="0.8" stroke-linecap="round" opacity="0.2"/>
+    <line x1="104" y1="37" x2="100" y2="39" stroke="#C4935A" stroke-width="0.8" stroke-linecap="round" opacity="0.2"/>
+    <line x1="104" y1="73" x2="100" y2="71" stroke="#C4935A" stroke-width="0.8" stroke-linecap="round" opacity="0.2"/>
+
+    <!-- Root system (below) -->
+    <path d="M60 82 Q55 88 48 94" stroke="#C4935A" stroke-width="1.5" stroke-linecap="round" opacity="0.45"/>
+    <path d="M60 82 Q65 88 72 94" stroke="#C4935A" stroke-width="1.5" stroke-linecap="round" opacity="0.45"/>
+    <path d="M60 82 Q58 90 60 98" stroke="#C4935A" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+    <!-- Root tendrils -->
+    <path d="M48 94 Q44 96 42 100" stroke="#C4935A" stroke-width="1" stroke-linecap="round" opacity="0.3"/>
+    <path d="M48 94 Q50 97 48 100" stroke="#C4935A" stroke-width="1" stroke-linecap="round" opacity="0.25"/>
+    <path d="M72 94 Q76 96 78 100" stroke="#C4935A" stroke-width="1" stroke-linecap="round" opacity="0.3"/>
+    <path d="M72 94 Q70 97 72 100" stroke="#C4935A" stroke-width="1" stroke-linecap="round" opacity="0.25"/>
+    <path d="M60 98 Q56 102 54 106" stroke="#C4935A" stroke-width="0.8" stroke-linecap="round" opacity="0.2"/>
+    <path d="M60 98 Q64 102 66 106" stroke="#C4935A" stroke-width="0.8" stroke-linecap="round" opacity="0.2"/>
+
+    <!-- Trunk -->
+    <path d="M57 82 Q58 72 60 65 Q62 72 63 82" stroke="#C4935A" stroke-width="2" stroke-linecap="round" fill="url(#sage-trunk)" fill-opacity="0.15"/>
+    <!-- Trunk texture -->
+    <path d="M58.5 78 Q60 76 61.5 78" stroke="#C4935A" stroke-width="0.6" opacity="0.3"/>
+    <path d="M58 74 Q60 72 62 74" stroke="#C4935A" stroke-width="0.6" opacity="0.25"/>
+
+    <!-- Main canopy / tree crown -->
+    <path d="M60 24 Q42 30 34 42 Q28 52 34 62 Q40 72 48 74 Q54 76 60 74 Q66 76 72 74 Q80 72 86 62 Q92 52 86 42 Q78 30 60 24 Z"
+          stroke="#C4935A" stroke-width="1.8" stroke-linejoin="round" fill="url(#sage-canopy)"/>
+
+    <!-- Branch structure within canopy -->
+    <path d="M60 65 Q50 58 40 50" stroke="#C4935A" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+    <path d="M60 65 Q70 58 80 50" stroke="#C4935A" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+    <path d="M60 65 Q56 52 52 40" stroke="#C4935A" stroke-width="1.2" stroke-linecap="round" opacity="0.4"/>
+    <path d="M60 65 Q64 52 68 40" stroke="#C4935A" stroke-width="1.2" stroke-linecap="round" opacity="0.4"/>
+    <path d="M60 65 Q60 48 60 34" stroke="#C4935A" stroke-width="1.2" stroke-linecap="round" opacity="0.45"/>
+    <!-- Sub-branches -->
+    <path d="M40 50 Q36 46 34 42" stroke="#C4935A" stroke-width="1" stroke-linecap="round" opacity="0.35"/>
+    <path d="M40 50 Q42 44 40 38" stroke="#C4935A" stroke-width="1" stroke-linecap="round" opacity="0.3"/>
+    <path d="M80 50 Q84 46 86 42" stroke="#C4935A" stroke-width="1" stroke-linecap="round" opacity="0.35"/>
+    <path d="M80 50 Q78 44 80 38" stroke="#C4935A" stroke-width="1" stroke-linecap="round" opacity="0.3"/>
+    <path d="M52 40 Q48 34 44 30" stroke="#C4935A" stroke-width="0.8" stroke-linecap="round" opacity="0.3"/>
+    <path d="M68 40 Q72 34 76 30" stroke="#C4935A" stroke-width="0.8" stroke-linecap="round" opacity="0.3"/>
+
+    <!-- Leaf clusters (small circles at branch tips) -->
+    <circle cx="34" cy="42" r="3" fill="#C4935A" opacity="0.2" stroke="#C4935A" stroke-width="0.8" stroke-opacity="0.4"/>
+    <circle cx="86" cy="42" r="3" fill="#C4935A" opacity="0.2" stroke="#C4935A" stroke-width="0.8" stroke-opacity="0.4"/>
+    <circle cx="44" cy="30" r="2.5" fill="#C4935A" opacity="0.18" stroke="#C4935A" stroke-width="0.8" stroke-opacity="0.35"/>
+    <circle cx="76" cy="30" r="2.5" fill="#C4935A" opacity="0.18" stroke="#C4935A" stroke-width="0.8" stroke-opacity="0.35"/>
+    <circle cx="60" cy="26" r="3" fill="#C4935A" opacity="0.25" stroke="#C4935A" stroke-width="0.8" stroke-opacity="0.5"/>
+    <circle cx="40" cy="38" r="2" fill="#C4935A" opacity="0.15" stroke="#C4935A" stroke-width="0.6" stroke-opacity="0.3"/>
+    <circle cx="80" cy="38" r="2" fill="#C4935A" opacity="0.15" stroke="#C4935A" stroke-width="0.6" stroke-opacity="0.3"/>
+
+    <!-- Central wisdom eye / lotus center -->
+    <circle cx="60" cy="50" r="5" stroke="#C4935A" stroke-width="1.5" opacity="0.7" fill="#C4935A" fill-opacity="0.1"/>
+    <circle cx="60" cy="50" r="2" fill="#C4935A" opacity="0.6"/>
+
+    <!-- Sparkle accents -->
+    <circle cx="38" cy="60" r="1" fill="#C4935A" opacity="0.5"/>
+    <circle cx="82" cy="60" r="1" fill="#C4935A" opacity="0.5"/>
+    <circle cx="48" cy="32" r="0.8" fill="#C4935A" opacity="0.4"/>
+    <circle cx="72" cy="32" r="0.8" fill="#C4935A" opacity="0.4"/>
+    <circle cx="60" cy="18" r="1.2" fill="#C4935A" opacity="0.45"/>
+  </g>
+</svg>

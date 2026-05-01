@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ground App - Lung Logo: Dark Background Variants</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #1A110E;
+    color: #E8DDD0;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
+    padding: 40px 20px;
+  }
+  h1 {
+    text-align: center;
+    font-family: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+    color: #C4935A;
+    font-size: 36px;
+    margin-bottom: 8px;
+  }
+  .subtitle {
+    text-align: center;
+    color: #A89585;
+    font-size: 15px;
+    margin-bottom: 12px;
+  }
+  .ref {
+    text-align: center;
+    color: #6B5B4E;
+    font-size: 12px;
+    margin-bottom: 50px;
+  }
+  .section-label {
+    text-align: center;
+    font-family: 'Iowan Old Style', Palatino, Georgia, serif;
+    color: #C4935A;
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin: 50px 0 24px;
+    position: relative;
+  }
+  .section-label::before, .section-label::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 80px;
+    height: 1px;
+    background: rgba(196,147,90,0.3);
+  }
+  .section-label::before { right: calc(50% + 120px); }
+  .section-label::after { left: calc(50% + 120px); }
+
+  .grid-4 {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  .grid-3 {
+    max-width: 900px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(232,221,208,0.06);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  .card:hover {
+    border-color: rgba(196,147,90,0.5);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(196,147,90,0.12);
+  }
+  .card-label {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #C4935A;
+    color: #1A110E;
+    font-weight: 700;
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    z-index: 2;
+  }
+  .img-wrap {
+    position: relative;
+    background: #1A110E;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 28px;
+  }
+  .img-wrap img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+  .card-info { padding: 14px 16px; }
+  .card-name {
+    font-family: 'Iowan Old Style', Palatino, Georgia, serif;
+    color: #C4935A;
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+  .card-desc {
+    font-size: 12px;
+    color: #A89585;
+    line-height: 1.4;
+  }
+  .card-source {
+    font-size: 10px;
+    color: #6B5B4E;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 6px;
+  }
+
+  /* Comparison row */
+  .compare-section {
+    max-width: 1200px;
+    margin: 70px auto 0;
+    text-align: center;
+  }
+  .compare-section h2 {
+    font-family: 'Iowan Old Style', Palatino, Georgia, serif;
+    color: #C4935A;
+    font-size: 24px;
+    margin-bottom: 30px;
+  }
+
+  /* App icon mocks */
+  .icon-row {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+  }
+  .app-icon {
+    text-align: center;
+  }
+  .app-icon .frame {
+    width: 76px;
+    height: 76px;
+    border-radius: 17px;
+    background: #1A110E;
+    border: 1px solid rgba(196,147,90,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+    margin: 0 auto 6px;
+    overflow: hidden;
+  }
+  .app-icon .frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .app-icon .lbl {
+    font-size: 11px;
+    color: #A89585;
+  }
+
+  /* Nav mocks */
+  .nav-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 40px;
+  }
+  .nav-mock {
+    background: rgba(26,17,14,0.95);
+    border: 1px solid rgba(232,221,208,0.06);
+    border-radius: 12px;
+    padding: 10px 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    transition: border-color 0.3s;
+  }
+  .nav-mock:hover { border-color: rgba(196,147,90,0.3); }
+  .nav-mock img { height: 28px; width: 28px; object-fit: contain; }
+  .nav-mock .brand {
+    font-family: 'Iowan Old Style', Palatino, Georgia, serif;
+    color: #C4935A;
+    font-size: 17px;
+    letter-spacing: 0.15em;
+    font-weight: 600;
+  }
+  .nav-mock .links { color: #A89585; font-size: 13px; display: flex; gap: 16px; }
+  .nav-mock .vid { font-size: 11px; color: #6B5B4E; min-width: 24px; }
+
+  /* Side by side original vs dark */
+  .vs-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    margin: 30px 0;
+  }
+  .vs-card {
+    text-align: center;
+  }
+  .vs-card .vs-img {
+    width: 200px;
+    height: 200px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    margin-bottom: 8px;
+  }
+  .vs-card .vs-img.light { background: #fff; border: 1px solid rgba(232,221,208,0.1); }
+  .vs-card .vs-img.dark { background: #1A110E; border: 1px solid rgba(196,147,90,0.15); }
+  .vs-card .vs-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .vs-card .vs-label { font-size: 13px; color: #A89585; }
+  .vs-arrow { font-size: 28px; color: #C4935A; }
+
+  /* Runner up */
+  .runner-up {
+    max-width: 400px;
+    margin: 60px auto 0;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(232,221,208,0.06);
+    border-radius: 16px;
+    overflow: hidden;
+    text-align: center;
+  }
+  .runner-up .img-wrap { padding: 32px; }
+  .runner-up .card-info { padding: 16px; }
+  .runner-up .badge {
+    display: inline-block;
+    font-size: 11px;
+    color: #A89585;
+    border: 1px solid rgba(168,149,133,0.3);
+    padding: 3px 12px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+  }
+
+  @media (max-width: 1000px) { .grid-4 { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 700px) {
+    .grid-4 { grid-template-columns: 1fr; }
+    .grid-3 { grid-template-columns: 1fr; }
+    .vs-row { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Concept A: Dark Background</h1>
+<p class="subtitle">Gold lungs on obsidian. 7 new variants.</p>
+<p class="ref">Original A (white bg) shown for comparison at bottom</p>
+
+<!-- RECRAFT A1-A4 -->
+<div class="section-label">Recraft Variants (A1 - A4)</div>
+<div class="grid-4">
+  <div class="card">
+    <div class="img-wrap"><div class="card-label">A1</div><img src="lung-v2-a1-dark-flat.png" alt="A1 Flat"></div>
+    <div class="card-info">
+      <div class="card-name">Flat Gold</div>
+      <div class="card-desc">Clean flat gold fill. Detailed bronchial tree with ringed trachea. Classic and anatomical.</div>
+      <div class="card-source">Recraft / SVG</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="img-wrap"><div class="card-label">A2</div><img src="lung-v2-a2-dark-metallic.png" alt="A2 Metallic"></div>
+    <div class="card-info">
+      <div class="card-name">Metallic / Brushed</div>
+      <div class="card-desc">Brushed gold with directional light. Streamlined lung outline with leaf-like branches. Premium luxe.</div>
+      <div class="card-source">Recraft / SVG</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="img-wrap"><div class="card-label">A3</div><img src="lung-v2-a3-dark-circle.png" alt="A3 Circle"></div>
+    <div class="card-info">
+      <div class="card-name">Circular Emblem</div>
+      <div class="card-desc">Lung inside a thin gold ring. Most contained and badge-ready. Works at small sizes.</div>
+      <div class="card-source">Recraft / SVG</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="img-wrap"><div class="card-label">A4</div><img src="lung-v2-a4-dark-glow.png" alt="A4 Glow"></div>
+    <div class="card-info">
+      <div class="card-name">Ambient Glow</div>
+      <div class="card-desc">Detailed lungs with subtle concentric arc glow behind. Warm radiating energy feel.</div>
+      <div class="card-source">Recraft / SVG</div>
+    </div>
+  </div>
+</div>
+
+<!-- FAL A5-A7 -->
+<div class="section-label">FAL Variants (A5 - A7)</div>
+<div class="grid-3">
+  <div class="card">
+    <div class="img-wrap"><div class="card-label">A5</div><img src="lung-v2-a5-rounded.png" alt="A5 Rounded"></div>
+    <div class="card-info">
+      <div class="card-name">Rounded / Soft</div>
+      <div class="card-desc">Softer, more rounded contours. Less clinical, more approachable. Gentle bronchi branching.</div>
+      <div class="card-source">FAL Ideogram v2</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="img-wrap"><div class="card-label">A6</div><img src="lung-v2-a6-art-deco.png" alt="A6 Art Deco"></div>
+    <div class="card-info">
+      <div class="card-name">Art Deco</div>
+      <div class="card-desc">Geometric art deco line patterns within the lung silhouette. Angular, decorative, symmetrical. Luxury brand feel.</div>
+      <div class="card-source">FAL Ideogram v2</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="img-wrap"><div class="card-label">A7</div><img src="lung-v2-a7-ultra-minimal.png" alt="A7 Ultra Minimal"></div>
+    <div class="card-info">
+      <div class="card-name">Ultra Minimal</div>
+      <div class="card-desc">Maximum simplicity. Two clean gold curves with minimal trachea. No internal detail. Modern and clean.</div>
+      <div class="card-source">FAL Ideogram v2</div>
+    </div>
+  </div>
+</div>
+
+<!-- COMPARISON: Original A vs Best Dark -->
+<div class="compare-section">
+  <h2>Original vs Dark</h2>
+  <div class="vs-row">
+    <div class="vs-card">
+      <div class="vs-img light"><img src="lung-v2-a-minimal.png"></div>
+      <div class="vs-label">Original A (white bg)</div>
+    </div>
+    <div class="vs-arrow">&#8594;</div>
+    <div class="vs-card">
+      <div class="vs-img dark"><img src="lung-v2-a1-dark-flat.png"></div>
+      <div class="vs-label">A1 Flat (dark bg)</div>
+    </div>
+    <div class="vs-card">
+      <div class="vs-img dark"><img src="lung-v2-a2-dark-metallic.png"></div>
+      <div class="vs-label">A2 Metallic (dark bg)</div>
+    </div>
+    <div class="vs-card">
+      <div class="vs-img dark"><img src="lung-v2-a3-dark-circle.png"></div>
+      <div class="vs-label">A3 Circle (dark bg)</div>
+    </div>
+  </div>
+
+  <!-- App Icons -->
+  <h2 style="margin-top:50px;">As App Icons</h2>
+  <div class="icon-row">
+    <div class="app-icon"><div class="frame"><img src="lung-v2-a-minimal.png"></div><div class="lbl">Original</div></div>
+    <div class="app-icon"><div class="frame"><img src="lung-v2-a1-dark-flat.png"></div><div class="lbl">A1</div></div>
+    <div class="app-icon"><div class="frame"><img src="lung-v2-a2-dark-metallic.png"></div><div class="lbl">A2</div></div>
+    <div class="app-icon"><div class="frame"><img src="lung-v2-a3-dark-circle.png"></div><div class="lbl">A3</div></div>
+    <div class="app-icon"><div class="frame"><img src="lung-v2-a4-dark-glow.png"></div><div class="lbl">A4</div></div>
+    <div class="app-icon"><div class="frame"><img src="lung-v2-a5-rounded.png"></div><div class="lbl">A5</div></div>
+    <div class="app-icon"><div class="frame"><img src="lung-v2-a6-art-deco.png"></div><div class="lbl">A6</div></div>
+    <div class="app-icon"><div class="frame"><img src="lung-v2-a7-ultra-minimal.png"></div><div class="lbl">A7</div></div>
+    <div class="app-icon"><div class="frame"><img src="lung-v2-f-bold.png"></div><div class="lbl">F (runner)</div></div>
+  </div>
+
+  <!-- Nav Bars -->
+  <h2 style="margin-top:50px;">In Navigation</h2>
+  <div class="nav-row">
+    <div class="nav-mock">
+      <span class="vid">A1</span><img src="lung-v2-a1-dark-flat.png"><span class="brand">GROUND</span>
+      <div class="links"><span>Features</span><span>Programs</span><span>Integrations</span><span>About</span></div>
+    </div>
+    <div class="nav-mock">
+      <span class="vid">A2</span><img src="lung-v2-a2-dark-metallic.png"><span class="brand">GROUND</span>
+      <div class="links"><span>Features</span><span>Programs</span><span>Integrations</span><span>About</span></div>
+    </div>
+    <div class="nav-mock">
+      <span class="vid">A3</span><img src="lung-v2-a3-dark-circle.png"><span class="brand">GROUND</span>
+      <div class="links"><span>Features</span><span>Programs</span><span>Integrations</span><span>About</span></div>
+    </div>
+    <div class="nav-mock">
+      <span class="vid">A5</span><img src="lung-v2-a5-rounded.png"><span class="brand">GROUND</span>
+      <div class="links"><span>Features</span><span>Programs</span><span>Integrations</span><span>About</span></div>
+    </div>
+    <div class="nav-mock">
+      <span class="vid">A6</span><img src="lung-v2-a6-art-deco.png"><span class="brand">GROUND</span>
+      <div class="links"><span>Features</span><span>Programs</span><span>Integrations</span><span>About</span></div>
+    </div>
+    <div class="nav-mock">
+      <span class="vid">A7</span><img src="lung-v2-a7-ultra-minimal.png"><span class="brand">GROUND</span>
+      <div class="links"><span>Features</span><span>Programs</span><span>Integrations</span><span>About</span></div>
+    </div>
+    <div class="nav-mock">
+      <span class="vid">F</span><img src="lung-v2-f-bold.png"><span class="brand">GROUND</span>
+      <div class="links"><span>Features</span><span>Programs</span><span>Integrations</span><span>About</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- Runner up reminder -->
+<div class="compare-section" style="margin-top:40px;">
+  <h2>Runner Up: F (Bold)</h2>
+  <div class="runner-up">
+    <div class="img-wrap"><img src="lung-v2-f-bold.png" alt="F Bold"></div>
+    <div class="card-info">
+      <span class="badge">2nd Place</span>
+      <div class="card-name">Bold / Thick Strokes</div>
+      <div class="card-desc">Confident thick gold lines. Trachea, bronchi, and bronchial tree. Classic anatomy icon with strong presence.</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

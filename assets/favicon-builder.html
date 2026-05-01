@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ground App - Favicon Builder</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #222;
+    color: #ccc;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    padding: 40px;
+  }
+
+  h1 {
+    font-size: 24px;
+    color: #C4935A;
+    margin-bottom: 8px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 40px;
+    line-height: 1.6;
+  }
+
+  .favicon-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    align-items: flex-end;
+  }
+
+  .favicon-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .favicon-container {
+    background: #1A110E;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    /* Border for visibility on dark background */
+    outline: 1px solid rgba(196, 147, 90, 0.2);
+  }
+
+  .favicon-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  .favicon-label {
+    font-size: 13px;
+    color: #aaa;
+    text-align: center;
+  }
+
+  .favicon-label strong {
+    color: #C4935A;
+    display: block;
+    font-size: 15px;
+    margin-bottom: 2px;
+  }
+
+  .favicon-label span {
+    font-size: 11px;
+    color: #666;
+  }
+
+  .instructions {
+    margin-top: 48px;
+    padding: 24px;
+    background: rgba(196, 147, 90, 0.08);
+    border: 1px solid rgba(196, 147, 90, 0.15);
+    border-radius: 8px;
+    max-width: 700px;
+  }
+
+  .instructions h2 {
+    font-size: 16px;
+    color: #C4935A;
+    margin-bottom: 12px;
+  }
+
+  .instructions ol {
+    padding-left: 20px;
+    line-height: 1.8;
+    font-size: 13px;
+    color: #aaa;
+  }
+
+  .instructions code {
+    background: rgba(255,255,255,0.08);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 12px;
+    color: #E8DDD0;
+  }
+
+  .actual-size-note {
+    font-size: 11px;
+    color: #666;
+    margin-top: 4px;
+    text-align: center;
+  }
+
+  /* Scaled-up preview versions for small sizes */
+  .preview-scaled {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .preview-scaled .zoomed {
+    border: 1px dashed rgba(196,147,90,0.3);
+    padding: 8px;
+    position: relative;
+  }
+
+  .preview-scaled .zoomed::after {
+    content: "4x zoom";
+    position: absolute;
+    bottom: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    color: #666;
+    white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+
+  <h1>Favicon Builder</h1>
+  <p class="subtitle">
+    A1 lung logo rendered at all standard favicon sizes.<br>
+    Screenshot each container at its exact pixel size for production favicons.
+  </p>
+
+  <div class="favicon-grid">
+
+    <!-- 16x16 -->
+    <div class="favicon-item">
+      <div class="preview-scaled">
+        <div class="favicon-container" style="width:16px; height:16px;">
+          <img src="icons/v2/lung-v2-a1-dark-flat.png" alt="16x16">
+        </div>
+        <div class="zoomed">
+          <div class="favicon-container" style="width:64px; height:64px;">
+            <img src="icons/v2/lung-v2-a1-dark-flat.png" alt="16x16 zoomed">
+          </div>
+        </div>
+      </div>
+      <div class="favicon-label">
+        <strong>16 x 16</strong>
+        favicon.ico (legacy)
+        <span><br>Browser tab icon</span>
+      </div>
+    </div>
+
+    <!-- 32x32 -->
+    <div class="favicon-item">
+      <div class="preview-scaled">
+        <div class="favicon-container" style="width:32px; height:32px;">
+          <img src="icons/v2/lung-v2-a1-dark-flat.png" alt="32x32">
+        </div>
+        <div class="zoomed">
+          <div class="favicon-container" style="width:128px; height:128px;">
+            <img src="icons/v2/lung-v2-a1-dark-flat.png" alt="32x32 zoomed">
+          </div>
+        </div>
+      </div>
+      <div class="favicon-label">
+        <strong>32 x 32</strong>
+        favicon-32x32.png
+        <span><br>Standard favicon (Retina tabs)</span>
+      </div>
+    </div>
+
+    <!-- 48x48 -->
+    <div class="favicon-item">
+      <div class="preview-scaled">
+        <div class="favicon-container" style="width:48px; height:48px;">
+          <img src="icons/v2/lung-v2-a1-dark-flat.png" alt="48x48">
+        </div>
+        <div class="zoomed">
+          <div class="favicon-container" style="width:144px; height:144px;">
+            <img src="icons/v2/lung-v2-a1-dark-flat.png" alt="48x48 zoomed">
+          </div>
+        </div>
+      </div>
+      <div class="favicon-label">
+        <strong>48 x 48</strong>
+        favicon-48x48.png
+        <span><br>Windows site icon</span>
+      </div>
+    </div>
+
+    <!-- 180x180 -->
+    <div class="favicon-item">
+      <div class="favicon-container" style="width:180px; height:180px;">
+        <img src="icons/v2/lung-v2-a1-dark-flat.png" alt="180x180">
+      </div>
+      <div class="favicon-label">
+        <strong>180 x 180</strong>
+        apple-touch-icon.png
+        <span><br>iOS home screen bookmark</span>
+      </div>
+    </div>
+
+    <!-- 192x192 -->
+    <div class="favicon-item">
+      <div class="favicon-container" style="width:192px; height:192px;">
+        <img src="icons/v2/lung-v2-a1-dark-flat.png" alt="192x192">
+      </div>
+      <div class="favicon-label">
+        <strong>192 x 192</strong>
+        android-chrome-192x192.png
+        <span><br>Android Chrome / PWA icon</span>
+      </div>
+    </div>
+
+    <!-- 512x512 -->
+    <div class="favicon-item">
+      <div class="favicon-container" style="width:512px; height:512px;">
+        <img src="icons/v2/lung-v2-a1-dark-flat.png" alt="512x512">
+      </div>
+      <div class="favicon-label">
+        <strong>512 x 512</strong>
+        android-chrome-512x512.png
+        <span><br>PWA splash / manifest icon</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="instructions">
+    <h2>How to Export</h2>
+    <ol>
+      <li>Open this file in Chrome or Safari</li>
+      <li>Open DevTools (Cmd+Option+I)</li>
+      <li>For each size, right-click the <code>.favicon-container</code> element and select "Inspect"</li>
+      <li>In Chrome: Cmd+Shift+P, type "Capture node screenshot" and press Enter</li>
+      <li>The browser will save a PNG at the exact pixel dimensions of the container</li>
+      <li>Rename each export to its target filename (e.g. <code>apple-touch-icon.png</code>)</li>
+      <li>For <code>favicon.ico</code>, combine the 16x16, 32x32, and 48x48 PNGs using an ICO converter</li>
+    </ol>
+  </div>
+
+</body>
+</html>

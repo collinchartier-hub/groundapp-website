@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ground App - Integration Logos</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #0A0A0A;
+      color: #E8E0D4;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      padding: 40px;
+      min-height: 100vh;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 28px;
+      font-weight: 300;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+      color: #C4935A;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 48px;
+      letter-spacing: 1px;
+    }
+
+    /* Combined preview row */
+    .preview-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 48px;
+      margin-bottom: 64px;
+      padding: 40px;
+      border: 1px solid rgba(196, 147, 90, 0.15);
+      border-radius: 16px;
+      background: rgba(196, 147, 90, 0.03);
+    }
+
+    .preview-row .logo-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .preview-row .logo-item span {
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #888;
+    }
+
+    /* Individual logo sections */
+    .logos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+      margin-top: 32px;
+    }
+
+    .logo-card {
+      border: 1px solid rgba(196, 147, 90, 0.12);
+      border-radius: 12px;
+      padding: 32px;
+      background: rgba(255, 255, 255, 0.02);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .logo-card h3 {
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+      color: #C4935A;
+    }
+
+    .logo-card .sizes {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-top: 20px;
+    }
+
+    .logo-card .sizes .size-label {
+      font-size: 10px;
+      color: #666;
+      text-align: center;
+      margin-top: 4px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 300;
+      letter-spacing: 1.5px;
+      margin: 48px 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(196, 147, 90, 0.2);
+      color: #C4935A;
+    }
+
+    .usage-note {
+      font-size: 12px;
+      color: #666;
+      line-height: 1.6;
+      margin-top: 32px;
+      padding: 20px;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 8px;
+    }
+
+    .usage-note code {
+      background: rgba(196, 147, 90, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+      color: #C4935A;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>INTEGRATION LOGOS</h1>
+  <p class="subtitle">Ground App Health Integrations</p>
+
+  <!-- ============================================ -->
+  <!-- COMBINED PREVIEW ROW                         -->
+  <!-- ============================================ -->
+  <div class="preview-row">
+
+    <!-- Oura Ring -->
+    <div class="logo-item">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="56" height="56">
+        <circle cx="40" cy="40" r="28" fill="none" stroke="#C4935A" stroke-width="2"/>
+        <circle cx="40" cy="40" r="20" fill="none" stroke="#C4935A" stroke-width="1.5"/>
+        <circle cx="33" cy="40" r="1.5" fill="#C4935A"/>
+        <circle cx="40" cy="40" r="1.5" fill="#C4935A"/>
+        <circle cx="47" cy="40" r="1.5" fill="#C4935A"/>
+      </svg>
+      <span>Oura</span>
+    </div>
+
+    <!-- WHOOP -->
+    <div class="logo-item">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="56" height="56">
+        <rect x="16" y="24" width="48" height="32" rx="16" ry="16" fill="none" stroke="#C4935A" stroke-width="2"/>
+        <rect x="28" y="28" width="24" height="24" rx="4" ry="4" fill="none" stroke="#C4935A" stroke-width="1.5"/>
+        <line x1="33" y1="36" x2="47" y2="36" stroke="#C4935A" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="33" y1="40" x2="44" y2="40" stroke="#C4935A" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="33" y1="44" x2="40" y2="44" stroke="#C4935A" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <span>WHOOP</span>
+    </div>
+
+    <!-- Apple Watch -->
+    <div class="logo-item">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="56" height="56">
+        <rect x="22" y="14" width="36" height="52" rx="10" ry="10" fill="none" stroke="#C4935A" stroke-width="2"/>
+        <rect x="58" y="30" width="4" height="10" rx="2" ry="2" fill="#C4935A"/>
+        <rect x="27" y="20" width="26" height="40" rx="6" ry="6" fill="none" stroke="#C4935A" stroke-width="1" opacity="0.5"/>
+        <circle cx="40" cy="40" r="10" fill="none" stroke="#C4935A" stroke-width="1.5" stroke-dasharray="50 14" stroke-linecap="round"/>
+        <circle cx="40" cy="40" r="6" fill="none" stroke="#C4935A" stroke-width="1.5" stroke-dasharray="30 10" stroke-linecap="round" opacity="0.7"/>
+      </svg>
+      <span>Apple Watch</span>
+    </div>
+
+    <!-- Garmin -->
+    <div class="logo-item">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="56" height="56">
+        <path d="M20 16 L60 40 L20 64 L30 40 Z" fill="none" stroke="#C4935A" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M28 28 L48 40 L28 52 L34 40 Z" fill="none" stroke="#C4935A" stroke-width="1" opacity="0.4"/>
+      </svg>
+      <span>Garmin</span>
+    </div>
+
+    <!-- Apple Health -->
+    <div class="logo-item">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="56" height="56">
+        <path d="M40 66 C40 66 12 48 12 30 C12 20 20 12 30 12 C35 12 38 15 40 18 C42 15 45 12 50 12 C60 12 68 20 68 30 C68 48 40 66 40 66 Z" fill="none" stroke="#C4935A" stroke-width="2" stroke-linejoin="round"/>
+        <polyline points="22,38 32,38 35,30 38,46 41,34 44,42 47,38 58,38" fill="none" stroke="#C4935A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>Apple Health</span>
+    </div>
+
+  </div>
+
+  <!-- ============================================ -->
+  <!-- INDIVIDUAL LOGO DETAILS                      -->
+  <!-- ============================================ -->
+  <h2 class="section-title">Individual Logos at Multiple Sizes</h2>
+
+  <div class="logos-grid">
+
+    <!-- Oura Ring Card -->
+    <div class="logo-card">
+      <h3>OURA RING</h3>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
+        <circle cx="40" cy="40" r="28" fill="none" stroke="#C4935A" stroke-width="2"/>
+        <circle cx="40" cy="40" r="20" fill="none" stroke="#C4935A" stroke-width="1.5"/>
+        <circle cx="33" cy="40" r="1.5" fill="#C4935A"/>
+        <circle cx="40" cy="40" r="1.5" fill="#C4935A"/>
+        <circle cx="47" cy="40" r="1.5" fill="#C4935A"/>
+      </svg>
+      <div class="sizes">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="48" height="48">
+            <circle cx="40" cy="40" r="28" fill="none" stroke="#C4935A" stroke-width="2"/>
+            <circle cx="40" cy="40" r="20" fill="none" stroke="#C4935A" stroke-width="1.5"/>
+            <circle cx="33" cy="40" r="1.5" fill="#C4935A"/>
+            <circle cx="40" cy="40" r="1.5" fill="#C4935A"/>
+            <circle cx="47" cy="40" r="1.5" fill="#C4935A"/>
+          </svg>
+          <div class="size-label">48px</div>
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="32" height="32">
+            <circle cx="40" cy="40" r="28" fill="none" stroke="#C4935A" stroke-width="2"/>
+            <circle cx="40" cy="40" r="20" fill="none" stroke="#C4935A" stroke-width="1.5"/>
+            <circle cx="33" cy="40" r="1.5" fill="#C4935A"/>
+            <circle cx="40" cy="40" r="1.5" fill="#C4935A"/>
+            <circle cx="47" cy="40" r="1.5" fill="#C4935A"/>
+          </svg>
+          <div class="size-label">32px</div>
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="20" height="20">
+            <circle cx="40" cy="40" r="28" fill="none" stroke="#C4935A" stroke-width="2"/>
+            <circle cx="40" cy="40" r="20" fill="none" stroke="#C4935A" stroke-width="1.5"/>
+            <circle cx="33" cy="40" r="1.5" fill="#C4935A"/>
+            <circle cx="40" cy="40" r="1.5" fill="#C4935A"/>
+            <circle cx="47" cy="40" r="1.5" fill="#C4935A"/>
+          </svg>
+          <div class="size-label">20px</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WHOOP Card -->
+    <div class="logo-card">
+      <h3>WHOOP</h3>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
+        <rect x="16" y="24" width="48" height="32" rx="16" ry="16" fill="none" stroke="#C4935A" stroke-width="2"/>
+        <rect x="28" y="28" width="24" height="24" rx="4" ry="4" fill="none" stroke="#C4935A" stroke-width="1.5"/>
+        <line x1="33" y1="36" x2="47" y2="36" stroke="#C4935A" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="33" y1="40" x2="44" y2="40" stroke="#C4935A" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="33" y1="44" x2="40" y2="44" stroke="#C4935A" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <div class="sizes">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="48" height="48">
+            <rect x="16" y="24" width="48" height="32" rx="16" ry="16" fill="none" stroke="#C4935A" stroke-width="2"/>
+            <rect x="28" y="28" width="24" height="24" rx="4" ry="4" fill="none" stroke="#C4935A" stroke-width="1.5"/>
+            <line x1="33" y1="36" x2="47" y2="36" stroke="#C4935A" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="33" y1="40" x2="44" y2="40" stroke="#C4935A" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="33" y1="44" x2="40" y2="44" stroke="#C4935A" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <div class="size-label">48px</div>
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="32" height="32">
+            <rect x="16" y="24" width="48" height="32" rx="16" ry="16" fill="none" stroke="#C4935A" stroke-width="2"/>
+            <rect x="28" y="28" width="24" height="24" rx="4" ry="4" fill="none" stroke="#C4935A" stroke-width="1.5"/>
+            <line x1="33" y1="36" x2="47" y2="36" stroke="#C4935A" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="33" y1="40" x2="44" y2="40" stroke="#C4935A" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="33" y1="44" x2="40" y2="44" stroke="#C4935A" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <div class="size-label">32px</div>
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="20" height="20">
+            <rect x="16" y="24" width="48" height="32" rx="16" ry="16" fill="none" stroke="#C4935A" stroke-width="2"/>
+            <rect x="28" y="28" width="24" height="24" rx="4" ry="4" fill="none" stroke="#C4935A" stroke-width="1.5"/>
+            <line x1="33" y1="36" x2="47" y2="36" stroke="#C4935A" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="33" y1="40" x2="44" y2="40" stroke="#C4935A" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="33" y1="44" x2="40" y2="44" stroke="#C4935A" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <div class="size-label">20px</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Apple Watch Card -->
+    <div class="logo-card">
+      <h3>APPLE WATCH</h3>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
+        <rect x="22" y="14" width="36" height="52" rx="10" ry="10" fill="none" stroke="#C4935A" stroke-width="2"/>
+        <rect x="58" y="30" width="4" height="10" rx="2" ry="2" fill="#C4935A"/>
+        <rect x="27" y="20" width="26" height="40" rx="6" ry="6" fill="none" stroke="#C4935A" stroke-width="1" opacity="0.5"/>
+        <circle cx="40" cy="40" r="10" fill="none" stroke="#C4935A" stroke-width="1.5" stroke-dasharray="50 14" stroke-linecap="round"/>
+        <circle cx="40" cy="40" r="6" fill="none" stroke="#C4935A" stroke-width="1.5" stroke-dasharray="30 10" stroke-linecap="round" opacity="0.7"/>
+      </svg>
+      <div class="sizes">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="48" height="48">
+            <rect x="22" y="14" width="36" height="52" rx="10" ry="10" fill="none" stroke="#C4935A" stroke-width="2"/>
+            <rect x="58" y="30" width="4" height="10" rx="2" ry="2" fill="#C4935A"/>
+            <rect x="27" y="20" width="26" height="40" rx="6" ry="6" fill="none" stroke="#C4935A" stroke-width="1" opacity="0.5"/>
+            <circle cx="40" cy="40" r="10" fill="none" stroke="#C4935A" stroke-width="1.5" stroke-dasharray="50 14" stroke-linecap="round"/>
+            <circle cx="40" cy="40" r="6" fill="none" stroke="#C4935A" stroke-width="1.5" stroke-dasharray="30 10" stroke-linecap="round" opacity="0.7"/>
+          </svg>
+          <div class="size-label">48px</div>
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="32" height="32">
+            <rect x="22" y="14" width="36" height="52" rx="10" ry="10" fill="none" stroke="#C4935A" stroke-width="2"/>
+            <rect x="58" y="30" width="4" height="10" rx="2" ry="2" fill="#C4935A"/>
+            <rect x="27" y="20" width="26" height="40" rx="6" ry="6" fill="none" stroke="#C4935A" stroke-width="1" opacity="0.5"/>
+            <circle cx="40" cy="40" r="10" fill="none" stroke="#C4935A" stroke-width="1.5" stroke-dasharray="50 14" stroke-linecap="round"/>
+            <circle cx="40" cy="40" r="6" fill="none" stroke="#C4935A" stroke-width="1.5" stroke-dasharray="30 10" stroke-linecap="round" opacity="0.7"/>
+          </svg>
+          <div class="size-label">32px</div>
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="20" height="20">
+            <rect x="22" y="14" width="36" height="52" rx="10" ry="10" fill="none" stroke="#C4935A" stroke-width="2"/>
+            <rect x="58" y="30" width="4" height="10" rx="2" ry="2" fill="#C4935A"/>
+            <rect x="27" y="20" width="26" height="40" rx="6" ry="6" fill="none" stroke="#C4935A" stroke-width="1" opacity="0.5"/>
+            <circle cx="40" cy="40" r="10" fill="none" stroke="#C4935A" stroke-width="1.5" stroke-dasharray="50 14" stroke-linecap="round"/>
+            <circle cx="40" cy="40" r="6" fill="none" stroke="#C4935A" stroke-width="1.5" stroke-dasharray="30 10" stroke-linecap="round" opacity="0.7"/>
+          </svg>
+          <div class="size-label">20px</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Garmin Card -->
+    <div class="logo-card">
+      <h3>GARMIN</h3>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
+        <path d="M20 16 L60 40 L20 64 L30 40 Z" fill="none" stroke="#C4935A" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M28 28 L48 40 L28 52 L34 40 Z" fill="none" stroke="#C4935A" stroke-width="1" opacity="0.4"/>
+      </svg>
+      <div class="sizes">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="48" height="48">
+            <path d="M20 16 L60 40 L20 64 L30 40 Z" fill="none" stroke="#C4935A" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M28 28 L48 40 L28 52 L34 40 Z" fill="none" stroke="#C4935A" stroke-width="1" opacity="0.4"/>
+          </svg>
+          <div class="size-label">48px</div>
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="32" height="32">
+            <path d="M20 16 L60 40 L20 64 L30 40 Z" fill="none" stroke="#C4935A" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M28 28 L48 40 L28 52 L34 40 Z" fill="none" stroke="#C4935A" stroke-width="1" opacity="0.4"/>
+          </svg>
+          <div class="size-label">32px</div>
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="20" height="20">
+            <path d="M20 16 L60 40 L20 64 L30 40 Z" fill="none" stroke="#C4935A" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M28 28 L48 40 L28 52 L34 40 Z" fill="none" stroke="#C4935A" stroke-width="1" opacity="0.4"/>
+          </svg>
+          <div class="size-label">20px</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Apple Health Card -->
+    <div class="logo-card">
+      <h3>APPLE HEALTH</h3>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
+        <path d="M40 66 C40 66 12 48 12 30 C12 20 20 12 30 12 C35 12 38 15 40 18 C42 15 45 12 50 12 C60 12 68 20 68 30 C68 48 40 66 40 66 Z" fill="none" stroke="#C4935A" stroke-width="2" stroke-linejoin="round"/>
+        <polyline points="22,38 32,38 35,30 38,46 41,34 44,42 47,38 58,38" fill="none" stroke="#C4935A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="sizes">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="48" height="48">
+            <path d="M40 66 C40 66 12 48 12 30 C12 20 20 12 30 12 C35 12 38 15 40 18 C42 15 45 12 50 12 C60 12 68 20 68 30 C68 48 40 66 40 66 Z" fill="none" stroke="#C4935A" stroke-width="2" stroke-linejoin="round"/>
+            <polyline points="22,38 32,38 35,30 38,46 41,34 44,42 47,38 58,38" fill="none" stroke="#C4935A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <div class="size-label">48px</div>
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="32" height="32">
+            <path d="M40 66 C40 66 12 48 12 30 C12 20 20 12 30 12 C35 12 38 15 40 18 C42 15 45 12 50 12 C60 12 68 20 68 30 C68 48 40 66 40 66 Z" fill="none" stroke="#C4935A" stroke-width="2" stroke-linejoin="round"/>
+            <polyline points="22,38 32,38 35,30 38,46 41,34 44,42 47,38 58,38" fill="none" stroke="#C4935A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <div class="size-label">32px</div>
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="20" height="20">
+            <path d="M40 66 C40 66 12 48 12 30 C12 20 20 12 30 12 C35 12 38 15 40 18 C42 15 45 12 50 12 C60 12 68 20 68 30 C68 48 40 66 40 66 Z" fill="none" stroke="#C4935A" stroke-width="2" stroke-linejoin="round"/>
+            <polyline points="22,38 32,38 35,30 38,46 41,34 44,42 47,38 58,38" fill="none" stroke="#C4935A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <div class="size-label">20px</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Usage Notes -->
+  <div class="usage-note">
+    <strong>Usage:</strong><br><br>
+    Standalone SVG files are located in the same directory:<br>
+    <code>oura.svg</code> &middot;
+    <code>whoop.svg</code> &middot;
+    <code>apple-watch.svg</code> &middot;
+    <code>garmin.svg</code> &middot;
+    <code>apple-health.svg</code><br><br>
+    All SVGs use a <code>viewBox="0 0 80 80"</code> and scale cleanly to any size.<br>
+    Primary color: <code>#C4935A</code> (Ground App gold) on transparent background.<br>
+    Stroke weights: 1.5-2px at native 80px size.
+  </div>
+
+</body>
+</html>

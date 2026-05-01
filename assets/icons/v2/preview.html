@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ground App - Lung Logo Variations (Round 2)</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #1A110E;
+    color: #E8DDD0;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
+    padding: 40px 20px;
+  }
+  h1 {
+    text-align: center;
+    font-family: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+    color: #C4935A;
+    font-size: 36px;
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+  }
+  .subtitle {
+    text-align: center;
+    color: #A89585;
+    font-size: 16px;
+    margin-bottom: 16px;
+  }
+  .section-label {
+    text-align: center;
+    font-family: 'Iowan Old Style', Palatino, Georgia, serif;
+    color: #C4935A;
+    font-size: 14px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin: 50px 0 24px;
+    position: relative;
+  }
+  .section-label::before,
+  .section-label::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 80px;
+    height: 1px;
+    background: rgba(196,147,90,0.3);
+  }
+  .section-label::before { right: calc(50% + 100px); }
+  .section-label::after { left: calc(50% + 100px); }
+
+  .grid {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 24px;
+  }
+  .card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(232,221,208,0.08);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+  }
+  .card:hover {
+    border-color: rgba(196,147,90,0.5);
+    transform: translateY(-6px);
+    box-shadow: 0 12px 40px rgba(196,147,90,0.15);
+  }
+  .card.selected {
+    border-color: #C4935A;
+    box-shadow: 0 0 0 2px #C4935A, 0 12px 40px rgba(196,147,90,0.2);
+  }
+  .card-label {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #C4935A;
+    color: #1A110E;
+    font-weight: 700;
+    font-size: 13px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+  }
+  .img-wrap {
+    background: #fff;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    position: relative;
+  }
+  .img-wrap.dark { background: #1A110E; }
+  .img-wrap img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+  .card-info {
+    padding: 14px 16px;
+  }
+  .card-name {
+    font-family: 'Iowan Old Style', Palatino, Georgia, serif;
+    color: #C4935A;
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+  .card-desc {
+    font-size: 12px;
+    color: #A89585;
+    line-height: 1.4;
+  }
+  .card-source {
+    font-size: 10px;
+    color: #6B5B4E;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 6px;
+  }
+
+  /* Context previews */
+  .context-section {
+    max-width: 1400px;
+    margin: 70px auto 0;
+    text-align: center;
+  }
+  .context-section h2 {
+    font-family: 'Iowan Old Style', Palatino, Georgia, serif;
+    color: #C4935A;
+    font-size: 24px;
+    margin-bottom: 30px;
+  }
+
+  /* Nav mockups */
+  .nav-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  .nav-mock {
+    background: rgba(26,17,14,0.95);
+    border: 1px solid rgba(232,221,208,0.08);
+    border-radius: 12px;
+    padding: 12px 28px;
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    transition: border-color 0.3s;
+  }
+  .nav-mock:hover { border-color: rgba(196,147,90,0.3); }
+  .nav-mock img {
+    height: 30px;
+    width: 30px;
+    object-fit: contain;
+  }
+  .nav-mock .brand {
+    font-family: 'Iowan Old Style', Palatino, Georgia, serif;
+    color: #C4935A;
+    font-size: 18px;
+    letter-spacing: 0.15em;
+    font-weight: 600;
+  }
+  .nav-mock .links {
+    color: #A89585;
+    font-size: 13px;
+    display: flex;
+    gap: 16px;
+  }
+  .nav-mock .var-label {
+    font-size: 11px;
+    color: #6B5B4E;
+    min-width: 20px;
+    text-align: right;
+  }
+
+  /* Size comparison */
+  .size-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .size-col {
+    text-align: center;
+  }
+  .size-col .var-id {
+    font-size: 12px;
+    color: #C4935A;
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+  .size-col .sizes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  .size-item img {
+    background: #fff;
+    border-radius: 6px;
+    padding: 3px;
+  }
+  .size-item .px {
+    font-size: 10px;
+    color: #6B5B4E;
+    margin-top: 4px;
+  }
+
+  /* App icon mockup */
+  .icon-row {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin: 30px 0;
+  }
+  .app-icon-mock {
+    text-align: center;
+  }
+  .app-icon-mock .icon-frame {
+    width: 80px;
+    height: 80px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #1A110E 0%, #2a1f1a 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    margin: 0 auto 8px;
+  }
+  .app-icon-mock .icon-frame img {
+    width: 52px;
+    height: 52px;
+    object-fit: contain;
+  }
+  .app-icon-mock .icon-label {
+    font-size: 11px;
+    color: #A89585;
+  }
+
+  @media (max-width: 1100px) {
+    .grid { grid-template-columns: repeat(3, 1fr); }
+    .size-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 700px) {
+    .grid { grid-template-columns: repeat(2, 1fr); }
+    .size-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<h1>Lung Logo: Round 2</h1>
+<p class="subtitle">10 variations on the gold breath symbol. Click to compare.</p>
+
+<!-- RECRAFT SET -->
+<div class="section-label">Recraft Variations (A - E)</div>
+<div class="grid">
+  <div class="card">
+    <div class="card-label">A</div>
+    <div class="img-wrap"><img src="lung-v2-a-minimal.png" alt="Minimal"></div>
+    <div class="card-info">
+      <div class="card-name">Minimal Silhouette</div>
+      <div class="card-desc">Solid gold lung with white bronchi cut out. Textured gold finish. Bold and recognizable.</div>
+      <div class="card-source">Recraft / SVG available</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-label">B</div>
+    <div class="img-wrap"><img src="lung-v2-b-organic.png" alt="Organic"></div>
+    <div class="card-info">
+      <div class="card-name">Organic / Flowing</div>
+      <div class="card-desc">Art Nouveau-style sweeping curves forming the lung shape. Spiraling tendrils. Elegant and premium.</div>
+      <div class="card-source">Recraft / SVG available</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-label">C</div>
+    <div class="img-wrap"><img src="lung-v2-c-roots-hybrid.png" alt="Roots Hybrid"></div>
+    <div class="card-info">
+      <div class="card-name">Lungs + Roots</div>
+      <div class="card-desc">Trachea becomes trunk, bronchi become branches, roots extend below. Breath meets grounding in one symbol.</div>
+      <div class="card-source">Recraft / SVG available</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-label">D</div>
+    <div class="img-wrap"><img src="lung-v2-d-circular.png" alt="Circular"></div>
+    <div class="card-info">
+      <div class="card-name">Circular Emblem</div>
+      <div class="card-desc">Lungs inside a circle with rope/twisted border detail. Badge-like, stamp-ready. Works as app icon.</div>
+      <div class="card-source">Recraft / SVG available</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-label">E</div>
+    <div class="img-wrap"><img src="lung-v2-e-breath-lines.png" alt="Breath Lines"></div>
+    <div class="card-info">
+      <div class="card-name">Breath Lines</div>
+      <div class="card-desc">Lungs with radiating breath energy and sunburst effect. Dynamic, shows the act of breathing.</div>
+      <div class="card-source">Recraft / SVG available</div>
+    </div>
+  </div>
+</div>
+
+<!-- FAL SET -->
+<div class="section-label">FAL Variations (F - J)</div>
+<div class="grid">
+  <div class="card">
+    <div class="card-label">F</div>
+    <div class="img-wrap"><img src="lung-v2-f-bold.png" alt="Bold"></div>
+    <div class="card-info">
+      <div class="card-name">Bold / Thick</div>
+      <div class="card-desc">Confident thick strokes showing trachea, bronchi, and bronchial tree. Classic anatomy icon. Strong presence.</div>
+      <div class="card-source">FAL Ideogram v2</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-label">G</div>
+    <div class="img-wrap"><img src="lung-v2-g-geometric.png" alt="Geometric"></div>
+    <div class="card-info">
+      <div class="card-name">Geometric</div>
+      <div class="card-desc">Low-poly wireframe construction. Triangulated facets within lung form. Modern and technical.</div>
+      <div class="card-source">FAL Ideogram v2</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-label">H</div>
+    <div class="img-wrap"><img src="lung-v2-h-negative-space.png" alt="Negative Space"></div>
+    <div class="card-info">
+      <div class="card-name">Negative Space</div>
+      <div class="card-desc">Gold disc with lung shape revealed in white negative space. Ornate bronchial branches. Premium metallic look.</div>
+      <div class="card-source">FAL Ideogram v2</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-label">I</div>
+    <div class="img-wrap"><img src="lung-v2-i-double-line.png" alt="Double Line"></div>
+    <div class="card-info">
+      <div class="card-name">Double Line</div>
+      <div class="card-desc">Two parallel gold outlines forming contours. Art deco stained-glass effect. Elegant and architectural.</div>
+      <div class="card-source">FAL Ideogram v2</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-label">J</div>
+    <div class="img-wrap"><img src="lung-v2-j-leaves.png" alt="Leaves"></div>
+    <div class="card-info">
+      <div class="card-name">Lungs as Leaves</div>
+      <div class="card-desc">Bronchial branches terminate in leaf/petal shapes. Merges respiratory with botanical. Natural and grounded.</div>
+      <div class="card-source">FAL Ideogram v2</div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTEXT: App Icons -->
+<div class="context-section">
+  <h2>As App Icons</h2>
+  <div class="icon-row">
+    <div class="app-icon-mock">
+      <div class="icon-frame"><img src="lung-v2-a-minimal.png"></div>
+      <div class="icon-label">A</div>
+    </div>
+    <div class="app-icon-mock">
+      <div class="icon-frame"><img src="lung-v2-b-organic.png"></div>
+      <div class="icon-label">B</div>
+    </div>
+    <div class="app-icon-mock">
+      <div class="icon-frame"><img src="lung-v2-c-roots-hybrid.png"></div>
+      <div class="icon-label">C</div>
+    </div>
+    <div class="app-icon-mock">
+      <div class="icon-frame"><img src="lung-v2-d-circular.png"></div>
+      <div class="icon-label">D</div>
+    </div>
+    <div class="app-icon-mock">
+      <div class="icon-frame"><img src="lung-v2-e-breath-lines.png"></div>
+      <div class="icon-label">E</div>
+    </div>
+    <div class="app-icon-mock">
+      <div class="icon-frame"><img src="lung-v2-f-bold.png"></div>
+      <div class="icon-label">F</div>
+    </div>
+    <div class="app-icon-mock">
+      <div class="icon-frame"><img src="lung-v2-g-geometric.png"></div>
+      <div class="icon-label">G</div>
+    </div>
+    <div class="app-icon-mock">
+      <div class="icon-frame"><img src="lung-v2-h-negative-space.png"></div>
+      <div class="icon-label">H</div>
+    </div>
+    <div class="app-icon-mock">
+      <div class="icon-frame"><img src="lung-v2-i-double-line.png"></div>
+      <div class="icon-label">I</div>
+    </div>
+    <div class="app-icon-mock">
+      <div class="icon-frame"><img src="lung-v2-j-leaves.png"></div>
+      <div class="icon-label">J</div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTEXT: Nav bars -->
+<div class="context-section">
+  <h2>In Navigation</h2>
+  <div class="nav-row">
+    <div class="nav-mock">
+      <span class="var-label">A</span>
+      <img src="lung-v2-a-minimal.png">
+      <span class="brand">GROUND</span>
+      <div class="links"><span>Features</span><span>Programs</span><span>About</span></div>
+    </div>
+    <div class="nav-mock">
+      <span class="var-label">B</span>
+      <img src="lung-v2-b-organic.png">
+      <span class="brand">GROUND</span>
+      <div class="links"><span>Features</span><span>Programs</span><span>About</span></div>
+    </div>
+    <div class="nav-mock">
+      <span class="var-label">C</span>
+      <img src="lung-v2-c-roots-hybrid.png">
+      <span class="brand">GROUND</span>
+      <div class="links"><span>Features</span><span>Programs</span><span>About</span></div>
+    </div>
+    <div class="nav-mock">
+      <span class="var-label">F</span>
+      <img src="lung-v2-f-bold.png">
+      <span class="brand">GROUND</span>
+      <div class="links"><span>Features</span><span>Programs</span><span>About</span></div>
+    </div>
+    <div class="nav-mock">
+      <span class="var-label">H</span>
+      <img src="lung-v2-h-negative-space.png">
+      <span class="brand">GROUND</span>
+      <div class="links"><span>Features</span><span>Programs</span><span>About</span></div>
+    </div>
+    <div class="nav-mock">
+      <span class="var-label">J</span>
+      <img src="lung-v2-j-leaves.png">
+      <span class="brand">GROUND</span>
+      <div class="links"><span>Features</span><span>Programs</span><span>About</span></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

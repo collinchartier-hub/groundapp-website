@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A1 Lung Logo - Final Brand Versions</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #1A110E;
+    color: #E8DDD0;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
+    padding: 40px 20px;
+  }
+  h1 {
+    text-align: center;
+    font-family: 'Iowan Old Style', Palatino, Georgia, serif;
+    color: #C4935A;
+    font-size: 32px;
+    margin-bottom: 8px;
+  }
+  .subtitle {
+    text-align: center;
+    color: #A89585;
+    font-size: 15px;
+    margin-bottom: 50px;
+  }
+  .grid {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-bottom: 60px;
+  }
+  .card {
+    border: 1px solid rgba(232,221,208,0.1);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .card:hover { border-color: rgba(196,147,90,0.5); }
+  .card-img {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .card-img img, .card-img object {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .bg-checker {
+    background-image:
+      linear-gradient(45deg, #ccc 25%, transparent 25%),
+      linear-gradient(-45deg, #ccc 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #ccc 75%),
+      linear-gradient(-45deg, transparent 75%, #ccc 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+  }
+  .bg-obsidian { background: #1A110E; }
+  .bg-parchment { background: #F4F0E8; }
+  .card-info {
+    padding: 16px 20px;
+    border-top: 1px solid rgba(232,221,208,0.06);
+  }
+  .card-name {
+    font-family: 'Iowan Old Style', Palatino, Georgia, serif;
+    color: #C4935A;
+    font-size: 17px;
+    margin-bottom: 4px;
+  }
+  .card-desc {
+    font-size: 13px;
+    color: #A89585;
+    line-height: 1.5;
+  }
+  .card-file {
+    font-size: 11px;
+    color: #6B5B4E;
+    font-family: 'SF Mono', monospace;
+    margin-top: 6px;
+  }
+  .section-title {
+    text-align: center;
+    font-family: 'Iowan Old Style', Palatino, Georgia, serif;
+    color: #C4935A;
+    font-size: 24px;
+    margin-bottom: 30px;
+  }
+  .nav-demo {
+    max-width: 700px;
+    margin: 0 auto 30px;
+    background: rgba(26,17,14,0.95);
+    border: 1px solid rgba(232,221,208,0.08);
+    border-radius: 12px;
+    padding: 14px 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .nav-demo img {
+    height: 36px;
+    width: 36px;
+    object-fit: contain;
+  }
+  .nav-brand {
+    font-family: 'Iowan Old Style', Palatino, Georgia, serif;
+    color: #C4935A;
+    font-size: 20px;
+    letter-spacing: 0.15em;
+    font-weight: 600;
+  }
+  .nav-links {
+    color: #A89585;
+    font-size: 14px;
+    display: flex;
+    gap: 18px;
+    margin-left: auto;
+  }
+  .favicon-row {
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    gap: 30px;
+    margin: 20px 0 40px;
+  }
+  .fav { text-align: center; }
+  .fav img {
+    border-radius: 4px;
+    background: #1A110E;
+    border: 1px solid rgba(232,221,208,0.1);
+  }
+  .fav .label {
+    margin-top: 6px;
+    font-size: 11px;
+    color: #A89585;
+  }
+</style>
+</head>
+<body>
+
+<h1>A1 Lung Logo: Final Brand Versions</h1>
+<p class="subtitle">Your selected logo isolated on brand backgrounds + transparent</p>
+
+<div class="grid">
+  <div class="card">
+    <div class="card-img bg-checker">
+      <img src="lung-a1-transparent.svg" alt="Transparent">
+    </div>
+    <div class="card-info">
+      <div class="card-name">Transparent</div>
+      <div class="card-desc">No background. Use for overlays, app icons, and anywhere you need the lungs on a custom background.</div>
+      <div class="card-file">lung-a1-transparent.svg</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-img bg-obsidian">
+      <img src="lung-a1-obsidian.svg" alt="Obsidian">
+    </div>
+    <div class="card-info">
+      <div class="card-name">Obsidian Dark</div>
+      <div class="card-desc">Brand dark background (#1A110E). Primary usage for website, app, and marketing materials.</div>
+      <div class="card-file">lung-a1-obsidian.svg</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-img bg-parchment">
+      <img src="lung-a1-parchment.svg" alt="Parchment">
+    </div>
+    <div class="card-info">
+      <div class="card-name">Parchment Light</div>
+      <div class="card-desc">Brand light background (#F4F0E8). Use for light-mode contexts, print materials, and business cards.</div>
+      <div class="card-file">lung-a1-parchment.svg</div>
+    </div>
+  </div>
+</div>
+
+<div class="section-title">In Context: Nav Bar</div>
+<div class="nav-demo">
+  <img src="lung-a1-transparent.svg" alt="">
+  <span class="nav-brand">GROUND</span>
+  <div class="nav-links"><span>Features</span><span>Programs</span><span>About</span></div>
+</div>
+
+<div class="section-title" style="margin-top:50px;">Favicon Sizes</div>
+<div class="favicon-row">
+  <div class="fav"><img src="lung-a1-obsidian.svg" width="128" height="128"><div class="label">128px</div></div>
+  <div class="fav"><img src="lung-a1-obsidian.svg" width="64" height="64"><div class="label">64px</div></div>
+  <div class="fav"><img src="lung-a1-obsidian.svg" width="32" height="32"><div class="label">32px</div></div>
+  <div class="fav"><img src="lung-a1-obsidian.svg" width="16" height="16"><div class="label">16px</div></div>
+</div>
+
+</body>
+</html>

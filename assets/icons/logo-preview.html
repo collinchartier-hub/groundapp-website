@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ground App - Logo Concepts Preview</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #1A110E;
+    color: #E8DDD0;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
+    padding: 40px 20px;
+  }
+  h1 {
+    text-align: center;
+    font-family: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+    color: #C4935A;
+    font-size: 36px;
+    margin-bottom: 10px;
+    letter-spacing: 0.05em;
+  }
+  .subtitle {
+    text-align: center;
+    color: #A89585;
+    font-size: 16px;
+    margin-bottom: 60px;
+  }
+  .concepts {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+  }
+  .concept {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(232,221,208,0.08);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .concept:hover {
+    border-color: rgba(196,147,90,0.4);
+    transform: translateY(-4px);
+  }
+  .concept-number {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: #C4935A;
+    color: #1A110E;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+  }
+  .img-container {
+    position: relative;
+    background: #fff;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+  }
+  .img-container img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+  .dark-bg .img-container {
+    background: #1A110E;
+  }
+  .concept-info {
+    padding: 20px;
+  }
+  .concept-name {
+    font-family: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+    color: #C4935A;
+    font-size: 18px;
+    margin-bottom: 6px;
+  }
+  .concept-source {
+    font-size: 11px;
+    color: #A89585;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+  .concept-desc {
+    font-size: 14px;
+    color: #A89585;
+    line-height: 1.5;
+  }
+  .concept-tags {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+  .tag {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid rgba(196,147,90,0.3);
+    color: #C4935A;
+  }
+  .tag.rec {
+    background: rgba(196,147,90,0.15);
+    border-color: #C4935A;
+  }
+
+  /* Preview on dark section */
+  .preview-section {
+    max-width: 1200px;
+    margin: 80px auto 0;
+    text-align: center;
+  }
+  .preview-section h2 {
+    font-family: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+    color: #C4935A;
+    font-size: 28px;
+    margin-bottom: 40px;
+  }
+  .preview-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 60px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+  }
+  .preview-card {
+    text-align: center;
+  }
+  .preview-card img {
+    border-radius: 12px;
+  }
+  .preview-card .label {
+    margin-top: 8px;
+    font-size: 12px;
+    color: #A89585;
+  }
+
+  /* Nav mockup */
+  .nav-mockup {
+    background: rgba(26,17,14,0.95);
+    border: 1px solid rgba(232,221,208,0.08);
+    border-radius: 12px;
+    padding: 16px 32px;
+    display: inline-flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+  .nav-mockup img {
+    height: 32px;
+    width: 32px;
+    object-fit: contain;
+    border-radius: 4px;
+  }
+  .nav-mockup .brand {
+    font-family: 'Iowan Old Style', Palatino, Georgia, serif;
+    color: #C4935A;
+    font-size: 20px;
+    letter-spacing: 0.15em;
+    font-weight: 600;
+  }
+  .nav-mockup .nav-links {
+    color: #A89585;
+    font-size: 14px;
+    display: flex;
+    gap: 20px;
+  }
+
+  /* Favicon preview */
+  .favicon-row {
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    gap: 30px;
+    margin: 30px 0;
+  }
+  .favicon-preview {
+    text-align: center;
+  }
+  .favicon-preview img {
+    border-radius: 4px;
+    background: #fff;
+    padding: 2px;
+  }
+  .favicon-preview .label {
+    margin-top: 6px;
+    font-size: 11px;
+    color: #A89585;
+  }
+
+  @media (max-width: 900px) {
+    .concepts { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .concepts { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Ground App Logo Concepts</h1>
+<p class="subtitle">6 unique directions. Pick your favorite.</p>
+
+<div class="concepts">
+
+  <!-- Concept 1 -->
+  <div class="concept">
+    <div class="img-container">
+      <div class="concept-number">1</div>
+      <img src="ground-logo-concept-1-breath-symbol.png" alt="Breath Symbol">
+    </div>
+    <div class="concept-info">
+      <div class="concept-source">Recraft + FAL</div>
+      <div class="concept-name">Breath Symbol</div>
+      <div class="concept-desc">Gold stylized lungs with trachea detail. Immediate breathwork association. Already in brand gold.</div>
+      <div class="concept-tags">
+        <span class="tag">On-brand color</span>
+        <span class="tag">Clear meaning</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Concept 2 -->
+  <div class="concept">
+    <div class="img-container">
+      <div class="concept-number">2</div>
+      <img src="ground-logo-concept-2-g-monogram.png" alt="G Monogram">
+    </div>
+    <div class="concept-info">
+      <div class="concept-source">Recraft + FAL</div>
+      <div class="concept-name">G Monogram</div>
+      <div class="concept-desc">Elegant serif lowercase "g" with 3D depth. Typographic approach. Would need gold recolor to match brand.</div>
+      <div class="concept-tags">
+        <span class="tag">Typographic</span>
+        <span class="tag">Needs recolor</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Concept 3 -->
+  <div class="concept">
+    <div class="img-container">
+      <div class="concept-number">3</div>
+      <img src="ground-logo-concept-3-tree-roots.png" alt="Tree Roots">
+    </div>
+    <div class="concept-info">
+      <div class="concept-source">Recraft + FAL</div>
+      <div class="concept-name">Tree of Life / Roots</div>
+      <div class="concept-desc">Tree with roots forming a circle, earth globe cradled in the root system. The strongest "grounding" metaphor. Needs gold recolor.</div>
+      <div class="concept-tags">
+        <span class="tag rec">Recommended</span>
+        <span class="tag">Brand aligned</span>
+        <span class="tag">Needs recolor</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Concept 4a -->
+  <div class="concept">
+    <div class="img-container dark-bg" style="background:#111;">
+      <div class="concept-number">4a</div>
+      <img src="ground-logo-concept-4-concentric-circles.png" alt="Sacred Geometry">
+    </div>
+    <div class="concept-info">
+      <div class="concept-source">Recraft</div>
+      <div class="concept-name">Sacred Geometry</div>
+      <div class="concept-desc">Golden flower of life / seed of life pattern on stone. Photographic style. Would need to be vectorized for logo use.</div>
+      <div class="concept-tags">
+        <span class="tag">Photographic</span>
+        <span class="tag">Needs vectorizing</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Concept 4b -->
+  <div class="concept">
+    <div class="img-container">
+      <div class="concept-number">4b</div>
+      <img src="ground-logo-concept-4-concentric-rings.png" alt="Concentric Rings Badge">
+    </div>
+    <div class="concept-info">
+      <div class="concept-source">FAL</div>
+      <div class="concept-name">Concentric Rings Badge</div>
+      <div class="concept-desc">Gold concentric rings in a badge/seal format with "MEDITATION" and "BREATHING RINGS" text. Text would need to be removed or replaced.</div>
+      <div class="concept-tags">
+        <span class="tag">Badge format</span>
+        <span class="tag">Needs text edit</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Concept 5 -->
+  <div class="concept">
+    <div class="img-container">
+      <div class="concept-number">5</div>
+      <img src="ground-logo-concept-5-breath-cycle.png" alt="Breath Cycle Line">
+    </div>
+    <div class="concept-info">
+      <div class="concept-source">Recraft + FAL</div>
+      <div class="concept-name">Breath Cycle Line</div>
+      <div class="concept-desc">Single continuous line forming a droplet with internal lotus curves. Elegant, minimal, premium. Dark teal, needs gold recolor.</div>
+      <div class="concept-tags">
+        <span class="tag">Minimal</span>
+        <span class="tag">Premium feel</span>
+        <span class="tag">Needs recolor</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Preview Section: How they look in context -->
+<div class="preview-section">
+  <h2>In Context: Nav Bar Preview</h2>
+
+  <div style="display:flex; flex-direction:column; align-items:center; gap:20px;">
+    <!-- Concept 1 nav -->
+    <div class="nav-mockup">
+      <img src="ground-logo-concept-1-breath-symbol.png" alt="">
+      <span class="brand">GROUND</span>
+      <div class="nav-links"><span>Features</span><span>Programs</span><span>About</span></div>
+    </div>
+
+    <!-- Concept 3 nav -->
+    <div class="nav-mockup">
+      <img src="ground-logo-concept-3-tree-roots.png" alt="">
+      <span class="brand">GROUND</span>
+      <div class="nav-links"><span>Features</span><span>Programs</span><span>About</span></div>
+    </div>
+
+    <!-- Concept 5 nav -->
+    <div class="nav-mockup">
+      <img src="ground-logo-concept-5-breath-cycle.png" alt="">
+      <span class="brand">GROUND</span>
+      <div class="nav-links"><span>Features</span><span>Programs</span><span>About</span></div>
+    </div>
+  </div>
+
+  <h2 style="margin-top:60px;">Favicon Sizes</h2>
+  <p style="color:#A89585; margin-bottom:20px;">How each concept holds up at small sizes</p>
+
+  <div style="display:flex; flex-direction:column; align-items:center; gap:30px;">
+    <div>
+      <p style="color:#C4935A; margin-bottom:10px; font-size:14px;">Concept 1: Breath Symbol</p>
+      <div class="favicon-row">
+        <div class="favicon-preview"><img src="ground-logo-concept-1-breath-symbol_128x128.png" width="128" height="128"><div class="label">128px</div></div>
+        <div class="favicon-preview"><img src="ground-logo-concept-1-breath-symbol_32x32.png" width="32" height="32"><div class="label">32px</div></div>
+        <div class="favicon-preview"><img src="ground-logo-concept-1-breath-symbol_32x32.png" width="16" height="16"><div class="label">16px</div></div>
+      </div>
+    </div>
+    <div>
+      <p style="color:#C4935A; margin-bottom:10px; font-size:14px;">Concept 3: Tree Roots (Recommended)</p>
+      <div class="favicon-row">
+        <div class="favicon-preview"><img src="ground-logo-concept-3-tree-roots_128x128.png" width="128" height="128"><div class="label">128px</div></div>
+        <div class="favicon-preview"><img src="ground-logo-concept-3-tree-roots_32x32.png" width="32" height="32"><div class="label">32px</div></div>
+        <div class="favicon-preview"><img src="ground-logo-concept-3-tree-roots_32x32.png" width="16" height="16"><div class="label">16px</div></div>
+      </div>
+    </div>
+    <div>
+      <p style="color:#C4935A; margin-bottom:10px; font-size:14px;">Concept 5: Breath Cycle Line</p>
+      <div class="favicon-row">
+        <div class="favicon-preview"><img src="ground-logo-concept-5-breath-cycle_128x128.png" width="128" height="128"><div class="label">128px</div></div>
+        <div class="favicon-preview"><img src="ground-logo-concept-5-breath-cycle_32x32.png" width="32" height="32"><div class="label">32px</div></div>
+        <div class="favicon-preview"><img src="ground-logo-concept-5-breath-cycle_32x32.png" width="16" height="16"><div class="label">16px</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

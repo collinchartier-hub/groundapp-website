@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ground App - Final Brand Logo Preview (A1)</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #1a1a1a;
+    color: #ccc;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
+    padding: 40px;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 28px;
+    color: #C4935A;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+  }
+
+  .header-sub {
+    text-align: center;
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 48px;
+  }
+
+  section {
+    margin-bottom: 60px;
+  }
+
+  section h2 {
+    font-size: 16px;
+    color: #C4935A;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 24px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(196, 147, 90, 0.2);
+  }
+
+  /* ---- 1. Side by Side ---- */
+  .side-by-side {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .logo-card {
+    width: 400px;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .logo-card.dark {
+    background: #1A110E;
+  }
+
+  .logo-card.light {
+    background: #F4F0E8;
+  }
+
+  .logo-card img {
+    width: 70%;
+    height: 70%;
+    object-fit: contain;
+  }
+
+  .logo-card .label {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.08em;
+  }
+
+  .logo-card.light .label {
+    color: rgba(0,0,0,0.3);
+  }
+
+  /* ---- 2. Nav Bar Mockup ---- */
+  .nav-mockup-row {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .nav-bar {
+    width: 540px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    border-radius: 8px;
+    gap: 16px;
+  }
+
+  .nav-bar.dark {
+    background: #1A110E;
+    border: 1px solid rgba(196, 147, 90, 0.15);
+  }
+
+  .nav-bar.light {
+    background: #F4F0E8;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  .nav-bar img {
+    height: 36px;
+    width: 36px;
+    object-fit: contain;
+  }
+
+  .nav-bar .nav-title {
+    font-family: "Iowan Old Style", Georgia, "Times New Roman", serif;
+    font-size: 20px;
+    letter-spacing: 0.12em;
+  }
+
+  .nav-bar.dark .nav-title {
+    color: #C4935A;
+  }
+
+  .nav-bar.light .nav-title {
+    color: #8B6914;
+  }
+
+  .nav-bar .nav-links {
+    margin-left: auto;
+    display: flex;
+    gap: 24px;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+  }
+
+  .nav-bar.dark .nav-links span {
+    color: #A89585;
+  }
+
+  .nav-bar.light .nav-links span {
+    color: #6B5B4F;
+  }
+
+  /* ---- 3. App Icon Mockup ---- */
+  .app-icon-row {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .app-icon-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .app-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 18px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  }
+
+  .app-icon.dark {
+    background: #1A110E;
+  }
+
+  .app-icon.light {
+    background: #F4F0E8;
+  }
+
+  .app-icon img {
+    width: 60%;
+    height: 60%;
+    object-fit: contain;
+  }
+
+  .app-icon-label {
+    font-size: 12px;
+    color: #888;
+  }
+
+  /* Large app icon */
+  .app-icon-lg {
+    width: 120px;
+    height: 120px;
+    border-radius: 27px;
+  }
+
+  /* ---- 4. Favicon Sizes ---- */
+  .favicon-row {
+    display: flex;
+    gap: 32px;
+    align-items: flex-end;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .fav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .fav-box {
+    background: #1A110E;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: 1px solid rgba(196, 147, 90, 0.15);
+  }
+
+  .fav-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .fav-label {
+    font-size: 11px;
+    color: #666;
+  }
+
+  /* ---- 5. Wordmark + Logo ---- */
+  .wordmark-row {
+    display: flex;
+    gap: 48px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .wordmark-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 32px 48px;
+    border-radius: 12px;
+  }
+
+  .wordmark-card.dark {
+    background: #1A110E;
+    border: 1px solid rgba(196, 147, 90, 0.12);
+  }
+
+  .wordmark-card.light {
+    background: #F4F0E8;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  .wordmark-card img {
+    height: 56px;
+    width: 56px;
+    object-fit: contain;
+  }
+
+  .wordmark-text {
+    font-family: "Iowan Old Style", Georgia, "Times New Roman", serif;
+    font-size: 36px;
+    letter-spacing: 0.15em;
+  }
+
+  .wordmark-card.dark .wordmark-text {
+    color: #C4935A;
+  }
+
+  .wordmark-card.light .wordmark-text {
+    color: #8B6914;
+  }
+
+  /* ---- 6. Tagline ---- */
+  .tagline-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .tagline-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    padding: 48px 64px;
+    border-radius: 16px;
+    max-width: 700px;
+    text-align: center;
+  }
+
+  .tagline-card.dark {
+    background: #1A110E;
+    border: 1px solid rgba(196, 147, 90, 0.1);
+  }
+
+  .tagline-card.light {
+    background: #F4F0E8;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  .tagline-card img {
+    height: 80px;
+    width: 80px;
+    object-fit: contain;
+  }
+
+  .tagline-card .tagline-title {
+    font-family: "Iowan Old Style", Georgia, "Times New Roman", serif;
+    font-size: 32px;
+    letter-spacing: 0.15em;
+  }
+
+  .tagline-card.dark .tagline-title {
+    color: #C4935A;
+  }
+
+  .tagline-card.light .tagline-title {
+    color: #8B6914;
+  }
+
+  .tagline-divider {
+    width: 80px;
+    height: 1px;
+  }
+
+  .tagline-card.dark .tagline-divider {
+    background: rgba(196, 147, 90, 0.3);
+  }
+
+  .tagline-card.light .tagline-divider {
+    background: rgba(139, 105, 20, 0.25);
+  }
+
+  .tagline-card .tagline-text {
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 1.6;
+    font-style: italic;
+    max-width: 460px;
+  }
+
+  .tagline-card.dark .tagline-text {
+    color: #E8DDD0;
+  }
+
+  .tagline-card.light .tagline-text {
+    color: #4A3F35;
+  }
+
+  .tagline-cards-row {
+    display: flex;
+    gap: 32px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* Light version logo uses CSS to swap bg */
+  .light-logo-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .light-logo-container img {
+    /* The original PNG has a dark background. We use mix-blend-mode
+       to let it blend into the light container background. */
+    mix-blend-mode: multiply;
+  }
+</style>
+</head>
+<body>
+
+  <h1>GROUND</h1>
+  <p class="header-sub">Final Brand Logo Preview. Variant A1: Gold lungs with bronchial tree.</p>
+
+  <!-- 1. Side by Side -->
+  <section>
+    <h2>1. Dark vs Light Background</h2>
+    <div class="side-by-side">
+      <div class="logo-card dark">
+        <img src="../lung-v2-a1-dark-flat.png" alt="A1 on dark">
+        <span class="label">#1A110E (Obsidian)</span>
+      </div>
+      <div class="logo-card light">
+        <div class="light-logo-container" style="width:70%; height:70%;">
+          <img src="../lung-v2-a1-dark-flat.png" alt="A1 on light" style="width:100%; height:100%; object-fit:contain;">
+        </div>
+        <span class="label">#F4F0E8 (Bone)</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Nav Bar Mockup -->
+  <section>
+    <h2>2. Navigation Bar Mockup</h2>
+    <div class="nav-mockup-row">
+      <div class="nav-bar dark">
+        <img src="../lung-v2-a1-dark-flat.png" alt="Logo">
+        <span class="nav-title">GROUND</span>
+        <div class="nav-links">
+          <span>About</span>
+          <span>Practice</span>
+          <span>Journal</span>
+        </div>
+      </div>
+      <div class="nav-bar light">
+        <div style="height:36px; width:36px; flex-shrink:0;">
+          <div class="light-logo-container" style="width:100%; height:100%;">
+            <img src="../lung-v2-a1-dark-flat.png" alt="Logo" style="width:100%; height:100%; object-fit:contain;">
+          </div>
+        </div>
+        <span class="nav-title">GROUND</span>
+        <div class="nav-links">
+          <span>About</span>
+          <span>Practice</span>
+          <span>Journal</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. App Icon Mockup -->
+  <section>
+    <h2>3. App Icon Mockup (Squircle)</h2>
+    <div class="app-icon-row">
+      <div class="app-icon-wrap">
+        <div class="app-icon dark">
+          <img src="../lung-v2-a1-dark-flat.png" alt="Dark icon">
+        </div>
+        <span class="app-icon-label">Dark (80px)</span>
+      </div>
+      <div class="app-icon-wrap">
+        <div class="app-icon light">
+          <div class="light-logo-container" style="width:60%; height:60%;">
+            <img src="../lung-v2-a1-dark-flat.png" alt="Light icon" style="width:100%; height:100%; object-fit:contain;">
+          </div>
+        </div>
+        <span class="app-icon-label">Light (80px)</span>
+      </div>
+      <div class="app-icon-wrap">
+        <div class="app-icon app-icon-lg dark">
+          <img src="../lung-v2-a1-dark-flat.png" alt="Dark icon large">
+        </div>
+        <span class="app-icon-label">Dark (120px)</span>
+      </div>
+      <div class="app-icon-wrap">
+        <div class="app-icon app-icon-lg light">
+          <div class="light-logo-container" style="width:60%; height:60%;">
+            <img src="../lung-v2-a1-dark-flat.png" alt="Light icon large" style="width:100%; height:100%; object-fit:contain;">
+          </div>
+        </div>
+        <span class="app-icon-label">Light (120px)</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Favicon Sizes -->
+  <section>
+    <h2>4. Favicon Sizes Comparison</h2>
+    <div class="favicon-row">
+      <div class="fav-item">
+        <div class="fav-box" style="width:16px; height:16px;">
+          <img src="../lung-v2-a1-dark-flat.png" alt="16">
+        </div>
+        <span class="fav-label">16px</span>
+      </div>
+      <div class="fav-item">
+        <div class="fav-box" style="width:32px; height:32px;">
+          <img src="../lung-v2-a1-dark-flat.png" alt="32">
+        </div>
+        <span class="fav-label">32px</span>
+      </div>
+      <div class="fav-item">
+        <div class="fav-box" style="width:48px; height:48px;">
+          <img src="../lung-v2-a1-dark-flat.png" alt="48">
+        </div>
+        <span class="fav-label">48px</span>
+      </div>
+      <div class="fav-item">
+        <div class="fav-box" style="width:64px; height:64px;">
+          <img src="../lung-v2-a1-dark-flat.png" alt="64">
+        </div>
+        <span class="fav-label">64px</span>
+      </div>
+      <div class="fav-item">
+        <div class="fav-box" style="width:128px; height:128px;">
+          <img src="../lung-v2-a1-dark-flat.png" alt="128">
+        </div>
+        <span class="fav-label">128px</span>
+      </div>
+      <div class="fav-item">
+        <div class="fav-box" style="width:180px; height:180px;">
+          <img src="../lung-v2-a1-dark-flat.png" alt="180">
+        </div>
+        <span class="fav-label">180px (apple-touch)</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Wordmark + Logo -->
+  <section>
+    <h2>5. Wordmark + Logo Lockup</h2>
+    <div class="wordmark-row">
+      <div class="wordmark-card dark">
+        <img src="../lung-v2-a1-dark-flat.png" alt="Logo">
+        <span class="wordmark-text">GROUND</span>
+      </div>
+      <div class="wordmark-card light">
+        <div style="width:56px; height:56px; flex-shrink:0;">
+          <div class="light-logo-container" style="width:100%; height:100%;">
+            <img src="../lung-v2-a1-dark-flat.png" alt="Logo" style="width:100%; height:100%; object-fit:contain;">
+          </div>
+        </div>
+        <span class="wordmark-text">GROUND</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Logo with Tagline -->
+  <section>
+    <h2>6. Logo with Brand Tagline</h2>
+    <div class="tagline-cards-row">
+      <div class="tagline-card dark">
+        <img src="../lung-v2-a1-dark-flat.png" alt="Logo">
+        <span class="tagline-title">GROUND</span>
+        <div class="tagline-divider"></div>
+        <p class="tagline-text">From the mind into the body, this is where we feel grounded</p>
+      </div>
+      <div class="tagline-card light">
+        <div style="width:80px; height:80px;">
+          <div class="light-logo-container" style="width:100%; height:100%;">
+            <img src="../lung-v2-a1-dark-flat.png" alt="Logo" style="width:100%; height:100%; object-fit:contain;">
+          </div>
+        </div>
+        <span class="tagline-title">GROUND</span>
+        <div class="tagline-divider"></div>
+        <p class="tagline-text">From the mind into the body, this is where we feel grounded</p>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

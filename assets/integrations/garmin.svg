@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
+  <!-- Garmin: Delta/arrow pointing right, the recognizable Garmin nav arrow -->
+  <!-- Main delta/triangle arrow -->
+  <path d="M20 16 L60 40 L20 64 L30 40 Z" fill="none" stroke="#C4935A" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Inner detail line for depth -->
+  <path d="M28 28 L48 40 L28 52 L34 40 Z" fill="none" stroke="#C4935A" stroke-width="1" opacity="0.4"/>
+</svg>

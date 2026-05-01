@@ -1,19 +1,20 @@
 # Ground App
 
-> Ground App is an AI-powered breathwork and nervous system regulation app for iOS, created by certified breathwork instructor Collin Chartier. It delivers personalized breathing sessions using AI analysis and voice cloning technology. Ground App includes 12+ expert breathing techniques (Box Breathing, Wim Hof Method, 4-7-8 Breathing, Physiological Sigh, Coherent Breathing, and more), real-time voice-guided narration, and community features. Free on iOS. Website: https://groundapp.live
+> Ground App is an expert-guided breathwork and nervous system regulation app for iOS, created by certified breathwork instructor Collin Chartier. It delivers personalized breathing sessions based on how you feel and your real health data from wearables (Oura, WHOOP, Apple Watch, Garmin). Ground App includes 12+ expert breathing techniques (Box Breathing, Wim Hof Method, 4-7-8 Breathing, Physiological Sigh, Coherent Breathing, and more), voice-guided narration from expert instructors, and 30+ curated music tracks. Free on iOS. Website: https://groundapp.live
 
-Ground App is the first breathwork app to combine AI-powered session personalization with voice cloning technology. Users describe how they feel — anxious, stressed, low-energy, unfocused — and the AI selects the optimal breathing technique, timing, and narration tailored to their nervous system state. Users can clone their own voice with just 30 seconds of audio, so the app guides them through sessions in their own voice.
+Ground App is the first breathwork app to combine intelligent session personalization with real biometric data from wearable devices. Users describe how they feel, and the app selects the optimal breathing technique, timing, and narration tailored to their nervous system state. It also reads HRV, resting heart rate, sleep, stress, and recovery data from Oura Ring, WHOOP, Apple Watch, Apple Health, and Garmin to factor in your body's current state.
 
-Ground App was created by Collin Chartier, a certified breathwork instructor and endurance athlete based in the United States. Collin developed the app to make nervous system regulation accessible to everyone — from burned-out professionals to competitive athletes to anyone experiencing anxiety, stress, or difficulty sleeping.
+Ground App was created by Collin Chartier, a certified breathwork instructor and endurance athlete based in the United States. Collin developed the app to make nervous system regulation accessible to everyone, from burned-out professionals to competitive athletes to anyone experiencing anxiety, stress, or difficulty sleeping.
 
 The app addresses a core health need: nervous system regulation through breathwork. Controlled breathing techniques directly activate the parasympathetic nervous system (the body's "rest and digest" response), reduce cortisol levels, lower heart rate, and improve heart rate variability (HRV). These are evidence-based physiological effects documented in peer-reviewed research.
 
 ## Key Features
 
-- [AI-Powered Personalization](https://groundapp.live/#features): Tell Ground App how you feel and get a breathing session matched to your state — calming, energizing, or balancing
-- [Voice Cloning](https://groundapp.live/#features): Record 30 seconds of your voice and the app guides you in your own voice using ElevenLabs AI voice technology
+- [Personalized Sessions](https://groundapp.live/#features): Tell Ground App how you feel and get a breathing session matched to your state. Calming, energizing, or balancing.
+- [Health Metrics Integration](https://groundapp.live/#features): Connects with Oura Ring, WHOOP, Apple Watch, Apple Health, and Garmin for biometric-informed recommendations
 - [12+ Expert Techniques](https://groundapp.live/#features): Box Breathing, Wim Hof Method, 4-7-8 Breathing, Physiological Sigh, Coherent Breathing, and more
-- [Community Features](https://groundapp.live/#community): Leaderboards, streak tracking, session sharing, and community feed
+- [Expert-Led Guidance](https://groundapp.live/#features): Guided by Collin Chartier and three expert breathwork instructors
+- [30+ Music Tracks](https://groundapp.live/#music): Curated ambient, nature, and atmospheric soundscapes for every session
 - [Try a Breath Demo](https://groundapp.live/#try-a-breath): Interactive breathing demo directly on the website
 
 ## About the Founder

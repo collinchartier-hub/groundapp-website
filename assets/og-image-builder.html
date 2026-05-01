@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ground App - OG Image Builder (1200x630)</title>
+<style>
+  body {
+    margin: 0;
+    padding: 40px;
+    background: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #ccc;
+  }
+
+  h1 {
+    font-size: 18px;
+    margin-bottom: 8px;
+    color: #aaa;
+  }
+
+  p.instructions {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 24px;
+    text-align: center;
+    max-width: 600px;
+    line-height: 1.5;
+  }
+
+  .og-container {
+    width: 1200px;
+    height: 630px;
+    overflow: hidden;
+    position: relative;
+    background: #1A110E;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Grain texture overlay */
+  .og-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    background-size: 256px 256px;
+    opacity: 0.5;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Subtle vignette */
+  .og-container::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.3) 100%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .og-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 80px;
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    padding: 0 100px;
+    box-sizing: border-box;
+  }
+
+  .og-logo {
+    flex-shrink: 0;
+  }
+
+  .og-logo img {
+    width: auto;
+    height: 280px;
+    display: block;
+    filter: drop-shadow(0 4px 24px rgba(196, 147, 90, 0.15));
+  }
+
+  .og-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  .og-title {
+    font-family: "Iowan Old Style", Georgia, "Times New Roman", serif;
+    font-size: 72px;
+    font-weight: 400;
+    color: #C4935A;
+    letter-spacing: 0.15em;
+    margin: 0;
+    line-height: 1;
+  }
+
+  .og-divider {
+    width: 120px;
+    height: 1px;
+    background: rgba(196, 147, 90, 0.4);
+    margin: 24px 0;
+  }
+
+  .og-tagline {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
+    font-size: 24px;
+    font-weight: 300;
+    color: #E8DDD0;
+    margin: 0;
+    line-height: 1.3;
+    max-width: 400px;
+  }
+
+  .og-url {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #A89585;
+    margin: 20px 0 0 0;
+    letter-spacing: 0.05em;
+  }
+</style>
+</head>
+<body>
+  <h1>OG Image Builder - 1200 x 630</h1>
+  <p class="instructions">
+    Screenshot the container below at exactly 1200x630. In Chrome DevTools, use Ctrl+Shift+P and search "Capture node screenshot", then click on the .og-container element. Or use a browser extension that supports element-level screenshots.
+  </p>
+
+  <div class="og-container">
+    <div class="og-inner">
+      <div class="og-logo">
+        <img src="icons/v2/lung-v2-a1-dark-flat.png" alt="Ground App Logo">
+      </div>
+      <div class="og-text">
+        <h2 class="og-title">GROUND</h2>
+        <div class="og-divider"></div>
+        <p class="og-tagline">Breathwork for your nervous system</p>
+        <p class="og-url">groundapp.live</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
+  <!-- Oura Ring: Two concentric circles representing the ring form factor -->
+  <circle cx="40" cy="40" r="28" fill="none" stroke="#C4935A" stroke-width="2"/>
+  <circle cx="40" cy="40" r="20" fill="none" stroke="#C4935A" stroke-width="1.5"/>
+  <!-- Inner sensor dots -->
+  <circle cx="33" cy="40" r="1.5" fill="#C4935A"/>
+  <circle cx="40" cy="40" r="1.5" fill="#C4935A"/>
+  <circle cx="47" cy="40" r="1.5" fill="#C4935A"/>
+</svg>

@@ -199,7 +199,7 @@ footer {
 <!-- HERO -->
 <div class="page-hero">
   <h1>Privacy <em>Policy</em></h1>
-  <p class="meta sans">Ground App &middot; Effective Date: April 2, 2026 &middot; Last Updated: April 2, 2026</p>
+  <p class="meta sans">Ground App &middot; Effective Date: March 8, 2026 &middot; Last Updated: April 14, 2026</p>
 </div>
 
 <!-- CONTENT -->
@@ -216,7 +216,7 @@ footer {
     <li><strong>Account information:</strong> Name, email address (when creating an account)</li>
     <li><strong>Onboarding preferences:</strong> Breathwork goals, experience level</li>
     <li><strong>Session feedback:</strong> Mood ratings, session notes</li>
-    <li><strong>Voice recordings:</strong> Audio samples provided voluntarily for voice cloning features</li>
+    <li><strong>Session preferences:</strong> Preferred techniques, instructor selection, audio settings</li>
   </ul>
 
   <h3>2.2 Health and Biometric Data</h3>
@@ -243,6 +243,16 @@ footer {
     <li>Heart rate data</li>
   </ul>
 
+  <p><strong>Whoop (via Whoop API):</strong></p>
+  <ul>
+    <li>Recovery scores and metrics</li>
+    <li>Sleep performance (duration, stages, efficiency, respiratory rate)</li>
+    <li>Strain and cycle data</li>
+    <li>Heart rate variability (HRV)</li>
+    <li>Resting heart rate</li>
+    <li>Blood oxygen saturation (SpO2)</li>
+  </ul>
+
   <p><strong>Garmin (via Garmin Health API / HealthKit):</strong></p>
   <ul>
     <li>Stress scores</li>
@@ -257,6 +267,7 @@ footer {
     <li><strong>Usage data:</strong> Session history, techniques used, session duration, app feature usage</li>
     <li><strong>Device information:</strong> Device model, operating system version (used for compatibility and debugging)</li>
   </ul>
+  <p><strong>Oura Usage Data Disclosure:</strong> When you connect your Oura Ring to Ground App, Oura may collect certain Usage Data related to your use of the Oura API and platform. Oura may use this Usage Data for its own business purposes as described in <a href="https://ouraring.com/privacy-policy" target="_blank" rel="noopener">Oura's Privacy Policy</a>.</p>
 
   <h3>2.4 Information We Do NOT Collect</h3>
   <ul>
@@ -275,11 +286,11 @@ footer {
       <tr><th>Purpose</th><th>Data Used</th></tr>
     </thead>
     <tbody>
-      <tr><td><strong>Personalized breathwork recommendations</strong></td><td>HRV, resting heart rate, sleep data, readiness scores, stress levels</td></tr>
+      <tr><td><strong>Personalized breathwork recommendations</strong></td><td>HRV, resting heart rate, sleep data, readiness scores, stress levels, recovery scores</td></tr>
       <tr><td><strong>Nervous system state assessment</strong></td><td>Aggregated biometric data from connected devices</td></tr>
       <tr><td><strong>Proactive wellness notifications</strong></td><td>Biometric trends and anomaly detection</td></tr>
       <tr><td><strong>Session history and progress tracking</strong></td><td>Session records, mood ratings, technique usage</td></tr>
-      <tr><td><strong>Voice-guided sessions</strong></td><td>Voice recordings (for voice cloning, with explicit consent)</td></tr>
+      <tr><td><strong>Voice-guided sessions</strong></td><td>Instructor preference, audio settings</td></tr>
       <tr><td><strong>App improvement</strong></td><td>Anonymized, aggregated usage patterns</td></tr>
     </tbody>
   </table>
@@ -294,7 +305,7 @@ footer {
   <ul>
     <li>Health and biometric data is processed and stored <strong>on your device</strong> by default</li>
     <li>Personal baselines and nervous system assessments are computed locally</li>
-    <li>Sensitive credentials (API tokens for Oura, Garmin) are stored in the iOS Keychain</li>
+    <li>Sensitive credentials (API tokens for Oura, Whoop, Garmin) are stored in the iOS Keychain</li>
     <li>Health data files are excluded from iCloud backup</li>
   </ul>
 
@@ -316,15 +327,16 @@ footer {
     <tbody>
       <tr><td><strong>Apple HealthKit</strong></td><td>Read/write health metrics</td><td>Accessed on-device only; never transmitted to our servers without consent</td></tr>
       <tr><td><strong>Oura Cloud API</strong></td><td>Retrieve readiness, sleep, and stress data</td><td>OAuth token stored in Keychain; data fetched directly to your device</td></tr>
+      <tr><td><strong>Whoop API</strong></td><td>Retrieve recovery, sleep, and strain data</td><td>OAuth token stored in Keychain; data fetched directly to your device</td></tr>
       <tr><td><strong>Garmin Health API</strong></td><td>Retrieve stress, Body Battery, and respiration data</td><td>OAuth token stored in Keychain; data fetched directly to your device</td></tr>
       <tr><td><strong>Anthropic (Claude API)</strong></td><td>Generate personalized session recommendations</td><td>Anonymized nervous system state summary (no raw biometric values); no personally identifiable information</td></tr>
-      <tr><td><strong>ElevenLabs</strong></td><td>Text-to-speech for voice-guided sessions</td><td>Voice recordings for cloning (with explicit consent); session narration text</td></tr>
+      <tr><td><strong>Mistral (Voxtral)</strong></td><td>Text-to-speech for voice-guided sessions</td><td>Session narration text only; no personally identifiable information</td></tr>
       <tr><td><strong>Supabase</strong></td><td>Account authentication and optional cloud sync</td><td>Account info, session history (if sync enabled)</td></tr>
     </tbody>
   </table>
 
   <div class="highlight-box">
-    <p><strong>Important:</strong> Raw biometric data (heart rate values, HRV readings, sleep staging) is <strong>never</strong> sent to Anthropic, ElevenLabs, or any AI service. Only computed, anonymized summaries (e.g., "nervous system state: mildly stressed") are used for generating recommendations.</p>
+    <p><strong>Important:</strong> Raw biometric data (heart rate values, HRV readings, sleep staging) is <strong>never</strong> sent to Anthropic, Mistral, or any AI service. Only computed, anonymized summaries (e.g., "nervous system state: mildly stressed") are used for generating recommendations.</p>
   </div>
 
   <h2>5. Apple HealthKit Compliance</h2>
@@ -339,16 +351,33 @@ footer {
   </ul>
 
   <h2>6. Oura Data Usage Compliance</h2>
-  <p>In accordance with Oura's API Terms of Service:</p>
+  <p>In accordance with the Oura API Agreement:</p>
   <ul>
     <li>Oura data is accessed only with your explicit authorization via OAuth 2.0</li>
-    <li>We request only the minimum scopes necessary (daily readiness, sleep, heart rate, stress, SpO2)</li>
+    <li>We request only the minimum scopes necessary for our functionality (daily readiness, sleep, heart rate, stress, SpO2, resilience)</li>
     <li>Oura data is used exclusively to assess your nervous system state and provide personalized breathwork recommendations</li>
-    <li>You can disconnect your Oura Ring at any time from the App's Settings, which revokes access and deletes locally stored Oura data</li>
-    <li>We <strong>do not</strong> sell, license, or share your Oura data with any third party</li>
+    <li>Cached Oura data is retained for a maximum of <strong>60 days</strong> and refreshed regularly; stale data is removed promptly</li>
+    <li>You can disconnect your Oura Ring at any time from the App's Settings, which revokes our access and deletes locally stored Oura data</li>
+    <li>We <strong>do not</strong> sell, license, lease, market, or share your Oura data with any third party, including advertisers or data brokers</li>
+    <li>In the event of a data security incident involving Oura data, we will notify Oura within 24 hours of discovery</li>
   </ul>
 
-  <h2>7. Garmin Data Usage Compliance</h2>
+  <h2>7. Whoop Data Usage Compliance</h2>
+  <p>In accordance with the Whoop API Terms of Use:</p>
+  <ul>
+    <li>Whoop data is accessed only with your explicit authorization via OAuth 2.0</li>
+    <li>We request only the minimum scopes necessary for our functionality (recovery, sleep, cycles, workout data)</li>
+    <li>Whoop data is used exclusively to assess your nervous system state and provide personalized breathwork recommendations</li>
+    <li>Cached Whoop data is retained only as long as permitted by the applicable cache headers and is refreshed regularly</li>
+    <li>All Whoop data is encrypted both in transit (TLS 1.2+) and at rest (AES-256)</li>
+    <li>You can disconnect your Whoop device at any time from the App's Settings, which revokes our access and deletes locally stored Whoop data</li>
+    <li>We <strong>do not</strong> sell, license, lease, market, or share your Whoop data with any third party, including advertisers or data brokers</li>
+    <li>We do not create permanent database copies of Whoop data beyond what is necessary for the App's active functionality</li>
+    <li>You may request access to the Whoop data we hold about you at any time by contacting us</li>
+    <li>In the event of a data security incident involving Whoop data, we will notify Whoop at apisupport@whoop.com without undue delay</li>
+  </ul>
+
+  <h2>8. Garmin Data Usage Compliance</h2>
   <p>In accordance with Garmin's Health API Terms:</p>
   <ul>
     <li>Garmin data is accessed only with your explicit authorization</li>
@@ -357,7 +386,7 @@ footer {
     <li>We <strong>do not</strong> sell, license, or share your Garmin data with any third party</li>
   </ul>
 
-  <h2>8. Your Rights and Controls</h2>
+  <h2>9. Your Rights and Controls</h2>
   <p>You have full control over your data:</p>
 
   <table>
@@ -365,40 +394,120 @@ footer {
       <tr><th>Action</th><th>How</th></tr>
     </thead>
     <tbody>
-      <tr><td><strong>Disconnect a device</strong></td><td>Settings > Connected Devices > Toggle off</td></tr>
-      <tr><td><strong>Revoke HealthKit access</strong></td><td>iOS Settings > Privacy & Security > Health > Ground</td></tr>
-      <tr><td><strong>Revoke Oura access</strong></td><td>App Settings or cloud.ouraring.com > Connected Apps</td></tr>
-      <tr><td><strong>Revoke Garmin access</strong></td><td>App Settings or Garmin Connect > Account > Connected Apps</td></tr>
-      <tr><td><strong>Delete session history</strong></td><td>Settings > Delete Account / Reset Data</td></tr>
-      <tr><td><strong>Delete voice clone</strong></td><td>Settings > Voice Guide > Manage Voice Clone > Delete</td></tr>
-      <tr><td><strong>Delete all data</strong></td><td>Settings > Delete Account (removes all cloud-stored data)</td></tr>
-      <tr><td><strong>Export your data</strong></td><td>Contact us at the email below</td></tr>
+      <tr><td><strong>Disconnect a device</strong></td><td>Settings &gt; Connected Devices &gt; Toggle off</td></tr>
+      <tr><td><strong>Revoke HealthKit access</strong></td><td>iOS Settings &gt; Privacy &amp; Security &gt; Health &gt; Ground App</td></tr>
+      <tr><td><strong>Revoke Oura access</strong></td><td>App Settings or <a href="https://cloud.ouraring.com" target="_blank" rel="noopener">cloud.ouraring.com</a> &gt; Connected Apps</td></tr>
+      <tr><td><strong>Revoke Whoop access</strong></td><td>App Settings or <a href="https://app.whoop.com" target="_blank" rel="noopener">app.whoop.com</a> &gt; Profile &gt; Connected Apps</td></tr>
+      <tr><td><strong>Revoke Garmin access</strong></td><td>App Settings or Garmin Connect &gt; Account &gt; Connected Apps</td></tr>
+      <tr><td><strong>Delete session history</strong></td><td>Settings &gt; Delete Account / Reset Data</td></tr>
+      <tr><td><strong>Delete all data</strong></td><td>Settings &gt; Delete Account (removes all cloud-stored data)</td></tr>
+      <tr><td><strong>Export your data</strong></td><td>Settings &gt; Export My Data (downloads all your data as CSV and JSON)</td></tr>
+      <tr><td><strong>Access your data</strong></td><td>Settings &gt; Export My Data, or contact <a href="mailto:privacy@groundapp.live">privacy@groundapp.live</a></td></tr>
     </tbody>
   </table>
 
-  <p>Upon account deletion, all associated data is permanently removed from our servers within 30 days. On-device data is removed immediately.</p>
+  <p>Upon account deletion, all associated data is permanently removed from our servers within 30 days. On-device data is removed immediately. All cached wearable data (Oura, Whoop, Garmin) is deleted immediately upon disconnection or account deletion.</p>
 
-  <h2>9. Data Retention</h2>
+  <h2>10. Data Retention</h2>
   <ul>
     <li><strong>On-device data:</strong> Retained until you delete the App or clear data in Settings</li>
     <li><strong>Cloud-synced data:</strong> Retained while your account is active; deleted within 30 days of account deletion</li>
-    <li><strong>Voice recordings:</strong> Stored with ElevenLabs while voice clone is active; deleted when you delete your voice clone</li>
-    <li><strong>Oura/Garmin tokens:</strong> Deleted immediately when you disconnect the device</li>
+    <li><strong>Oura data cache:</strong> Maximum 60 days; refreshed on each app session</li>
+    <li><strong>Whoop data cache:</strong> Per applicable cache headers; refreshed on each app session</li>
+    <li><strong>Oura/Whoop/Garmin tokens:</strong> Deleted immediately when you disconnect the device</li>
+    <li><strong>Upon subscription cancellation or account deletion:</strong> All user data is deleted in accordance with our retention schedule and third-party API requirements</li>
+    <li><strong>Upon access revocation by user or platform:</strong> We immediately stop storing, processing, and displaying the affected data</li>
   </ul>
 
-  <h2>10. Children's Privacy</h2>
+  <h2>11. Data Security and Breach Notification</h2>
+
+  <h3>11.1 Security Measures</h3>
+  <p>We employ commercially reasonable administrative, technical, and physical security measures to protect your data, consistent with GDPR Article 32 standards. These include:</p>
+  <ul>
+    <li>Encryption of all data in transit (TLS 1.2+) and at rest (AES-256)</li>
+    <li>iOS Keychain storage for all authentication tokens</li>
+    <li>Row-level security for cloud-stored data</li>
+    <li>Regular security reviews of third-party integrations</li>
+    <li>Access controls limited to authorized personnel</li>
+  </ul>
+
+  <h3>11.2 Breach Notification</h3>
+  <p>In the event of a security breach affecting your personal or health data:</p>
+  <ul>
+    <li>We will notify affected users within 60 days of discovery, or sooner as required by applicable law</li>
+    <li>We will notify Oura within 24 hours of discovery (per Oura API Agreement)</li>
+    <li>We will notify Whoop without undue delay (per Whoop API Terms)</li>
+    <li>We will notify the FTC and applicable state regulators as required by the FTC Health Breach Notification Rule and state law</li>
+    <li>Notifications will describe the nature of the breach, the types of data involved, the steps we are taking, and how you can protect yourself</li>
+  </ul>
+
+  <h2>12. Children's Privacy</h2>
   <p>The App is not directed at children under 13. We do not knowingly collect personal information from children under 13. If you believe a child under 13 has provided us with personal information, please contact us and we will delete it.</p>
 
-  <h2>11. Changes to This Policy</h2>
-  <p>We may update this Privacy Policy from time to time. We will notify you of material changes by posting the updated policy within the App and updating the "Last Updated" date. Continued use of the App after changes constitutes acceptance of the revised policy.</p>
+  <h2>13. State-Specific Privacy Rights</h2>
 
-  <h2>12. Contact Us</h2>
+  <h3>13.1 California Residents (CCPA/CPRA)</h3>
+  <p>If you are a California resident, you have the following rights under the California Consumer Privacy Act and California Privacy Rights Act:</p>
+  <ul>
+    <li><strong>Right to Know:</strong> You may request the categories and specific pieces of personal information we have collected about you, the sources, the business purposes, and the third parties with whom we share it.</li>
+    <li><strong>Right to Delete:</strong> You may request deletion of your personal information, subject to certain exceptions.</li>
+    <li><strong>Right to Correct:</strong> You may request correction of inaccurate personal information.</li>
+    <li><strong>Right to Opt Out of Sale:</strong> We do <strong>not</strong> sell your personal information. We do <strong>not</strong> share your personal information for cross-context behavioral advertising.</li>
+    <li><strong>Right to Limit Use of Sensitive Personal Information:</strong> Health and biometric data from wearable integrations is classified as sensitive personal information. We use this data only to provide the App's core services as described in Section 3.</li>
+    <li><strong>Non-Discrimination:</strong> We will not discriminate against you for exercising your privacy rights.</li>
+  </ul>
+  <p>To exercise these rights, contact us at <a href="mailto:privacy@groundapp.live">privacy@groundapp.live</a>. We will respond within 45 days.</p>
+
+  <h3>13.2 Washington Residents (My Health My Data Act)</h3>
+  <p>If you are a Washington state resident, the following applies under the Washington My Health My Data Act (RCW 19.373):</p>
+  <ul>
+    <li><strong>Categories of Health Data Collected:</strong> Heart rate, HRV, resting heart rate, respiratory rate, sleep analysis, blood oxygen saturation, stress levels, readiness scores, recovery scores, wrist temperature, and related biometric data from connected wearable devices.</li>
+    <li><strong>Purpose of Collection:</strong> To assess your nervous system state and provide personalized breathwork recommendations, proactive wellness notifications, and session tracking.</li>
+    <li><strong>Sources of Health Data:</strong> Apple HealthKit, Oura Ring (Oura Cloud API), Whoop (Whoop API), Garmin (Garmin Health API).</li>
+    <li><strong>Third Parties:</strong> We share anonymized, non-identifiable nervous system state summaries with Anthropic (Claude API) for recommendation generation. We share session narration text with Mistral (Voxtral) for text-to-speech generation. We do not share identifiable health data with any other third party.</li>
+    <li><strong>Your Rights:</strong> You have the right to access, delete, and withdraw consent for the collection and sharing of your health data. To exercise these rights, contact <a href="mailto:privacy@groundapp.live">privacy@groundapp.live</a>.</li>
+    <li><strong>Consent:</strong> We collect health data only after obtaining your affirmative consent. We will not collect, use, or share additional categories or purposes of health data beyond what is disclosed here without obtaining fresh consent.</li>
+  </ul>
+
+  <h3>13.3 Other U.S. States</h3>
+  <p>We comply with applicable state privacy laws, including but not limited to the Colorado Privacy Act, Connecticut Data Privacy Act, Virginia Consumer Data Protection Act, and other state laws that provide consumer privacy rights. If you are a resident of a state with applicable privacy legislation, you may exercise your rights by contacting <a href="mailto:privacy@groundapp.live">privacy@groundapp.live</a>.</p>
+
+  <h2>14. International Users and GDPR</h2>
+
+  <h3>14.1 Legal Basis for Processing (EEA/UK Users)</h3>
+  <p>For users in the European Economic Area (EEA) or United Kingdom, we process your data under the following legal bases:</p>
+  <ul>
+    <li><strong>Explicit Consent (Article 6(1)(a) and Article 9(2)(a) GDPR):</strong> For health and biometric data and wearable device integrations. You provide this consent during onboarding and device connection.</li>
+    <li><strong>Contract Performance (Article 6(1)(b) GDPR):</strong> For account management, session delivery, and core app functionality.</li>
+    <li><strong>Legitimate Interest (Article 6(1)(f) GDPR):</strong> For app improvement using anonymized, aggregated usage patterns.</li>
+  </ul>
+
+  <h3>14.2 Your GDPR Rights</h3>
+  <ul>
+    <li>Right of access to your personal data</li>
+    <li>Right to rectification of inaccurate data</li>
+    <li>Right to erasure ("right to be forgotten")</li>
+    <li>Right to restrict processing</li>
+    <li>Right to data portability</li>
+    <li>Right to object to processing</li>
+    <li>Right to withdraw consent at any time</li>
+    <li>Right to lodge a complaint with a supervisory authority</li>
+  </ul>
+
+  <h3>14.3 Data Transfers</h3>
+  <p>Your data is processed in the United States. For transfers from the EEA/UK, we rely on Standard Contractual Clauses and your explicit consent for health data.</p>
+
+  <h2>15. Changes to This Policy</h2>
+  <p>We may update this Privacy Policy from time to time. We will notify you of material changes by posting the updated policy within the App and updating the "Last Updated" date. For material changes affecting health data practices, we will provide prominent notice and, where required by law, obtain fresh consent. Continued use of the App after changes constitutes acceptance of the revised policy.</p>
+
+  <h2>16. Contact Us</h2>
   <p>If you have questions about this Privacy Policy or your data, contact us at:</p>
-  <p><strong>Email:</strong> <a href="mailto:privacy@groundapp.live">privacy@groundapp.live</a></p>
+  <p><strong>Privacy Inquiries:</strong> <a href="mailto:privacy@groundapp.live">privacy@groundapp.live</a></p>
+  <p><strong>Legal Inquiries:</strong> <a href="mailto:legal@groundapp.live">legal@groundapp.live</a></p>
+  <p><strong>End User Support:</strong> <a href="mailto:info@groundapp.live">info@groundapp.live</a></p>
   <p><strong>Website:</strong> <a href="https://groundapp.live/privacy">https://groundapp.live/privacy</a></p>
 
-  <h2>13. Jurisdiction</h2>
-  <p>This Privacy Policy is governed by the laws of the United States. For users in the European Economic Area (EEA), we process data under the legal basis of explicit consent (Article 6(1)(a) GDPR) for health data and legitimate interest for basic app functionality.</p>
+  <p style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid rgba(196, 147, 90, 0.1); font-style: italic; font-size: 0.9rem;">This Privacy Policy was last reviewed and updated on April 14, 2026.</p>
 
 </div>
 
