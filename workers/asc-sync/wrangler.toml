@@ -1,0 +1,28 @@
+# groundapp-asc-sync: daily App Store Connect analytics -> Supabase. See README.md.
+#
+# Required secrets (set from this folder with `npx wrangler secret put NAME`):
+#   ASC_ISSUER_ID              App Store Connect issuer id (Users and Access > Integrations)
+#   ASC_KEY_ID                 key id of the Sales and Reports role key
+#   ASC_PRIVATE_KEY            full contents of AuthKey_<KEYID>.p8 for that key
+#   SUPABASE_SERVICE_ROLE_KEY  service role key for the Supabase project below
+#   SYNC_TOKEN                 random shared secret for POST /run (manual runs)
+name = "groundapp-asc-sync"
+main = "src/index.js"
+compatibility_date = "2025-09-01"
+workers_dev = true
+
+[triggers]
+# 14:00 UTC daily. Apple publishes new daily instances during the US night.
+crons = ["0 14 * * *"]
+
+[vars]
+SUPABASE_URL = "https://jlgmhpdggjxxfgfauobd.supabase.co"
+ASC_APP_ID = "6760352779"
+# Workers Free allows 50 subrequests per run; the sync stops early and resumes next run.
+# On Workers Paid raise this (for example "900").
+ASC_MAX_SUBREQUESTS = "45"
+# "1" also reads the ONE_TIME_SNAPSHOT request. Leave off and backfill locally with the CLI.
+ASC_INCLUDE_SNAPSHOT = "0"
+
+[observability]
+enabled = true

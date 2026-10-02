@@ -341,9 +341,14 @@
     return dates.map(function (d) { return { date: d, value: m[d] || 0 }; });
   }
 
+  // Flow metrics are summed over the range; gauge metrics (a count per day) show the latest day.
   var METRIC_NAMES = { impressions: 'Impressions', page_views: 'Product page views', downloads_first_time: 'First-time downloads',
     redownloads: 'Redownloads', downloads_total: 'All downloads', installs: 'Installs', deletions: 'Deletions', sessions: 'Sessions',
-    active_devices: 'Active devices', subscription_starts: 'Subscription starts', trial_starts: 'Trial starts', renewals: 'Renewals' };
+    session_seconds: 'Time in app (hours)', trial_starts: 'Free trial starts', trial_conversions: 'Trials converted to paid',
+    subscription_starts: 'Subscription starts', renewals: 'Renewals', churn_voluntary: 'Cancellations',
+    churn_involuntary: 'Lapsed (billing issues)', refunds: 'Refunds',
+    active_devices: 'Active devices (latest day)', active_trials: 'Active free trials (latest day)', active_subscriptions: 'Active subscriptions (latest day)' };
+  var GAUGES = { active_devices: 1, active_trials: 1, active_subscriptions: 1 };
 
   function render(d) {
     $('#who').textContent = 'Signed in as ' + d.admin;
@@ -405,9 +410,14 @@
     barList(slot('apple-campaign'), sumBy(rows, 'downloads_first_time', 'campaign:').map(function (r) { var p = prettyCt(r.key); return { label: p.label, sub: p.sub, value: r.value }; }),
       { empty: 'No campaign downloads yet. A campaign shows up once at least 5 people download through it.' });
     var others = Object.keys(METRIC_NAMES).map(function (m) {
-      var t = rows.filter(function (r) { return r.metric === m && r.dim === 'total'; }).reduce(function (s, r) { return s + Number(r.value); }, 0);
-      return [METRIC_NAMES[m], t];
-    }).filter(function (r) { return r[1] > 0; });
+      var mine = rows.filter(function (r) { return r.metric === m && r.dim === 'total'; });
+      if (!mine.length) return null;
+      var v;
+      if (GAUGES[m]) { var lastD = mine.reduce(function (a, r) { return r.date > a ? r.date : a; }, ''); v = mine.filter(function (r) { return r.date === lastD; }).reduce(function (s2, r) { return s2 + Number(r.value); }, 0); }
+      else v = mine.reduce(function (s2, r) { return s2 + Number(r.value); }, 0);
+      if (m === 'session_seconds') v = v / 3600;
+      return [METRIC_NAMES[m], v];
+    }).filter(function (r) { return r && r[1] > 0; });
     if (!others.length) empty(slot('apple-other'), 'Nothing yet.');
     else { var ao = clear(slot('apple-other')); var t2 = tableView(['Metric', 'Total'], others.map(function (r) { return [r[0], fmt(r[1])]; }), true); t2.querySelector('summary').textContent = 'Totals'; ao.appendChild(t2); }
 
