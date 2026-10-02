@@ -19,3 +19,8 @@ https://groundapp.pages.dev/*
 
 https://:project.groundapp.pages.dev/*
   X-Robots-Tag: noindex
+
+# Admin dashboard: never indexed, never cached
+/admin/*
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store

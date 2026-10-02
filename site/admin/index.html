@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>GroundApp | Admin</title>
+<link rel="icon" href="/lung-logo.svg">
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #1A110E;
+    --card: #221814;
+    --card-2: #2A1E19;
+    --line: #3A2B24;
+    --text: #E8DDD0;
+    --text-2: #A89585;
+    --muted: #8C7A6C;
+    --accent: #C4935A;
+    --accent-hi: #D4A574;
+    --bad: #E8A0A0;
+    --serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 var(--sans); }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 20px 16px 64px; }
+  header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
+  h1 { font: 400 26px/1.2 var(--serif); margin: 0; }
+  h1 span { color: var(--accent); }
+  .who { color: var(--text-2); font-size: 13px; }
+  .who a { color: var(--text-2); }
+  .filters { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 16px 0 20px; }
+  .seg { display: inline-flex; background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 3px; }
+  .seg button { appearance: none; border: 0; background: none; color: var(--text-2); font: 600 13px var(--sans); padding: 8px 14px; min-height: 36px; border-radius: 999px; cursor: pointer; }
+  .seg button[aria-pressed="true"] { background: var(--accent); color: var(--bg); }
+  .seg button:focus-visible, .chart:focus-visible, summary:focus-visible { outline: 2px solid var(--accent-hi); outline-offset: 2px; }
+  .updated { color: var(--muted); font-size: 13px; }
+  main { transition: opacity .2s; }
+  main.loading { opacity: .45; }
+
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin-bottom: 28px; }
+  .tile { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
+  .tile .label { color: var(--text-2); font-size: 13px; }
+  .tile .value { font: 600 30px/1.2 var(--sans); margin: 4px 0 2px; }
+  .tile .sub { color: var(--muted); font-size: 12.5px; }
+
+  section { margin-top: 32px; }
+  section > h2 { font: 400 22px/1.25 var(--serif); margin: 0 0 4px; }
+  section > p.note { color: var(--text-2); font-size: 13.5px; margin: 0 0 14px; max-width: 70ch; }
+  .grid { display: grid; gap: 12px; grid-template-columns: 1fr; }
+  @media (min-width: 900px) { .grid.two { grid-template-columns: 1fr 1fr; } }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px; min-width: 0; }
+  .card h3 { font: 600 14px var(--sans); margin: 0 0 2px; }
+  .card .cap { color: var(--muted); font-size: 12.5px; margin: 0 0 10px; }
+  .empty { color: var(--text-2); font-size: 14px; padding: 18px 0; }
+
+  .chart { display: block; width: 100%; height: 170px; border-radius: 6px; }
+  .chart text { fill: var(--muted); font: 11px var(--sans); font-variant-numeric: tabular-nums; }
+  .chart .grid-line { stroke: var(--line); stroke-width: 1; }
+  .chart .bar { fill: var(--accent); }
+  .chart .bar.on { fill: var(--accent-hi); }
+  .chart .hit { fill: transparent; cursor: default; }
+
+  ul.bars { list-style: none; margin: 0; padding: 0; }
+  ul.bars li { display: grid; grid-template-columns: minmax(0, 40%) 1fr auto; align-items: center; gap: 10px; padding: 5px 0; }
+  ul.bars .lbl { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13.5px; }
+  ul.bars .lbl small { color: var(--muted); margin-left: 6px; }
+  ul.bars .track { height: 14px; display: block; }
+  ul.bars .fill { display: block; height: 14px; background: var(--accent); border-radius: 0 4px 4px 0; min-width: 2px; }
+  ul.bars .val { font-variant-numeric: tabular-nums; font-size: 13.5px; color: var(--text); min-width: 3ch; text-align: right; }
+
+  details.tbl { margin-top: 10px; }
+  details.tbl summary { color: var(--text-2); font-size: 12.5px; cursor: pointer; width: fit-content; }
+  table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 13px; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+  th { color: var(--text-2); font-weight: 600; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .scroll { overflow-x: auto; }
+
+  .tip { position: fixed; pointer-events: none; z-index: 10; background: var(--card-2); border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; font-size: 12.5px; box-shadow: 0 6px 20px rgba(0,0,0,.4); opacity: 0; transition: opacity .1s; }
+  .tip.show { opacity: 1; }
+  .tip b { display: block; font-size: 15px; color: var(--text); }
+  .tip span { color: var(--text-2); }
+  .banner { background: var(--card); border: 1px solid var(--line); border-left: 3px solid var(--bad); border-radius: 10px; padding: 12px 14px; margin: 16px 0; color: var(--text); }
+  .banner.info { border-left-color: var(--accent); }
+  footer { margin-top: 40px; color: var(--muted); font-size: 12.5px; }
+  @media (prefers-reduced-motion: reduce) { main, .tip { transition: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>GroundApp <span>admin</span></h1>
+    <div class="who"><span id="who">Loading…</span> · <a href="/cdn-cgi/access/logout">Sign out</a></div>
+  </header>
+
+  <div class="filters" role="group" aria-label="Date range">
+    <div class="seg" id="range">
+      <button type="button" data-days="7" aria-pressed="false">7 days</button>
+      <button type="button" data-days="30" aria-pressed="true">30 days</button>
+      <button type="button" data-days="90" aria-pressed="false">90 days</button>
+    </div>
+    <span class="updated" id="updated"></span>
+  </div>
+
+  <div id="error" class="banner" hidden></div>
+
+  <main id="main" class="loading" aria-busy="true">
+    <div class="kpis" id="kpis"></div>
+
+    <section id="web">
+      <h2>Website</h2>
+      <p class="note">From Cloudflare Web Analytics. Cloudflare samples traffic, so small numbers are approximate.</p>
+      <div class="grid">
+        <div class="card"><h3>Visitors per day</h3><p class="cap">groundapp.live, all pages</p><div data-slot="web-daily"></div></div>
+      </div>
+      <div class="grid two" style="margin-top:12px">
+        <div class="card"><h3>Top pages</h3><p class="cap">Page views</p><div data-slot="web-paths"></div></div>
+        <div class="card"><h3>Where visitors came from</h3><p class="cap">Visits by referring site</p><div data-slot="web-refs"></div></div>
+      </div>
+    </section>
+
+    <section id="taps">
+      <h2>App Store taps</h2>
+      <p class="note">Every tap on an App Store button, counted the moment it happens. Instagram visitors are tracked separately from everyone else.</p>
+      <div class="grid two">
+        <div class="card"><h3>Taps per day</h3><p class="cap">All App Store buttons</p><div data-slot="taps-daily"></div></div>
+        <div class="card"><h3>Taps by button</h3><p class="cap">Button and where the visitor came from</p><div data-slot="taps-ct"></div></div>
+      </div>
+    </section>
+
+    <section id="list">
+      <h2>Email list</h2>
+      <p class="note">Signups from groundapp.live forms. Everyone gets the welcome email from collin@groundapp.live.</p>
+      <div class="grid two">
+        <div class="card"><h3>Signups per day</h3><p class="cap">New subscribers from the site</p><div data-slot="list-daily"></div></div>
+        <div class="card"><h3>Signups by form</h3><p class="cap">Which form they used</p><div data-slot="list-source"></div></div>
+      </div>
+      <div class="grid" style="margin-top:12px">
+        <div class="card"><h3>Recent signups</h3><p class="cap">Latest 15 from the site</p><div data-slot="list-recent"></div></div>
+      </div>
+    </section>
+
+    <section id="apple">
+      <h2>App Store (from Apple)</h2>
+      <p class="note">Pulled from App Store Connect once a day. Apple's numbers run about 2 days behind, and Apple leaves out any row with fewer than 5 people.</p>
+      <div data-slot="apple-status"></div>
+      <div class="grid two">
+        <div class="card"><h3>First-time downloads per day</h3><p class="cap">All sources</p><div data-slot="apple-downloads"></div></div>
+        <div class="card"><h3>Product page views per day</h3><p class="cap">People who opened the App Store page</p><div data-slot="apple-views"></div></div>
+      </div>
+      <div class="grid two" style="margin-top:12px">
+        <div class="card"><h3>Downloads by source</h3><p class="cap">How people found the app</p><div data-slot="apple-source"></div></div>
+        <div class="card"><h3>Downloads by campaign</h3><p class="cap">Tagged links from the site, Instagram and email</p><div data-slot="apple-campaign"></div></div>
+      </div>
+      <div class="grid" style="margin-top:12px">
+        <div class="card"><h3>Everything else Apple reported</h3><p class="cap">Totals for the selected range</p><div data-slot="apple-other"></div></div>
+      </div>
+    </section>
+
+    <footer>Private page. Protected by Cloudflare Access. Data: Cloudflare Web Analytics, Supabase, App Store Connect.</footer>
+  </main>
+</div>
+<div class="tip" id="tip" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  'use strict';
+  var state = { days: 30 };
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var slot = function (name) { return $('[data-slot="' + name + '"]'); };
+  var nf = new Intl.NumberFormat('en-US');
+  var fmt = function (n) { return n == null ? '–' : nf.format(Math.round(n)); };
+  var tip = $('#tip');
+
+  function el(tag, attrs, text) {
+    var e = document.createElement(tag);
+    if (attrs) for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  function svg(tag, attrs) {
+    var e = document.createElementNS('http://www.w3.org/2000/svg', tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  }
+  function clear(node) { while (node.firstChild) node.removeChild(node.firstChild); return node; }
+  function empty(node, msg) { clear(node).appendChild(el('div', { class: 'empty' }, msg)); }
+
+  function dayList(days, endISO) {
+    var end = endISO ? new Date(endISO + 'T00:00:00Z') : new Date(new Date().toISOString().slice(0, 10) + 'T00:00:00Z');
+    var out = [];
+    for (var i = days - 1; i >= 0; i--) out.push(new Date(end.getTime() - i * 86400000).toISOString().slice(0, 10));
+    return out;
+  }
+  function shortDate(iso) {
+    return new Date(iso + 'T00:00:00Z').toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
+  }
+  function niceMax(v) {
+    if (v <= 4) return 4;
+    var p = Math.pow(10, Math.floor(Math.log10(v))), m = v / p;
+    return (m <= 2 ? 2 : m <= 5 ? 5 : 10) * p;
+  }
+
+  function showTip(x, y, value, label) {
+    clear(tip);
+    tip.appendChild(el('b', null, value));
+    tip.appendChild(el('span', null, label));
+    tip.classList.add('show');
+    var w = tip.offsetWidth, h = tip.offsetHeight;
+    tip.style.left = Math.max(8, Math.min(window.innerWidth - w - 8, x - w / 2)) + 'px';
+    tip.style.top = Math.max(8, y - h - 10) + 'px';
+  }
+  function hideTip() { tip.classList.remove('show'); }
+
+  // Column chart: one series, one bar per day. Hover, tap or arrow keys show the value.
+  function columns(node, points, unit) {
+    clear(node);
+    var total = points.reduce(function (s, p) { return s + p.value; }, 0);
+    if (!points.length || total === 0) { empty(node, 'Nothing recorded in this range yet.'); return; }
+    var W = Math.max(280, node.clientWidth || 320), H = 170, L = 34, B = 22, T = 8, R = 4;
+    var pw = W - L - R, ph = H - B - T, n = points.length;
+    var max = niceMax(Math.max.apply(null, points.map(function (p) { return p.value; })));
+    var band = pw / n, bw = Math.max(2, Math.min(24, band - 2));
+    var s = svg('svg', { class: 'chart', viewBox: '0 0 ' + W + ' ' + H, tabindex: '0', role: 'img',
+      'aria-label': unit + ' per day, ' + fmt(total) + ' total. Use arrow keys to read each day.' });
+    [0, max / 2, max].forEach(function (t) {
+      var y = T + ph - (t / max) * ph;
+      s.appendChild(svg('line', { class: 'grid-line', x1: L, x2: W - R, y1: y, y2: y }));
+      var tx = svg('text', { x: L - 6, y: y + 4, 'text-anchor': 'end' }); tx.textContent = fmt(t); s.appendChild(tx);
+    });
+    var bars = [];
+    points.forEach(function (p, i) {
+      var h = (p.value / max) * ph, x = L + i * band + (band - bw) / 2, y = T + ph - h, r = Math.min(4, h, bw / 2);
+      var bar = svg('path', { class: 'bar', d: h > 0
+        ? 'M' + x + ',' + (T + ph) + 'V' + (y + r) + 'Q' + x + ',' + y + ' ' + (x + r) + ',' + y + 'H' + (x + bw - r) + 'Q' + (x + bw) + ',' + y + ' ' + (x + bw) + ',' + (y + r) + 'V' + (T + ph) + 'Z'
+        : 'M0,0' });
+      s.appendChild(bar); bars.push(bar);
+    });
+    [0, Math.floor((n - 1) / 2), n - 1].filter(function (v, i, a) { return a.indexOf(v) === i; }).forEach(function (i) {
+      var tx = svg('text', { x: L + i * band + band / 2, y: H - 6, 'text-anchor': i === 0 ? 'start' : i === n - 1 ? 'end' : 'middle' });
+      if (i === 0) tx.setAttribute('x', L); if (i === n - 1) tx.setAttribute('x', W - R);
+      tx.textContent = shortDate(points[i].date); s.appendChild(tx);
+    });
+    var active = -1;
+    function activate(i) {
+      if (active >= 0) bars[active].classList.remove('on');
+      active = i; bars[i].classList.add('on');
+      var box = s.getBoundingClientRect(), scale = box.width / W;
+      var p = points[i], h = (p.value / max) * ph;
+      showTip(box.left + (L + i * band + band / 2) * scale, box.top + (T + ph - h) * scale, fmt(p.value), unit + ' · ' + shortDate(p.date));
+    }
+    function deactivate() { if (active >= 0) bars[active].classList.remove('on'); active = -1; hideTip(); }
+    points.forEach(function (p, i) {
+      var hit = svg('rect', { class: 'hit', x: L + i * band, y: T, width: band, height: ph });
+      hit.addEventListener('pointerenter', function () { activate(i); });
+      hit.addEventListener('pointerdown', function () { activate(i); });
+      s.appendChild(hit);
+    });
+    s.addEventListener('pointerleave', deactivate);
+    s.addEventListener('blur', deactivate);
+    s.addEventListener('focus', function () { activate(active >= 0 ? active : n - 1); });
+    s.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+        e.preventDefault(); activate(Math.max(0, Math.min(n - 1, (active < 0 ? n - 1 : active) + (e.key === 'ArrowRight' ? 1 : -1))));
+      }
+    });
+    node.appendChild(s);
+    node.appendChild(tableView(['Date', unit], points.map(function (p) { return [shortDate(p.date), fmt(p.value)]; })));
+  }
+
+  // Horizontal bars with the value at the tip. One series, so no legend.
+  function barList(node, rows, opts) {
+    clear(node);
+    rows = rows.filter(function (r) { return r.value > 0; });
+    if (!rows.length) { empty(node, (opts && opts.empty) || 'Nothing recorded in this range yet.'); return; }
+    var max = Math.max.apply(null, rows.map(function (r) { return r.value; }));
+    var ul = el('ul', { class: 'bars' });
+    rows.slice(0, (opts && opts.limit) || 10).forEach(function (r) {
+      var li = el('li');
+      var lbl = el('span', { class: 'lbl', title: r.label + (r.sub ? ' · ' + r.sub : '') }, r.label);
+      if (r.sub) lbl.appendChild(el('small', null, r.sub));
+      var track = el('span', { class: 'track' });
+      var fill = el('span', { class: 'fill' }); fill.style.width = Math.max(1, (r.value / max) * 100) + '%';
+      track.appendChild(fill);
+      li.appendChild(lbl); li.appendChild(track); li.appendChild(el('span', { class: 'val' }, fmt(r.value)));
+      ul.appendChild(li);
+    });
+    node.appendChild(ul);
+  }
+
+  function tableView(head, rows, open) {
+    var d = el('details', { class: 'tbl' });
+    if (open) d.open = true;
+    d.appendChild(el('summary', null, 'Show as table'));
+    var wrap = el('div', { class: 'scroll' }), t = el('table'), tr = el('tr');
+    head.forEach(function (h, i) { tr.appendChild(el('th', i > 0 && /^[A-Z#]/.test(h) && head.length === 2 ? { class: 'num' } : null, h)); });
+    var thead = el('thead'); thead.appendChild(tr); t.appendChild(thead);
+    var tb = el('tbody');
+    rows.forEach(function (r) {
+      var row = el('tr');
+      r.forEach(function (c, i) { row.appendChild(el('td', i > 0 && head.length === 2 ? { class: 'num' } : null, c)); });
+      tb.appendChild(row);
+    });
+    t.appendChild(tb); wrap.appendChild(t); d.appendChild(wrap);
+    return d;
+  }
+
+  var PLACES = { hero: 'Hero button', sticky: 'Sticky bar', pricing: 'Pricing card', download: 'Download section', nav: 'Top nav',
+    menu: 'Mobile menu', footer: 'Footer', 'about-cta': 'About page', 'about-nav': 'About nav', 'about-menu': 'About menu',
+    'blog-nav': 'Blog nav', 'blog-cta': 'Blog post button', atlas: 'Breath Atlas', '404': '404 page', banner: 'iPhone banner',
+    direct: 'Story link (/get)', welcome: 'Welcome email' };
+  var CHANNELS = { site: 'Website', ig: 'Instagram', email: 'Email' };
+  function prettyCt(ct) {
+    var m = /^(site|ig|email)-(.+)$/.exec(ct || '');
+    if (!m) return { label: ct, sub: '' };
+    return { label: PLACES[m[2]] || m[2], sub: CHANNELS[m[1]] };
+  }
+
+  function tile(label, value, sub) {
+    var t = el('div', { class: 'tile' });
+    t.appendChild(el('div', { class: 'label' }, label));
+    t.appendChild(el('div', { class: 'value' }, value));
+    if (sub) t.appendChild(el('div', { class: 'sub' }, sub));
+    return t;
+  }
+
+  function sumBy(rows, metric, dimPrefix) {
+    var out = {};
+    rows.forEach(function (r) {
+      if (r.metric !== metric || r.dim.indexOf(dimPrefix) !== 0) return;
+      var k = r.dim.slice(dimPrefix.length);
+      out[k] = (out[k] || 0) + Number(r.value);
+    });
+    return Object.keys(out).map(function (k) { return { key: k, value: out[k] }; }).sort(function (a, b) { return b.value - a.value; });
+  }
+  function dailyFrom(rows, metric, dates) {
+    var m = {};
+    rows.forEach(function (r) { if (r.metric === metric && r.dim === 'total') m[r.date] = (m[r.date] || 0) + Number(r.value); });
+    return dates.map(function (d) { return { date: d, value: m[d] || 0 }; });
+  }
+
+  var METRIC_NAMES = { impressions: 'Impressions', page_views: 'Product page views', downloads_first_time: 'First-time downloads',
+    redownloads: 'Redownloads', downloads_total: 'All downloads', installs: 'Installs', deletions: 'Deletions', sessions: 'Sessions',
+    active_devices: 'Active devices', subscription_starts: 'Subscription starts', trial_starts: 'Trial starts', renewals: 'Renewals' };
+
+  function render(d) {
+    $('#who').textContent = 'Signed in as ' + d.admin;
+    $('#updated').textContent = 'Updated ' + new Date(d.generated_at).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+    var dates = dayList(d.days);
+    var web = d.traffic || {}, taps = d.taps || {}, list = d.list || {}, apple = d.apple || { rows: [] }, store = d.store;
+
+    // Website
+    var visits = null;
+    if (!web.configured) {
+      ['web-daily', 'web-paths', 'web-refs'].forEach(function (s) { empty(slot(s), 'Website tracking isn\'t connected yet.'); });
+    } else if (web.error) {
+      ['web-daily', 'web-paths', 'web-refs'].forEach(function (s) { empty(slot(s), 'Couldn\'t load traffic from Cloudflare. Try again in a minute.'); });
+    } else {
+      var byDay = {}; web.daily.forEach(function (r) { byDay[r.date] = r.visits; });
+      visits = web.daily.reduce(function (s, r) { return s + r.visits; }, 0);
+      columns(slot('web-daily'), dates.map(function (dt) { return { date: dt, value: byDay[dt] || 0 }; }), 'Visitors');
+      barList(slot('web-paths'), web.paths.map(function (r) { return { label: r.path, value: r.pageviews }; }));
+      barList(slot('web-refs'), web.referrers.map(function (r) { return { label: r.host, value: r.visits }; }));
+    }
+
+    // Taps
+    var tapTotal = taps.total_period || 0;
+    var tapDay = {}; (taps.daily || []).forEach(function (r) { tapDay[r.date] = r.count; });
+    columns(slot('taps-daily'), dates.map(function (dt) { return { date: dt, value: tapDay[dt] || 0 }; }), 'Taps');
+    barList(slot('taps-ct'), (taps.by_ct || []).map(function (r) { var p = prettyCt(r.ct); return { label: p.label, sub: p.sub, value: r.count }; }),
+      { empty: 'No taps yet. Taps show up here the moment someone taps an App Store button.', limit: 12 });
+
+    // Email list
+    var sDay = {}; (list.daily || []).forEach(function (r) { sDay[r.date] = r.count; });
+    columns(slot('list-daily'), dates.map(function (dt) { return { date: dt, value: sDay[dt] || 0 }; }), 'Signups');
+    barList(slot('list-source'), (list.by_source || []).map(function (r) { return { label: r.source, value: r.count }; }),
+      { empty: 'No signups from the site in this range.' });
+    var recent = list.recent || [];
+    if (!recent.length) empty(slot('list-recent'), 'No signups from the site yet.');
+    else {
+      var rs = clear(slot('list-recent'));
+      var tv = tableView(['Email', 'Name', 'Form', 'Date', 'Status'], recent.map(function (r) {
+        return [r.email, r.first_name || '', r.source, new Date(r.at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }), r.status];
+      }), true);
+      tv.querySelector('summary').textContent = 'Recent signups';
+      rs.appendChild(tv);
+    }
+
+    // Apple
+    var rows = apple.rows || [];
+    var aStatus = clear(slot('apple-status'));
+    if (!rows.length) {
+      aStatus.appendChild(el('div', { class: 'banner info' }, apple.last_import
+        ? 'Apple has sent reports, but nothing for this date range yet.'
+        : 'Waiting for Apple\'s first report. It arrives 1 to 2 days after the App Store Connect setup, then updates daily.'));
+    } else {
+      aStatus.appendChild(el('p', { class: 'cap' }, 'Latest day from Apple: ' + shortDate(String(apple.last_date).slice(0, 10)) + '.'));
+    }
+    var appleDates = dayList(d.days, apple.last_date ? String(apple.last_date).slice(0, 10) : null);
+    columns(slot('apple-downloads'), dailyFrom(rows, 'downloads_first_time', appleDates), 'Downloads');
+    columns(slot('apple-views'), dailyFrom(rows, 'page_views', appleDates), 'Page views');
+    barList(slot('apple-source'), sumBy(rows, 'downloads_first_time', 'source:').map(function (r) { return { label: r.key, value: r.value }; }));
+    barList(slot('apple-campaign'), sumBy(rows, 'downloads_first_time', 'campaign:').map(function (r) { var p = prettyCt(r.key); return { label: p.label, sub: p.sub, value: r.value }; }),
+      { empty: 'No campaign downloads yet. A campaign shows up once at least 5 people download through it.' });
+    var others = Object.keys(METRIC_NAMES).map(function (m) {
+      var t = rows.filter(function (r) { return r.metric === m && r.dim === 'total'; }).reduce(function (s, r) { return s + Number(r.value); }, 0);
+      return [METRIC_NAMES[m], t];
+    }).filter(function (r) { return r[1] > 0; });
+    if (!others.length) empty(slot('apple-other'), 'Nothing yet.');
+    else { var ao = clear(slot('apple-other')); var t2 = tableView(['Metric', 'Total'], others.map(function (r) { return [r[0], fmt(r[1])]; }), true); t2.querySelector('summary').textContent = 'Totals'; ao.appendChild(t2); }
+
+    // Headline numbers
+    var downloads = rows.length ? dailyFrom(rows, 'downloads_first_time', appleDates).reduce(function (s, p) { return s + p.value; }, 0) : null;
+    var k = clear($('#kpis'));
+    k.appendChild(tile('Website visitors', visits == null ? '–' : fmt(visits), visits == null ? 'Tracking not connected yet' : 'Last ' + d.days + ' days, approximate'));
+    k.appendChild(tile('App Store taps', fmt(tapTotal), visits ? (Math.round(tapTotal / visits * 1000) / 10) + '% of visitors' : 'Last ' + d.days + ' days'));
+    k.appendChild(tile('Downloads', downloads == null ? '–' : fmt(downloads), downloads == null ? 'Waiting for Apple' : 'First-time, from Apple'));
+    k.appendChild(tile('New email signups', fmt(list.new_period || 0), fmt(list.groundapp_total || 0) + ' GroundApp subscribers'));
+    k.appendChild(tile('App Store rating', store && store.rating ? store.rating.toFixed(1) + ' ★' : '–', store ? fmt(store.ratings) + ' ratings · v' + store.version : ''));
+  }
+
+  var last = null, ctrl = null;
+  function load() {
+    var main = $('#main');
+    main.classList.add('loading'); main.setAttribute('aria-busy', 'true');
+    if (ctrl) ctrl.abort();
+    ctrl = new AbortController();
+    fetch('/api/admin/summary?days=' + state.days, { credentials: 'same-origin', signal: ctrl.signal })
+      .then(function (r) { return r.json().then(function (j) { return { status: r.status, body: j }; }); })
+      .then(function (res) {
+        var err = $('#error');
+        if (res.status !== 200 || !res.body.ok) {
+          var msg = res.status === 401 ? 'You\'re signed out. Reload the page to sign in again.'
+            : res.status === 403 ? 'This account isn\'t allowed to see the admin page.'
+            : res.status === 503 ? 'The login isn\'t fully set up yet.'
+            : 'Couldn\'t load the numbers. Try again in a minute.';
+          err.textContent = msg; err.hidden = false; return;
+        }
+        err.hidden = true; last = res.body; render(last);
+      })
+      .catch(function (e) { if (e.name !== 'AbortError') { var err = $('#error'); err.textContent = 'Couldn\'t reach the server. Check your connection.'; err.hidden = false; } })
+      .then(function () { main.classList.remove('loading'); main.setAttribute('aria-busy', 'false'); });
+  }
+
+  $('#range').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-days]'); if (!b) return;
+    state.days = parseInt(b.getAttribute('data-days'), 10);
+    Array.prototype.forEach.call(this.querySelectorAll('button'), function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+    load();
+  });
+  var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { if (last) render(last); }, 150); });
+  window.addEventListener('scroll', hideTip, { passive: true });
+  load();
+})();
+</script>
+</body>
+</html>

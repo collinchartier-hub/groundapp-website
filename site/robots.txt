@@ -2,6 +2,8 @@
 # Breathwork app for iPhone and Apple Watch by Collin Chartier
 
 User-agent: *
+Disallow: /admin
+Disallow: /api/
 Allow: /
 
 # AI crawlers are welcome too. See /llms.txt for a plain-text summary.
