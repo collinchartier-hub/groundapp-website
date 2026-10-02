@@ -11,8 +11,8 @@ SUPABASE_URL = "https://jlgmhpdggjxxfgfauobd.supabase.co"
 CF_ACCOUNT_ID = "b1d1286405562ce47c7ef83c2376f1d2"
 SITE_HOST = "groundapp.live"
 ADMIN_EMAILS = "collinchartier@gmail.com"
-# Cloudflare Access for /admin (fill in after the Access app exists; not secrets):
-# ACCESS_TEAM_DOMAIN = "<team>.cloudflareaccess.com"
-# ACCESS_AUD = "<application audience tag>"
+# Cloudflare Access app "GroundApp admin" (guards /admin and /api/admin). Not secrets.
+ACCESS_TEAM_DOMAIN = "aged-forest-ef35.cloudflareaccess.com"
+ACCESS_AUD = "3e0571cf2dde6f22ddad60da9b48f731f16a4b872f8c3f9345f2b3830aecb6ed"
 # Secret: CF_ANALYTICS_TOKEN (read-only Account Analytics token)
 # MAILING_ADDRESS = ""   # postal address for the email footer (CAN-SPAM). Set once Collin provides it.
