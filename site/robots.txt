@@ -1,18 +1,23 @@
-# Ground App — groundapp.live
-# AI-powered breathwork & nervous system regulation app
+# GroundApp (groundapp.live)
+# Breathwork app for iPhone and Apple Watch by Collin Chartier
 
-# Allow all crawlers
 User-agent: *
 Allow: /
 
-# Explicitly allow AI crawlers
+# AI crawlers are welcome too. See /llms.txt for a plain-text summary.
 User-agent: GPTBot
 Allow: /
 
 User-agent: ChatGPT-User
 Allow: /
 
+User-agent: OAI-SearchBot
+Allow: /
+
 User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-SearchBot
 Allow: /
 
 User-agent: PerplexityBot

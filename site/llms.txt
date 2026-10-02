@@ -1,54 +1,67 @@
-# Ground App
+# GroundApp
 
-> Ground App is an expert-guided breathwork and nervous system regulation app for iOS, created by certified breathwork instructor Collin Chartier. It delivers personalized breathing sessions based on how you feel and your real health data from wearables (Oura, WHOOP, Apple Watch, Garmin). Ground App includes 12+ expert breathing techniques (Box Breathing, Wim Hof Method, 4-7-8 Breathing, Physiological Sigh, Coherent Breathing, and more), voice-guided narration from expert instructors, and 30+ curated music tracks. Free on iOS. Website: https://groundapp.live
+> GroundApp is a breathwork app for iPhone and Apple Watch, created by Collin Chartier, a breathwork and mental performance coach. It has 35 breathing techniques across calming, energizing, focusing and balancing, guided sessions narrated in Collin's voice, and a daily check-in that matches how you feel to a breathing session. Free to download on the App Store. Website: https://groundapp.live
 
-Ground App is the first breathwork app to combine intelligent session personalization with real biometric data from wearable devices. Users describe how they feel, and the app selects the optimal breathing technique, timing, and narration tailored to their nervous system state. It also reads HRV, resting heart rate, sleep, stress, and recovery data from Oura Ring, WHOOP, Apple Watch, Apple Health, and Garmin to factor in your body's current state.
+- App Store: https://apps.apple.com/us/app/groundapp-breathwork/id6760352779
+- Rated 5.0 on the US App Store (11 ratings as of October 2026)
+- Requires iOS 17 or later. The Apple Watch app requires watchOS 11 or later.
 
-Ground App was created by Collin Chartier, a certified breathwork instructor and endurance athlete based in the United States. Collin developed the app to make nervous system regulation accessible to everyone, from burned-out professionals to competitive athletes to anyone experiencing anxiety, stress, or difficulty sleeping.
+## Pricing
 
-The app addresses a core health need: nervous system regulation through breathwork. Controlled breathing techniques directly activate the parasympathetic nervous system (the body's "rest and digest" response), reduce cortisol levels, lower heart rate, and improve heart rate variability (HRV). These are evidence-based physiological effects documented in peer-reviewed research.
+- Free to download. Four techniques are free forever: Box Breathing, Deep Slow Breathing, 2-to-1 Breathing and Triangle Breathing. The breathing timer, streaks and basic stats are free too.
+- GroundApp Premium is $29.99 a year (US). It unlocks all 35 techniques, 15 guided sessions and the daily check-in. Billed through Apple; cancel any time in Apple ID settings.
 
-## Key Features
+## Features
 
-- [Personalized Sessions](https://groundapp.live/#features): Tell Ground App how you feel and get a breathing session matched to your state. Calming, energizing, or balancing.
-- [Health Metrics Integration](https://groundapp.live/#features): Connects with Oura Ring, WHOOP, Apple Watch, Apple Health, and Garmin for biometric-informed recommendations
-- [12+ Expert Techniques](https://groundapp.live/#features): Box Breathing, Wim Hof Method, 4-7-8 Breathing, Physiological Sigh, Coherent Breathing, and more
-- [Expert-Led Guidance](https://groundapp.live/#features): Guided by Collin Chartier and three expert breathwork instructors
-- [30+ Music Tracks](https://groundapp.live/#music): Curated ambient, nature, and atmospheric soundscapes for every session
-- [Try a Breath Demo](https://groundapp.live/#try-a-breath): Interactive breathing demo directly on the website
+- 35 breathing techniques across calming, energizing, focusing and balancing, including progressive Box Breathing variants.
+- 15 guided sessions narrated in Collin Chartier's voice. The narration is an AI model of Collin's voice, trained on his own recordings. Collin is the only instructor.
+- Daily check-in: a feelings wheel with 102 feelings (6 core, 24, 72), plus intensity and energy, that matches you to a breathing session. The matching is rule-based. Optional, before a session.
+- After-session reflection: rating, how you feel, a note, and a share card.
+- BOLT CO2 tolerance test (free).
+- Apple Watch app: Box Breathing, Physiological Sigh, Resonance and Instant Calm on the wrist, with haptic breath cues and live heart rate.
+- Apple Health: reads HRV, resting heart rate, sleep and respiratory rate (and more); writes Mindful Minutes.
+- Oura Ring connects directly. Garmin data comes in through Apple Health. Bluetooth heart-rate straps are supported. Live heart rate and HRV during sessions.
+- Instant Calm: one tap, no voice, works offline.
+- Quick fixes for Sleep, Anxiety, Focus, Energy, Headache and Stress. 7 collections (for example Bedtime Wind-Down and Morning Ritual). 6 Learn modules on the nervous system.
+- Build your own breathing sequences with haptics and a counter.
+- Sound: 6 ambient soundscapes, binaural beats (delta, theta, alpha, beta), 32 music tracks, a sleep sounds player, 4 bells, and a haptic-only mode.
+- 4 widgets (Streak, Quick Breathe, Daily Intention, Instant Calm), including lock screen widgets. Live Activity and Dynamic Island. Siri Shortcuts.
+- Progress: streaks, a heatmap, mood trend and a health dashboard. 5 levels by total minutes: Seedling, Explorer (60+ min), Warrior (300+), Sage (1000+), Master (3000+). Levels are milestones; nothing is locked behind them.
+- Export your data (CSV and JSON). Delete your account any time in Settings. Sign in with Apple, Google or email.
+- Bundled sessions work offline.
 
-## About the Founder
+## About the Creator
 
-- [Collin Chartier](https://groundapp.live/about): Certified breathwork instructor, endurance athlete, and app developer. Created Ground App to bring personalized nervous system regulation to everyone.
+- [Collin Chartier](https://groundapp.live/about): Breathwork and mental performance coach and endurance athlete. He built GroundApp to give people the guidance he gives his clients: which breath to use, when, and how to make it a practice.
 
 ## Pages
 
-- [Home](https://groundapp.live): Main landing page with app overview, features, demo, and waitlist
-- [About](https://groundapp.live/about): Detailed information about Ground App, the founder, and the mission
-- [FAQ](https://groundapp.live/#faq): Frequently asked questions about Ground App
+- [Home](https://groundapp.live/): What GroundApp is, features, reviews and download link
+- [FAQ](https://groundapp.live/#faq): Common questions about GroundApp
+- [About](https://groundapp.live/about): The app, the creator and why breathwork works
+- [Blog](https://groundapp.live/blog/): Articles by Collin Chartier on breathwork and nervous system regulation
+- [The Breath Atlas: Coherence](https://groundapp.live/atlas/coherence/): Guided audio practice
+- [The Breath Atlas: Three-Part Breath](https://groundapp.live/atlas/three-part-breath/): Guided audio practice
+- [The Breath Atlas: Alternate Nostril](https://groundapp.live/atlas/alternate-nostril/): Guided audio practice
 
-## Breathing Techniques Included
+## Blog Posts
 
-- Box Breathing (4-4-4-4): Used by Navy SEALs for stress reduction and focus
-- Wim Hof Method: Energizing technique with rapid breathing cycles
-- 4-7-8 Breathing: Dr. Andrew Weil's technique for sleep and anxiety relief
-- Physiological Sigh: Double inhale + extended exhale for rapid calm (Stanford research)
-- Coherent Breathing (5.5-5.5): Optimal heart rate variability breathing at 5.5 breaths per minute
-- Alternate Nostril Breathing: Yogic technique for nervous system balance
-- Tummo Breathing: Tibetan meditation breathing for inner heat generation
-- Breath of Fire: Rapid rhythmic breathing for energy and alertness
+- [Why I Built GroundApp: From Breathwork Coach to App Creator](https://groundapp.live/blog/why-i-built-groundapp/)
+- [Nervous System Regulation: The Skill Nobody Taught You](https://groundapp.live/blog/nervous-system-regulation-explained/)
+- [The Science of Breathwork: What Actually Happens When You Control Your Breathing](https://groundapp.live/blog/science-of-breathwork/)
+- [Where Breathwork Tech Is Going (and What It Should Never Replace)](https://groundapp.live/blog/future-of-breathwork-tech/)
+- [5 Breathing Techniques That Actually Help With Anxiety](https://groundapp.live/blog/breathing-techniques-for-anxiety/)
 
 ## Use Cases
 
-- Anxiety and stress relief
-- Pre-performance nervous system regulation (athletes, executives, public speakers)
-- Sleep improvement
-- Focus and concentration enhancement
-- Post-workout recovery
-- Nervous system regulation for burnout recovery
-- Daily mindfulness and breathwork practice
+- Calming down in a stressful moment
+- Winding down for sleep
+- Focus and composure before a performance, presentation or competition
+- Energy in the morning or before training
+- Building a daily breathwork habit
 
 ## Optional
 
-- [Privacy Policy](https://groundapp.live/privacy): Ground App privacy policy
-- [Terms of Service](https://groundapp.live/terms): Ground App terms of service
+- [Privacy Policy](https://groundapp.live/privacy): How GroundApp handles app and website data
+- [Terms of Service](https://groundapp.live/terms): Terms for using GroundApp
+- Contact: collin@groundapp.live
