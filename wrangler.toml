@@ -15,4 +15,5 @@ ADMIN_EMAILS = "collinchartier@gmail.com"
 ACCESS_TEAM_DOMAIN = "aged-forest-ef35.cloudflareaccess.com"
 ACCESS_AUD = "3e0571cf2dde6f22ddad60da9b48f731f16a4b872f8c3f9345f2b3830aecb6ed"
 # Secret: CF_ANALYTICS_TOKEN (read-only Account Analytics token)
-# MAILING_ADDRESS = ""   # postal address for the email footer (CAN-SPAM). Set once Collin provides it.
+# Postal address for the email footer (CAN-SPAM). Same as collinchartier.com (Collin, 2026-10-02).
+MAILING_ADDRESS = "5599 S. Rio Grande St, Littleton, CO 80120"
