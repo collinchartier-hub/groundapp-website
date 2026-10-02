@@ -310,10 +310,10 @@
   var PLACES = { hero: 'Hero button', sticky: 'Sticky bar', pricing: 'Pricing card', download: 'Download section', nav: 'Top nav',
     menu: 'Mobile menu', footer: 'Footer', 'about-cta': 'About page', 'about-nav': 'About nav', 'about-menu': 'About menu',
     'blog-nav': 'Blog nav', 'blog-cta': 'Blog post button', atlas: 'Breath Atlas', '404': '404 page', banner: 'iPhone banner',
-    direct: 'Story link (/get)', welcome: 'Welcome email' };
-  var CHANNELS = { site: 'Website', ig: 'Instagram', email: 'Email' };
+    direct: 'Story link (/get)', welcome: 'Welcome email', home: 'GroundApp section' };
+  var CHANNELS = { site: 'Website', ig: 'Instagram', email: 'Email', cc: 'collinchartier.com' };
   function prettyCt(ct) {
-    var m = /^(site|ig|email)-(.+)$/.exec(ct || '');
+    var m = /^(site|ig|email|cc)-(.+)$/.exec(ct || '');
     if (!m) return { label: ct, sub: '' };
     return { label: PLACES[m[2]] || m[2], sub: CHANNELS[m[1]] };
   }
