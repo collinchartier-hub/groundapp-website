@@ -86,8 +86,10 @@ function ascFromEnv() {
 
 function dbFromDevVars({ required }) {
   const vars = loadDevVars();
-  const url = process.env.SUPABASE_URL || vars.SUPABASE_URL;
-  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || vars.SUPABASE_SERVICE_ROLE_KEY;
+  // Take URL and key from the same place. A stray SUPABASE_SERVICE_ROLE_KEY in the shell (another project) must not pair with this repo's URL.
+  const fromEnv = Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
+  const url = fromEnv ? process.env.SUPABASE_URL : vars.SUPABASE_URL;
+  const serviceKey = fromEnv ? process.env.SUPABASE_SERVICE_ROLE_KEY : vars.SUPABASE_SERVICE_ROLE_KEY;
   if (!url || !serviceKey) {
     if (required) die('SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY not found in .dev.vars or the environment');
     return null;
