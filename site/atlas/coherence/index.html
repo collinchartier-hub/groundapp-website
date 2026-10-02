@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coherence · The Breath Atlas · Ground</title>
+<meta name="description" content="Five seconds in. Five seconds out. Six breaths a minute. The most-validated technique in the HRV literature. A guided breath practice from The Breath Atlas, by Collin Chartier.">
+<meta name="theme-color" content="#1A110E">
+<meta property="og:title" content="Coherence · The Breath Atlas · Ground">
+<meta property="og:description" content="Five seconds in. Five seconds out. Six breaths a minute. The most-validated technique in the HRV literature.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://groundapp.live/atlas/coherence/">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://groundapp.live/atlas/coherence/">
+<link rel="icon" type="image/svg+xml" href="/lung-logo.svg">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --obsidian:#1A110E;
+  --obsidian-mid:#231916;
+  --bone:#E8DDD0;
+  --gold:#C4935A;
+  --amber:#D4A574;
+  --driftwood:#A89585;
+  --sandstone:#7A6B5D;
+  --terracotta:#8B5E3C;
+  --bf:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --hf:Georgia,'Iowan Old Style','Apple Garamond',serif;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+html,body{background:var(--obsidian);color:var(--bone);font-family:var(--bf);min-height:100vh;line-height:1.55;font-feature-settings:"ss01","ss02","kern"}
+body{display:flex;flex-direction:column;align-items:center;padding:2.5rem 1.4rem;max-width:540px;margin:0 auto;min-height:100vh}
+
+/* Header */
+.brand{display:flex;flex-direction:column;align-items:center;gap:.6rem;margin-bottom:2.4rem;text-decoration:none}
+.brand-mark{display:inline-block;background:var(--gold);color:var(--obsidian);padding:.4rem .9rem;border-radius:3px;font-family:var(--hf);font-weight:900;font-size:1.15rem;letter-spacing:.04em;text-transform:uppercase;line-height:1}
+.brand-tag{font-size:.7rem;letter-spacing:.32em;text-transform:uppercase;color:var(--driftwood);font-weight:500}
+
+/* Practice card */
+.practice-meta{display:flex;align-items:center;justify-content:center;gap:.5rem;margin-bottom:.6rem;font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);font-weight:600}
+.practice-meta .dot{opacity:.5}
+.practice-title{font-family:var(--hf);font-weight:900;font-size:clamp(2.4rem,8vw,3.6rem);line-height:.96;text-align:center;color:var(--bone);margin-bottom:1.2rem;letter-spacing:-.005em}
+.practice-desc{text-align:center;color:var(--bone);font-size:1.02rem;line-height:1.55;opacity:.85;max-width:34ch;margin:0 auto 2.4rem}
+.practice-desc em{font-family:var(--hf);font-style:italic;color:var(--amber)}
+
+/* Locked state — placeholder behind the modal */
+.locked-card{width:100%;max-width:420px;margin:0 auto 2.6rem;text-align:center;padding:2.2rem 1.4rem;border:1px dashed rgba(196,147,90,.25);border-radius:12px}
+.locked-card .lock-icon{display:inline-flex;width:48px;height:48px;border-radius:50%;background:rgba(196,147,90,.1);align-items:center;justify-content:center;margin-bottom:1rem}
+.locked-card .lock-icon svg{width:22px;height:22px;color:var(--gold)}
+.locked-card .lock-msg{font-family:var(--hf);font-style:italic;color:var(--driftwood);font-size:1.02rem;line-height:1.5;margin-bottom:1.2rem}
+.locked-card .reopen{background:var(--gold);color:var(--obsidian);border:none;padding:.85rem 1.6rem;font-family:var(--bf);font-weight:700;font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;border-radius:8px;cursor:pointer;transition:background .3s var(--ease)}
+.locked-card .reopen:hover{background:var(--amber)}
+
+/* Audio player (shown after unlock) */
+.player{display:none;width:100%;max-width:420px;margin:0 auto 2.6rem;text-align:center}
+.player-prompt{font-family:var(--hf);font-style:italic;font-size:1.05rem;color:var(--amber);margin-bottom:1.2rem;line-height:1.4}
+.player audio{width:100%;border-radius:3px}
+.player-note{margin-top:1.1rem;font-size:.78rem;color:var(--driftwood);line-height:1.55}
+
+/* Other practices */
+.others{width:100%;max-width:380px;margin:0 auto 2.6rem;border-top:1px solid rgba(196,147,90,.14);padding-top:1.8rem}
+.others-label{font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;color:var(--driftwood);font-weight:600;margin-bottom:1rem;text-align:center}
+.others-list{display:flex;flex-direction:column;gap:.5rem}
+.others-list a{display:flex;align-items:center;justify-content:space-between;padding:.85rem 1.1rem;background:rgba(232,221,208,.04);border:1px solid rgba(196,147,90,.1);border-radius:3px;color:var(--bone);text-decoration:none;font-size:.92rem;transition:border-color .3s var(--ease),background .3s var(--ease)}
+.others-list a:hover{border-color:rgba(196,147,90,.32);background:rgba(232,221,208,.07)}
+.others-list .name{font-family:var(--hf);font-weight:600}
+.others-list .dur{font-size:.7rem;letter-spacing:.22em;color:var(--gold);text-transform:uppercase}
+
+/* Footer */
+.foot{width:100%;text-align:center;color:var(--sandstone);font-size:.74rem;letter-spacing:.04em;line-height:1.6;margin-top:auto;padding-top:2rem}
+.foot a{color:var(--gold);text-decoration:none;font-weight:600;letter-spacing:.18em;text-transform:uppercase;font-size:.7rem}
+.foot a:hover{color:var(--amber)}
+.foot .row{display:flex;justify-content:center;gap:1.4rem;margin-bottom:1rem}
+.foot .tag{font-family:var(--hf);font-style:italic;color:var(--driftwood)}
+
+/* ─── Newsletter Popup Modal (mirrors homepage pattern) ─────────────────────── */
+.nl-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);z-index:9999;opacity:0;transition:opacity .3s ease;pointer-events:none}
+.nl-overlay.show{opacity:1;pointer-events:auto}
+.nl-modal-wrap{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:1.5rem;pointer-events:none;opacity:0;transform:scale(.95);transition:opacity .4s cubic-bezier(.25,.1,.25,1),transform .4s cubic-bezier(.25,.1,.25,1)}
+.nl-modal-wrap.show{opacity:1;transform:scale(1);pointer-events:auto}
+.nl-modal{position:relative;background:var(--obsidian-mid);border:1px solid rgba(196,147,90,.12);padding:2.5rem;width:100%;max-width:420px;border-radius:16px;overflow:hidden}
+.nl-glow{position:absolute;top:-5rem;left:50%;transform:translateX(-50%);width:10rem;height:10rem;border-radius:50%;background:radial-gradient(circle,rgba(196,147,90,.15) 0%,transparent 70%);pointer-events:none;animation:nlBreathe 8s ease-in-out infinite}
+@keyframes nlBreathe{0%,100%{transform:translateX(-50%) scale(1);opacity:.8}50%{transform:translateX(-50%) scale(1.15);opacity:1}}
+.nl-close{position:absolute;top:.75rem;right:.75rem;background:none;border:none;color:var(--sandstone);opacity:.45;cursor:pointer;padding:.5rem;transition:opacity .3s}
+.nl-close:hover{opacity:.85}
+.nl-close svg{width:14px;height:14px}
+.nl-tag{font-family:var(--bf);font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;text-align:center}
+.nl-heading{font-family:var(--hf);font-size:1.7rem;font-weight:400;color:var(--bone);line-height:1.3;margin-bottom:.55rem;text-align:center}
+.nl-heading em{color:var(--gold);font-style:italic}
+.nl-desc{font-family:var(--bf);font-size:.88rem;color:var(--driftwood);line-height:1.65;margin-bottom:1.6rem;text-align:center}
+.nl-input{width:100%;background:var(--obsidian);border:1px solid rgba(196,147,90,.14);border-radius:10px;padding:.9rem 1.1rem;color:var(--bone);font-family:var(--bf);font-size:.95rem;outline:none;transition:border-color .3s;margin-bottom:.7rem;box-sizing:border-box}
+.nl-input::placeholder{color:var(--sandstone)}
+.nl-input:focus{border-color:rgba(196,147,90,.45)}
+.nl-submit{width:100%;background:var(--gold);border:none;color:var(--obsidian);padding:1rem;font-family:var(--bf);font-size:.85rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;border-radius:10px;cursor:pointer;transition:background .3s,opacity .3s;margin-top:.4rem}
+.nl-submit:hover{background:var(--amber)}
+.nl-submit:disabled{opacity:.5;cursor:not-allowed}
+.nl-err{display:none;color:#d8856b;font-size:.8rem;margin-top:.7rem;text-align:center}
+.nl-fine{font-family:var(--bf);font-size:.72rem;color:var(--sandstone);margin-top:.9rem;text-align:center;line-height:1.5}
+.nl-ok{display:none;text-align:center;padding:1.2rem 0}
+.nl-ok-icon{display:inline-flex;width:56px;height:56px;border-radius:50%;background:rgba(196,147,90,.16);align-items:center;justify-content:center;margin-bottom:1rem}
+.nl-ok-icon svg{width:26px;height:26px;color:var(--gold)}
+.nl-ok h3{font-family:var(--hf);font-size:1.6rem;color:var(--bone);font-weight:400;margin-bottom:.6rem}
+.nl-ok h3 em{color:var(--gold);font-style:italic}
+.nl-ok p{color:var(--driftwood);font-size:.92rem;line-height:1.5}
+</style>
+</head>
+<body>
+
+<a href="/" class="brand">
+  <span class="brand-mark">GROUND</span>
+  <span class="brand-tag">The Breath Atlas</span>
+</a>
+
+<div class="practice-meta">
+  <span>10 min</span>
+  <span class="dot">·</span>
+  <span>Resonance</span>
+</div>
+
+<h1 class="practice-title">Coherence</h1>
+
+<p class="practice-desc">Five seconds in. Five seconds out. Six breaths a minute. The most-validated technique in the HRV literature.</p>
+
+<!-- Locked state — visible until the popup is submitted -->
+<div class="locked-card" id="lockedCard">
+  <div class="lock-icon">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+  </div>
+  <p class="lock-msg">Drop your name and email to unlock the audio and join the letter.</p>
+  <button type="button" class="reopen" id="reopenBtn">Open the form</button>
+</div>
+
+<!-- Player state — revealed after submit -->
+<div class="player" id="player">
+  <p class="player-prompt">Press play. Breathe with the audio.</p>
+  <audio controls preload="metadata" id="audio">
+    <source src="/atlas/audio/coherence.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+  <p class="player-note">Headphones recommended. Soft, even, slow. Let the count carry you.</p>
+</div>
+
+<div class="others">
+  <div class="others-label">Two more practices</div>
+  <div class="others-list">
+    <a href="/atlas/three-part-breath/"><span class="name">Three-Part Breath</span><span class="dur">5 min</span></a>
+    <a href="/atlas/alternate-nostril/"><span class="name">Alternate Nostril</span><span class="dur">6 min</span></a>
+  </div>
+</div>
+
+<div class="foot">
+  <div class="row">
+    <a href="https://groundapp.live">Ground App</a>
+    <a href="https://groundcoaching.com">Coaching</a>
+    <a href="https://collinchartier.com">Stories</a>
+  </div>
+  <div class="tag">Train the person behind the performer.</div>
+</div>
+
+<!-- ─── Newsletter Popup ─────────────────────────────────────────────────── -->
+<div class="nl-overlay" id="nlOverlay"></div>
+<div class="nl-modal-wrap" id="nlModalWrap">
+  <div class="nl-modal">
+    <div class="nl-glow"></div>
+    <button class="nl-close" id="nlClose" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <div id="nlPopupForm">
+      <p class="nl-tag">The Breath Atlas</p>
+      <h3 class="nl-heading">Unlock <em>Coherence</em></h3>
+      <p class="nl-desc">Drop your name and email to play the audio and join the letter. One short note a week from Collin. No spam.</p>
+      <form id="nlPopup" autocomplete="on">
+        <input type="text" class="nl-input" id="nlPopupName" name="name" placeholder="Your name" required aria-label="Name" autocomplete="name">
+        <input type="email" class="nl-input" id="nlPopupEmail" name="email" placeholder="your@email.com" required aria-label="Email" autocomplete="email">
+        <button type="submit" class="nl-submit" id="nlPopupBtn">Unlock the practice</button>
+      </form>
+      <div class="nl-err" id="nlPopupErr"></div>
+      <p class="nl-fine">No spam, ever. Unsubscribe anytime.</p>
+    </div>
+    <div class="nl-ok" id="nlPopupOk">
+      <div class="nl-ok-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>
+      </div>
+      <h3>You're <em>in.</em></h3>
+      <p>Press play and breathe with me.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var overlay = document.getElementById('nlOverlay');
+  var wrap = document.getElementById('nlModalWrap');
+  var closeBtn = document.getElementById('nlClose');
+  var form = document.getElementById('nlPopup');
+  var nameIn = document.getElementById('nlPopupName');
+  var emailIn = document.getElementById('nlPopupEmail');
+  var btn = document.getElementById('nlPopupBtn');
+  var errEl = document.getElementById('nlPopupErr');
+  var formEl = document.getElementById('nlPopupForm');
+  var okEl = document.getElementById('nlPopupOk');
+  var lockedCard = document.getElementById('lockedCard');
+  var player = document.getElementById('player');
+  var reopenBtn = document.getElementById('reopenBtn');
+
+  function showPopup(){ overlay.classList.add('show'); wrap.classList.add('show'); setTimeout(function(){ nameIn.focus(); }, 350); }
+  function hidePopup(){ overlay.classList.remove('show'); wrap.classList.remove('show'); }
+  function unlock(){ lockedCard.style.display = 'none'; player.style.display = 'block'; try { localStorage.setItem('atlas-unlocked','true'); } catch(e){} }
+
+  // Auto-unlock if already submitted in this browser
+  try {
+    if (localStorage.getItem('atlas-unlocked') === 'true') {
+      unlock();
+      return;
+    }
+  } catch(e){}
+
+  // Open the popup on page load (after a short beat so it feels considered)
+  setTimeout(showPopup, 600);
+
+  overlay.addEventListener('click', hidePopup);
+  closeBtn.addEventListener('click', hidePopup);
+  reopenBtn.addEventListener('click', function(){
+    // If they already unlocked but cleared storage, re-open
+    formEl.style.display = 'block';
+    okEl.style.display = 'none';
+    btn.disabled = false;
+    btn.textContent = 'Unlock the practice';
+    errEl.style.display = 'none';
+    showPopup();
+  });
+
+  form.addEventListener('submit', function(ev){
+    ev.preventDefault();
+    var name = (nameIn.value || '').trim();
+    var email = (emailIn.value || '').trim();
+    if (!name) { errEl.textContent = 'Please enter your name.'; errEl.style.display = 'block'; return; }
+    if (!email || email.indexOf('@') < 0) { errEl.textContent = 'Please enter a valid email.'; errEl.style.display = 'block'; return; }
+    errEl.style.display = 'none';
+    btn.disabled = true;
+    btn.textContent = 'Unlocking...';
+
+    var url = 'https://script.google.com/macros/s/AKfycbwnVkDxZzz18UeMrNEGJVED6M4f3Ie_jvHeyccyMOyySYiSxqUjCd8nXt2nfo94jSbK8w/exec';
+    var ctrl = new AbortController();
+    var to = setTimeout(function(){ ctrl.abort(); }, 10000);
+
+    fetch(url, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ name: name + ' (Breath Atlas - Coherence)', email: email }),
+      signal: ctrl.signal
+    })
+    .then(function(){
+      clearTimeout(to);
+      formEl.style.display = 'none';
+      okEl.style.display = 'block';
+      unlock();
+      setTimeout(hidePopup, 2200);
+    })
+    .catch(function(){
+      // no-cors means we cannot read response, but the POST went through.
+      // Optimistic unlock.
+      clearTimeout(to);
+      formEl.style.display = 'none';
+      okEl.style.display = 'block';
+      unlock();
+      setTimeout(hidePopup, 2200);
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

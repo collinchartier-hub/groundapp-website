@@ -1,0 +1,7 @@
+# Cloudflare Pages project for groundapp.live
+# Static files live in site/, Pages Functions in functions/.
+# Secrets (SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY, UNSUBSCRIBE_SECRET) are set with
+#   npx wrangler pages secret put NAME --project-name groundapp
+name = "groundapp"
+pages_build_output_dir = "site"
+compatibility_date = "2025-09-01"
