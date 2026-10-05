@@ -195,7 +195,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
 <!-- HERO -->
 <div class="page-hero">
   <h1>Privacy <em>Policy</em></h1>
-  <p class="meta sans">GroundApp &middot; Effective Date: March 8, 2026 &middot; Last Updated: October 2, 2026</p>
+  <p class="meta sans">GroundApp &middot; Effective Date: March 8, 2026 &middot; Last Updated: October 2026</p>
 </div>
 
 <!-- CONTENT -->
@@ -211,7 +211,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
   <ul>
     <li><strong>Account information:</strong> Your name and email address when you create an account. You can sign in with Apple, with Google, or with an email and password.</li>
     <li><strong>Onboarding answers:</strong> Your breathwork goals and experience level.</li>
-    <li><strong>Check-ins:</strong> The feeling you choose on the feelings wheel, how intense it is, and your energy level.</li>
+    <li><strong>Check-ins:</strong> The feeling you choose on the feelings wheel, how intense it is, and your energy level. If you use Aura, these are also sent to build your plan (Section 4.4).</li>
     <li><strong>Session reflections:</strong> Ratings, how you feel after a session, and any notes you write.</li>
     <li><strong>Saved sequences:</strong> Breathing sequences you build and save.</li>
   </ul>
@@ -257,7 +257,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
     <li>Precise geolocation</li>
     <li>Contacts or address book data</li>
     <li>Browsing history</li>
-    <li>Financial or payment information (purchases are handled entirely by Apple)</li>
+    <li>Payment card or billing details. Purchases are handled entirely by Apple. To confirm Premium for Aura, our server checks Apple's signed record of your subscription and keeps its Apple transaction ID (Section 4.4).</li>
     <li>Advertising identifiers. We do not track you across other companies' apps or websites.</li>
   </ul>
 
@@ -270,7 +270,8 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
       <tr><th>Purpose</th><th>Data Used</th></tr>
     </thead>
     <tbody>
-      <tr><td><strong>Matching you to a breathing session after a check-in</strong></td><td>Your check-in answers (feeling, intensity, energy) and, if you have connected health data, recent health readings</td></tr>
+      <tr><td><strong>Building your plan after a check-in</strong></td><td>Your check-in answers (feeling, intensity, energy). With Aura on, these and the time of day go through our server to Anthropic, plus a few word labels from Apple Health if you turn on that separate switch (Section 4.4). With Aura off, the plan is built on your phone.</td></tr>
+      <tr><td><strong>Confirming Premium and counting Aura tokens</strong></td><td>Apple's signed subscription record and its transaction ID; your account ID, the date and how many Aura plans you used that day</td></tr>
       <tr><td><strong>Health dashboard and nervous system insights</strong></td><td>HRV, resting heart rate, sleep, readiness and other health readings, processed on your device</td></tr>
       <tr><td><strong>Live heart rate during sessions</strong></td><td>Heart rate from Apple Watch or a Bluetooth heart-rate strap</td></tr>
       <tr><td><strong>Session history, streaks and progress</strong></td><td>Session records, reflections, technique usage</td></tr>
@@ -304,7 +305,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
     <li>Breathing sequences you save</li>
     <li>Your notification token, account ID and app version, if you allow notifications</li>
   </ul>
-  <p>Health readings from Apple Health, Oura or a heart-rate strap are <strong>not</strong> uploaded to our servers. Our servers are protected as follows:</p>
+  <p>Health readings from Apple Health, Oura or a heart-rate strap are <strong>not</strong> uploaded to our servers. If you use Aura, your check-in and any Apple Health labels pass through our server on the way to Anthropic without being stored, and our server keeps your daily Aura token count and your subscription's Apple transaction ID (Section 4.4). Our servers are protected as follows:</p>
   <ul>
     <li>All data in transit is encrypted using TLS 1.2+</li>
     <li>All data at rest is encrypted using AES-256</li>
@@ -318,12 +319,12 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
       <tr><th>Service</th><th>Purpose</th><th>Data Shared</th></tr>
     </thead>
     <tbody>
-      <tr><td><strong>Apple</strong> (HealthKit, Sign in with Apple, App Store, push notifications)</td><td data-label="Purpose">Read and write health data, sign in, purchases, deliver notifications</td><td data-label="Data shared">Health data is accessed on your device. Purchases are handled by Apple; we never see your payment details.</td></tr>
+      <tr><td><strong>Apple</strong> (HealthKit, Sign in with Apple, App Store, push notifications)</td><td data-label="Purpose">Read and write health data, sign in, purchases, deliver notifications</td><td data-label="Data shared">Health data is accessed on your device. Purchases are handled by Apple; we never see your payment details. If you use Aura, the App sends Apple's signed record of your subscription to our server so it can confirm Premium.</td></tr>
       <tr><td><strong>Google</strong> (Google Sign-In)</td><td data-label="Purpose">Sign in, if you choose Google</td><td data-label="Data shared">Your Google account name and email, as part of signing in</td></tr>
       <tr><td><strong>Oura</strong> (Oura API)</td><td data-label="Purpose">Retrieve readiness, sleep, stress, resilience and heart rate data</td><td data-label="Data shared">Login token stored in the Keychain; data is fetched directly to your device</td></tr>
-      <tr><td><strong>Supabase</strong></td><td data-label="Purpose">Account sign-in, sync and notification records</td><td data-label="Data shared">Profile, session history, saved sequences, notification token</td></tr>
+      <tr><td><strong>Supabase</strong></td><td data-label="Purpose">Account sign-in, sync, notification records, and the server that handles Aura requests</td><td data-label="Data shared">Profile, session history, saved sequences, notification token. For Aura: your daily Aura token count and the Apple transaction ID of your Premium subscription. Aura requests pass through without being stored (Section 4.4).</td></tr>
       <tr><td><strong>PostHog</strong> (United States)</td><td data-label="Purpose">Product analytics, only if Share Usage Data is on</td><td data-label="Data shared">App events and screen views linked to a random account ID. No health readings, names, emails or typed text.</td></tr>
-      <tr><td><strong>Anthropic</strong> (Claude API)</td><td data-label="Purpose">Help generate the result of your check-in</td><td data-label="Data shared">Your check-in answers (feeling, intensity, energy) and, if you have connected health data, recent readings such as HRV, resting heart rate, breathing rate, sleep, readiness, stress and temperature. Your name and email are not sent.</td></tr>
+      <tr><td><strong>Anthropic</strong> (Claude API)</td><td data-label="Purpose">Build your Aura plan after a check-in, only if you tap Use Aura (Section 4.4)</td><td data-label="Data shared">Your check-in answers, the time of day and any Less time or Alternatives request. With Aura's separate Apple Health switch on, up to six word labels such as "short sleep", never numbers. Not your name, email, account ID, Oura or WHOOP data, or any health numbers. Anthropic does not train on this data and deletes it within 30 days, with the exceptions in Section 4.4.</td></tr>
       <tr><td><strong>Mistral</strong> and <strong>ElevenLabs</strong></td><td data-label="Purpose">Generate guided audio and sound effects that are not already in the App</td><td data-label="Data shared">Narration and sound text written by us only; no personal information</td></tr>
       <tr><td><strong>Cloudflare</strong></td><td data-label="Purpose">Deliver audio files to the App, host the Website</td><td data-label="Data shared">Standard connection data, such as IP address</td></tr>
       <tr><td><strong>Loops</strong></td><td data-label="Purpose">Send app emails, such as a note if you have not practiced in a while</td><td data-label="Data shared">Email address, first name, account ID and last active date</td></tr>
@@ -332,8 +333,31 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
   </div>
 
   <div class="highlight-box">
-    <p><strong>Important:</strong> Your health readings stay on your device, with one exception: when you complete a check-in, recent readings are included in the request to Anthropic described above, so it can help generate your check-in result. Your name and email are never part of that request.</p>
+    <p><strong>Important:</strong> Your health readings stay on your device. Aura (Section 4.4) sends your check-in answers through our server to Anthropic and, only if you turn on its separate Apple Health switch, a few word labels such as "short sleep", never the numbers. Oura data is never sent to Aura or Anthropic.</p>
   </div>
+
+  <h3>4.4 Aura (AI Check-In)</h3>
+  <p>Aura is the App's AI check-in. It recommends breathwork for how you feel right now. Aura is part of Ground Premium, and nothing is sent until you say yes.</p>
+  <p><strong>Asking first.</strong> The first time you check in, the App shows a "Meet Aura" screen before anything leaves your phone. It explains what is sent, where it goes and how to turn it off. If you tap "Not now", nothing is sent and the App builds your plan on your phone from your answers. Everything you paid for keeps working either way.</p>
+  <p><strong>What is sent when Aura is on:</strong></p>
+  <ul>
+    <li>Your check-in: the feeling you pick on the feelings wheel and the broader feelings it sits under, how intense it is (1 to 10), your energy (low, medium or high), and the nervous system state the App works out from those answers</li>
+    <li>The time of day as a broad window (such as "morning") and your local date, which is used to count your daily Aura tokens</li>
+    <li>If you tap "Less time" or "Alternatives": that request and which techniques to leave out</li>
+    <li>Only if you also turn on "Let Aura use rough Apple Health signals" (off by default): up to six word labels the App works out on your phone by comparing recent Apple Health data with your own usual levels. The labels are: HRV lower than usual, HRV higher than usual, resting heart rate higher than usual, short sleep, poor sleep quality, and several poor nights in a row. No numbers are sent.</li>
+    <li>To our server only, never to Anthropic: your sign-in token, so the server knows the request is yours, and Apple's signed record of your Premium subscription, so the server can confirm Premium</li>
+  </ul>
+  <p><strong>Never sent:</strong> your name, your email, anything you type, Oura or WHOOP data, or any health numbers such as heart rate, HRV or hours of sleep. Aura's labels come from Apple Health data only. Readings that came from Oura or WHOOP are left out.</p>
+  <p><strong>Where it goes.</strong> The App sends the request over an encrypted connection to our server (a Supabase Edge Function). Our server checks that you are signed in, have Premium and have Aura tokens left. It then asks Anthropic's Claude to build your plan and sends the plan back to your phone.</p>
+  <p><strong>What our server keeps.</strong> Our server does not store your check-in answers, your Apple Health labels or your Aura plans. It keeps only:</p>
+  <ul>
+    <li>Your daily Aura token count: your account ID, the date and how many Aura plans you used that day (up to 3)</li>
+    <li>The Apple transaction ID of your Premium subscription, linked to your account, so one subscription unlocks Aura for one account. We never see your payment details.</li>
+    <li>Server logs: a request ID, a one-way hash of your account ID, the AI model used, timing, size counts and whether the request worked. Logs never include your answers, your labels or your plan.</li>
+  </ul>
+  <p><strong>What Anthropic does with it.</strong> Anthropic processes Aura requests for us under its commercial terms. Anthropic does not train its models on them. Anthropic deletes them within 30 days, unless its automated safety systems flag a request as breaking its Usage Policy (Anthropic can then keep it for up to 2 years) or the law requires it to keep it longer. Anthropic does not receive your name, email, account ID or purchase record.</p>
+  <p><strong>Changing your mind.</strong> Turn Aura off at any time in Settings &gt; Privacy &gt; Aura check-ins, and stop the Apple Health labels in Settings &gt; Privacy &gt; Let Aura use Apple Health signals. Turning Aura off stops anything new from being sent. Requests already sent are deleted by Anthropic as described above. If we ever change what Aura sends, the App asks you again first.</p>
+  <p><strong>Wellness, not medical advice.</strong> Aura's plans are AI-generated wellness guidance. They are not medical advice, diagnosis or treatment.</p>
 
   <h2>5. Apple HealthKit Compliance</h2>
   <p>In accordance with Apple's HealthKit guidelines:</p>
@@ -341,8 +365,8 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
     <li>We <strong>do not</strong> use HealthKit data for advertising or similar services</li>
     <li>We <strong>do not</strong> sell HealthKit data to third parties, including advertising platforms, data brokers, or information resellers</li>
     <li>We <strong>do not</strong> use HealthKit data for any purpose other than providing health and wellness services directly to you</li>
-    <li>We share HealthKit data with a third party only as described in Section 4.3 (the check-in request to Anthropic), and never for advertising</li>
-    <li>We <strong>do not</strong> store HealthKit data in iCloud or CloudKit, and we do not upload it to our servers</li>
+    <li>We share HealthKit data with a third party only through Aura, and only if you turn on its separate Apple Health switch: a few word labels worked out on your phone, never the numbers, sent through our server to Anthropic (Section 4.4). Never for advertising</li>
+    <li>We <strong>do not</strong> store HealthKit data in iCloud, CloudKit or on our servers. Aura's Apple Health labels pass through our server on the way to Anthropic without being stored there</li>
     <li>You can revoke HealthKit access at any time through iOS Settings</li>
   </ul>
 
@@ -351,10 +375,10 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
   <ul>
     <li>Oura data is accessed only with your explicit authorization via OAuth 2.0</li>
     <li>We request only the scopes the App needs: daily (readiness, stress and resilience), heart rate, and sleep</li>
-    <li>Oura data is used only to provide features in the App, including your health dashboard and your check-in (see Section 4.3)</li>
+    <li>Oura data is used only to provide features in the App, such as your health dashboard. It is never sent to Aura or Anthropic</li>
     <li>Oura data is stored on your device as part of the daily health snapshots described in Section 4.1, kept for up to 90 days</li>
     <li>You can disconnect Oura at any time in the App's Settings, which deletes the App's Oura login tokens from your device. You can also revoke access at <a href="https://cloud.ouraring.com" target="_blank" rel="noopener">cloud.ouraring.com</a></li>
-    <li>We <strong>do not</strong> sell, license, lease, or market your Oura data, and we do not share it with advertisers or data brokers. The only third party that receives Oura readings is Anthropic, as part of a check-in.</li>
+    <li>We <strong>do not</strong> sell, license, lease, or market your Oura data, and we do not share it with any third party, including advertisers, data brokers and AI services such as Anthropic.</li>
     <li>In the event of a data security incident involving Oura data, we will notify Oura within 24 hours of discovery</li>
   </ul>
 
@@ -380,6 +404,8 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
     </thead>
     <tbody>
       <tr><td><strong>Turn off product analytics</strong></td><td>Settings &gt; Privacy &gt; Share Usage Data</td></tr>
+      <tr><td><strong>Turn Aura off</strong></td><td>Settings &gt; Privacy &gt; Aura check-ins. Check-ins then use a plan built on your phone</td></tr>
+      <tr><td><strong>Stop Aura using Apple Health labels</strong></td><td>Settings &gt; Privacy &gt; Let Aura use Apple Health signals</td></tr>
       <tr><td><strong>Revoke HealthKit access</strong></td><td>iOS Settings &gt; Privacy &amp; Security &gt; Health &gt; GroundApp</td></tr>
       <tr><td><strong>Disconnect Oura</strong></td><td>App Settings, or <a href="https://cloud.ouraring.com" target="_blank" rel="noopener">cloud.ouraring.com</a> &gt; Connected Apps</td></tr>
       <tr><td><strong>Export your data</strong></td><td>Settings &gt; Export All Data (a CSV and JSON copy of the data stored on your device). For a copy of the data on our servers, email <a href="mailto:privacy@groundapp.live">privacy@groundapp.live</a></td></tr>
@@ -391,12 +417,15 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
   </table>
   </div>
 
-  <p>Upon account deletion, the data synced to our servers is permanently removed within 30 days. Data stored only on your device stays there until you delete the App. Analytics events already sent to PostHog and any copy of your email held by our email providers can be deleted on request at <a href="mailto:privacy@groundapp.live">privacy@groundapp.live</a>.</p>
+  <p>Upon account deletion, the data synced to our servers is permanently removed within 30 days. Your Aura token counts and the Apple transaction ID linked to your account are deleted when you delete your account. Data stored only on your device stays there until you delete the App. Analytics events already sent to PostHog and any copy of your email held by our email providers can be deleted on request at <a href="mailto:privacy@groundapp.live">privacy@groundapp.live</a>.</p>
 
   <h2>9. Data Retention</h2>
   <ul>
     <li><strong>On-device data:</strong> Retained until you delete the App. Daily health snapshots are kept for up to 90 days.</li>
     <li><strong>Cloud-synced data:</strong> Retained while your account is active; deleted within 30 days of account deletion</li>
+    <li><strong>Aura requests:</strong> Not stored on our servers. Anthropic deletes them within 30 days, with the exceptions in Section 4.4</li>
+    <li><strong>Aura token counts and Premium transaction ID:</strong> Kept while your account is active; deleted when you delete your account</li>
+    <li><strong>Aura server logs:</strong> Contain no check-in content; kept only as long as needed to run and secure the service</li>
     <li><strong>Oura tokens:</strong> Deleted from your device when you disconnect Oura in the App</li>
     <li><strong>Product analytics:</strong> Kept only as long as we need it to understand how the App is used, and deleted on request</li>
     <li><strong>Email list:</strong> Kept while you are subscribed. If you unsubscribe, we keep a record that you unsubscribed so we do not email you again. To delete it entirely, email us.</li>
@@ -443,12 +472,12 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
   <h3>12.2 Washington Residents (My Health My Data Act)</h3>
   <p>If you are a Washington state resident, the following applies under the Washington My Health My Data Act (RCW 19.373):</p>
   <ul>
-    <li><strong>Categories of Health Data Collected:</strong> Heart rate, resting heart rate, HRV, respiratory rate, sleep analysis, blood oxygen saturation, VO2 max, body and wrist temperature, activity data, mindful minutes, readiness, stress and resilience scores, and the feelings and energy levels you log in check-ins.</li>
-    <li><strong>Purpose of Collection:</strong> To show your health dashboard and nervous system insights, match you to breathing sessions, show live heart rate during sessions, and track your progress.</li>
+    <li><strong>Categories of Health Data Collected:</strong> Heart rate, resting heart rate, HRV, respiratory rate, sleep analysis, blood oxygen saturation, VO2 max, body and wrist temperature, activity data, mindful minutes, readiness, stress and resilience scores, the feelings, intensity and energy levels you log in check-ins, and the word labels Aura can work out from Apple Health data (such as "short sleep").</li>
+    <li><strong>Purpose of Collection:</strong> To show your health dashboard and nervous system insights, match you to breathing sessions, build Aura check-in plans if you choose to use Aura, show live heart rate during sessions, and track your progress.</li>
     <li><strong>Sources of Health Data:</strong> You (check-ins and reflections), Apple HealthKit, Oura Ring (Oura API), Apple Watch, and Bluetooth heart-rate straps.</li>
-    <li><strong>Third Parties:</strong> We share check-in answers and recent health readings with Anthropic (Claude API) to help generate your check-in result, as described in Section 4.3. We do not share health data with any other third party.</li>
-    <li><strong>Your Rights:</strong> You have the right to access, delete, and withdraw consent for the collection and sharing of your health data. To exercise these rights, contact <a href="mailto:privacy@groundapp.live">privacy@groundapp.live</a>.</li>
-    <li><strong>Consent:</strong> We collect health data only after obtaining your affirmative consent. We will not collect, use, or share additional categories or purposes of health data beyond what is disclosed here without obtaining fresh consent.</li>
+    <li><strong>Third Parties:</strong> Only if you agree on the "Meet Aura" screen, we share your check-in answers with Anthropic (Claude API) to build your Aura plan, and, only if you also turn on Aura's separate Apple Health switch, a few word labels worked out from Apple Health data, never numbers (Section 4.4). Our hosting provider, Supabase, handles these requests for us without storing them. We do not share health data with any other third party, and we never share Oura data with Anthropic or any other AI service.</li>
+    <li><strong>Your Rights:</strong> You have the right to access, delete, and withdraw consent for the collection and sharing of your health data. You can withdraw consent for Aura at any time in Settings &gt; Privacy &gt; Aura check-ins, and for its Apple Health labels in Settings &gt; Privacy &gt; Let Aura use Apple Health signals. To exercise your other rights, contact <a href="mailto:privacy@groundapp.live">privacy@groundapp.live</a>.</li>
+    <li><strong>Consent:</strong> We collect health data only after obtaining your affirmative consent. Aura asks for your consent to share before anything is sent, separately from the App's other permissions, and its Apple Health labels need their own switch. We will not collect, use, or share additional categories or purposes of health data beyond what is disclosed here without obtaining fresh consent.</li>
   </ul>
 
   <h3>12.3 Other U.S. States</h3>
@@ -459,7 +488,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
   <h3>13.1 Legal Basis for Processing (EEA/UK Users)</h3>
   <p>For users in the European Economic Area (EEA) or United Kingdom, we process your data under the following legal bases:</p>
   <ul>
-    <li><strong>Explicit Consent (Article 6(1)(a) and Article 9(2)(a) GDPR):</strong> For health and biometric data and wearable device integrations, which you allow during onboarding and device connection. Also for product analytics, which stay off in the EEA and UK unless you turn on Share Usage Data, and for the email list, which you join yourself.</li>
+    <li><strong>Explicit Consent (Article 6(1)(a) and Article 9(2)(a) GDPR):</strong> For health and biometric data and wearable device integrations, which you allow during onboarding and device connection. For Aura, which you allow on the "Meet Aura" screen before anything is sent, with a separate switch for its Apple Health labels; you can withdraw it at any time in Settings &gt; Privacy, which does not affect processing that happened before you withdrew. Also for product analytics, which stay off in the EEA and UK unless you turn on Share Usage Data, and for the email list, which you join yourself.</li>
     <li><strong>Contract Performance (Article 6(1)(b) GDPR):</strong> For account management, sync, session delivery, and core app functionality.</li>
     <li><strong>Legitimate Interest (Article 6(1)(f) GDPR):</strong> For keeping the App and Website secure, preventing spam and abuse, and counting Website page views without cookies.</li>
   </ul>
@@ -477,7 +506,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
   </ul>
 
   <h3>13.3 Data Transfers</h3>
-  <p>Your data is processed mainly in the United States. For transfers from the EEA/UK, we rely on Standard Contractual Clauses and your explicit consent for health data.</p>
+  <p>Your data is processed mainly in the United States, including Aura requests sent to Anthropic. For transfers from the EEA/UK, we rely on Standard Contractual Clauses and your explicit consent for health data.</p>
 
   <h2>14. Changes to This Policy</h2>
   <p>We may update this Privacy Policy from time to time. We will notify you of material changes by posting the updated policy within the App and on the Website and updating the "Last Updated" date. For material changes affecting health data practices, we will provide prominent notice and, where required by law, obtain fresh consent. Continued use of the App after changes constitutes acceptance of the revised policy.</p>
@@ -489,7 +518,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
   <p><strong>Everything Else:</strong> <a href="mailto:collin@groundapp.live">collin@groundapp.live</a></p>
   <p><strong>Website:</strong> <a href="https://groundapp.live/privacy">https://groundapp.live/privacy</a></p>
 
-  <p class="closing">This Privacy Policy was last reviewed and updated on October 2, 2026.</p>
+  <p class="closing">This Privacy Policy was last reviewed and updated in October 2026.</p>
 
 </div>
 </main>
