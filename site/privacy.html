@@ -246,8 +246,8 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
 
   <h3>2.3 Automatically Collected Information</h3>
   <ul>
-    <li><strong>Usage data (product analytics):</strong> Screens viewed, app opens and closes, and in-app events such as onboarding goals, techniques started, session length, ratings, check-in type, music and voice choices, and paywall and purchase events. These events do not include health readings, your name, your email, or anything you type. They are linked to a random account ID, not your email. You can turn this off in Settings &gt; Privacy &gt; Share Usage Data. It is on by default, except in the EU, EEA, UK and Switzerland, where it stays off unless you turn it on.</li>
-    <li><strong>Device information:</strong> Device model, operating system version and app version, used for compatibility and debugging.</li>
+    <li><strong>Usage data (product analytics):</strong> Screens viewed, app opens and closes, and in-app events such as techniques started, session length, ratings, check-in type, music and voice choices, and paywall and purchase events. These events do not include health readings, your name, your email, or anything you type. They are linked to a random account ID, not your email. You can turn this off in Settings &gt; Privacy &gt; Share Usage Data. It is on by default, except in the EU, EEA, UK and Switzerland, where it stays off unless you turn it on.</li>
+    <li><strong>Device information:</strong> Device model, operating system version and app version, sent along with product analytics events.</li>
     <li><strong>Notification token:</strong> If you allow notifications, a push notification token for your device, along with your account ID and app version.</li>
   </ul>
   <p><strong>Oura Usage Data Disclosure:</strong> When you connect your Oura Ring to GroundApp, Oura may collect certain Usage Data related to your use of the Oura API and platform. Oura may use this Usage Data for its own business purposes as described in <a href="https://ouraring.com/privacy-policy" target="_blank" rel="noopener">Oura's Privacy Policy</a>.</p>
@@ -277,7 +277,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
       <tr><td><strong>Session history, streaks and progress</strong></td><td>Session records, reflections, technique usage</td></tr>
       <tr><td><strong>Guided audio</strong></td><td>Narration and sound text written by us; no personal data</td></tr>
       <tr><td><strong>Your account, sync and support</strong></td><td>Name, email, account ID</td></tr>
-      <tr><td><strong>Reminders and notifications</strong></td><td>Notification token, last active date</td></tr>
+      <tr><td><strong>Reminders and notifications</strong></td><td>Notification token, last active date, and your first name in some comeback reminders about the App. Turn reminders off anytime in iOS Settings &gt; Notifications &gt; GroundApp.</td></tr>
       <tr><td><strong>App improvement</strong></td><td>Product analytics, if Share Usage Data is on</td></tr>
     </tbody>
   </table>
@@ -453,7 +453,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
   </ul>
 
   <h2>11. Children's Privacy</h2>
-  <p>The App and the Website are not directed at children under 13. We do not knowingly collect personal information from children under 13. If you believe a child under 13 has provided us with personal information, please contact us and we will delete it.</p>
+  <p>The App and the Website are not directed at children under 13. We do not knowingly collect personal information from children under 13. If you believe a child under 13 has provided us with personal information, please contact us and we will delete it. If you live in the EU, EEA, UK or Switzerland and are under the age of digital consent where you live (between 13 and 16), you need a parent's or guardian's permission to use the App.</p>
 
   <h2>12. State-Specific Privacy Rights</h2>
 
@@ -472,7 +472,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
   <h3>12.2 Washington Residents (My Health My Data Act)</h3>
   <p>If you are a Washington state resident, the following applies under the Washington My Health My Data Act (RCW 19.373):</p>
   <ul>
-    <li><strong>Categories of Health Data Collected:</strong> Heart rate, resting heart rate, HRV, respiratory rate, sleep analysis, blood oxygen saturation, VO2 max, body and wrist temperature, activity data, mindful minutes, readiness, stress and resilience scores, the feelings, intensity and energy levels you log in check-ins, and the word labels Aura can work out from Apple Health data (such as "short sleep").</li>
+    <li><strong>Categories of Health Data Collected:</strong> Heart rate, resting heart rate, HRV, respiratory rate, sleep analysis, blood oxygen saturation, VO2 max, body and wrist temperature, activity data, mindful minutes, readiness, stress and resilience scores, the feelings, intensity and energy levels you log in check-ins, the mood you pick during a session, your breathwork goals (such as Sleep or Anxiety), and the word labels Aura can work out from Apple Health data (such as "short sleep").</li>
     <li><strong>Purpose of Collection:</strong> To show your health dashboard and nervous system insights, match you to breathing sessions, build Aura check-in plans if you choose to use Aura, show live heart rate during sessions, and track your progress.</li>
     <li><strong>Sources of Health Data:</strong> You (check-ins and reflections), Apple HealthKit, Oura Ring (Oura API), Apple Watch, and Bluetooth heart-rate straps.</li>
     <li><strong>Third Parties:</strong> Only if you agree on the "Meet Aura" screen, we share your check-in answers with Anthropic (Claude API) to build your Aura plan, and, only if you also turn on Aura's separate Apple Health switch, a few word labels worked out from Apple Health data, never numbers (Section 4.4). Our hosting provider, Supabase, handles these requests for us without storing them. We do not share health data with any other third party, and we never share Oura data with Anthropic or any other AI service.</li>
