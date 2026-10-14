@@ -1,6 +1,7 @@
 // POST /api/subscribe
 // Saves a signup to the shared Supabase list (newsletter_subscribers) and sends the
-// GroundApp welcome email through Resend, once per new or re-activated subscriber.
+// GroundApp welcome email through Resend the moment someone signs up. People already on the list
+// (imports, earlier signups) get it too, at most once a day so the form can't flood an inbox.
 import { json, supabase, unsubscribeUrl, sha256Hex } from '../../lib/util.js';
 import { renderWelcome } from '../../lib/welcome.js';
 
@@ -33,7 +34,7 @@ export async function onRequestPost({ request, env }) {
   try {
     const q = encodeURIComponent(email);
     const [existing, unsub] = await Promise.all([
-      supabase(env, `newsletter_subscribers?email=eq.${q}&select=id,status,first_name`),
+      supabase(env, `newsletter_subscribers?email=eq.${q}&select=id,status,first_name,last_emailed_at`),
       supabase(env, `newsletter_unsubscribed?email=eq.${q}&select=email`),
     ]);
     if (!existing.ok || !unsub.ok) throw new Error(`lookup failed ${existing.status}/${unsub.status}`);
@@ -58,6 +59,8 @@ export async function onRequestPost({ request, env }) {
       const upd = await supabase(env, `newsletter_subscribers?id=eq.${row.id}`, { method: 'PATCH', prefer: 'return=minimal', body: patch });
       if (!upd.ok) throw new Error(`reactivate failed ${upd.status}`);
       shouldWelcome = true;
+    } else if (!emailedWithinADay(row.last_emailed_at)) {
+      shouldWelcome = true;
     }
 
     if (wasUnsubscribed) await supabase(env, `newsletter_unsubscribed?email=eq.${q}`, { method: 'DELETE' });
@@ -72,6 +75,11 @@ export async function onRequestPost({ request, env }) {
     console.error('subscribe error', err?.message || err);
     return json({ ok: false, error: 'server' }, 500);
   }
+}
+
+function emailedWithinADay(at) {
+  const t = Date.parse(at || '');
+  return Number.isFinite(t) && Date.now() - t < 24 * 60 * 60 * 1000;
 }
 
 async function sendWelcome(env, email, firstName) {
