@@ -135,7 +135,10 @@
 <script>window.__gaT0=Date.now();document.documentElement.classList.add('js');</script>
 <link rel="preload" href="/assets/fonts/source-serif-4-v1.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/source-code-pro-v1.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/css/home-v2.css">
+<link rel="stylesheet" href="/assets/css/home-v3.css">
+<script type="importmap">{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/+esm",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/" } }</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -163,27 +166,27 @@
 </div>
 
 <main id="main">
-<!-- HERO: the breath pacer is the first thing you can do here -->
+<!-- HERO: "Breathe with me". The breath pacer is the first thing you can do here; the round figure breathes it. -->
 <section class="hero" id="hero">
-  <div class="stage" id="try-a-breath" data-pacer data-idle-delay="1300">
+  <div class="stage" id="try-a-breath" data-pacer data-start="resonance" data-idle-delay="1300" data-begin-word="Breathe with me" data-stop-hint=" Tap again to stop.">
     <div class="row">
       <h1><span class="h-a">From the mind</span> <span class="h-b">into the body</span></h1>
       <div class="dial">
         <div class="hero-art">
           <picture>
-            <source media="(max-width: 500px)" srcset="/assets/posters/hero-rings-390.webp">
-            <img src="/assets/posters/hero-rings-1440.webp" alt="" width="480" height="480" fetchpriority="high">
+            <source media="(max-width: 500px)" srcset="/assets/posters/hero-figure-390.webp">
+            <img src="/assets/posters/hero-figure-1440.webp" alt="" width="450" height="450" fetchpriority="high">
           </picture>
           <canvas aria-hidden="true"></canvas>
         </div>
-        <button type="button" class="pc-go" aria-pressed="false" aria-label="Begin Box Breathing"><span class="pc-word">Begin</span><span class="pc-count" aria-hidden="true"></span></button>
+        <button type="button" class="pc-go" aria-pressed="false" aria-label="Begin Resonance Breathing"><span class="pc-word">Breathe with me</span><span class="pc-count" aria-hidden="true"></span></button>
       </div>
     </div>
+    <ol class="pc-track" aria-hidden="true"></ol>
     <div class="controls">
       <div class="seg" role="group" aria-label="Breathing pattern">
-        <button type="button" data-pattern="box" aria-pressed="true">Box</button>
-        <button type="button" data-pattern="478" aria-pressed="false">4-7-8</button>
-        <button type="button" data-pattern="resonance" aria-pressed="false">Resonance</button>
+        <button type="button" data-pattern="resonance" aria-pressed="true">Resonance</button>
+        <button type="button" data-pattern="box" aria-pressed="false">Box</button>
       </div>
       <button type="button" class="snd" data-sound aria-pressed="false">
         <svg class="off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H3v6h3l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg>
@@ -191,7 +194,7 @@
         <span class="pc-sound-label">Sound off</span>
       </button>
     </div>
-    <p class="pc-desc">Box Breathing: <span class="data">4 in, 4 hold, 4 out, 4 hold</span>.</p>
+    <p class="pc-desc">Resonance Breathing: <span class="data">5.5 in, 5.5 out</span>.</p>
     <p class="vh" aria-live="polite" aria-atomic="true"><span class="pc-live"></span></p>
   </div>
   <div class="hero-foot">
@@ -531,9 +534,9 @@
   <a class="btn btn-sm" href="https://apps.apple.com/app/apple-store/id6760352779?pt=128638571&amp;ct=site-sticky&amp;mt=8" data-ct="sticky">Get the app</a>
 </div>
 
-<script src="/js/pacer-v2.js" defer></script>
+<script src="/js/pacer-v3.js" defer></script>
 <script src="/js/home-v2.js" defer></script>
-<script type="module" src="/js/hero-shader-v1.js"></script>
+<script type="module" src="/js/breath-figure-v1.js"></script>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "03e507bb97d74e78bc8de83dc6b261ec"}'></script>
 <script src="/js/app-links-v3.js" defer></script>
 </body>

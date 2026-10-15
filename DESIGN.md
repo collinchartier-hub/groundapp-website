@@ -6,13 +6,15 @@ Rules that override everything here: `DESIGN-BANS.md` (copy of the studio ban li
 ## Art direction
 The page is a breathing instrument first and a brochure second. The first thing a visitor can do is breathe with
 the same gold rings the app uses; everything after that explains the app with real screens, real reviews and real numbers.
-On this page, GroundApp's own breath rings become the hero you can use. Name the one live thing: the pacer.
+On this page, the hero is "Breathe with me": a round figure breathes the pacer with you, its belly filling on the
+inhale and drawing in on the exhale. Name the one live thing: the pacer.
 
 World study (the nouns): breath rings, box count (4-4-4-4), the exhale that runs longer than the inhale,
 resonance pace (about 5.5 breaths a minute), the lung mark, the 102-feeling wheel, Apple Watch haptic taps,
 Oura ring, mindful minutes, streak heatmap, Seedling to Master, BOLT seconds, Collin's voice, Golden Hour light,
 brown-black earth. Reference notes (from memory, no fresh crawl): Calm (borrow: one calm subject; avoid: email gate
-on entry), Headspace (borrow: plain words; avoid: mascots), Breathwrk (borrow: the pacer as product demo; avoid:
+on entry), Headspace (borrow: plain words; avoid: mascots. Collin's call 2026-10-15: ONE original figure in the hero, because a
+belly that breathes teaches diaphragm breathing better than rings. No other characters anywhere), Breathwrk (borrow: the pacer as product demo; avoid:
 neon fitness gradients), Othership (borrow: warm dark ground with real people; avoid: membership chrome),
 Waking Up (borrow: founder voice and restraint). Outside the field: hardware product pages that put one working
 object at real size, and metronome apps where tempo is the interface.
@@ -56,11 +58,17 @@ Amber #D4A574 on dark text accents. Text on gold is Obsidian, never white. Gold 
 because GroundApp is his practice (ban list: gold only for Collin).
 
 ## Signature interaction
-The breath pacer (`site/js/pacer-v2.js`), one timing engine used twice:
-- Hero: the rings are drawn by the web-3d `breath` shader (`site/shaders/breath-v1.frag`, the page's ONE shader
-  moment, Ground only), driven by the pacer's fill so rings, words and count share one timeline. Begin, the
-  pattern buttons, sound, headline and App Store button are HTML. Poster webp under the canvas (18 KB / 17 KB),
-  `stillTime: 4.5` under reduced motion, colors from CSS tokens.
+The breath pacer (`site/js/pacer-v3.js`), one timing engine used twice:
+- Hero, "Breathe with me" (2026-10-15): the page's ONE 3D moment is a round figure on a cushion (`site/js/figure-v1.js`,
+  mounted by `breath-figure-v1.js`, three.js 0.186.1 from the pinned import map; it replaced the web-3d `breath`
+  shader rings, whose files are kept unused). The pacer's fill drives the belly (forward and warm on the inhale, drawn
+  in past rest on the exhale), one hand on the chest stays nearly still while the hand on the belly rides it, and the
+  eyes close softly on a hold. Eyes follow the pointer; a tap on the figure starts the pacer. Patterns: Resonance
+  (5.5 in, 5.5 out, the default; the app's name for 5.5/5.5, since the app's "Coherent Breathing" is 6/6) and Box
+  (4 in, 4 hold, 4 out, 4 hold). The cue pill under the cushion shows the phase word and whole seconds; the step
+  track under it lists every step with the current one filling. All of it is HTML except the figure. Posters
+  `assets/posters/hero-figure-{1440,390}.webp` (12 KB / 11 KB). Reduced motion: one still frame (mid-inhale), words,
+  count and track still run. Kit: `~/.claude/skills/studio-site-design/kits/breath-figure/`.
 - Feelings wheel: after the third tap the segments fold away and the wheel becomes a pacer in place (Begin and the
   count in its center), loaded with the breath the app starts with for that feeling; the plan line sits beside it
   on desktop and right under it on phones. Mapping from GroundApp 1.1.1's rule-based check-in plan
@@ -70,11 +78,11 @@ The breath pacer (`site/js/pacer-v2.js`), one timing engine used twice:
 Sound: nothing plays until the visitor turns it on; the binaural tone swells with the inhale.
 
 ## Motion budget (motion.md)
-1. Signature: the pacer (hero shader rings + the feelings pacer, one engine).
-2. One hero entrance: the headline halves part outward like an exhale while the rings open (950 ms, expo-out).
+1. Signature: the pacer (the hero figure + the feelings pacer, one engine).
+2. One hero entrance: the headline halves part outward like an exhale while the figure arrives (950 ms, expo-out).
 3. Scroll moment: "How it works" pins the phone while three short steps pass (shortened in round 2).
 4. Scroll moment: the closing rings open once as the last section arrives (CSS scroll-driven, static fallback).
-Everything else is still. Zero reveal classes. Reduced motion: no entrance, no idle loops, shader still frame,
+Everything else is still. Zero reveal classes. Reduced motion: no entrance, no idle loops, figure still frame,
 closing rings static; count and words still run. Verified 0 running animations at rest.
 
 ## Signup card (replaces the popup)
@@ -116,6 +124,9 @@ on 156, their reading text or lists on 732. Gold is only for the rings, Begin an
 - Inspector `mono` on atlas pages: practice durations in the "other practices" list are data (see Type). The atlas pages
   were not redesigned; their other inspector findings predate this preview.
 - glassmorphism: blog, terms and privacy pages (untouched here). middot-meta: admin dashboard (untouched).
-- Inspector `few-pictures`: 7 real raster images plus the shader; the inspector skips lazy images and data-ui phones.
-  `no-footage`: owned Traverse footage exists; a loop is Collin's call (see Imagery). The shader is the moving picture.
-- web-3d: `verify-webgl.mjs check` PASS at 1440 and 390 (served without the analytics beacon), `check-3d-budget.py` PASS.
+- Inspector `few-pictures`: 7 real raster images plus the figure; the inspector skips lazy images and data-ui phones.
+  `no-footage`: owned Traverse footage exists; a loop is Collin's call (see Imagery). The figure is the moving picture.
+- web-3d: `verify-webgl.mjs check` (served without the analytics beacon) PASS at 390; at 1440 one FAIL on purpose,
+  "canvas covers h1": the h1 box spans the row and its centre sample lands in the empty gap between the two halves,
+  where the figure stands. The words themselves never touch the canvas (measured 2026-10-15 at 1000 to 1920 px wide,
+  closest 7 px at 1024). The old rings passed only because the Begin circle sat on that point. `check-3d-budget.py` PASS.
