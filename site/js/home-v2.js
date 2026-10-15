@@ -80,10 +80,21 @@ var heroEl=$('hero');
 (function(){
   var bar=$('mbar');if(!bar||!hasIO)return;
   var past=false,ctaIn=false,footIn=false;
-  function upd(){bar.classList.toggle('show',past&&!ctaIn&&!footIn)}
+  var feelIn=false;
+  function upd(){var on=past&&!ctaIn&&!footIn&&!feelIn;bar.classList.toggle('show',on);document.body.classList.toggle('bar-on',on)}
+  watch(document.getElementById('feelings'),function(v){feelIn=v;upd()});
   watch(heroEl,function(v,e){past=!v&&!!e&&e.boundingClientRect.top<0;upd()});
   watch(document.querySelector('.close'),function(v){ctaIn=v;upd()});
   watch(document.querySelector('footer'),function(v){footIn=v;upd()});
+})();
+
+/* ---------- class loop: muted, plays only while on screen, never under reduced motion ---------- */
+(function(){
+  var v=$('classLoop');if(!v||!hasIO)return;
+  function play(){if(RM()||document.hidden)return;var p=v.play();if(p&&p.catch)p.catch(function(){})}
+  watch(v,function(on){if(on)play();else v.pause()},{rootMargin:'120px 0px'});
+  if(mqRM.addEventListener)mqRM.addEventListener('change',function(){if(RM())v.pause()});
+  document.addEventListener('visibilitychange',function(){if(document.hidden)v.pause()});
 })();
 
 /* ---------- how it works: the pinned phone shows the step in the middle of the screen ---------- */
@@ -325,82 +336,9 @@ render(false);
   });
 })();
 
-/* ---------- signup card ----------
-   Desktop only (wide screen with a mouse). Phones never see it: the inline form at the close is the ask.
-   Opens at most once per visitor, only once the FAQ is behind you (the close section's top has passed 60%
-   of the screen; the card sits over the empty right half of the close, never over text), and closes itself
-   as soon as the inline form (#notes) comes into view. Never while a pacer is running or the menu is open.
-   Not modal: it takes no focus; Close, "No thanks" and Esc dismiss it.
-   It posts to /api/subscribe exactly like the old popup (source "popup"). */
-var popup=(function(){
-  var card=$('nlCard'),closeBtn=$('nlClose'),noBtn=$('nlNo'),announce=$('nlAnnounce');
-  var form=$('nlPopup'),emailIn=$('nlPopupEmail'),hpIn=$('nlPopupWebsite'),btn=$('nlPopupBtn');
-  var errEl=$('nlPopupErr'),formWrap=$('nlPopupForm'),okEl=$('nlPopupOk'),okMsg=$('nlPopupOkMsg'),okTitle=$('nlPopupOkTitle');
-  var none={isOpen:function(){return false},close:function(){}};
-  if(!card||!form)return none;
-  var SEEN='ga-nl-seen';
-  var open=false,busy=false,engaged=false,heroOut=false,notesIn=false;
-  var desktop=window.matchMedia?window.matchMedia('(min-width: 981px) and (pointer: fine)'):{matches:false};
-  var armed=desktop.matches&&!nlRecent()&&!lsGet(SEEN);
-  function inlineActive(){var f=$('nlForm');return f&&f.contains(document.activeElement)}
-  function pacerBusy(){return window.groundPacer&&window.groundPacer.isRunning()}
-  function maybe(){
-    if(armed&&engaged&&heroOut&&!open&&!notesIn&&!menuOpen()&&!inlineActive()&&!pacerBusy()&&!nlRecent())show();
-  }
-  function onScroll(){
-    var faq=$('faq');if(!faq)return;
-    if(faq.getBoundingClientRect().bottom<window.innerHeight*0.6){engaged=true;maybe()}
-  }
-  if(armed){
-    window.addEventListener('scroll',onScroll,{passive:true});
-    watch(heroEl,function(v,e){heroOut=!v&&!!e&&e.boundingClientRect.top<0;maybe()});
-  }
-  watch($('notes'),function(v){notesIn=v;if(v&&open)close()},{rootMargin:'0px 0px -25% 0px'});
-  function show(){
-    armed=false;open=true;lsSet(SEEN,String(Date.now()));
-    window.removeEventListener('scroll',onScroll);
-    card.hidden=false;card.classList.add('in');
-    document.body.classList.add('nl-open');
-    if(announce)announce.textContent='A sign-up for breathwork notes from Collin opened at the bottom of the screen.';
-  }
-  function close(){
-    if(!open)return;
-    var hadFocus=card.contains(document.activeElement);
-    open=false;card.hidden=true;card.classList.remove('in');
-    document.body.classList.remove('nl-open');
-    if(announce)announce.textContent='';
-    if(hadFocus){var m=$('main');if(m){m.setAttribute('tabindex','-1');m.focus({preventScroll:true})}}
-  }
-  closeBtn.addEventListener('click',close);
-  if(noBtn)noBtn.addEventListener('click',close);
-  emailIn.addEventListener('input',function(){if(errEl.textContent){errEl.textContent='';emailIn.removeAttribute('aria-invalid')}});
-  form.addEventListener('submit',function(e){
-    e.preventDefault();
-    if(busy)return;
-    var email=emailIn.value.trim();
-    if(!EMAIL_RE.test(email)){errEl.textContent=MSG.invalid_email;emailIn.setAttribute('aria-invalid','true');emailIn.focus();return}
-    errEl.textContent='';emailIn.removeAttribute('aria-invalid');
-    busy=true;btn.disabled=true;btn.textContent='Subscribing...';
-    subscribe({email:email,source:'popup',website:hpIn?hpIn.value:'',t:Date.now()-T0}).then(function(j){
-      busy=false;
-      if(j.ok){
-        nlMark();
-        okMsg.textContent=j.status==='already'?OK_ALREADY:OK_NEW;
-        formWrap.hidden=true;okEl.hidden=false;
-        okTitle.focus({preventScroll:true});
-      } else {
-        btn.disabled=false;btn.textContent='Subscribe';
-        errEl.textContent=errText(j.error);emailIn.setAttribute('aria-invalid','true');
-      }
-    });
-  });
-  return {isOpen:function(){return open},close:close};
-})();
-
-/* ---------- Esc closes the signup card first, then the mobile menu ---------- */
+/* ---------- Esc closes the mobile menu ---------- */
 document.addEventListener('keydown',function(e){
   if(e.key!=='Escape'&&e.key!=='Esc')return;
-  if(popup.isOpen()){e.preventDefault();popup.close();return}
   if(menuOpen()){e.preventDefault();setMenu(false,true)}
 });
 /* keep Tab inside the open mobile menu */
