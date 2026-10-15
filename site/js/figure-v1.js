@@ -11,7 +11,7 @@ import { mergeVertices } from 'three/addons/utils/BufferGeometryUtils.js';
 
 const Z = new THREE.Vector3(0, 0, 1), UP = new THREE.Vector3(0, 1, 0);
 const HEAD_R = 0.56, BELLY_Y = 1.0, RAD = [0.72, 0.72 * 1.06, 0.72 * 0.92];
-const OUT = -0.12, IN = 0.32; // belly travel: drawn in at the bottom of the exhale .. full at the top of the inhale
+const OUT = -0.1, IN = 0.24; // belly travel: drawn in at the bottom of the exhale .. full at the top of the inhale (Collin: 0.32 was too much)
 const ORB = new THREE.Vector3(0, -0.2, 1).normalize(); // where the belly glows from: the front, a little below centre
 const smooth = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
 
