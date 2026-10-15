@@ -5,4 +5,10 @@
 - `lib/` holds shared code for the functions, including the welcome email (`lib/welcome.js`). Local secrets go in `.dev.vars` (gitignored).
 - Deploy: commit + push to main, then `./scripts/deploy.sh` (Cloudflare Pages project `groundapp`, direct upload, no git integration).
 - Writing rules: no em dashes, casual and direct. The product is spelled GroundApp.
-- Brand: Obsidian #1A110E, Bone #E8DDD0, Golden Hour #C4935A, Amber #D4A574, Driftwood #A89585. Serif headings (Iowan Old Style), system sans body.
+- Brand: Obsidian #1A110E, Bone #E8DDD0, Golden Hour #C4935A, Amber #D4A574, Driftwood #A89585. Fraunces headings + Hanken Grotesk body, self-hosted in `site/assets/fonts/` (design-v2; blog, terms and privacy still use the old stacks).
+
+## Design rules
+- Read `DESIGN.md` (art direction, type reasons, palette, motion budget, the pacer) and `DESIGN-BANS.md` (studio ban list) before changing any page.
+- Any visual work runs through the `studio-site-design` skill: deal directions, build, then `python3 ~/.claude/skills/studio-site-design/check-tells.py site --design-md DESIGN.md` and screenshots at 1440 and 390.
+- `design-options/` holds hero option files for review only. It is outside `site/`, so it never deploys.
+- JS and CSS filenames are versioned (`pacer-v1.js`, `home-v1.js`, `home-v1.css`): bump the number when editing (7-day edge cache).
