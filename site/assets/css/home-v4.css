@@ -492,7 +492,7 @@ p{text-wrap:pretty}
 /* Taller phones: room above "INTO THE BODY" so it reads as the lead-in to the sell, not a caption for the controls. */
 @media (max-width:980px) and (min-height:721px){.h-b{margin-top:28px}}
 /* v4: "Tap for sound". Sound is on by default, but the browser holds audio back until the visitor's first tap, so until
-   it plays the sound toggle says so and its gold ring glows with the breath (pacer-v5.js writes --f, the lungs' fill).
+   it plays the sound toggle says so and its gold ring glows with the breath (pacer-v7.js writes --f, the lungs' fill).
    No separate animation: it rides the pacer, so reduced motion and the off-screen pause apply as they do to the pacer. */
 .snd.is-waiting{color:var(--text);background:#2a1c15;box-shadow:0 0 0 1px rgba(196,147,90,calc(.4 + .45 * var(--f,0))),0 0 calc(3px + 12px * var(--f,0)) rgba(196,147,90,calc(.08 + .3 * var(--f,0)))}
 .snd.is-waiting .off{display:none}.snd.is-waiting .on{display:block}

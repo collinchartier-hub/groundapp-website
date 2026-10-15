@@ -88,12 +88,20 @@ The breath pacer (`site/js/pacer-v3.js`), one timing engine used twice:
   (`CheckInViewModel.buildFallbackPrescription` + `FeelingWheel.polyvagalState`): Anxious and Angry start with
   Physiological Sigh (2 in, 1 more in, 6 out), Sad and Numb with Deep Slow Breathing (6/6), Calm and Energized with
   Resonance Breathing (5.5/5.5). Aura (AI check-in), when on, may pick differently.
-Sound: on by default on the hero (Collin 2026-10-15, `data-sound-default="on"`, pacer-v5). The tone is tried as soon as
+Sound: on by default on the hero (Collin 2026-10-15, `data-sound-default="on"`, pacer-v7). The tone is tried as soon as
 the pacer starts and plays at once wherever the browser allows it (Chrome for visitors who engaged with the site before,
-or a site setting); elsewhere the browser holds it until the first tap, click or key, and until then the toggle reads
+or a site setting); elsewhere the browser holds it until a finished tap, click or key (every one tries until it plays; a
+scroll doesn't count), and until then the toggle reads
 "Tap for sound" with its gold ring glowing in time with the breath (no extra animation; it rides the pacer); it swells with the inhale,
 fades to silence while the hero is off screen and follows the breath again when it returns; the toggle turns it off.
 Under reduced motion nothing auto-runs, so the tone starts only once the visitor presses "Breathe with me".
+The tone (sound audit 2026-10-15): 197 Hz left, 203 Hz right (a 6 Hz binaural beat on headphones), each a sine with soft
+overtones at 2x to 5x so phone speakers, which barely play 200 Hz, still carry it; gain 0.035 to 0.15 with the breath.
+iPhones get the "playback" audio session so the ring switch on silent doesn't mute it. That pauses other audio (a
+podcast, Spotify) like a music app does, and iOS doesn't restart it when the tone stops, so the page never takes audio
+back on its own: once a call or another app has it, taps on the page leave it alone and only the sound button or Begin
+bring the tone back. One sound setting for the page (Collin 2026-10-15): the hero's toggle sets it and the feelings
+pacer plays the tone too. With no pacer sounding the context is suspended.
 
 ## Motion budget (motion.md)
 1. Signature: the pacer (the hero figure + the feelings pacer, one engine).
