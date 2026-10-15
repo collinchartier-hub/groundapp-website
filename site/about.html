@@ -86,11 +86,9 @@
 <link rel="icon" type="image/svg+xml" href="/lung-logo.svg">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
-<link rel="preload" href="/assets/fonts/fraunces-v1.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/assets/fonts/hanken-grotesk-v1.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/source-serif-4-v1.woff2" as="font" type="font/woff2" crossorigin>
 <style>
-@font-face{font-family:"Fraunces";src:url("/assets/fonts/fraunces-v1.woff2") format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
-@font-face{font-family:"Hanken Grotesk";src:url("/assets/fonts/hanken-grotesk-v1.woff2") format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
+@font-face{font-family:"Source Serif 4";src:url("/assets/fonts/source-serif-4-v1.woff2") format("woff2");font-weight:200 900;font-style:normal;font-display:swap}
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -113,7 +111,9 @@ html {
   scroll-behavior: smooth;
   background: var(--obsidian);
   color: var(--bone);
-  font-family: "Fraunces", Georgia, "Times New Roman", serif;
+  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
+  font-optical-sizing: auto;
+  font-synthesis: none;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
@@ -135,8 +135,8 @@ body::after {
   background-size: 256px;
 }
 
-.serif { font-family: "Fraunces", Georgia, "Times New Roman", serif; }
-.sans { font-family: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif; }
+.serif { font-family: "Source Serif 4", Georgia, "Times New Roman", serif; }
+.sans { font-family: "Source Serif 4", Georgia, "Times New Roman", serif; }
 
 /* NAV */
 #nav {
@@ -171,7 +171,7 @@ body::after {
   letter-spacing: 0.04em;
 }
 .nav-logo-text .nav-logo-byline {
-  font-family: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
+  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
   font-size: 0.68rem;
   color: var(--driftwood);
   letter-spacing: 0.06em;
@@ -187,7 +187,7 @@ body::after {
 .nav-links a {
   color: var(--driftwood);
   text-decoration: none;
-  font-family: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
+  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
   font-size: 0.85rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -196,7 +196,7 @@ body::after {
 .nav-links a:hover { color: var(--gold); }
 .nav-links a.active { color: var(--gold); }
 .nav-cta {
-  font-family: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
+  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
   font-size: 0.82rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -279,7 +279,7 @@ body::after {
   z-index: 1;
 }
 .about-hero .hero-motto {
-  font-family: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
+  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
   font-size: 1.1rem;
   color: var(--driftwood);
   max-width: 540px;
@@ -346,7 +346,7 @@ section {
 }
 
 .section-label {
-  font-family: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
+  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
   font-size: 0.75rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -362,10 +362,9 @@ section {
   margin-bottom: 1.5rem;
   text-align: center;
 }
-.section-heading em { font-style: italic; color: var(--gold); }
 
 .section-body {
-  font-family: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
+  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
   font-size: 1.05rem;
   line-height: 1.85;
   color: var(--driftwood);
@@ -383,15 +382,14 @@ section {
 }
 .highlight-box p {
   color: var(--bone);
-  font-style: italic;
-  font-family: "Fraunces", Georgia, "Times New Roman", serif;
+  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
   font-size: 1.15rem;
   line-height: 1.7;
   margin-bottom: 0;
 }
 .highlight-box .attribution {
   font-style: normal;
-  font-family: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
+  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
   font-size: 0.85rem;
   color: var(--driftwood);
   margin-top: 0.8rem;
@@ -433,7 +431,7 @@ section {
   margin-bottom: 0.6rem;
 }
 .practice-point p {
-  font-family: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
+  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
   font-size: 0.92rem;
   line-height: 1.7;
   color: var(--driftwood);
@@ -474,12 +472,13 @@ section {
 .feature-number {
   font-size: 2.4rem;
   font-weight: 300;
+  font-variation-settings: "opsz" 60;
   color: var(--gold);
   line-height: 1;
   margin-bottom: 0.5rem;
 }
 .feature-label {
-  font-family: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
+  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
   font-size: 0.82rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -487,7 +486,7 @@ section {
   margin-bottom: 0.8rem;
 }
 .feature-desc {
-  font-family: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
+  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
   font-size: 0.92rem;
   line-height: 1.6;
   color: var(--driftwood);
@@ -507,7 +506,7 @@ section {
   margin-bottom: 1rem;
 }
 .cta-desc {
-  font-family: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
+  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
   font-size: 1rem;
   color: var(--driftwood);
   margin-bottom: 2.5rem;
@@ -522,9 +521,9 @@ section {
   color: var(--obsidian);
   text-decoration: none;
   border-radius: 100px;
-  font-family: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
+  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
   font-size: 0.9rem;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.04em;
   transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
 }
@@ -538,7 +537,7 @@ section {
   box-shadow: 0 8px 30px rgba(196, 147, 90, 0.25);
 }
 .cta-note {
-  font-family: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
+  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
   font-size: 0.88rem;
   line-height: 1.7;
   color: var(--driftwood);
@@ -547,10 +546,13 @@ section {
 }
 .cta-note strong { color: var(--bone); font-weight: 600; }
 
+/* Type G1 display (DESIGN.md): Source Serif 4 Light at opsz 60, caps */
+.about-hero h1, .section-heading, .cta-heading { font-weight: 300; font-variation-settings: "opsz" 60; text-transform: uppercase; letter-spacing: 0.01em; line-height: 1.06; }
+
 /* FOOTER */
-.site-footer { border-top: 1px solid rgba(196, 147, 90, 0.1); padding: 2.5rem 1.5rem 3rem; font-family: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif; }
+.site-footer { border-top: 1px solid rgba(196, 147, 90, 0.1); padding: 2.5rem 1.5rem 3rem; font-family: "Source Serif 4", Georgia, "Times New Roman", serif; }
 .sf-inner { max-width: 1000px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.25rem 2rem; }
-.sf-brand { display: inline-flex; align-items: center; gap: 0.55rem; color: var(--bone); text-decoration: none; font-family: "Fraunces", Georgia, "Times New Roman", serif; font-size: 1.05rem; letter-spacing: 0.02em; }
+.sf-brand { display: inline-flex; align-items: center; gap: 0.55rem; color: var(--bone); text-decoration: none; font-family: "Source Serif 4", Georgia, "Times New Roman", serif; font-size: 1.05rem; letter-spacing: 0.02em; }
 .sf-brand img { width: 22px; height: 22px; }
 .sf-links { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; }
 .sf-links a { color: var(--driftwood); text-decoration: none; font-size: 0.88rem; padding: 0.4rem 0; transition: color 0.2s; }
@@ -559,7 +561,7 @@ section {
 
 a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; }
 .skip-link { position: absolute; left: -9999px; top: 0; }
-.skip-link:focus { left: 1rem; top: 1rem; z-index: 200; background: var(--gold); color: var(--obsidian); padding: 0.5rem 1rem; border-radius: 6px; font-family: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif; }
+.skip-link:focus { left: 1rem; top: 1rem; z-index: 200; background: var(--gold); color: var(--obsidian); padding: 0.5rem 1rem; border-radius: 6px; font-family: "Source Serif 4", Georgia, "Times New Roman", serif; }
 
 /* RESPONSIVE */
 @media (max-width: 900px) {

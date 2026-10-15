@@ -85,7 +85,7 @@
         if (a.cycle + 1 !== cycles) {
           if (cycles > 0) document.dispatchEvent(new CustomEvent('pacer:cycle', { detail: { cycles: cycles, root: root } }));
           cycles = a.cycle + 1;
-          if (desc) desc.textContent = 'Cycle ' + cycles + '. Tap the center to stop.';
+          if (desc) putData(desc, 'Cycle ', String(cycles), '. Tap the center to stop.');
         }
         if (a.i !== lastPhase) { lastPhase = a.i; word.textContent = a.word; if (live) live.textContent = a.word; }
         var c = Math.ceil(a.left - 0.0001);
@@ -100,7 +100,9 @@
     }
     function kick() { if (!raf) raf = requestAnimationFrame(frame); }
     function rest() { draw(function () { return 0.25; }, RM()); }
-    function describe() { if (desc) desc.textContent = PATTERNS[cur].name + ': ' + PATTERNS[cur].desc + '.'; }
+    // Timings and counts render in the data face (span.data, Source Code Pro); the words around them stay serif.
+    function putData(el, before, data, after) { el.textContent = before; var s = document.createElement('span'); s.className = 'data'; s.textContent = data; el.appendChild(s); el.appendChild(document.createTextNode(after)); }
+    function describe() { if (desc) putData(desc, PATTERNS[cur].name + ': ', PATTERNS[cur].desc, '.'); }
     function setPattern(id) {
       if (!PATTERNS[id]) return;
       cur = id;
@@ -171,7 +173,7 @@
     if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { visible = es[0].isIntersecting; if (visible) kick(); }, { rootMargin: '80px 0px' }).observe(root);
 
     var api = {
-      root: root, start: start, stop: stop, setPattern: setPattern,
+      root: root, putData: putData, start: start, stop: stop, setPattern: setPattern,
       isRunning: function () { return running; },
       pattern: function (id) { return PATTERNS[id || cur]; },
       onFill: function (fn) { listeners.push(fn); fn(shown, RM()); },

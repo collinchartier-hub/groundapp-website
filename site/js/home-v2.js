@@ -295,7 +295,7 @@ render(false);
     p.setPattern(id);
     pacerEl.hidden=false;box.setAttribute('data-state','pacer');
     if(p.idle)p.idle(true);
-    line.textContent=d.ter+' sits under '+d.core+'. GroundApp\'s standard plan for '+d.core+' starts with '+p.describe()+'.';
+    var pt=p.pattern();p.putData(line,d.ter+' sits under '+d.core+'. GroundApp\'s standard plan for '+d.core+' starts with '+pt.name+': ',pt.desc,'.');
     if(d.kb){var g=pacerEl.querySelector('.pc-go');if(g)g.focus({preventScroll:true})}
   });
   document.addEventListener('wheel:reset',function(){
