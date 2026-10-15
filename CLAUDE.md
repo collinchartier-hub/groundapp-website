@@ -5,7 +5,7 @@
 - `lib/` holds shared code for the functions, including the welcome email (`lib/welcome.js`). Local secrets go in `.dev.vars` (gitignored).
 - Deploy: commit + push to main, then `./scripts/deploy.sh` (Cloudflare Pages project `groundapp`, direct upload, no git integration).
 - Writing rules: no em dashes, casual and direct. The product is spelled GroundApp.
-- Brand: Obsidian #1A110E, Bone #E8DDD0, Golden Hour #C4935A, Amber #D4A574, Driftwood #A89585. Fraunces headings + Hanken Grotesk body, self-hosted in `site/assets/fonts/` (design-v2; blog, terms and privacy still use the old stacks).
+- Brand: Obsidian #1A110E, Bone #E8DDD0, Golden Hour #C4935A, Amber #D4A574, Driftwood #A89585. Type "G1" (2026-10-15): Source Serif 4 for display (Light, opsz 60, caps) and body, Source Code Pro for data only, self-hosted in `site/assets/fonts/` with OFL texts. No Fraunces, no italic.
 
 ## Design rules
 - Read `DESIGN.md` (art direction, type reasons, palette, motion budget, the pacer) and `DESIGN-BANS.md` (studio ban list) before changing any page.

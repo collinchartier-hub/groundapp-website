@@ -22,18 +22,32 @@ object at real size, and metronome apps where tempo is the interface.
 - B `split-stage`: Collin's real photo holds the left half, pacer and a giant wordmark on the right. `design-options/hero-b.html`
 - C `product-performs` (recommended, built in full): the headline splits around the working pacer. `site/index.html`
 
-## Type (font reason)
-- **Fraunces** (OFL 1.1, Undercase Type, via Google Fonts files in the Ground kit), headings, the pacer count, prices.
-  Why this font: it is the Ground brand kit face Collin chose on 2026-10-14, shared with the 8-week course PDFs and
-  GROUNDED, so the app, the course and the program read as one practice. Its soft, slightly irregular old-style
-  shapes fit the warm earth-and-breath world better than a tech grotesk. Used at 300 to 400, never italic,
-  never with an accent-colored or italic word inside a headline. One face per headline.
-- **Hanken Grotesk** (OFL 1.1), body, buttons, labels. Kit face; calm at small sizes, real tabular figures.
-- Both self-hosted as woff2 under `site/assets/fonts/` (latin subset, variable weight), preloaded, `font-display: swap`.
-  This replaces Iowan Old Style, which only exists on Apple devices (Android and Windows fell back to Georgia).
-- Licensed upgrade worth a look: Signifier or Tiempos Headline (Klim) for headings, roughly USD 150 to 400 for a
-  small-site web license depending on traffic tier. Check current pricing before buying.
-- Scale: 15 small, 17 body, 19 lede, 22 h3, 30 sub-display, h2 clamp(30 to 46), display clamp(39 to 74).
+## Type (font reason): "G1", Collin's choice 2026-10-15
+Why: Collin's choice 2026-10-15: one Adobe family speaks for the whole practice; light caps display is the closest free
+cousin of Icebreak's Louize; plain f. (Fraunces was dropped the same day: "the weird F that's squiggly... generic".)
+Both faces are Adobe Originals, SIL OFL 1.1, served by Google Fonts. Licence texts sit next to the files.
+- **Display** (h1, h2, the split hero line "From the mind" / "into the body", closing line, about/blog/404/atlas titles):
+  Source Serif 4 Light 300, `font-variation-settings: "opsz" 60`, UPPERCASE via CSS, tracking +0.01em, leading 1.04 to 1.08.
+  Source text stays in sentence case (screen readers and copy-paste get "GroundApp", not "GROUNDAPP").
+- **Body** (paragraphs, h3, buttons, nav, captions, FAQ, wheel labels): Source Serif 4 at text size, `font-optical-sizing: auto`,
+  400; 600 for filled buttons and inline bold. Sentence case.
+- **Data** (breath counts in the pacer, the pattern timings "4 in, 4 hold, 4 out, 4 hold", the cycle count, the feelings plan
+  timing, prices on the pricing cards, practice durations on atlas pages): Source Code Pro 400 (500 on atlas durations),
+  via `.data` spans or the element's own rule. Nothing else is mono: no mono kickers or labels.
+- No italic anywhere: no italic files are shipped and `font-synthesis: none` keeps browsers from faking one (blog `em`
+  renders upright in Bone). Terms and privacy only swapped their font stacks; their old italic heading stays for now.
+- Files: `site/assets/fonts/source-serif-4-v1.woff2` (variable, wght 200 to 900, opsz 8 to 60, latin, 122 KB, preloaded on
+  every page) and `source-code-pro-v1.woff2` (variable wght, latin, 22 KB, preloaded on the home page where the pacer
+  timing is on the first screen). Both are Google Fonts' own latin files, unmodified (no re-instancing, so the Reserved
+  Font Name "Source" question never comes up). `font-display: swap`.
+- Retired 2026-10-15: Fraunces, Hanken Grotesk (files deleted), JetBrains Mono (never shipped on this site).
+- Licensed upgrade worth a look: Louize Display (205TF), the face Icebreak uses, for the caps display only. Web licences
+  are sold per family and traffic tier; check current pricing on 205tf.com before buying.
+- Scale: 15 small, 17 body, 19 lede, 22 h3, 30 sub-display and prices, h2 caps clamp(26 to 40), display caps clamp(37 to 64)
+  on desktop and clamp(34 to 58) for the stacked hero on phones.
+- Caps run about 17% wider than the old mixed-case display, so: display and h2 sizes came down, the phone pattern row
+  tightens under 400 px so it stays one line, and phones shorter than 720 px get a smaller dial so Begin and the App
+  Store button both sit on the first screen (checked at 375x667 and 390x844, no overflow from 360 to 1440).
 
 ## Palette (Ground kit `night` theme, from the app itself)
 Obsidian #1A110E ground, #231916 second ground, #2D1E17 card, Bone #E8DDD0 text (full ink for running copy),
@@ -81,7 +95,7 @@ header "Download" pill hides while the bar shows.
 - App screens (3), device shots (3) already in the repo.
 
 ## Ban exceptions
-- default-display-font: Fraunces is the Ground brand kit face Collin chose on 2026-10-14, shared with the course PDFs and GROUNDED, so the app, course and program read as one practice.
+- None for type. Source Serif 4 is not on the AI-default list; the mono face is limited to data (see Type).
 
 ## Grid
 Three edges at 1440: 56 (page margin), 156 (content column) and 732 (second column, col 7 of 12). Section heads sit
@@ -89,7 +103,7 @@ on 156, their reading text or lists on 732. Gold is only for the rings, Begin an
 
 ## Project-specific bans
 - No italic or gold word inside any headline. No tracked caps labels above headings. No icon-card grids.
-- No mono labels (the kit's JetBrains Mono kickers conflict with the ban list; dropped on this site).
+- No mono labels or kickers. Source Code Pro is for data only (counts, timings, prices, durations).
 - Breath-paced motion belongs to Ground only; never copy the pacer to collinchartier.com or client sites.
 - App facts only from the fact sheet in memory (`project_groundapp_website_audit_2026-10-02`). No Aura, no trial,
   no WHOOP, no programs. Rating text must match the live App Store (5.0 from 11 ratings on 2026-10-14).
@@ -99,7 +113,8 @@ on 156, their reading text or lists on 732. Gold is only for the rings, Begin an
   this preview; fix them in a follow-up once Collin approves (their privacy copy is legal text).
 - stock-copy ("game changer"): two verbatim customer quotes (App Store review by okh78, class testimonial by Tyler B.).
   Verbatim quotes are exempt.
-- default-display-font: Fraunces, reason above.
+- Inspector `mono` on atlas pages: practice durations in the "other practices" list are data (see Type). The atlas pages
+  were not redesigned; their other inspector findings predate this preview.
 - glassmorphism: blog, terms and privacy pages (untouched here). middot-meta: admin dashboard (untouched).
 - Inspector `few-pictures`: 7 real raster images plus the shader; the inspector skips lazy images and data-ui phones.
   `no-footage`: owned Traverse footage exists; a loop is Collin's call (see Imagery). The shader is the moving picture.
