@@ -88,7 +88,10 @@ The breath pacer (`site/js/pacer-v3.js`), one timing engine used twice:
   (`CheckInViewModel.buildFallbackPrescription` + `FeelingWheel.polyvagalState`): Anxious and Angry start with
   Physiological Sigh (2 in, 1 more in, 6 out), Sad and Numb with Deep Slow Breathing (6/6), Calm and Energized with
   Resonance Breathing (5.5/5.5). Aura (AI check-in), when on, may pick differently.
-Sound: nothing plays until the visitor turns it on; the binaural tone swells with the inhale.
+Sound: on by default on the hero (Collin 2026-10-15, `data-sound-default="on"`, pacer-v4). Browsers allow audio only
+after the visitor's first tap, click or key, so the binaural tone starts then, never on load; it swells with the inhale,
+fades to silence while the hero is off screen and follows the breath again when it returns; the toggle turns it off.
+Under reduced motion nothing auto-runs, so the tone starts only once the visitor presses "Breathe with me".
 
 ## Motion budget (motion.md)
 1. Signature: the pacer (the hero figure + the feelings pacer, one engine).

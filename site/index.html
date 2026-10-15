@@ -168,7 +168,7 @@
 <main id="main">
 <!-- HERO: "Breathe with me". The breath pacer is the first thing you can do here; the round figure breathes it. -->
 <section class="hero" id="hero">
-  <div class="stage" id="try-a-breath" data-pacer data-start="resonance" data-autostart="900" data-begin-word="Breathe with me" data-stop-hint=" Tap again to stop.">
+  <div class="stage" id="try-a-breath" data-pacer data-start="resonance" data-autostart="900" data-sound-default="on" data-begin-word="Breathe with me" data-stop-hint=" Tap again to stop.">
     <div class="row">
       <h1><span class="h-a">From the mind</span> <span class="h-b">into the body</span></h1>
       <div class="dial">
@@ -188,10 +188,10 @@
         <button type="button" data-pattern="resonance" aria-pressed="true">Resonance</button>
         <button type="button" data-pattern="box" aria-pressed="false">Box</button>
       </div>
-      <button type="button" class="snd" data-sound aria-pressed="false">
+      <button type="button" class="snd" data-sound aria-pressed="true">
         <svg class="off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H3v6h3l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg>
         <svg class="on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.8 5.2a9.5 9.5 0 0 1 0 13.6"/></svg>
-        <span class="pc-sound-label">Sound off</span>
+        <span class="pc-sound-label">Sound on</span>
       </button>
     </div>
     <p class="pc-desc">Resonance Breathing: <span class="data">5.5 in, 5.5 out</span>.</p>
@@ -549,7 +549,7 @@
   <a class="btn btn-sm" href="https://apps.apple.com/app/apple-store/id6760352779?pt=128638571&amp;ct=site-sticky&amp;mt=8" data-ct="sticky">Get the app</a>
 </div>
 
-<script src="/js/pacer-v3.js" defer></script>
+<script src="/js/pacer-v4.js" defer></script>
 <script src="/js/home-v2.js" defer></script>
 <script src="/js/room-v1.js" defer></script>
 <script type="module" src="/js/breath-figure-v1.js"></script>
