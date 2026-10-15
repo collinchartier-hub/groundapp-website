@@ -236,7 +236,7 @@ p{text-wrap:pretty}
 .plan-pro{grid-column:6/13;background:var(--card)}
 .plan-top{display:flex;justify-content:space-between;align-items:baseline;gap:16px}
 .plan h3{font-size:1.875rem;color:var(--text)}
-.amount{font-family:var(--mono);font-weight:400;font-size:1.75rem;line-height:1.1}
+.amount{font-family:var(--mono);font-weight:400;font-size:1.875rem;line-height:1.1}
 .plan .sub{font-size:var(--t-small);color:var(--text-2);margin:.35rem 0 1.25rem}
 .plan ul{list-style:none;margin-bottom:1.5rem}
 .plan li{padding:.45rem 0 .45rem 1.4rem;position:relative}
