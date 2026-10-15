@@ -42,18 +42,18 @@ Amber #D4A574 on dark text accents. Text on gold is Obsidian, never white. Gold 
 because GroundApp is his practice (ban list: gold only for Collin).
 
 ## Signature interaction
-The breath pacer (`site/js/pacer-v2.js`), used twice with one timeline engine:
+The breath pacer (`site/js/pacer-v2.js`), one timing engine used twice:
 - Hero: the rings are drawn by the web-3d `breath` shader (`site/shaders/breath-v1.frag`, the page's ONE shader
-  moment, Ground only). The pacer stays the source of truth and passes its fill to the shader, so rings, words and
-  count never disagree. Idle runs at resonance pace (4.5 s in, 6.5 s out). Begin, the pattern buttons, the sound
-  button, the headline and the App Store button are HTML above the canvas. Poster webp under the canvas (18 KB
-  desktop, 17 KB phone) for no-WebGL; `stillTime: 4.5` under reduced motion. Colors come from CSS tokens.
-- Feelings demo (right after the hero): the wheel's last tier opens a second pacer loaded with the breath the app
-  starts with for that feeling, plus one plain line naming it. Mapping from GroundApp 1.1.1's rule-based check-in
-  plan (`CheckInViewModel.buildFallbackPrescription` + `FeelingWheel.polyvagalState`): Anxious and Angry start with
-  Physiological Sigh (2 in, 1 more in, 6 out), Sad and Numb with Deep Slow Breathing (6 in, 6 out), Calm and
-  Energized with Resonance Breathing (5.5 in, 5.5 out). If Aura (AI check-in) is switched on it may pick differently.
-Sound: nothing plays until the visitor taps "Sound off" to turn it on; the binaural tone swells with the inhale.
+  moment, Ground only), driven by the pacer's fill so rings, words and count share one timeline. Begin, the
+  pattern buttons, sound, headline and App Store button are HTML. Poster webp under the canvas (18 KB / 17 KB),
+  `stillTime: 4.5` under reduced motion, colors from CSS tokens.
+- Feelings wheel: after the third tap the segments fold away and the wheel becomes a pacer in place (Begin and the
+  count in its center), loaded with the breath the app starts with for that feeling; the plan line sits beside it
+  on desktop and right under it on phones. Mapping from GroundApp 1.1.1's rule-based check-in plan
+  (`CheckInViewModel.buildFallbackPrescription` + `FeelingWheel.polyvagalState`): Anxious and Angry start with
+  Physiological Sigh (2 in, 1 more in, 6 out), Sad and Numb with Deep Slow Breathing (6/6), Calm and Energized with
+  Resonance Breathing (5.5/5.5). Aura (AI check-in), when on, may pick differently.
+Sound: nothing plays until the visitor turns it on; the binaural tone swells with the inhale.
 
 ## Motion budget (motion.md)
 1. Signature: the pacer (hero shader rings + the feelings pacer, one engine).
@@ -64,18 +64,28 @@ Everything else is still. Zero reveal classes. Reduced motion: no entrance, no i
 closing rings static; count and words still run. Verified 0 running animations at rest.
 
 ## Signup card (replaces the popup)
-Phones and tablets never see it: the inline form at the close is the ask. On desktop it opens at most once per
-visitor (`ga-nl-seen`), only once the FAQ is behind you (the close section's top has passed 60% of the screen), sits
-over the empty right half of the close and its decorative rings, and closes itself when the inline form is a quarter
-into view. Not modal, no focus steal, Close / "No thanks" / Esc dismiss it. Posts to `/api/subscribe` exactly as
-before (`source: "popup"`). Both newsletter buttons are secondary (Bone on #2D1E17 / #3A281F): the App Store button
-is the only gold fill on the closing screen.
+Dropped in round 3. Every placement either covered content or flashed open and shut between the FAQ and the
+inline form. The ask is the inline form at the close ("Keep Me Updated", source "inline", posting to
+`/api/subscribe` exactly as before). Its button is secondary (Bone on #2D1E17): the App Store button is the only
+gold fill on the closing screen. On phones the "Get the app" bar hides while the feelings demo is on screen, and the
+header "Download" pill hides while the bar shows.
 
 ## Imagery
+- Order: breathe (hero) > name it (feelings demo) > meet the coach (class band) > how it works > inside > wearables > reviews > pricing > FAQ > close.
+- Class band: a 6.65 s muted loop (`site/img/class/class-breath-loop-v1.mp4/.webm`, 579 / 363 KB, poster 42 KB) from
+  `ga_breathe_15.mp4` 2.95 to 9.6 s (client breathing with hands on chest and belly, Collin over the group), plays only
+  in view, paused under reduced motion. Five stills picked by sharpness (Laplacian variance) from gym_30, ga_breathe_15,
+  sauna_30 and gym_15, 1080 px wide (the renders' native width; 1200+ needs the raw Fuji clips on the Seagate).
+- Device photos: Oura cropped to its object so all three products show at the same height. Source and license of the
+  three device photos are not recorded anywhere (open question for Collin).
 - App screens (3), device shots (3) already in the repo.
-- Collin teaching a class, hand on chest: frame at 1.3 s of `~/Documents/Traverse breathwork/edit/gym_30.mp4`
-  (Collin's own footage), cropped 560x700, `site/img/photos/collin-class-breath-*.webp`. Replaces the effort photo.
-  A short muted loop of the same moment is possible (not added: keeps the motion budget and page weight down).
+
+## Ban exceptions
+- default-display-font: Fraunces is the Ground brand kit face Collin chose on 2026-10-14, shared with the course PDFs and GROUNDED, so the app, course and program read as one practice.
+
+## Grid
+Three edges at 1440: 56 (page margin), 156 (content column) and 732 (second column, col 7 of 12). Section heads sit
+on 156, their reading text or lists on 732. Gold is only for the rings, Begin and the App Store buttons.
 
 ## Project-specific bans
 - No italic or gold word inside any headline. No tracked caps labels above headings. No icon-card grids.
