@@ -61,7 +61,6 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(-
 .lock-icon{display:inline-flex;width:48px;height:48px;border-radius:50%;background:rgba(196,147,90,.12);align-items:center;justify-content:center;margin-bottom:.9rem}
 .lock-icon svg{width:22px;height:22px;color:var(--gold)}
 .lock-title{font-family:var(--hf);font-weight:400;font-size:1.6rem;color:var(--bone);margin-bottom:.45rem}
-.lock-title em{color:var(--gold);font-style:italic}
 .lock-msg{color:var(--driftwood);font-size:.98rem;line-height:1.6;margin-bottom:1.3rem}
 .nl-input{width:100%;background:var(--obsidian);border:1px solid rgba(196,147,90,.25);border-radius:10px;padding:.9rem 1.1rem;color:var(--bone);font-family:var(--bf);font-size:1rem;outline:none;transition:border-color .3s;margin-bottom:.7rem}
 .nl-input::placeholder{color:var(--driftwood);opacity:.85}
@@ -137,7 +136,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(-
   <div class="lock-icon" aria-hidden="true">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
   </div>
-  <h2 class="lock-title">Unlock <em>Coherence</em></h2>
+  <h2 class="lock-title">Unlock Coherence</h2>
   <p class="lock-msg">Enter your email to play the audio. You'll also get notes on breathing from Collin.</p>
   <form id="gateForm" novalidate>
     <label class="sr-only" for="gateName">First name (optional)</label>
@@ -145,7 +144,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(-
     <label class="sr-only" for="gateEmail">Email</label>
     <input type="email" class="nl-input" id="gateEmail" name="email" placeholder="you@email.com" required autocomplete="email" inputmode="email" aria-describedby="gateErr">
     <div class="hp" aria-hidden="true"><label for="gateWebsite">Leave this empty</label><input type="text" id="gateWebsite" name="website" tabindex="-1" autocomplete="off"></div>
-    <button type="submit" class="nl-submit" id="gateBtn">Unlock the practice</button>
+    <button type="submit" class="nl-submit" id="gateBtn">Open the practice</button>
     <p class="nl-err" id="gateErr" role="alert" aria-live="assertive"></p>
   </form>
   <p class="nl-fine">No spam. Unsubscribe anytime. <a href="/privacy">Privacy</a></p>

@@ -345,6 +345,7 @@ p{text-wrap:pretty}
 .mbar{display:flex}
 }
 @media (max-width:560px){
+.review-main blockquote p{font-size:1.375rem}
 .step{grid-template-columns:1fr}
 .step-shot{max-width:240px}
 .devices{grid-template-columns:1fr 1fr}
