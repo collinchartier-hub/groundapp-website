@@ -441,7 +441,7 @@ p{text-wrap:pretty}
 .room{position:relative;background:var(--bg)}
 .room-stage{position:relative;height:min(100svh,66vw);overflow:hidden}
 .room-frame{position:absolute;inset:0;margin:0;background:#0d0907;overflow:hidden}
-.room-frame .class-loop{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 28%}
+.room-frame .class-loop{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 45%}
 .room-stage::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(26,17,14,.6) 0%,rgba(26,17,14,0) 34%,rgba(26,17,14,0) 60%,rgba(26,17,14,.72) 100%)}
 .room-title{position:absolute;z-index:1;left:var(--m);right:var(--m);top:clamp(92px,15svh,150px);margin:0;text-align:center;font-family:var(--serif);font-weight:300;font-variation-settings:"opsz" 60;text-transform:uppercase;letter-spacing:.01em;font-size:var(--t-display);line-height:1.04;color:var(--text);text-wrap:balance}
 .room-notes{position:absolute;z-index:1;left:var(--m);right:var(--m);bottom:clamp(24px,6svh,56px);margin:0;padding:0;list-style:none;display:flex;justify-content:space-between;gap:16px;font-size:1.0625rem;color:var(--text)}

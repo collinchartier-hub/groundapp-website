@@ -109,11 +109,17 @@ header "Download" pill hides while the bar shows.
 
 ## Imagery
 - Order: breathe (hero) > name it (feelings demo) > meet the coach (class band) > how it works > inside > wearables > reviews > pricing > FAQ > close.
-- The room (was the class band): a 6.65 s muted loop (`site/img/class/class-breath-loop-v1.mp4/.webm`, 579 / 363 KB, poster 42 KB) from
-  `ga_breathe_15.mp4` 2.95 to 9.6 s (client breathing with hands on chest and belly, Collin over the group), plays only
-  in view, paused under reduced motion. Full bleed upscales the 1080 px render; a sharper 1920 cut needs the raw Fuji
-  clips on the Seagate. Room copy NEEDS COLLIN'S CONFIRMATION: "In the room with Collin", notes "In-person classes",
-  "Coaching", "Gym and sauna sessions" (from the section's own line and the stills). Five stills picked by sharpness (Laplacian variance) from gym_30, ga_breathe_15,
+- The room (was the class band), since 2026-10-15 (Collin asked for a different sauna clip): a 14.35 s muted loop of
+  the Traverse sauna class, cut from `~/Documents/Traverse breathwork/edit/ga_sauna_15.mp4` (no-text render, sauna
+  grade, stopped before its fade-out). Six shots: Collin counting with a raised hand, a client breathing with hands
+  on chest and belly over the cyan floor, three clients breathing, over Collin's shoulder onto the group, a client
+  with eyes closed, Collin full-body over the group (DSCF3860, 3860, 3859, 3862, 3858, 3857). Phones get the vertical
+  cut (`img/class/room-sauna-tall-v1`, 720x1280, 1.2 MB webm); wide screens get a 1080x608 band framed per shot so
+  heads stay in (`room-sauna-wide-v1`, 0.76 MB webm), picked by `<source media>`. Poster `room-sauna-poster-v1.webp`
+  (29 KB). Plays only in view, paused under reduced motion. The wide cut upscales at full bleed: re-cut it from the
+  4K ProRes originals (2160 px wide bands) when the Seagate is connected (the raw clips live only there). Room copy
+  NEEDS COLLIN'S CONFIRMATION: "In the room with Collin", notes "In-person classes", "Coaching", "Gym and sauna
+  sessions" (from the section's own line and the stills). The old `class-breath-loop-v1` files are unused. Five stills picked by sharpness (Laplacian variance) from gym_30, ga_breathe_15,
   sauna_30 and gym_15, 1080 px wide (the renders' native width; 1200+ needs the raw Fuji clips on the Seagate).
 - Device photos: Oura cropped to its object so all three products show at the same height. Source and license of the
   three device photos are not recorded anywhere (open question for Collin).
