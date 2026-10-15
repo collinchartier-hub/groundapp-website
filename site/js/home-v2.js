@@ -334,7 +334,8 @@ render(false);
 
 /* ---------- signup card ----------
    Desktop only (wide screen with a mouse). Phones never see it: the inline form at the close is the ask.
-   Opens at most once per visitor, only after the visitor has scrolled past the FAQ, and closes itself
+   Opens at most once per visitor, only once the FAQ is behind you (the close section's top has passed 60%
+   of the screen; the card sits over the empty right half of the close, never over text), and closes itself
    as soon as the inline form (#notes) comes into view. Never while a pacer is running or the menu is open.
    Not modal: it takes no focus; Close, "No thanks" and Esc dismiss it.
    It posts to /api/subscribe exactly like the old popup (source "popup"). */
@@ -355,13 +356,13 @@ var popup=(function(){
   }
   function onScroll(){
     var faq=$('faq');if(!faq)return;
-    if(faq.getBoundingClientRect().bottom<window.innerHeight){engaged=true;maybe()}
+    if(faq.getBoundingClientRect().bottom<window.innerHeight*0.6){engaged=true;maybe()}
   }
   if(armed){
     window.addEventListener('scroll',onScroll,{passive:true});
     watch(heroEl,function(v,e){heroOut=!v&&!!e&&e.boundingClientRect.top<0;maybe()});
   }
-  watch($('notes'),function(v){notesIn=v;if(v&&open)close()});
+  watch($('notes'),function(v){notesIn=v;if(v&&open)close()},{rootMargin:'0px 0px -25% 0px'});
   function show(){
     armed=false;open=true;lsSet(SEEN,String(Date.now()));
     window.removeEventListener('scroll',onScroll);

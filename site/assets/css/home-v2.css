@@ -63,7 +63,6 @@ p{text-wrap:pretty}
 
 /* HERO: the pacer is the hero */
 .hero{position:relative;min-height:100vh;min-height:100svh;display:grid;grid-template-rows:1fr auto;padding:88px var(--m) 28px;overflow:hidden}
-.hero::before{content:"";position:absolute;left:50%;top:44%;width:1100px;height:1100px;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(196,147,90,.09) 0%,rgba(196,147,90,0) 62%);pointer-events:none}
 .stage{position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:22px}
 .row{position:relative;width:100%;min-height:var(--dial);display:flex;align-items:center}
 .hero h1{width:100%;display:flex;justify-content:space-between;align-items:center;font-size:var(--t-display);line-height:1.04;letter-spacing:-.035em;font-weight:300}
@@ -268,6 +267,13 @@ p{text-wrap:pretty}
 .close h2{font-size:var(--t-display);line-height:1.04;letter-spacing:-.035em;margin-bottom:1rem}
 .close .lede{margin:0 auto 2rem}
 .close .meta{font-size:var(--t-small);color:var(--text-2);margin-top:.8rem}
+@media (min-width:981px){
+.close{text-align:left}
+.close-rings{left:72%}
+.close-in>h2,.close-in>.lede,.close-in>.meta{max-width:min(640px,52%)}
+.close .lede{margin:0 0 2rem}
+.notes{margin-left:0}
+}
 @supports (animation-timeline:view()){
 @media (prefers-reduced-motion:no-preference){
 .close-rings circle{animation:ring-open linear both;animation-timeline:view();animation-range:entry 10% cover 55%}
