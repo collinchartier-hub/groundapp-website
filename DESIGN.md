@@ -42,27 +42,40 @@ Amber #D4A574 on dark text accents. Text on gold is Obsidian, never white. Gold 
 because GroundApp is his practice (ban list: gold only for Collin).
 
 ## Signature interaction
-The breath pacer in the hero (`site/js/pacer-v1.js`). Five gold rings, outer rings travel further than inner ones and
-each trails the one inside it, so the set fills like lungs. Tap the center to begin; the phase word and seconds sit
-in the center. Patterns: Box 4-4-4-4, 4-7-8, Resonance 5.5-5.5. Before anyone taps, an idle loop runs at resonance
-pace (4.5 s in, 6.5 s out) and pauses off-screen. Sound: nothing plays until the visitor taps "Sound off" to turn it
-on (that tap creates the AudioContext); the binaural tone swells with the inhale. The feelings wheel stays tappable.
+The breath pacer (`site/js/pacer-v2.js`), used twice with one timeline engine:
+- Hero: the rings are drawn by the web-3d `breath` shader (`site/shaders/breath-v1.frag`, the page's ONE shader
+  moment, Ground only). The pacer stays the source of truth and passes its fill to the shader, so rings, words and
+  count never disagree. Idle runs at resonance pace (4.5 s in, 6.5 s out). Begin, the pattern buttons, the sound
+  button, the headline and the App Store button are HTML above the canvas. Poster webp under the canvas (18 KB
+  desktop, 17 KB phone) for no-WebGL; `stillTime: 4.5` under reduced motion. Colors come from CSS tokens.
+- Feelings demo (right after the hero): the wheel's last tier opens a second pacer loaded with the breath the app
+  starts with for that feeling, plus one plain line naming it. Mapping from GroundApp 1.1.1's rule-based check-in
+  plan (`CheckInViewModel.buildFallbackPrescription` + `FeelingWheel.polyvagalState`): Anxious and Angry start with
+  Physiological Sigh (2 in, 1 more in, 6 out), Sad and Numb with Deep Slow Breathing (6 in, 6 out), Calm and
+  Energized with Resonance Breathing (5.5 in, 5.5 out). If Aura (AI check-in) is switched on it may pick differently.
+Sound: nothing plays until the visitor taps "Sound off" to turn it on; the binaural tone swells with the inhale.
 
 ## Motion budget (motion.md)
-1. Signature: the pacer (above).
-2. One hero entrance: the two halves of the headline part outward like an exhale while the rings open
-   (950 ms, cubic-bezier(.16,1,.3,1)), controls fade in after.
-3. Scroll moment: "How it works" pins the phone while the three steps pass; the screen crossfades per step.
+1. Signature: the pacer (hero shader rings + the feelings pacer, one engine).
+2. One hero entrance: the headline halves part outward like an exhale while the rings open (950 ms, expo-out).
+3. Scroll moment: "How it works" pins the phone while three short steps pass (shortened in round 2).
 4. Scroll moment: the closing rings open once as the last section arrives (CSS scroll-driven, static fallback).
-Everything else is still. Zero reveal classes (the old page had about 60 fade-ups, About had 85).
-`prefers-reduced-motion`: no entrance, no idle loop, rings never scale (the count and words still run and the
-glow brightens and dims), closing rings static. Verified: 0 running animations at rest.
+Everything else is still. Zero reveal classes. Reduced motion: no entrance, no idle loops, shader still frame,
+closing rings static; count and words still run. Verified 0 running animations at rest.
 
 ## Signup card (replaces the popup)
-Never over the first screen. Opens at most once per visitor (`ga-nl-seen` in localStorage) and only after real
-engagement: scrolled past 60% of the page, or finished a full pacer cycle and then left the hero. Not modal, no focus
-steal (announced politely to screen readers), Close, "No thanks" and Esc dismiss it, hidden while the inline form is
-on screen. Posts to `/api/subscribe` exactly as before (`source: "popup"`).
+Phones and tablets never see it: the inline form at the close is the ask. On desktop it opens at most once per
+visitor (`ga-nl-seen`), only once the FAQ is behind you (the close section's top has passed 60% of the screen), sits
+over the empty right half of the close and its decorative rings, and closes itself when the inline form is a quarter
+into view. Not modal, no focus steal, Close / "No thanks" / Esc dismiss it. Posts to `/api/subscribe` exactly as
+before (`source: "popup"`). Both newsletter buttons are secondary (Bone on #2D1E17 / #3A281F): the App Store button
+is the only gold fill on the closing screen.
+
+## Imagery
+- App screens (3), device shots (3) already in the repo.
+- Collin teaching a class, hand on chest: frame at 1.3 s of `~/Documents/Traverse breathwork/edit/gym_30.mp4`
+  (Collin's own footage), cropped 560x700, `site/img/photos/collin-class-breath-*.webp`. Replaces the effort photo.
+  A short muted loop of the same moment is possible (not added: keeps the motion budget and page weight down).
 
 ## Project-specific bans
 - No italic or gold word inside any headline. No tracked caps labels above headings. No icon-card grids.
@@ -78,6 +91,6 @@ on screen. Posts to `/api/subscribe` exactly as before (`source: "popup"`).
   Verbatim quotes are exempt.
 - default-display-font: Fraunces, reason above.
 - glassmorphism: blog, terms and privacy pages (untouched here). middot-meta: admin dashboard (untouched).
-- Inspector `few-pictures`: 7 real raster images (3 app screens, 3 devices, 1 photo of Collin); the inspector skips
-  lazy images and the data-ui phone. `no-footage`: owned breathwork footage exists (Traverse sauna/gym clips) and is
-  Collin's call; not added, the pacer is the page's moving picture.
+- Inspector `few-pictures`: 7 real raster images plus the shader; the inspector skips lazy images and data-ui phones.
+  `no-footage`: owned Traverse footage exists; a loop is Collin's call (see Imagery). The shader is the moving picture.
+- web-3d: `verify-webgl.mjs check` PASS at 1440 and 390 (served without the analytics beacon), `check-3d-budget.py` PASS.
