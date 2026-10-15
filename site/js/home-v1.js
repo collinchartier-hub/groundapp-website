@@ -100,16 +100,15 @@ var heroEl=$('hero');
   each(steps,function(s){io.observe(s)});
 })();
 
-/* ---------- class testimonials: visitor-driven scroll, no autoplay ---------- */
+/* ---------- class testimonials: four shown, the rest on request (no autoplay) ---------- */
 (function(){
-  var row=$('tt'),prev=$('ttPrev'),next=$('ttNext');
-  if(!row||!prev||!next)return;
-  function by(dir){
-    var card=row.querySelector('blockquote');var step=card?card.getBoundingClientRect().width+16:row.clientWidth*.8;
-    row.scrollBy({left:dir*step,behavior:RM()?'auto':'smooth'});
-  }
-  prev.addEventListener('click',function(){by(-1)});
-  next.addEventListener('click',function(){by(1)});
+  var btn=$('ttMoreBtn'),more=$('ttMore');
+  if(!btn||!more)return;
+  btn.addEventListener('click',function(){
+    more.hidden=false;btn.hidden=true;
+    var first=more.querySelector('blockquote');
+    if(first){first.setAttribute('tabindex','-1');first.focus({preventScroll:true})}
+  });
 })();
 
 /* ---------- feelings wheel (mouse, touch and keyboard) ---------- */

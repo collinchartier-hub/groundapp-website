@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GroundApp hero option A: quiet instrument</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="../site/assets/css/home-v1.css">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+/* Option A: the quiet instrument. One narrow column left of center, the pacer as a small exact tool. */
+.qa{min-height:100svh;padding:clamp(120px,22vh,220px) var(--m) 48px clamp(16px,22vw,320px);display:flex;flex-direction:column;gap:36px}
+.qa h1{font-size:clamp(2.4rem,5.4vw,5.2rem);line-height:1.02;letter-spacing:-.035em;font-weight:300;max-width:11ch}
+.qa-col{max-width:520px;display:flex;flex-direction:column;gap:22px}
+.qa-tool{display:flex;align-items:center;gap:28px}
+.qa .stage{display:block}
+.qa .dial{position:relative;left:auto;top:auto;transform:none;--dial:220px;width:220px;height:220px;flex:none}
+.qa .pc-word{font-size:1rem}
+.qa .pc-count{font-size:2rem}
+.qa .controls{flex-direction:column;align-items:flex-start}
+.qa .pc-desc{text-align:left}
+.qa .snd{min-height:44px}
+.qa-act{display:flex;flex-wrap:wrap;align-items:center;gap:16px}
+.qa-act p{font-size:var(--t-small);color:var(--text-2)}
+.qa .hero::before{display:none}
+@media (prefers-reduced-motion:no-preference){.js .qa h1,.js .qa-col{animation:fade 1s ease both}.js .qa-col{animation-delay:.3s}@keyframes fade{from{opacity:0}to{opacity:1}}}
+@media (max-width:640px){.qa{padding:96px 16px 32px;gap:28px}.qa-tool{flex-direction:column;align-items:flex-start;gap:18px}.qa .dial{width:200px;height:200px}}
+</style>
+</head>
+<body>
+<nav class="nav" aria-label="Main"><a href="#" class="brand"><img src="../site/lung-logo.svg" alt="" width="30" height="30"><span>GroundApp</span></a><a href="#" class="btn btn-sm" style="margin-left:auto">Download</a></nav>
+<main class="qa" data-pacer data-idle-delay="900">
+  <h1>From the mind into the body</h1>
+  <div class="qa-col">
+    <p class="lede">35 breathing techniques and guided sessions in Collin's voice, matched to how you feel. Try one breath here first.</p>
+    <div class="qa-tool">
+      <div class="dial">
+        <svg viewBox="0 0 400 400" aria-hidden="true" focusable="false">
+          <defs><radialGradient id="pcg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#d4a574" stop-opacity=".55"/><stop offset="55%" stop-color="#c4935a" stop-opacity=".16"/><stop offset="100%" stop-color="#c4935a" stop-opacity="0"/></radialGradient></defs>
+          <circle class="pc-glow" cx="200" cy="200" r="150" fill="url(#pcg)"/>
+          <g>
+            <circle class="pc-ring" cx="200" cy="200" r="72"/>
+            <circle class="pc-ring" cx="200" cy="200" r="102"/>
+            <circle class="pc-ring" cx="200" cy="200" r="132"/>
+            <circle class="pc-ring" cx="200" cy="200" r="162"/>
+            <circle class="pc-ring" cx="200" cy="200" r="192"/>
+          </g>
+        </svg>
+        <button type="button" class="pc-go" aria-pressed="false" aria-label="Begin box breathing"><span class="pc-word">Begin</span><span class="pc-count" aria-hidden="true"></span></button>
+      </div>
+      <div><div class="controls">
+      <div class="seg" role="group" aria-label="Breathing pattern">
+        <button type="button" data-pattern="box" aria-pressed="true">Box</button>
+        <button type="button" data-pattern="478" aria-pressed="false">4-7-8</button>
+        <button type="button" data-pattern="resonance" aria-pressed="false">Resonance</button>
+      </div>
+      <button type="button" class="snd" data-sound aria-pressed="false">
+        <svg class="off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H3v6h3l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg>
+        <svg class="on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.8 5.2a9.5 9.5 0 0 1 0 13.6"/></svg>
+        <span class="pc-sound-label">Sound off</span>
+      </button>
+    </div>
+    <p class="pc-desc">Box breathing: 4 in, 4 hold, 4 out, 4 hold.</p>
+    <p class="vh" aria-live="polite" aria-atomic="true"><span class="pc-live"></span></p></div>
+    </div>
+    <div class="qa-act"><a href="#" class="btn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>Download on the App Store</a><p>Free to download. Premium $29.99/year.</p></div>
+  </div>
+</main>
+<script src="../site/js/pacer-v1.js"></script>
+</body>
+</html>
