@@ -209,33 +209,31 @@
   </div>
 </section>
 
-<!-- FEELINGS TO BREATH: the check-in wheel, then the breath the app starts with for that feeling -->
+<!-- FEELINGS TO BREATH: one object. After the third tap the wheel folds into rings around its center
+     and becomes a pacer in place, loaded with the breath the app starts with for that feeling. -->
 <section class="sec sec-alt feel" id="feelings">
-  <div class="wrap">
-    <div class="feel-head">
+  <div class="wrap feel-grid">
+    <div class="feel-text">
       <h2>Name what you're actually feeling</h2>
-      <p class="lede">Before a session, GroundApp's optional check-in uses a 3-tier feelings wheel to help you name what's going on. Six core emotions open into 24 and then 72 more specific feelings, 102 in all.</p>
+      <p class="lede">Before a session, GroundApp's optional check&#8209;in uses a 3&#8209;tier feelings wheel to help you name what's going on. Six core emotions open into 24 and then 72 more specific feelings, 102 in all.</p>
     </div>
-    <div class="feel-grid">
-      <div class="feel-wheel">
-        <div class="fv"><div class="fw" id="feelings-wheel"></div></div>
-        <div class="wsel" id="wsel" aria-live="polite"></div>
-      </div>
-      <div class="feel-breath" id="feelBreath" data-pacer data-start="resonance" data-state="waiting">
-        <p class="feel-line" id="feelLine">Tap a feeling, then a more specific one, then one more. The breath GroundApp starts with for it opens here.</p>
-        <div class="feel-pacer" id="feelPacer">
-          <div class="dial dial-sm">
-            <svg viewBox="0 0 400 400" aria-hidden="true" focusable="false">
-              <defs><radialGradient id="pcg2" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#d4a574" stop-opacity=".55"/><stop offset="55%" stop-color="#c4935a" stop-opacity=".16"/><stop offset="100%" stop-color="#c4935a" stop-opacity="0"/></radialGradient></defs>
-              <circle class="pc-glow" cx="200" cy="200" r="150" fill="url(#pcg2)"/>
-              <g><circle class="pc-ring" cx="200" cy="200" r="72"/><circle class="pc-ring" cx="200" cy="200" r="102"/><circle class="pc-ring" cx="200" cy="200" r="132"/><circle class="pc-ring" cx="200" cy="200" r="162"/><circle class="pc-ring" cx="200" cy="200" r="192"/></g>
-            </svg>
-            <button type="button" class="pc-go" aria-pressed="false" aria-label="Begin Resonance Breathing"><span class="pc-word">Begin</span><span class="pc-count" aria-hidden="true"></span></button>
-          </div>
-          <p class="pc-desc">Resonance Breathing: 5.5 in, 5.5 out.</p>
-          <p class="vh" aria-live="polite" aria-atomic="true"><span class="pc-live"></span></p>
+    <div class="feel-object" id="feelBreath" data-pacer data-start="resonance" data-idle-delay="manual" data-state="wheel">
+      <div class="fv">
+        <div class="fw" id="feelings-wheel"></div>
+        <div class="fv-pacer" id="feelPacer" hidden>
+          <svg viewBox="0 0 400 400" aria-hidden="true" focusable="false">
+            <defs><radialGradient id="pcg2" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#d4a574" stop-opacity=".5"/><stop offset="55%" stop-color="#c4935a" stop-opacity=".14"/><stop offset="100%" stop-color="#c4935a" stop-opacity="0"/></radialGradient></defs>
+            <circle class="pc-glow" cx="200" cy="200" r="150" fill="url(#pcg2)"/>
+            <g><circle class="pc-ring" cx="200" cy="200" r="72"/><circle class="pc-ring" cx="200" cy="200" r="102"/><circle class="pc-ring" cx="200" cy="200" r="132"/><circle class="pc-ring" cx="200" cy="200" r="162"/><circle class="pc-ring" cx="200" cy="200" r="192"/></g>
+          </svg>
+          <button type="button" class="pc-go" aria-pressed="false" aria-label="Begin Resonance Breathing"><span class="pc-word">Begin</span><span class="pc-count" aria-hidden="true"></span></button>
         </div>
       </div>
+      <p class="vh" aria-live="polite" aria-atomic="true"><span class="pc-live"></span></p>
+    </div>
+    <div class="feel-plan">
+      <p class="feel-line" id="feelLine" aria-live="polite">Tap a feeling, then a more specific one, then one more.</p>
+      <div class="wsel" id="wsel"></div>
     </div>
   </div>
 </section>

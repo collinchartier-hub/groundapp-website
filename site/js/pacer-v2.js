@@ -174,13 +174,15 @@
       root: root, start: start, stop: stop, setPattern: setPattern,
       isRunning: function () { return running; },
       pattern: function (id) { return PATTERNS[id || cur]; },
-      onFill: function (fn) { listeners.push(fn); fn(shown, RM()); }
+      onFill: function (fn) { listeners.push(fn); fn(shown, RM()); },
+      describe: function () { return PATTERNS[cur].name + ': ' + PATTERNS[cur].desc; }
     };
     rest(); describe();
     function beginIdle() { if (RM() || running) return; idleOn = true; idleT0 = performance.now(); kick(); }
-    var wait = parseInt(root.getAttribute('data-idle-delay') || '0', 10);
-    if (wait > 0) setTimeout(beginIdle, wait); else beginIdle();
-    if (mq.addEventListener) mq.addEventListener('change', function () { if (RM()) { idleOn = false; rest(); } else beginIdle(); });
+    var idleAttr = root.getAttribute('data-idle-delay') || '0', wait = parseInt(idleAttr, 10);
+    if (idleAttr !== 'manual') { if (wait > 0) setTimeout(beginIdle, wait); else beginIdle(); }
+    api.idle = function (on) { if (on) beginIdle(); else { idleOn = false; rest(); } };
+    if (mq.addEventListener) mq.addEventListener('change', function () { if (RM()) { idleOn = false; rest(); } else if (idleAttr !== 'manual') beginIdle(); });
     root.groundPacer = api;
     return api;
   }

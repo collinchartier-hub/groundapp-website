@@ -248,56 +248,49 @@ function pick(el,kb){
   }
 }
 
+/* third tap: the segments fold away and the wheel becomes a pacer in place (see the wiring below) */
 function celebrate(coreName,secName,terName,color,kb){
   clearTimers();
   state.level='celebrating';
-  each(wEl.querySelectorAll('.seg'),function(s){s.classList.add('seg-fade');s.setAttribute('tabindex','-1')});
+  each(wEl.querySelectorAll('.seg,.wlbl'),function(s){s.classList.add('seg-fade');s.setAttribute('tabindex','-1')});
   later(function(){
-    var s='<svg viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">';
-    s+='<defs><radialGradient id="orbg2" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#E8DDD0"/><stop offset="40%" stop-color="'+color+'" stop-opacity="0.4"/><stop offset="100%" stop-color="'+color+'" stop-opacity="0.15"/></radialGradient></defs>';
-    s+='<circle cx="'+CX+'" cy="'+CY+'" r="62" class="ripple" stroke="'+color+'" id="rp1"/>';
-    s+='<circle cx="'+CX+'" cy="'+CY+'" r="62" class="ripple" stroke="'+color+'" id="rp2"/>';
-    s+='<circle cx="'+CX+'" cy="'+CY+'" r="62" class="ripple" stroke="'+color+'" id="rp3"/>';
-    s+='<circle cx="'+CX+'" cy="'+CY+'" r="80" fill="url(#orbg2)" class="center-orb"/>';
-    s+='<circle cx="'+CX+'" cy="'+CY+'" r="75" fill="none" stroke="rgba(232,221,208,0.12)" stroke-width="1"/>';
-    s+='<path d="'+HEART()+'" class="heart-icon"/></svg>';
-    wEl.innerHTML=s;
-    later(function(){addCls('rp1','go')},30);
-    later(function(){addCls('rp2','go')},1200);
-    later(function(){addCls('rp3','go')},2400);
-    wsEl.innerHTML='<div class="wsel-cele">'+
-      '<div class="cele-name" id="cn">'+terName+'</div>'+
-      '<div class="cele-crumbs" id="cc"><span class="wsel-em">'+coreName+'</span> &rsaquo; <span class="wsel-em">'+secName+'</span> &rsaquo; <span class="wsel-em">'+terName+'</span></div>'+
-      '<button type="button" class="wsel-restart" id="wr">Try again</button></div>';
-    later(function(){addCls('cn','show')},400);
-    later(function(){addCls('cc','show')},600);
-    later(function(){addCls('wr','show')},800);
-    document.dispatchEvent(new CustomEvent('wheel:pick',{detail:{core:coreName,sec:secName,ter:terName}}));
+    wEl.innerHTML='';
+    wsEl.innerHTML='<div class="wsel-cele"><div class="cele-crumbs show"><span class="wsel-em">'+coreName+'</span> &rsaquo; <span class="wsel-em">'+secName+'</span> &rsaquo; <span class="wsel-em">'+terName+'</span></div>'+
+      '<button type="button" class="wsel-restart show" id="wr">Try another feeling</button></div>';
+    document.dispatchEvent(new CustomEvent('wheel:pick',{detail:{core:coreName,sec:secName,ter:terName,kb:kb}}));
     var wr=$('wr');
-    if(wr){
-      wr.addEventListener('click',function(ev){state.level='core';state.coreIdx=null;state.secIdx=null;render(ev.detail===0)});
-      if(kb)wr.focus({preventScroll:true});
-    }
-  },500);
+    if(wr)wr.addEventListener('click',function(ev){
+      document.dispatchEvent(new CustomEvent('wheel:reset'));
+      state.level='core';state.coreIdx=null;state.secIdx=null;render(ev.detail===0);
+    });
+  },450);
 }
 render(false);
 })();
 
-/* ---------- the wheel's last tier opens the breath the app starts with ----------
+/* ---------- the wheel's last tier becomes the pacer, loaded with the breath the app starts with ----------
    Mapping from GroundApp 1.1.1's rule-based check-in plan (CheckInViewModel.buildFallbackPrescription
    and FeelingWheel.polyvagalState): Anxious and Angry start with Physiological Sigh, Sad and Numb with
    Deep Slow Breathing, Calm and Energized with Resonance Breathing. Timings from breathwork_techniques.json. */
 (function(){
   var MAP={Calm:'resonance',Energized:'resonance',Anxious:'sigh',Angry:'sigh',Sad:'deepslow',Numb:'deepslow'};
-  var box=$('feelBreath'),line=$('feelLine');
-  if(!box||!line)return;
+  var box=$('feelBreath'),pacerEl=$('feelPacer'),line=$('feelLine');
+  if(!box||!pacerEl||!line)return;
+  var START=line.textContent;
   document.addEventListener('wheel:pick',function(e){
     var d=e.detail||{},id=MAP[d.core]||'resonance',p=box.groundPacer;
     if(!p)return;
     if(p.isRunning())p.stop(true);
     p.setPattern(id);
-    box.setAttribute('data-state','open');
-    line.textContent=d.ter+' sits under '+d.core+'. GroundApp\'s standard plan for '+d.core+' starts with '+p.pattern(id).name+'.';
+    pacerEl.hidden=false;box.setAttribute('data-state','pacer');
+    if(p.idle)p.idle(true);
+    line.textContent=d.ter+' sits under '+d.core+'. GroundApp\'s standard plan for '+d.core+' starts with '+p.describe()+'.';
+    if(d.kb){var g=pacerEl.querySelector('.pc-go');if(g)g.focus({preventScroll:true})}
+  });
+  document.addEventListener('wheel:reset',function(){
+    var p=box.groundPacer;
+    if(p){if(p.isRunning())p.stop(true);if(p.idle)p.idle(false)}
+    pacerEl.hidden=true;box.setAttribute('data-state','wheel');line.textContent=START;
   });
 })();
 
