@@ -4,7 +4,7 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GroundApp hero option A: quiet instrument</title>
 <meta name="robots" content="noindex">
-<link rel="stylesheet" href="../site/assets/css/home-v1.css">
+<link rel="stylesheet" href="../site/assets/css/home-v2.css">
 <script>document.documentElement.classList.add('js');</script>
 <style>
 /* Option A: the quiet instrument. One narrow column left of center, the pacer as a small exact tool. */
@@ -39,6 +39,6 @@
     <div class="qa-act"><a href="#" class="btn">@@APPLE@@Download on the App Store</a><p>Free to download. Premium $29.99/year.</p></div>
   </div>
 </main>
-<script src="../site/js/pacer-v1.js"></script>
+<script src="../site/js/pacer-v2.js"></script>
 </body>
 </html>

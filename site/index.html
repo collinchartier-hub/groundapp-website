@@ -65,7 +65,7 @@
       "downloadUrl": "https://apps.apple.com/us/app/groundapp-breathwork/id6760352779",
       "applicationCategory": "HealthApplication",
       "operatingSystem": "iOS 17 or later",
-      "description": "Breathwork app by coach Collin Chartier. 35 breathing techniques and guided sessions in Collin's voice, matched to how you feel. Free to download. GroundApp Premium is $29.99 a year and unlocks all 35 techniques, 15 guided sessions and the daily check-in.",
+      "description": "Breathwork app by coach Collin Chartier. 35 breathing techniques and guided sessions in Collin's voice, matched to how you feel. Free to download. GroundApp Premium is $29.99 a year and opens all 35 techniques, 15 guided sessions and the daily check-in.",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
       "featureList": [
         "35 breathing techniques across calming, energizing, focusing and balancing",
@@ -88,7 +88,7 @@
         {
           "@type": "Question",
           "name": "What does GroundApp cost?",
-          "acceptedAnswer": { "@type": "Answer", "text": "GroundApp is free to download. GroundApp Premium is $29.99 a year and unlocks all 35 techniques, 15 guided sessions and the daily check-in." }
+          "acceptedAnswer": { "@type": "Answer", "text": "GroundApp is free to download. GroundApp Premium is $29.99 a year and opens all 35 techniques, 15 guided sessions and the daily check-in." }
         },
         {
           "@type": "Question",
@@ -135,7 +135,7 @@
 <script>window.__gaT0=Date.now();document.documentElement.classList.add('js');</script>
 <link rel="preload" href="/assets/fonts/fraunces-v1.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/hanken-grotesk-v1.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/css/home-v1.css">
+<link rel="stylesheet" href="/assets/css/home-v2.css">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -180,7 +180,7 @@
             <circle class="pc-ring" cx="200" cy="200" r="192"/>
           </g>
         </svg>
-        <button type="button" class="pc-go" aria-pressed="false" aria-label="Begin box breathing"><span class="pc-word">Begin</span><span class="pc-count" aria-hidden="true"></span></button>
+        <button type="button" class="pc-go" aria-pressed="false" aria-label="Begin Box Breathing"><span class="pc-word">Begin</span><span class="pc-count" aria-hidden="true"></span></button>
       </div>
     </div>
     <div class="controls">
@@ -195,10 +195,11 @@
         <span class="pc-sound-label">Sound off</span>
       </button>
     </div>
-    <p class="pc-desc">Box breathing: 4 in, 4 hold, 4 out, 4 hold.</p>
+    <p class="pc-desc">Box Breathing: 4 in, 4 hold, 4 out, 4 hold.</p>
     <p class="vh" aria-live="polite" aria-atomic="true"><span class="pc-live"></span></p>
   </div>
   <div class="hero-foot">
+    <div class="hero-sell">
     <p class="hero-lede">35 breathing techniques and guided sessions in Collin's voice, matched to how you feel.</p>
     <div class="hero-act">
       <a href="https://apps.apple.com/app/apple-store/id6760352779?pt=128638571&amp;ct=site-hero&amp;mt=8" data-ct="hero" class="btn">
@@ -207,7 +208,39 @@
       </a>
       <p class="hero-meta">Free to download. Premium $29.99/year.</p>
     </div>
+    </div>
     <p class="hero-rate"><span class="stars"><svg viewBox="0 0 88 16" aria-hidden="true" focusable="false"><path transform="translate(0 0)" d="M8 .8l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5L.8 6.1l5-.7z" fill="currentColor"/><path transform="translate(18 0)" d="M8 .8l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5L.8 6.1l5-.7z" fill="currentColor"/><path transform="translate(36 0)" d="M8 .8l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5L.8 6.1l5-.7z" fill="currentColor"/><path transform="translate(54 0)" d="M8 .8l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5L.8 6.1l5-.7z" fill="currentColor"/><path transform="translate(72 0)" d="M8 .8l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5L.8 6.1l5-.7z" fill="currentColor"/></svg></span>5.0 from 11 ratings on the App Store</p>
+  </div>
+</section>
+
+<!-- FEELINGS TO BREATH: the check-in wheel, then the breath the app starts with for that feeling -->
+<section class="sec sec-alt feel" id="feelings">
+  <div class="wrap">
+    <div class="feel-head">
+      <h2>Name what you're actually feeling</h2>
+      <p class="lede">Before a session, GroundApp's optional check-in uses a 3-tier feelings wheel to help you name what's going on. Six core emotions open into 24 and then 72 more specific feelings, 102 in all.</p>
+    </div>
+    <div class="feel-grid">
+      <div class="feel-wheel">
+        <div class="fv"><div class="fw" id="feelings-wheel"></div></div>
+        <div class="wsel" id="wsel" aria-live="polite"></div>
+      </div>
+      <div class="feel-breath" id="feelBreath" data-pacer data-start="resonance" data-state="waiting">
+        <p class="feel-line" id="feelLine">Tap a feeling, then a more specific one, then one more. The breath GroundApp starts with for it opens here.</p>
+        <div class="feel-pacer" id="feelPacer">
+          <div class="dial dial-sm">
+            <svg viewBox="0 0 400 400" aria-hidden="true" focusable="false">
+              <defs><radialGradient id="pcg2" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#d4a574" stop-opacity=".55"/><stop offset="55%" stop-color="#c4935a" stop-opacity=".16"/><stop offset="100%" stop-color="#c4935a" stop-opacity="0"/></radialGradient></defs>
+              <circle class="pc-glow" cx="200" cy="200" r="150" fill="url(#pcg2)"/>
+              <g><circle class="pc-ring" cx="200" cy="200" r="72"/><circle class="pc-ring" cx="200" cy="200" r="102"/><circle class="pc-ring" cx="200" cy="200" r="132"/><circle class="pc-ring" cx="200" cy="200" r="162"/><circle class="pc-ring" cx="200" cy="200" r="192"/></g>
+            </svg>
+            <button type="button" class="pc-go" aria-pressed="false" aria-label="Begin Resonance Breathing"><span class="pc-word">Begin</span><span class="pc-count" aria-hidden="true"></span></button>
+          </div>
+          <p class="pc-desc">Resonance Breathing: 5.5 in, 5.5 out.</p>
+          <p class="vh" aria-live="polite" aria-atomic="true"><span class="pc-live"></span></p>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -221,14 +254,14 @@
     <div class="how-body">
       <div class="how-phone" aria-hidden="true">
         <div class="phone" data-ui>
-          <img class="on" src="/screenshot-checkin.jpg" alt="" width="368" height="800" loading="lazy" decoding="async">
+          <img class="on" src="/screenshot-checkin.jpg" alt="" width="368" height="800" decoding="async">
           <img src="/screenshot-home.jpg" alt="" width="368" height="800" loading="lazy" decoding="async">
           <img src="/screenshot-session.jpg" alt="" width="368" height="800" loading="lazy" decoding="async">
         </div>
       </div>
       <ol class="steps">
         <li class="step on" data-step="0">
-          <div class="step-shot" data-ui><img src="/screenshot-checkin.jpg" alt="GroundApp check-in asking How are you feeling, with a six-part feelings wheel" width="368" height="800" loading="lazy" decoding="async"></div>
+          <div class="step-shot" data-ui><img src="/screenshot-checkin.jpg" alt="GroundApp check-in asking How are you feeling, with a six-part feelings wheel" width="368" height="800" decoding="async"></div>
           <div>
             <p class="step-n" aria-hidden="true">1</p>
             <h3>Check in</h3>
@@ -256,20 +289,6 @@
   </div>
 </section>
 
-<!-- FEELINGS WHEEL: the real check-in, tappable -->
-<section class="sec sec-alt" id="feelings">
-  <div class="wrap feel-grid">
-    <div class="feel-text">
-      <h2>Name what you're actually feeling</h2>
-      <p class="lede">Before a session, GroundApp's optional check-in uses a 3-tier feelings wheel to help you name what's going on. Six core emotions open into 24 and then 72 more specific feelings, 102 in all.</p>
-      <p class="small">Try it here. Tap a feeling, then a more specific one, then one more.</p>
-    </div>
-    <div class="feel-wheel">
-      <div class="fv"><div class="fw" id="feelings-wheel"></div></div>
-      <div class="wsel" id="wsel" aria-live="polite"></div>
-    </div>
-  </div>
-</section>
 
 <!-- WHAT'S INSIDE: one index of names instead of icon cards -->
 <section class="sec inside" id="whats-inside">
@@ -280,7 +299,7 @@
         <h3>Practice</h3>
         <ul>
           <li><b>35 breathing techniques</b>, calming, energizing, focusing and balancing</li>
-          <li><b>15 guided sessions</b> narrated in Collin's voice</li>
+          <li><b>15 guided sessions</b>, most narrated in Collin's voice</li>
           <li>One-tap fixes for Sleep, Anxiety, Focus, Energy, Headache and Stress</li>
           <li>7 collections like Bedtime Wind-Down and Morning Ritual</li>
           <li>Your own sequences, with haptic cues and a breath counter</li>
@@ -441,7 +460,7 @@
   <div class="wrap faq-grid">
     <h2>Questions, answered</h2>
     <div class="faq">
-      <details><summary>What does GroundApp cost?</summary><p class="fa">GroundApp is free to download. GroundApp Premium is $29.99 a year and unlocks all 35 techniques, 15 guided sessions and the daily check-in.</p></details>
+      <details><summary>What does GroundApp cost?</summary><p class="fa">GroundApp is free to download. GroundApp Premium is $29.99 a year and opens all 35 techniques, 15 guided sessions and the daily check-in.</p></details>
       <details><summary>What do I get for free?</summary><p class="fa">Four techniques are free forever: Box Breathing, Deep Slow Breathing, 2-to-1 Breathing and Triangle Breathing. You also get the breathing timer, streaks, basic stats and the BOLT CO2 tolerance test.</p></details>
       <details><summary>Is that really Collin's voice?</summary><p class="fa">The guided sessions use an AI model of Collin's voice, trained on his recordings. Collin Chartier, a breathwork and mental performance coach, designed every session. Prefer a different voice? You can switch the narration to Jane or Oliver.</p></details>
       <details><summary>Which devices and wearables does it work with?</summary><p class="fa">GroundApp runs on iPhone with iOS 17 or later. The Apple Watch app (watchOS 11 or later) puts Box, Physiological Sigh, Resonance and Instant Calm on your wrist, with haptic breath cues and live heart rate. Apple Health, Oura and Bluetooth heart-rate straps connect too. Garmin data comes in through Apple Health.</p></details>
@@ -520,8 +539,8 @@
   <a class="btn btn-sm" href="https://apps.apple.com/app/apple-store/id6760352779?pt=128638571&amp;ct=site-sticky&amp;mt=8" data-ct="sticky">Get the app</a>
 </div>
 
-<script src="/js/pacer-v1.js" defer></script>
-<script src="/js/home-v1.js" defer></script>
+<script src="/js/pacer-v2.js" defer></script>
+<script src="/js/home-v2.js" defer></script>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "03e507bb97d74e78bc8de83dc6b261ec"}'></script>
 <script src="/js/app-links-v3.js" defer></script>
 </body>

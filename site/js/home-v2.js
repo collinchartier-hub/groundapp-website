@@ -211,11 +211,11 @@ function render(focusFirst){
     pathHtml='<div class="wsel-path">Tap or select an emotion to explore deeper</div>';
   } else if(state.level==='secondary'){
     pathHtml='<div class="wsel-path"><span class="wsel-em">'+emotions[state.coreIdx].name+'</span></div>';
-    backBtn='<button type="button" class="wsel-back" data-go="core">&larr; Back to all emotions</button>';
+    backBtn='<button type="button" class="wsel-back" data-go="core">Back to all emotions</button>';
   } else {
     var cn=emotions[state.coreIdx].name,sn=emotions[state.coreIdx].secondaries[state.secIdx].name;
     pathHtml='<div class="wsel-path"><span class="wsel-em">'+cn+'</span> &rsaquo; <span class="wsel-em">'+sn+'</span></div>';
-    backBtn='<button type="button" class="wsel-back" data-go="sec">&larr; Back to '+cn+'</button>';
+    backBtn='<button type="button" class="wsel-back" data-go="sec">Back to '+cn+'</button>';
   }
   wsEl.innerHTML=pathHtml+backBtn;
 
@@ -272,6 +272,7 @@ function celebrate(coreName,secName,terName,color,kb){
     later(function(){addCls('cn','show')},400);
     later(function(){addCls('cc','show')},600);
     later(function(){addCls('wr','show')},800);
+    document.dispatchEvent(new CustomEvent('wheel:pick',{detail:{core:coreName,sec:secName,ter:terName}}));
     var wr=$('wr');
     if(wr){
       wr.addEventListener('click',function(ev){state.level='core';state.coreIdx=null;state.secIdx=null;render(ev.detail===0)});
@@ -280,6 +281,24 @@ function celebrate(coreName,secName,terName,color,kb){
   },500);
 }
 render(false);
+})();
+
+/* ---------- the wheel's last tier opens the breath the app starts with ----------
+   Mapping from GroundApp 1.1.1's rule-based check-in plan (CheckInViewModel.buildFallbackPrescription
+   and FeelingWheel.polyvagalState): Anxious and Angry start with Physiological Sigh, Sad and Numb with
+   Deep Slow Breathing, Calm and Energized with Resonance Breathing. Timings from breathwork_techniques.json. */
+(function(){
+  var MAP={Calm:'resonance',Energized:'resonance',Anxious:'sigh',Angry:'sigh',Sad:'deepslow',Numb:'deepslow'};
+  var box=$('feelBreath'),line=$('feelLine');
+  if(!box||!line)return;
+  document.addEventListener('wheel:pick',function(e){
+    var d=e.detail||{},id=MAP[d.core]||'resonance',p=box.groundPacer;
+    if(!p)return;
+    if(p.isRunning())p.stop(true);
+    p.setPattern(id);
+    box.setAttribute('data-state','open');
+    line.textContent=d.ter+' sits under '+d.core+'. GroundApp\'s standard plan for '+d.core+' starts with '+p.pattern(id).name+'.';
+  });
 })();
 
 /* ---------- inline newsletter ---------- */
@@ -314,11 +333,10 @@ render(false);
 })();
 
 /* ---------- signup card ----------
-   Opens at most once per visitor, and only after real engagement:
-   the visitor scrolled past 60% of the page, or finished a full cycle on the breath pacer.
-   It never opens while the first screen (the hero) is on screen, while the pacer is running,
-   while the inline form is in view or in use, or while the mobile menu is open.
-   It is not modal: it sits in the corner, takes no focus, and Esc, Close or "No thanks" dismiss it.
+   Desktop only (wide screen with a mouse). Phones never see it: the inline form at the close is the ask.
+   Opens at most once per visitor, only after the visitor has scrolled past the FAQ, and closes itself
+   as soon as the inline form (#notes) comes into view. Never while a pacer is running or the menu is open.
+   Not modal: it takes no focus; Close, "No thanks" and Esc dismiss it.
    It posts to /api/subscribe exactly like the old popup (source "popup"). */
 var popup=(function(){
   var card=$('nlCard'),closeBtn=$('nlClose'),noBtn=$('nlNo'),announce=$('nlAnnounce');
@@ -328,23 +346,22 @@ var popup=(function(){
   if(!card||!form)return none;
   var SEEN='ga-nl-seen';
   var open=false,busy=false,engaged=false,heroOut=false,notesIn=false;
-  var armed=!nlRecent()&&!lsGet(SEEN);
+  var desktop=window.matchMedia?window.matchMedia('(min-width: 981px) and (pointer: fine)'):{matches:false};
+  var armed=desktop.matches&&!nlRecent()&&!lsGet(SEEN);
   function inlineActive(){var f=$('nlForm');return f&&f.contains(document.activeElement)}
   function pacerBusy(){return window.groundPacer&&window.groundPacer.isRunning()}
   function maybe(){
     if(armed&&engaged&&heroOut&&!open&&!notesIn&&!menuOpen()&&!inlineActive()&&!pacerBusy()&&!nlRecent())show();
   }
   function onScroll(){
-    var max=document.documentElement.scrollHeight-window.innerHeight;
-    if(max>0&&window.scrollY/max>=0.6){engaged=true;maybe()}
+    var faq=$('faq');if(!faq)return;
+    if(faq.getBoundingClientRect().bottom<window.innerHeight){engaged=true;maybe()}
   }
   if(armed){
     window.addEventListener('scroll',onScroll,{passive:true});
-    document.addEventListener('pacer:cycle',function(){engaged=true});
-    document.addEventListener('pacer:stop',function(e){if(e.detail&&e.detail.cycles>=1){engaged=true;maybe()}});
     watch(heroEl,function(v,e){heroOut=!v&&!!e&&e.boundingClientRect.top<0;maybe()});
-    watch($('notes'),function(v){notesIn=v});
   }
+  watch($('notes'),function(v){notesIn=v;if(v&&open)close()});
   function show(){
     armed=false;open=true;lsSet(SEEN,String(Date.now()));
     window.removeEventListener('scroll',onScroll);

@@ -4,7 +4,7 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GroundApp hero option B: split stage</title>
 <meta name="robots" content="noindex">
-<link rel="stylesheet" href="../site/assets/css/home-v1.css">
+<link rel="stylesheet" href="../site/assets/css/home-v2.css">
 <script>document.documentElement.classList.add('js');</script>
 <style>
 /* Option B: the split stage. Collin's real photo holds the left half; the pacer and the words take the right. */
@@ -44,6 +44,6 @@
     <div class="sb-act"><a href="#" class="btn">@@APPLE@@Download on the App Store</a><p>Free to download.<br>Premium $29.99/year.</p></div>
   </div>
 </main>
-<script src="../site/js/pacer-v1.js"></script>
+<script src="../site/js/pacer-v2.js"></script>
 </body>
 </html>
