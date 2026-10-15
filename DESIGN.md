@@ -93,8 +93,12 @@ Sound: nothing plays until the visitor turns it on; the binaural tone swells wit
 2. One hero entrance: the headline halves part outward like an exhale while the figure arrives (950 ms, expo-out).
 3. Scroll moment: "How it works" pins the phone while three short steps pass (shortened in round 2).
 4. Scroll moment: the closing rings open once as the last section arrives (CSS scroll-driven, static fallback).
+5. Scroll moment (Collin's pick 2026-10-15, Icebreak "room under type"): the room. The class film starts as a framed
+   window on the dark ground and opens to full bleed over a 175svh pin (`room-v1.js` writes --p; clip-path inset +
+   a 1.12 to 1 de-zoom), then "In the room with Collin" and three plain notes settle over a scrim. Without JS or
+   under reduced motion the room is simply shown open. This is the third and last scroll moment the budget allows.
 Everything else is still. Zero reveal classes. Reduced motion: no entrance, no idle loops, figure still frame,
-closing rings static; count and words still run. Verified 0 running animations at rest.
+room shown open, closing rings static; count and words still run. Verified 0 running animations at rest.
 
 ## Signup card (replaces the popup)
 Dropped in round 3. Every placement either covered content or flashed open and shut between the FAQ and the
@@ -105,9 +109,11 @@ header "Download" pill hides while the bar shows.
 
 ## Imagery
 - Order: breathe (hero) > name it (feelings demo) > meet the coach (class band) > how it works > inside > wearables > reviews > pricing > FAQ > close.
-- Class band: a 6.65 s muted loop (`site/img/class/class-breath-loop-v1.mp4/.webm`, 579 / 363 KB, poster 42 KB) from
+- The room (was the class band): a 6.65 s muted loop (`site/img/class/class-breath-loop-v1.mp4/.webm`, 579 / 363 KB, poster 42 KB) from
   `ga_breathe_15.mp4` 2.95 to 9.6 s (client breathing with hands on chest and belly, Collin over the group), plays only
-  in view, paused under reduced motion. Five stills picked by sharpness (Laplacian variance) from gym_30, ga_breathe_15,
+  in view, paused under reduced motion. Full bleed upscales the 1080 px render; a sharper 1920 cut needs the raw Fuji
+  clips on the Seagate. Room copy NEEDS COLLIN'S CONFIRMATION: "In the room with Collin", notes "In-person classes",
+  "Coaching", "Gym and sauna sessions" (from the section's own line and the stills). Five stills picked by sharpness (Laplacian variance) from gym_30, ga_breathe_15,
   sauna_30 and gym_15, 1080 px wide (the renders' native width; 1200+ needs the raw Fuji clips on the Seagate).
 - Device photos: Oura cropped to its object so all three products show at the same height. Source and license of the
   three device photos are not recorded anywhere (open question for Collin).

@@ -239,12 +239,24 @@
 
 <!-- CLASS: Collin's own footage from his classes. Breathe, name it, meet the coach. -->
 <section class="class" id="classes">
-  <figure class="class-band">
-    <video class="class-loop" id="classLoop" muted playsinline loop preload="none" poster="/img/class/class-breath-loop-poster-v1.webp" width="1080" height="720" aria-hidden="true">
-      <source src="/img/class/class-breath-loop-v1.webm" type="video/webm">
-      <source src="/img/class/class-breath-loop-v1.mp4" type="video/mp4">
-    </video>
-  </figure>
+  <!-- THE ROOM (Collin's pick 2026-10-15, from the Icebreak study): the class film starts as a framed window and
+       opens to full bleed as you scroll in, then one line and three plain notes settle over it (room-v1.js). -->
+  <div class="room" data-room>
+    <div class="room-stage">
+      <figure class="room-frame">
+        <video class="class-loop" id="classLoop" muted playsinline loop preload="none" poster="/img/class/class-breath-loop-poster-v1.webp" width="1080" height="720" aria-hidden="true">
+          <source src="/img/class/class-breath-loop-v1.webm" type="video/webm">
+          <source src="/img/class/class-breath-loop-v1.mp4" type="video/mp4">
+        </video>
+      </figure>
+      <p class="room-title">In the room with Collin</p>
+      <ul class="room-notes">
+        <li>In-person classes</li>
+        <li>Coaching</li>
+        <li>Gym and sauna sessions</li>
+      </ul>
+    </div>
+  </div>
   <div class="wrap">
     <ul class="class-stills">
         <li><img src="/img/class/collin-cue-chest-540.webp" srcset="/img/class/collin-cue-chest-540.webp 540w, /img/class/collin-cue-chest-1080.webp 1080w" sizes="(max-width:980px) 46vw, 216px" alt="Collin Chartier, hand on his chest, talking a class through a breath at the gym" width="540" height="675" loading="lazy" decoding="async"></li>
@@ -537,6 +549,7 @@
 
 <script src="/js/pacer-v3.js" defer></script>
 <script src="/js/home-v2.js" defer></script>
+<script src="/js/room-v1.js" defer></script>
 <script type="module" src="/js/breath-figure-v1.js"></script>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "03e507bb97d74e78bc8de83dc6b261ec"}'></script>
 <script src="/js/app-links-v3.js" defer></script>

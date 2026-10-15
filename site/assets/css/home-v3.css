@@ -434,3 +434,33 @@ p{text-wrap:pretty}
 .h-b{grid-row:5;justify-self:stretch;text-align:right}
 .hero .hero-foot{grid-row:6;padding-top:4px}
 }
+/* The room (Collin's pick 2026-10-15, Icebreak study "room under type", kits/journey #8 with the opening reversed):
+   the class film starts as a framed window on the dark ground and opens to full bleed as you scroll into it, easing
+   out of a 1.12 zoom; once it is open, one caps line and three plain notes settle over a soft scrim. room-v1.js
+   writes --p (0..1 across the pin). Without JS, and under reduced motion, the room is simply shown open. */
+.room{position:relative;background:var(--bg)}
+.room-stage{position:relative;height:min(100svh,66vw);overflow:hidden}
+.room-frame{position:absolute;inset:0;margin:0;background:#0d0907;overflow:hidden}
+.room-frame .class-loop{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 28%}
+.room-stage::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(26,17,14,.6) 0%,rgba(26,17,14,0) 34%,rgba(26,17,14,0) 60%,rgba(26,17,14,.72) 100%)}
+.room-title{position:absolute;z-index:1;left:var(--m);right:var(--m);top:clamp(92px,15svh,150px);margin:0;text-align:center;font-family:var(--serif);font-weight:300;font-variation-settings:"opsz" 60;text-transform:uppercase;letter-spacing:.01em;font-size:var(--t-display);line-height:1.04;color:var(--text);text-wrap:balance}
+.room-notes{position:absolute;z-index:1;left:var(--m);right:var(--m);bottom:clamp(24px,6svh,56px);margin:0;padding:0;list-style:none;display:flex;justify-content:space-between;gap:16px;font-size:1.0625rem;color:var(--text)}
+.js .room{height:175svh;--open:clamp(0,calc(var(--p,0) / .55),1);--say:clamp(0,calc((var(--p,0) - .45) / .25),1)}
+.js .room-stage{position:sticky;top:0;height:100svh}
+.js .room-frame{clip-path:inset(calc((1 - var(--open)) * 20svh) calc((1 - var(--open)) * 22vw) round calc((1 - var(--open)) * 12px))}
+.js .room-frame .class-loop{transform:scale(calc(1.12 - .12 * var(--open)))}
+.js .room-stage::after{opacity:var(--open)}
+.js .room-title,.js .room-notes{opacity:var(--say);transform:translateY(calc((1 - var(--say)) * 12px))}
+@media (max-width:980px){
+.js .room-frame{clip-path:inset(calc((1 - var(--open)) * 24svh) calc((1 - var(--open)) * 8vw) round calc((1 - var(--open)) * 12px))}
+.room-notes{flex-direction:column;align-items:flex-start;gap:2px}
+}
+@media (prefers-reduced-motion:reduce){
+.js .room{height:auto}
+.js .room-stage{position:relative;height:min(100svh,66vw)}
+.js .room-frame{clip-path:none}
+.js .room-frame .class-loop{transform:none}
+.js .room-stage::after,.js .room-title,.js .room-notes{opacity:1;transform:none}
+}
+/* Phones: the sticky "Get the app" bar sits over the bottom of the room, so the notes rise above it while it shows. */
+@media (max-width:980px){.bar-on .room-notes{bottom:calc(84px + env(safe-area-inset-bottom));transition:bottom .45s var(--exhale)}}
