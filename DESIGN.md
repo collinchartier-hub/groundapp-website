@@ -61,15 +61,23 @@ because GroundApp is his practice (ban list: gold only for Collin).
 The breath pacer (`site/js/pacer-v3.js`), one timing engine used twice:
 - Hero, "Breathe with me" (2026-10-15): the page's ONE 3D moment is a round figure on a cushion (`site/js/figure-v1.js`,
   mounted by `breath-figure-v1.js`, three.js 0.186.1 from the pinned import map; it replaced the web-3d `breath`
-  shader rings, whose files are kept unused). The pacer's fill drives the belly (forward and warm on the inhale, drawn
-  in past rest on the exhale), a soft orb glows from inside the belly as it fills (gentle emissive light plus a faint halo,
-  Amber), fades back to bone on the way out and darkens a little when empty, one hand on the chest stays nearly still
-  while the hand on the belly rides it, and the eyes close softly on a hold. Eyes follow the pointer; a tap on the figure starts the pacer. Patterns: Resonance
-  (5.5 in, 5.5 out, the default; the app's name for 5.5/5.5, since the app's "Coherent Breathing" is 6/6) and Box
-  (4 in, 4 hold, 4 out, 4 hold). The cue pill under the cushion shows the phase word and whole seconds; the step
-  track under it lists every step with the current one filling. All of it is HTML except the figure. Posters
-  `assets/posters/hero-figure-{1440,390}.webp` (12 KB / 11 KB). Reduced motion: one still frame (mid-inhale), words,
-  count and track still run. Kit: `~/.claude/skills/studio-site-design/kits/breath-figure/`.
+  shader rings, whose files are kept unused). The pacer's fill drives the belly: it pushes forward on the inhale and
+  draws in past rest on the exhale; a soft orb glows from inside it as it fills (gentle emissive light plus a faint
+  Amber halo), fades back to bone on the way out and darkens a little when empty. One hand rests on the chest and
+  stays nearly still while the other rides the belly; the eyes close softly on a hold. Seen about 40 degrees off its
+  front so the push shows in the outline, head turned to the viewer at rest. Arms are single smooth tubes (shoulder,
+  elbow, round the belly, hand) rebuilt each frame; arms, hands and legs draw after the glow so the belly hand stays
+  crisp. Eyes follow the pointer; a tap on the figure starts the pacer, and the first inhale rises from the idle level.
+  Patterns: Resonance (5.5 in, 5.5 out, the default; the app's name for 5.5/5.5, since the app's "Coherent
+  Breathing" is 6/6) and Box (4 in, 4 hold, 4 out, 4 hold). The cue pill under the cushion (an outline, so the App
+  Store button is the hero's one gold fill) shows the phase word and whole seconds (a 5.5 s step counts 5, 4, 3, 2,
+  1) with a small stop square while running; the step track under it lists every step with the current one filling;
+  the pattern row sits right under that. No description line (the track says it). One grid holds the headline halves,
+  the figure and the sell: 1200 px and up put the lede, App Store button and rating under "INTO THE BODY"; 981 to
+  1199 centre them under the pacer; phones run headline, figure, pill, track, patterns, "INTO THE BODY", then the
+  sell. All of it is HTML except the figure. Posters `assets/posters/hero-figure-{1440,390}.webp` (13 KB / 12 KB).
+  Reduced motion: the figure's shape is one still frame; while the pacer runs only its light breathes and the eyes
+  close on holds; words, count and track still run. Kit: `~/.claude/skills/studio-site-design/kits/breath-figure/`.
 - Feelings wheel: after the third tap the segments fold away and the wheel becomes a pacer in place (Begin and the
   count in its center), loaded with the breath the app starts with for that feeling; the plan line sits beside it
   on desktop and right under it on phones. Mapping from GroundApp 1.1.1's rule-based check-in plan
@@ -105,6 +113,8 @@ header "Download" pill hides while the bar shows.
 
 ## Ban exceptions
 - None for type. Source Serif 4 is not on the AI-default list; the mono face is limited to data (see Type).
+- stock-copy: two verbatim customer quotes (App Store review by okh78, class testimonial by Tyler B.); the ban list
+  exempts verbatim quotes.
 
 ## Grid
 Three edges at 1440: 56 (page margin), 156 (content column) and 732 (second column, col 7 of 12). Section heads sit
@@ -120,14 +130,12 @@ on 156, their reading text or lists on 732. Gold is only for the rings, Begin an
 ## Checker WARN/FAIL left on purpose (check-tells.py)
 - italic-accent-word + heading-em-css: `terms.html`, `privacy.html` only. Those pages are on the do-not-touch list for
   this preview; fix them in a follow-up once Collin approves (their privacy copy is legal text).
-- stock-copy ("game changer"): two verbatim customer quotes (App Store review by okh78, class testimonial by Tyler B.).
-  Verbatim quotes are exempt.
+- stock-copy ("game changer"): FAIL left on purpose. Two verbatim customer quotes (see Ban exceptions); check-tells
+  cannot excuse a FAIL rule, and rewording a customer's words would misquote them.
 - Inspector `mono` on atlas pages: practice durations in the "other practices" list are data (see Type). The atlas pages
   were not redesigned; their other inspector findings predate this preview.
 - glassmorphism: blog, terms and privacy pages (untouched here). middot-meta: admin dashboard (untouched).
 - Inspector `few-pictures`: 7 real raster images plus the figure; the inspector skips lazy images and data-ui phones.
   `no-footage`: owned Traverse footage exists; a loop is Collin's call (see Imagery). The figure is the moving picture.
-- web-3d: `verify-webgl.mjs check` (served without the analytics beacon) PASS at 390; at 1440 one FAIL on purpose,
-  "canvas covers h1": the h1 box spans the row and its centre sample lands in the empty gap between the two halves,
-  where the figure stands. The words themselves never touch the canvas (measured 2026-10-15 at 1000 to 1920 px wide,
-  closest 7 px at 1024). The old rings passed only because the Begin circle sat on that point. `check-3d-budget.py` PASS.
+- web-3d: `verify-webgl.mjs check` PASS at 1440 and 390 (served without the analytics beacon; 0 FAIL since the hero
+  grid of 2026-10-15 gave the headline halves their own columns), `check-3d-budget.py` PASS.

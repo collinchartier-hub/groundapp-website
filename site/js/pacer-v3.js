@@ -25,8 +25,10 @@
   function RM() { return mq.matches; }
   function ease(x) { return 0.5 - 0.5 * Math.cos(Math.PI * x); }
   function total(ph) { var s = 0; for (var i = 0; i < ph.length; i++) s += ph[i][1]; return s; }
-  function at(ph, t) {
-    var T = total(ph), x = ((t % T) + T) % T, level = 0;
+  // start: the lungs' level when the visitor pressed Begin. The first inhale rises from there instead of dropping to
+  // empty first (the hero figure visibly deflated on Begin before v3).
+  function at(ph, t, start) {
+    var T = total(ph), x = ((t % T) + T) % T, level = start && t < T ? start : 0;
     for (var i = 0; i < ph.length; i++) {
       var k = ph[i][0], d = ph[i][1];
       var to = k === 'in' ? (ph[i][2] != null ? ph[i][2] : 1) : k === 'out' ? (ph[i][2] != null ? ph[i][2] : 0) : level;
@@ -57,7 +59,7 @@
     var beginWord = root.getAttribute('data-begin-word') || 'Begin', stopHint = root.getAttribute('data-stop-hint') || ' Tap the center to stop.';
     if (!go) return null;
     var cur = root.getAttribute('data-start') || 'box', running = false, t0 = 0, cycles = 0, lastPhase = -1, lastCount = -1;
-    var raf = 0, visible = true, idleOn = false, idleT0 = 0, shown = 0.25, blendFrom = null, blendT0 = 0, listeners = [];
+    var raf = 0, visible = true, idleOn = false, idleT0 = 0, shown = 0.25, blendFrom = null, blendT0 = 0, listeners = [], startLevel = 0;
     var soundOn = false, oscL = null, oscR = null, gain = null, lastGainAt = 0;
 
     function draw(fillAt, still, phase) {
@@ -86,8 +88,8 @@
       if (running) {
         var ph = PATTERNS[cur].phases;
         t = (now - t0) / 1000;
-        var a = at(ph, t);
-        var f = draw(blend(function (lag) { return at(ph, Math.max(0, t - lag)).fill; }, now), RM(), ph[a.i][0]);
+        var a = at(ph, t, startLevel);
+        var f = draw(blend(function (lag) { return at(ph, Math.max(0, t - lag), startLevel).fill; }, now), RM(), ph[a.i][0]);
         if (a.cycle + 1 !== cycles) {
           if (cycles > 0) document.dispatchEvent(new CustomEvent('pacer:cycle', { detail: { cycles: cycles, root: root } }));
           cycles = a.cycle + 1;
@@ -95,7 +97,7 @@
         }
         if (a.i !== lastPhase) { lastPhase = a.i; word.textContent = a.word; if (live) live.textContent = a.word; stepTo(a.i); }
         if (steps[a.i]) steps[a.i].style.setProperty('--p', (1 - a.left / ph[a.i][1]).toFixed(3));
-        var c = Math.ceil(a.left - 0.0001);
+        var c = Math.max(1, Math.min(Math.ceil(a.left - 0.0001), Math.floor(ph[a.i][1]))); // a 5.5 s step counts 5, 4, 3, 2, 1
         if (c !== lastCount) { lastCount = c; count.textContent = String(c); }
         soundFollow(f, now);
         raf = requestAnimationFrame(frame);
@@ -142,7 +144,7 @@
     function start() {
       for (var i = 0; i < all.length; i++) if (all[i] !== api && all[i].isRunning()) all[i].stop(true);
       running = true; cycles = 0; lastPhase = -1; lastCount = -1;
-      t0 = performance.now(); blendFrom = shown; blendT0 = t0;
+      t0 = performance.now(); startLevel = Math.min(shown, 0.7); blendFrom = null; blendT0 = t0;
       root.classList.add('is-running');
       go.setAttribute('aria-pressed', 'true'); go.setAttribute('aria-label', 'Stop the breath pacer');
       if (soundOn) soundStart();

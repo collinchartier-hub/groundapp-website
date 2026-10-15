@@ -12,7 +12,10 @@ const canvas = document.querySelector('.hero .hero-art canvas');
 const pacerRoot = document.getElementById('try-a-breath');
 const reduce = matchMedia('(prefers-reduced-motion: reduce)');
 const capture = new URLSearchParams(location.search).has('capture-poster'); // web-3d verify-webgl.mjs poster
-const VIEW = { pos: [-1.6, 2.2, 4.6], target: [0, 0.98, 0], half: 1.75 }; // front left: it turns toward the copy
+// Seen about 40 degrees off its front, so the belly's forward push shows in the outline (site-critic round 1: front-on
+// it read as a lamp, not a breath). The head rests turned toward the viewer (HEAD_YAW) and follows the pointer from there.
+const VIEW = { pos: [-3.1, 2.2, 3.7], target: [0, 0.92, 0], half: 1.8 }; // room under the cushion for the cue pill
+const HEAD_YAW = -0.45;
 
 function css(name) { return getComputedStyle(canvas).getPropertyValue(name).trim(); }
 
@@ -55,13 +58,14 @@ function start() {
     raf = 0;
     const now = performance.now(), dt = Math.min((now - last) / 1000, 0.05), still = reduce.matches || capture;
     last = now;
-    if (!still || dirty) {
+    const glowOnly = still && !capture && st.phase !== null; // reduced motion while running: only the light breathes
+    if (!still || dirty || glowOnly) {
       dirty = false;
       fit();
       st.yaw += ((still ? 0 : st.tyaw) - st.yaw) * Math.min(1, dt * 4); // slower than the eyes: the eyes lead
       st.pitch += ((still ? 0 : st.tpitch) - st.pitch) * Math.min(1, dt * 4);
-      fig.head.rotation.set(st.pitch, st.yaw, 0);
-      fig.update(dt, still ? 0.6 : st.fill, still, still ? null : st.phase);
+      fig.head.rotation.set(st.pitch, HEAD_YAW + st.yaw, 0);
+      fig.update(dt, still ? 0.6 : st.fill, still, still && !glowOnly ? null : st.phase, still && !glowOnly ? 0.6 : st.fill);
       renderer.render(scene, camera);
       if (!live) {
         live = true;
@@ -70,7 +74,7 @@ function start() {
         if (capture) canvas.dataset.poster = canvas.toDataURL('image/webp', 0.86);
       }
     }
-    if (visible && !document.hidden && !still) raf = requestAnimationFrame(tick);
+    if (visible && !document.hidden && (!still || glowOnly)) raf = requestAnimationFrame(tick);
   }
   function request() { if (!raf) { last = performance.now() - 16; raf = requestAnimationFrame(tick); } }
   function redraw() { dirty = true; request(); }
@@ -78,7 +82,11 @@ function start() {
   const link = () => {
     const p = pacerRoot && pacerRoot.groundPacer;
     if (!p) return false;
-    p.onFill((fill, still, phase) => { st.fill = fill; st.phase = phase; });
+    p.onFill((fill, still, phase) => {
+      if (st.phase !== null && phase === null) dirty = true; // stopped: draw the resting light once more
+      st.fill = fill; st.phase = phase;
+      if (reduce.matches) request(); // the reduced-motion loop sleeps between runs
+    });
     const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
     canvas.parentElement.addEventListener('pointerdown', (e) => { // a tap on the figure itself starts the breath
       const b = canvas.getBoundingClientRect();

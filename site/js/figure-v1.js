@@ -1,5 +1,6 @@
 /* "Breathe with me": an original round figure sitting cross-legged on a cushion, built from primitives.
-   breath-figure-v1.js drives it from the hero pacer: update(dt, fill, still, phase).
+   breath-figure-v1.js drives it from the hero pacer: update(dt, fill, still, phase, light). `light` (default: fill)
+   sets only the glow, so under reduced motion the shape can hold still while the light still follows the breath.
    One hand rests on the chest and stays nearly still, the other rides the belly: the coaching cue for breathing
    low (diaphragm), not high (chest). The belly pushes forward on the inhale and draws in past rest on the exhale;
    a round orb glows from inside it as the lungs fill, fades back to bone on the way out, then darkens a little when empty.
@@ -10,7 +11,7 @@ import { mergeVertices } from 'three/addons/utils/BufferGeometryUtils.js';
 
 const Z = new THREE.Vector3(0, 0, 1), UP = new THREE.Vector3(0, 1, 0);
 const HEAD_R = 0.56, BELLY_Y = 1.0, RAD = [0.72, 0.72 * 1.06, 0.72 * 0.92];
-const OUT = -0.09, IN = 0.2; // belly travel: drawn in at the bottom of the exhale .. full at the top of the inhale
+const OUT = -0.12, IN = 0.32; // belly travel: drawn in at the bottom of the exhale .. full at the top of the inhale
 const ORB = new THREE.Vector3(0, -0.2, 1).normalize(); // where the belly glows from: the front, a little below centre
 const smooth = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
 
@@ -29,47 +30,49 @@ export function buildBreather(colors = {}) {
   root.add(body);
   const belly = makeBelly(c.body, c.inhale, c.glow);
   body.add(belly.mesh);
-  // The orb's halo: soft light that spills past the belly's outline on the inhale. Drawn last and on top (no depth
-  // test): with depth on, the curve of the belly hid part of the flat sprite and left a dark hole in the glow. Light
-  // washing over the hands is what real light would do anyway.
+  // The orb's halo: soft light that spills past the belly's outline on the inhale. Drawn without depth test (with it,
+  // the belly's curve hid part of the flat sprite and left a dark hole in the glow), then the arms, hands and legs are
+  // drawn after it (limbs below), so the hand on the belly stays a clear shape in front of the light.
   const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: radialTexture(c.glow), transparent: true, depthWrite: false,
     depthTest: false, blending: THREE.AdditiveBlending, opacity: 0, toneMapped: false }));
   halo.scale.setScalar(1.3);
   halo.renderOrder = 10;
   body.add(halo);
+  const limbs = skin.clone(); // same look, drawn in the late pass after the halo (renderOrder 11)
+  limbs.transparent = true;
+  const late = (mesh) => { mesh.renderOrder = 11; return mesh; };
   for (const side of [-1, 1]) { // crossed legs, one resting on the other
-    const leg = new THREE.Mesh(new THREE.CapsuleGeometry(0.17, 0.62, 8, 16), skin);
+    const leg = late(new THREE.Mesh(new THREE.CapsuleGeometry(0.17, 0.62, 8, 16), limbs));
     leg.rotation.set(0, side * 0.34, Math.PI / 2);
     leg.position.set(0, side < 0 ? 0.42 : 0.47, 0.36);
     body.add(leg);
   }
 
-  // The figure's left hand on the chest, right hand on the belly. Each arm bends at an elbow that rests on the
-  // body's side, so it wraps around the round body instead of cutting through it. Re-aimed every frame.
+  // The figure's left hand on the chest, right hand on the belly. Each arm is one smooth tube through shoulder, elbow
+  // (on the body's side), a point halfway round the belly, and the hand, rebuilt every frame so it follows the belly
+  // as it grows instead of sinking into it. No separate segments, so no knobbly joints. Open ends hide inside the
+  // body and inside the round hand.
   const hands = [
-    { shoulder: new THREE.Vector3(-0.62, 1.3, 0.02), elbowDir: new THREE.Vector3(-0.95, 0, 0.32).normalize(), dir: new THREE.Vector3(-0.22, 0.5, 0.84).normalize() },
-    { shoulder: new THREE.Vector3(0.62, 1.26, 0.02), elbowDir: new THREE.Vector3(0.95, -0.12, 0.3).normalize(), dir: new THREE.Vector3(0.2, -0.22, 0.95).normalize() },
+    { shoulder: new THREE.Vector3(-0.6, 1.3, 0.02), elbowDir: new THREE.Vector3(-0.95, 0, 0.32).normalize(), dir: new THREE.Vector3(-0.22, 0.5, 0.84).normalize() },
+    { shoulder: new THREE.Vector3(0.6, 1.26, 0.02), elbowDir: new THREE.Vector3(0.95, -0.12, 0.3).normalize(), dir: new THREE.Vector3(0.2, -0.22, 0.95).normalize() },
   ].map((h) => {
-    h.upper = new THREE.Mesh(new THREE.CapsuleGeometry(0.11, 0.3, 8, 16), skin);
-    h.fore = new THREE.Mesh(new THREE.CapsuleGeometry(0.105, 0.3, 8, 16), skin);
-    h.elbow = new THREE.Mesh(new THREE.SphereGeometry(0.11, 16, 12), skin);
-    h.palm = new THREE.Mesh(new THREE.SphereGeometry(0.13, 20, 14), skin);
-    h.palm.scale.set(1.05, 0.85, 0.62); // flat against the body
-    body.add(h.upper, h.fore, h.elbow, h.palm);
+    h.midDir = h.elbowDir.clone().add(h.dir).normalize();
+    h.elbow = new THREE.Vector3();
+    h.mid = new THREE.Vector3();
+    h.palm = late(new THREE.Mesh(new THREE.SphereGeometry(0.13, 20, 14), limbs));
+    h.palm.scale.set(1.12, 0.94, 0.86); // a soft mitten resting on the body
+    h.curve = new THREE.CatmullRomCurve3([h.shoulder, h.elbow, h.mid, h.palm.position], false, 'centripetal');
+    h.arm = late(new THREE.Mesh(new THREE.BufferGeometry(), limbs));
+    body.add(h.arm, h.palm);
     return h;
   });
-  const aim = new THREE.Vector3();
-  function limb(mesh, from, to, height) { // stretch a capsule (total height `height`) from one point to another
-    mesh.position.copy(from).add(to).multiplyScalar(0.5);
-    mesh.quaternion.setFromUnitVectors(UP, aim.copy(to).sub(from).normalize());
-    mesh.scale.y = from.distanceTo(to) / height;
-  }
   function placeHands(d) {
     for (const h of hands) {
-      belly.surface(h.elbowDir, d, h.elbow.position).addScaledVector(h.elbowDir, 0.1);
-      belly.surface(h.dir, d, h.palm.position).addScaledVector(h.dir, 0.085);
-      limb(h.upper, h.shoulder, h.elbow.position, 0.52);
-      limb(h.fore, h.elbow.position, h.palm.position, 0.51);
+      belly.surface(h.elbowDir, d, h.elbow).addScaledVector(h.elbowDir, 0.1);
+      belly.surface(h.midDir, d, h.mid).addScaledVector(h.midDir, 0.1);
+      belly.surface(h.dir, d, h.palm.position).addScaledVector(h.dir, 0.09);
+      h.arm.geometry.dispose();
+      h.arm.geometry = new THREE.TubeGeometry(h.curve, 24, 0.105, 10, false);
     }
   }
 
@@ -106,11 +109,11 @@ export function buildBreather(colors = {}) {
     root, body, head,
     look(x, y) { s.tx = x; s.ty = y; },
     press() { s.press = 0; },
-    update(dt, fill, still, phase) {
+    update(dt, fill, still, phase, light = fill) {
       const d = OUT + (IN - OUT) * fill;
       // Inhale: the orb lights up from about a third full. Exhale: it fades back to bone, then the belly darkens a
       // little as the lungs empty, so the bottom of the breath (and a box hold down there) reads as empty.
-      const lit = smooth(0.3, 1, fill), empty = 1 - smooth(0, 0.3, fill);
+      const lit = smooth(0.3, 1, light), empty = 1 - smooth(0, 0.3, light);
       belly.breathe(d, lit, empty);
       placeHands(d);
       belly.surface(ORB, d, halo.position).addScaledVector(ORB, 0.05);
