@@ -11,4 +11,4 @@
 - Read `DESIGN.md` (art direction, type reasons, palette, motion budget, the pacer) and `DESIGN-BANS.md` (studio ban list) before changing any page.
 - Any visual work runs through the `studio-site-design` skill: deal directions, build, then `python3 ~/.claude/skills/studio-site-design/check-tells.py site --design-md DESIGN.md` and screenshots at 1440 and 390.
 - `design-options/` holds hero option files for review only. It is outside `site/`, so it never deploys.
-- JS and CSS filenames are versioned (`pacer-v1.js`, `home-v1.js`, `home-v1.css`): bump the number when editing (7-day edge cache).
+- JS and CSS filenames are versioned (`pacer-v2.js`, `home-v2.js`, `home-v2.css`, `hero-shader-v1.js`, `shader-hero-v1.js`, `shaders/breath-v1.frag`): bump the number when editing (7-day edge cache).

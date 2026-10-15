@@ -71,6 +71,12 @@ p{text-wrap:pretty}
 .h-b{text-align:right}
 .dial{position:absolute;left:50%;top:50%;width:var(--dial);height:var(--dial);transform:translate(-50%,-50%)}
 .dial svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.hero-art{position:absolute;inset:0;z-index:0}
+.hero-art img,.hero-art canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+.hero-art canvas{opacity:0;transition:opacity .6s ease-out}
+.hero-art canvas.is-live{opacity:1}
+.hero-art:has(canvas.is-live) picture{visibility:hidden}
+.dial .pc-go{z-index:1}
 .pc-ring{fill:none;stroke:var(--gold);stroke-width:1.5;vector-effect:non-scaling-stroke;transform-box:view-box;transform-origin:50% 50%;will-change:transform}
 .pc-ring:nth-child(1){stroke-opacity:.85}.pc-ring:nth-child(2){stroke-opacity:.56}.pc-ring:nth-child(3){stroke-opacity:.36}.pc-ring:nth-child(4){stroke-opacity:.22}.pc-ring:nth-child(5){stroke-opacity:.12}
 .pc-glow{transform-box:view-box;transform-origin:50% 50%;opacity:.3}
@@ -104,7 +110,7 @@ p{text-wrap:pretty}
 @media (prefers-reduced-motion:no-preference){
 .js .h-a{animation:part-l .95s var(--exhale) .15s both}
 .js .h-b{animation:part-r .95s var(--exhale) .15s both}
-.js .dial svg{animation:dial-in 1.2s var(--exhale) both}
+.js .hero .hero-art{animation:dial-in 1.2s var(--exhale) both}
 .js .pc-go{animation:fade .8s ease .45s both}
 .js .controls,.js .pc-desc,.js .hero-foot{animation:fade .8s ease .75s both}
 @keyframes part-l{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:none}}
@@ -324,12 +330,13 @@ p{text-wrap:pretty}
 .nav .btn-sm{margin-left:auto}
 :root{--dial:min(80vw,46svh,440px)}
 .hero{padding-top:76px}
-.row{display:block;min-height:0}
-.hero h1{--hfs:clamp(2.4rem,10.5vw,4.2rem);display:grid;grid-template-rows:auto var(--dial) auto;row-gap:10px;font-size:var(--hfs)}
+.row{display:grid;grid-template-rows:auto auto auto;row-gap:10px;min-height:0;font-size:clamp(2.4rem,10.5vw,4.2rem)}
+.hero h1{display:contents;font-size:inherit}
+.h-a{grid-row:1}
 .hero h1 span{max-width:none}
-.hero h1{grid-template-columns:100%;justify-content:stretch}
-.h-b{grid-row:3}
-.dial{top:calc(clamp(2.4rem,10.5vw,4.2rem) * 1.04 + 10px + var(--dial) / 2)}
+
+.h-b{grid-row:3;text-align:right}
+.dial{position:relative;grid-row:2;left:auto;top:auto;transform:none;justify-self:center}
 .hero-foot{flex-direction:column;align-items:flex-start;gap:18px;padding-top:20px}
 .hero-sell{flex-direction:column;align-items:flex-start;gap:18px}
 .hero-rate .stars{margin:0 0 .35rem}
@@ -370,4 +377,4 @@ p{text-wrap:pretty}
 .seg button{padding:.5rem .7rem}
 .nl-card{left:12px;right:12px;bottom:max(12px,env(safe-area-inset-bottom));width:auto}
 }
-@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:.01ms!important}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:.01ms!important}.hero-art canvas{transition:none}}

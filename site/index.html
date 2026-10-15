@@ -169,17 +169,13 @@
     <div class="row">
       <h1><span class="h-a">From the mind</span> <span class="h-b">into the body</span></h1>
       <div class="dial">
-        <svg viewBox="0 0 400 400" aria-hidden="true" focusable="false">
-          <defs><radialGradient id="pcg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#d4a574" stop-opacity=".55"/><stop offset="55%" stop-color="#c4935a" stop-opacity=".16"/><stop offset="100%" stop-color="#c4935a" stop-opacity="0"/></radialGradient></defs>
-          <circle class="pc-glow" cx="200" cy="200" r="150" fill="url(#pcg)"/>
-          <g>
-            <circle class="pc-ring" cx="200" cy="200" r="72"/>
-            <circle class="pc-ring" cx="200" cy="200" r="102"/>
-            <circle class="pc-ring" cx="200" cy="200" r="132"/>
-            <circle class="pc-ring" cx="200" cy="200" r="162"/>
-            <circle class="pc-ring" cx="200" cy="200" r="192"/>
-          </g>
-        </svg>
+        <div class="hero-art">
+          <picture>
+            <source media="(max-width: 500px)" srcset="/assets/posters/hero-rings-390.webp">
+            <img src="/assets/posters/hero-rings-1440.webp" alt="" width="480" height="480" fetchpriority="high">
+          </picture>
+          <canvas aria-hidden="true"></canvas>
+        </div>
         <button type="button" class="pc-go" aria-pressed="false" aria-label="Begin Box Breathing"><span class="pc-word">Begin</span><span class="pc-count" aria-hidden="true"></span></button>
       </div>
     </div>
@@ -541,6 +537,7 @@
 
 <script src="/js/pacer-v2.js" defer></script>
 <script src="/js/home-v2.js" defer></script>
+<script type="module" src="/js/hero-shader-v1.js"></script>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "03e507bb97d74e78bc8de83dc6b261ec"}'></script>
 <script src="/js/app-links-v3.js" defer></script>
 </body>
