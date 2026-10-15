@@ -34,7 +34,7 @@ export function buildBreather(colors = {}) {
   // washing over the hands is what real light would do anyway.
   const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: radialTexture(c.glow), transparent: true, depthWrite: false,
     depthTest: false, blending: THREE.AdditiveBlending, opacity: 0, toneMapped: false }));
-  halo.scale.setScalar(1.5);
+  halo.scale.setScalar(1.3);
   halo.renderOrder = 10;
   body.add(halo);
   for (const side of [-1, 1]) { // crossed legs, one resting on the other
@@ -114,8 +114,8 @@ export function buildBreather(colors = {}) {
       belly.breathe(d, lit, empty);
       placeHands(d);
       belly.surface(ORB, d, halo.position).addScaledVector(ORB, 0.05);
-      halo.material.opacity = 0.75 * lit;
-      glow.material.opacity = 0.12 + 0.45 * lit; // the floor glow swells with the breath
+      halo.material.opacity = 0.3 * lit;
+      glow.material.opacity = 0.12 + 0.24 * lit; // the floor glow swells with the breath
       head.position.y = 1.62 + 0.035 * fill; // the head rides up a little as the torso fills
       s.gx += (s.tx - s.gx) * Math.min(1, dt * 12);
       s.gy += (s.ty - s.gy) * Math.min(1, dt * 12);
@@ -181,13 +181,13 @@ function makeBelly(bodyColor, inhaleColor, glowColor) {
   mesh.position.y = BELLY_Y;
   function breathe(d, glow, dark) {
     for (let i = 0; i < n; i++) {
-      const k = d * weight[i], g = 0.35 * glow * orb[i], m = 1 - 0.3 * dark * weight[i];
+      const k = d * weight[i], g = 0.25 * glow * orb[i], m = 1 - 0.3 * dark * weight[i];
       for (let j = 0; j < 3; j++) pos.array[i * 3 + j] = base[i * 3 + j] + dir[i * 3 + j] * k;
       colors[i * 3] = (a.r + (b.r - a.r) * g) * m;
       colors[i * 3 + 1] = (a.g + (b.g - a.g) * g) * m;
       colors[i * 3 + 2] = (a.b + (b.b - a.b) * g) * m;
     }
-    uGlow.value = 1.35 * glow;
+    uGlow.value = 0.55 * glow; // a soft glow, not a lamp (Collin 2026-10-15: the 1.35 peak was too bright)
     pos.needsUpdate = true;
     geo.attributes.color.needsUpdate = true;
     geo.computeVertexNormals();
