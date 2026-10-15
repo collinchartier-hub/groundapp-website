@@ -34,7 +34,7 @@ function start() {
   scene.add(key);
 
   const fig = buildBreather({
-    body: css('--text'), cushion: css('--clay'), cheek: css('--gold-2'), eye: css('--bg'), inhale: css('--gold'), glow: css('--gold'),
+    body: css('--text'), cushion: css('--clay'), cheek: css('--gold-2'), eye: css('--bg'), inhale: css('--gold'), glow: css('--gold-2'),
   });
   scene.add(fig.root);
   const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 100);

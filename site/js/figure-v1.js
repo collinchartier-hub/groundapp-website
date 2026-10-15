@@ -1,7 +1,8 @@
 /* "Breathe with me": an original round figure sitting cross-legged on a cushion, built from primitives.
    breath-figure-v1.js drives it from the hero pacer: update(dt, fill, still, phase).
    One hand rests on the chest and stays nearly still, the other rides the belly: the coaching cue for breathing
-   low (diaphragm), not high (chest). The belly pushes forward on the inhale and draws in past rest on the exhale.
+   low (diaphragm), not high (chest). The belly pushes forward on the inhale and draws in past rest on the exhale;
+   a round orb glows from inside it as the lungs fill, fades back to bone on the way out, then darkens a little when empty.
    Eyes follow the pointer (they lead, the mount turns the head after them), blink, and close softly on a hold.
    Clean-room build, kit: ~/.claude/skills/studio-site-design/kits/breath-figure/. Bump the filename when editing. */
 import * as THREE from 'three';
@@ -10,6 +11,8 @@ import { mergeVertices } from 'three/addons/utils/BufferGeometryUtils.js';
 const Z = new THREE.Vector3(0, 0, 1), UP = new THREE.Vector3(0, 1, 0);
 const HEAD_R = 0.56, BELLY_Y = 1.0, RAD = [0.72, 0.72 * 1.06, 0.72 * 0.92];
 const OUT = -0.09, IN = 0.2; // belly travel: drawn in at the bottom of the exhale .. full at the top of the inhale
+const ORB = new THREE.Vector3(0, -0.2, 1).normalize(); // where the belly glows from: the front, a little below centre
+const smooth = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
 
 export function buildBreather(colors = {}) {
   const c = { body: '#e8ddd0', cushion: '#8b5e3c', eye: '#1a110e', cheek: '#d4a574', inhale: '#c4935a', glow: '#c4935a', ...colors };
@@ -24,8 +27,16 @@ export function buildBreather(colors = {}) {
 
   const body = new THREE.Group();
   root.add(body);
-  const belly = makeBelly(c.body, c.inhale);
+  const belly = makeBelly(c.body, c.inhale, c.glow);
   body.add(belly.mesh);
+  // The orb's halo: soft light that spills past the belly's outline on the inhale. Drawn last and on top (no depth
+  // test): with depth on, the curve of the belly hid part of the flat sprite and left a dark hole in the glow. Light
+  // washing over the hands is what real light would do anyway.
+  const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: radialTexture(c.glow), transparent: true, depthWrite: false,
+    depthTest: false, blending: THREE.AdditiveBlending, opacity: 0, toneMapped: false }));
+  halo.scale.setScalar(1.5);
+  halo.renderOrder = 10;
+  body.add(halo);
   for (const side of [-1, 1]) { // crossed legs, one resting on the other
     const leg = new THREE.Mesh(new THREE.CapsuleGeometry(0.17, 0.62, 8, 16), skin);
     leg.rotation.set(0, side * 0.34, Math.PI / 2);
@@ -97,9 +108,14 @@ export function buildBreather(colors = {}) {
     press() { s.press = 0; },
     update(dt, fill, still, phase) {
       const d = OUT + (IN - OUT) * fill;
-      belly.breathe(d, fill);
+      // Inhale: the orb lights up from about a third full. Exhale: it fades back to bone, then the belly darkens a
+      // little as the lungs empty, so the bottom of the breath (and a box hold down there) reads as empty.
+      const lit = smooth(0.3, 1, fill), empty = 1 - smooth(0, 0.3, fill);
+      belly.breathe(d, lit, empty);
       placeHands(d);
-      glow.material.opacity = 0.2 + 0.28 * fill; // the floor glow swells with the breath
+      belly.surface(ORB, d, halo.position).addScaledVector(ORB, 0.05);
+      halo.material.opacity = 0.75 * lit;
+      glow.material.opacity = 0.12 + 0.45 * lit; // the floor glow swells with the breath
       head.position.y = 1.62 + 0.035 * fill; // the head rides up a little as the torso fills
       s.gx += (s.tx - s.gx) * Math.min(1, dt * 12);
       s.gy += (s.ty - s.gy) * Math.min(1, dt * 12);
@@ -132,33 +148,46 @@ function bellyWeight(u) {
   return low * (0.12 + 0.88 * Math.max(0, u.z) ** 1.5);
 }
 
-// The body: one welded ellipsoid. breathe(d, fill) moves every vertex along its direction by d * weight and warms
-// the belly toward the inhale colour; surface(dir, d, out) gives the moving surface point in that direction.
-function makeBelly(bodyColor, inhaleColor) {
+// The body: one welded ellipsoid. breathe(d, glow, dark) moves every vertex along its direction by d * weight, lights
+// a round orb on the front of the belly (emissive, added to the standard material's shader) as the lungs fill, and
+// shades the belly a little darker when they are empty. surface(dir, d, out) gives the moving surface point.
+function makeBelly(bodyColor, inhaleColor, glowColor) {
   let geo = new THREE.SphereGeometry(1, 64, 48);
   geo.deleteAttribute('uv');
   geo.deleteAttribute('normal');
   geo = mergeVertices(geo); // weld the seam so recomputed normals stay smooth
   geo.scale(...RAD);
   const pos = geo.attributes.position, n = pos.count;
-  const base = Float32Array.from(pos.array), dir = new Float32Array(n * 3), weight = new Float32Array(n);
+  const base = Float32Array.from(pos.array), dir = new Float32Array(n * 3), weight = new Float32Array(n), orb = new Float32Array(n);
   const colors = new Float32Array(n * 3), a = new THREE.Color(bodyColor), b = new THREE.Color(inhaleColor), v = new THREE.Vector3();
   for (let i = 0; i < n; i++) {
     v.fromArray(base, i * 3).normalize();
     v.toArray(dir, i * 3);
     weight[i] = bellyWeight(v);
+    orb[i] = Math.max(0, v.dot(ORB)) ** 3; // a round spot on the front of the belly, brightest in the middle
   }
   geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-  const mesh = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0xffffff, vertexColors: true, roughness: 0.62 }));
+  geo.setAttribute('orb', new THREE.BufferAttribute(orb, 1));
+  const material = new THREE.MeshStandardMaterial({ color: 0xffffff, vertexColors: true, roughness: 0.62 });
+  const uGlow = { value: 0 }, uGlowColor = { value: new THREE.Color(glowColor) };
+  material.onBeforeCompile = (sh) => { // light from inside: emissive = glow colour x orb shape x how full the lungs are
+    sh.uniforms.uGlow = uGlow;
+    sh.uniforms.uGlowColor = uGlowColor;
+    sh.vertexShader = 'attribute float orb;\nvarying float vOrb;\n' + sh.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\n  vOrb = orb;');
+    sh.fragmentShader = 'uniform float uGlow;\nuniform vec3 uGlowColor;\nvarying float vOrb;\n' +
+      sh.fragmentShader.replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\n  totalEmissiveRadiance += uGlowColor * (vOrb * uGlow);');
+  };
+  const mesh = new THREE.Mesh(geo, material);
   mesh.position.y = BELLY_Y;
-  function breathe(d, fill) {
+  function breathe(d, glow, dark) {
     for (let i = 0; i < n; i++) {
-      const k = d * weight[i], g = 0.4 * fill * weight[i];
+      const k = d * weight[i], g = 0.35 * glow * orb[i], m = 1 - 0.3 * dark * weight[i];
       for (let j = 0; j < 3; j++) pos.array[i * 3 + j] = base[i * 3 + j] + dir[i * 3 + j] * k;
-      colors[i * 3] = a.r + (b.r - a.r) * g;
-      colors[i * 3 + 1] = a.g + (b.g - a.g) * g;
-      colors[i * 3 + 2] = a.b + (b.b - a.b) * g;
+      colors[i * 3] = (a.r + (b.r - a.r) * g) * m;
+      colors[i * 3 + 1] = (a.g + (b.g - a.g) * g) * m;
+      colors[i * 3 + 2] = (a.b + (b.b - a.b) * g) * m;
     }
+    uGlow.value = 1.35 * glow;
     pos.needsUpdate = true;
     geo.attributes.color.needsUpdate = true;
     geo.computeVertexNormals();
@@ -168,7 +197,7 @@ function makeBelly(bodyColor, inhaleColor) {
     const p = out.copy(u).multiplyScalar(r), w = bellyWeight(p.clone().normalize());
     return p.addScaledVector(p.clone().normalize(), d * w).add(mesh.position);
   }
-  breathe(0, 0.4);
+  breathe(0, 0, 0);
   return { mesh, breathe, surface };
 }
 
@@ -180,7 +209,7 @@ function onSurface(mesh, yaw, pitch, r) {
   return mesh;
 }
 
-function groundGlow(color) {
+function radialTexture(color) { // a soft round light: colour in the middle, fading to nothing at the edge
   const cv = document.createElement('canvas');
   cv.width = cv.height = 128;
   const ctx = cv.getContext('2d'), grad = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
@@ -190,8 +219,12 @@ function groundGlow(color) {
   ctx.fillRect(0, 0, 128, 128);
   const tex = new THREE.CanvasTexture(cv);
   tex.colorSpace = THREE.SRGBColorSpace;
+  return tex;
+}
+
+function groundGlow(color) {
   const glow = new THREE.Mesh(new THREE.PlaneGeometry(3.4, 3.4),
-    new THREE.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: 0.35, toneMapped: false }));
+    new THREE.MeshBasicMaterial({ map: radialTexture(color), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: 0.35, toneMapped: false }));
   glow.name = 'GroundGlow';
   glow.rotation.x = -Math.PI / 2;
   glow.position.y = 0.01;

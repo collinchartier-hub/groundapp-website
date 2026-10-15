@@ -62,8 +62,9 @@ The breath pacer (`site/js/pacer-v3.js`), one timing engine used twice:
 - Hero, "Breathe with me" (2026-10-15): the page's ONE 3D moment is a round figure on a cushion (`site/js/figure-v1.js`,
   mounted by `breath-figure-v1.js`, three.js 0.186.1 from the pinned import map; it replaced the web-3d `breath`
   shader rings, whose files are kept unused). The pacer's fill drives the belly (forward and warm on the inhale, drawn
-  in past rest on the exhale), one hand on the chest stays nearly still while the hand on the belly rides it, and the
-  eyes close softly on a hold. Eyes follow the pointer; a tap on the figure starts the pacer. Patterns: Resonance
+  in past rest on the exhale), a round orb glows from inside the belly as it fills (emissive light plus a soft halo,
+  Amber), fades back to bone on the way out and darkens a little when empty, one hand on the chest stays nearly still
+  while the hand on the belly rides it, and the eyes close softly on a hold. Eyes follow the pointer; a tap on the figure starts the pacer. Patterns: Resonance
   (5.5 in, 5.5 out, the default; the app's name for 5.5/5.5, since the app's "Coherent Breathing" is 6/6) and Box
   (4 in, 4 hold, 4 out, 4 hold). The cue pill under the cushion shows the phase word and whole seconds; the step
   track under it lists every step with the current one filling. All of it is HTML except the figure. Posters
