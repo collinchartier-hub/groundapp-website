@@ -75,7 +75,9 @@ The breath pacer (`site/js/pacer-v3.js`), one timing engine used twice:
   the pattern row sits right under that. No description line (the track says it). One grid holds the headline halves,
   the figure and the sell: 1200 px and up put the lede, App Store button and rating under "INTO THE BODY"; 981 to
   1199 centre them under the pacer; phones run headline, figure, pill, track, patterns, "INTO THE BODY", then the
-  sell. All of it is HTML except the figure. Posters `assets/posters/hero-figure-{1440,390}.webp` (13 KB / 12 KB).
+  sell. All of it is HTML except the figure. It runs by default (Collin 2026-10-15): Resonance starts 0.9 s after
+  load (`data-autostart`), quietly (no live-region cues until the visitor touches the pacer), not under reduced motion
+  and not in a hidden tab; it resumes when the tab returns; a tap on the pill stops it and the idle breath takes over. Posters `assets/posters/hero-figure-{1440,390}.webp` (13 KB / 12 KB).
   Reduced motion: the figure's shape is one still frame; while the pacer runs only its light breathes and the eyes
   close on holds; words, count and track still run. Kit: `~/.claude/skills/studio-site-design/kits/breath-figure/`.
 - Feelings wheel: after the third tap the segments fold away and the wheel becomes a pacer in place (Begin and the

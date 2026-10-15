@@ -9,7 +9,9 @@
    v3: an optional `.pc-track` lists the pattern's steps (In 4, Hold 4, Out 4, Hold 4) and fills the one you are on,
    so you can see what comes next; listeners get the phase ('in' / 'out' / 'hold', or null when idle) as a third
    argument (breath-figure-v1.js closes the figure's eyes on a hold); `data-begin-word` and `data-stop-hint` set the
-   idle word and the running hint.
+   idle word and the running hint. `data-autostart="<ms>"` starts the pattern on its own after that delay (not under
+   reduced motion, not in a hidden tab). An auto run is quiet: it fills no live region until the visitor touches the
+   pacer, so a screen reader is not read breath cues from page load. It resumes when the tab comes back.
    Bump the filename (v4, v5) when editing: Cloudflare caches .js at the edge for 7 days. */
 (function () {
   'use strict';
@@ -57,6 +59,7 @@
     var sndBtn = root.querySelector('[data-sound]'), sndLbl = root.querySelector('.pc-sound-label');
     var track = root.querySelector('.pc-track'), steps = [];
     var beginWord = root.getAttribute('data-begin-word') || 'Begin', stopHint = root.getAttribute('data-stop-hint') || ' Tap the center to stop.';
+    var quiet = false, auto = false, resumeAuto = false;
     if (!go) return null;
     var cur = root.getAttribute('data-start') || 'box', running = false, t0 = 0, cycles = 0, lastPhase = -1, lastCount = -1;
     var raf = 0, visible = true, idleOn = false, idleT0 = 0, shown = 0.25, blendFrom = null, blendT0 = 0, listeners = [], startLevel = 0;
@@ -95,7 +98,7 @@
           cycles = a.cycle + 1;
           if (desc) putData(desc, 'Cycle ', String(cycles), '.' + stopHint);
         }
-        if (a.i !== lastPhase) { lastPhase = a.i; word.textContent = a.word; if (live) live.textContent = a.word; stepTo(a.i); }
+        if (a.i !== lastPhase) { lastPhase = a.i; word.textContent = a.word; if (live && !quiet) live.textContent = a.word; stepTo(a.i); }
         if (steps[a.i]) steps[a.i].style.setProperty('--p', (1 - a.left / ph[a.i][1]).toFixed(3));
         var c = Math.max(1, Math.min(Math.ceil(a.left - 0.0001), Math.floor(ph[a.i][1]))); // a 5.5 s step counts 5, 4, 3, 2, 1
         if (c !== lastCount) { lastCount = c; count.textContent = String(c); }
@@ -141,8 +144,9 @@
       buildTrack();
       if (running) { stop(true); start(); } else describe();
     }
-    function start() {
+    function start(silent) {
       for (var i = 0; i < all.length; i++) if (all[i] !== api && all[i].isRunning()) all[i].stop(true);
+      quiet = !!silent; if (!silent) auto = false;
       running = true; cycles = 0; lastPhase = -1; lastCount = -1;
       t0 = performance.now(); startLevel = Math.min(shown, 0.7); blendFrom = null; blendT0 = t0;
       root.classList.add('is-running');
@@ -191,8 +195,8 @@
       oscL = oscR = gain = null;
     }
 
-    go.addEventListener('click', function () { if (running) stop(false); else start(); });
-    for (var i = 0; i < patBtns.length; i++) patBtns[i].addEventListener('click', function (e) { setPattern(e.currentTarget.getAttribute('data-pattern')); });
+    go.addEventListener('click', function () { auto = false; if (running) stop(false); else start(); });
+    for (var i = 0; i < patBtns.length; i++) patBtns[i].addEventListener('click', function (e) { auto = false; quiet = false; setPattern(e.currentTarget.getAttribute('data-pattern')); });
     if (sndBtn) sndBtn.addEventListener('click', function () {
       soundOn = !soundOn;
       sndBtn.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
@@ -200,7 +204,10 @@
       if (soundOn && running) soundStart();
       if (!soundOn) soundStop();
     });
-    document.addEventListener('visibilitychange', function () { if (document.hidden && running) stop(true); else if (!document.hidden) kick(); });
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden && running) { resumeAuto = auto; stop(true); }
+      else if (!document.hidden) { if (resumeAuto && !running && !RM()) { resumeAuto = false; auto = true; start(true); } kick(); }
+    });
     if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { visible = es[0].isIntersecting; if (visible) kick(); }, { rootMargin: '80px 0px' }).observe(root);
 
     var api = {
@@ -215,6 +222,12 @@
     var idleAttr = root.getAttribute('data-idle-delay') || '0', wait = parseInt(idleAttr, 10);
     if (idleAttr !== 'manual') { if (wait > 0) setTimeout(beginIdle, wait); else beginIdle(); }
     api.idle = function (on) { if (on) beginIdle(); else { idleOn = false; rest(); } };
+    var autoAttr = root.getAttribute('data-autostart');
+    if (autoAttr !== null) setTimeout(function () {
+      if (running || RM()) return;
+      if (document.hidden) { resumeAuto = true; return; }
+      auto = true; start(true);
+    }, parseInt(autoAttr, 10) || 0);
     if (mq.addEventListener) mq.addEventListener('change', function () { if (RM()) { idleOn = false; rest(); } else if (idleAttr !== 'manual') beginIdle(); });
     root.groundPacer = api;
     return api;
