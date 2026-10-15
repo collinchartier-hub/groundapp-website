@@ -103,7 +103,7 @@
         var c = Math.max(1, Math.min(Math.ceil(a.left - 0.0001), Math.floor(ph[a.i][1]))); // a 5.5 s step counts 5, 4, 3, 2, 1
         if (c !== lastCount) { lastCount = c; count.textContent = String(c); }
         soundFollow(f, now);
-        raf = requestAnimationFrame(frame);
+        if (visible && !document.hidden) raf = requestAnimationFrame(frame); // paused off screen; the time-based clock resumes in step
       } else if (idleOn && visible && !document.hidden) {
         t = (now - idleT0) / 1000;
         draw(blend(function (lag) { return 0.25 + 0.5 * at(IDLE, Math.max(0, t - lag)).fill; }, now), false);

@@ -83,6 +83,7 @@ function start() {
     const p = pacerRoot && pacerRoot.groundPacer;
     if (!p) return false;
     p.onFill((fill, still, phase) => {
+      phase = phase || null; // onFill's first call passes no phase (site-critic r2: undefined kept the reduced-motion loop alive)
       if (st.phase !== null && phase === null) dirty = true; // stopped: draw the resting light once more
       st.fill = fill; st.phase = phase;
       if (reduce.matches) request(); // the reduced-motion loop sleeps between runs

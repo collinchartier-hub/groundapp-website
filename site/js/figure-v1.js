@@ -53,8 +53,10 @@ export function buildBreather(colors = {}) {
   // as it grows instead of sinking into it. No separate segments, so no knobbly joints. Open ends hide inside the
   // body and inside the round hand.
   const hands = [
-    { shoulder: new THREE.Vector3(-0.6, 1.3, 0.02), elbowDir: new THREE.Vector3(-0.95, 0, 0.32).normalize(), dir: new THREE.Vector3(-0.22, 0.5, 0.84).normalize() },
-    { shoulder: new THREE.Vector3(0.6, 1.26, 0.02), elbowDir: new THREE.Vector3(0.95, -0.12, 0.3).normalize(), dir: new THREE.Vector3(0.2, -0.22, 0.95).normalize() },
+    // Shoulders start well inside the body (the tube's open end must not show at the 40 degree camera); lift = how far
+    // the hand sits off the surface: the chest hand rests flat on the chest, the belly hand a little proud of the belly.
+    { shoulder: new THREE.Vector3(-0.48, 1.28, 0.02), elbowDir: new THREE.Vector3(-0.95, 0, 0.32).normalize(), dir: new THREE.Vector3(-0.22, 0.5, 0.84).normalize(), lift: 0.035 },
+    { shoulder: new THREE.Vector3(0.48, 1.24, 0.02), elbowDir: new THREE.Vector3(0.95, -0.12, 0.3).normalize(), dir: new THREE.Vector3(0.2, -0.22, 0.95).normalize(), lift: 0.06 },
   ].map((h) => {
     h.midDir = h.elbowDir.clone().add(h.dir).normalize();
     h.elbow = new THREE.Vector3();
@@ -70,7 +72,7 @@ export function buildBreather(colors = {}) {
     for (const h of hands) {
       belly.surface(h.elbowDir, d, h.elbow).addScaledVector(h.elbowDir, 0.1);
       belly.surface(h.midDir, d, h.mid).addScaledVector(h.midDir, 0.1);
-      belly.surface(h.dir, d, h.palm.position).addScaledVector(h.dir, 0.09);
+      belly.surface(h.dir, d, h.palm.position).addScaledVector(h.dir, h.lift);
       h.arm.geometry.dispose();
       h.arm.geometry = new THREE.TubeGeometry(h.curve, 24, 0.105, 10, false);
     }

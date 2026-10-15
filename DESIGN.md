@@ -71,13 +71,15 @@ The breath pacer (`site/js/pacer-v3.js`), one timing engine used twice:
   Patterns: Resonance (5.5 in, 5.5 out, the default; the app's name for 5.5/5.5, since the app's "Coherent
   Breathing" is 6/6) and Box (4 in, 4 hold, 4 out, 4 hold). The cue pill under the cushion (an outline, so the App
   Store button is the hero's one gold fill) shows the phase word and whole seconds (a 5.5 s step counts 5, 4, 3, 2,
-  1) with a small stop square while running; the step track under it lists every step with the current one filling;
-  the pattern row sits right under that. No description line (the track says it). One grid holds the headline halves,
-  the figure and the sell: 1200 px and up put the lede, App Store button and rating under "INTO THE BODY"; 981 to
-  1199 centre them under the pacer; phones run headline, figure, pill, track, patterns, "INTO THE BODY", then the
+  1) with a small stop square while running; the step track sits inside the dial, 14 px under the pill at every width,
+  listing every step with the current one filling. No description line (the track says it). One grid holds the headline halves,
+  the figure and the sell: 1200 px and up is a triptych: "FROM THE MIND" with the Resonance/Box/Sound row under it on
+  the left, the breathing figure in the centre, "INTO THE BODY" with the lede, App Store button and rating on the
+  right (site-critic round 2, 7.6); 981 to 1199 centre the pattern row and the sell under the pacer; phones run headline, figure, pill, track, patterns, "INTO THE BODY", then the
   sell. All of it is HTML except the figure. It runs by default (Collin 2026-10-15): Resonance starts 0.9 s after
   load (`data-autostart`), quietly (no live-region cues until the visitor touches the pacer), not under reduced motion
-  and not in a hidden tab; it resumes when the tab returns; a tap on the pill stops it and the idle breath takes over. Posters `assets/posters/hero-figure-{1440,390}.webp` (13 KB / 12 KB).
+  and not in a hidden tab; it resumes when the tab returns; its loop pauses while the hero is off screen and
+  resumes in step (the clock is time-based); a tap on the pill stops it and the idle breath takes over. Posters `assets/posters/hero-figure-{1440,390}.webp` (13 KB / 12 KB).
   Reduced motion: the figure's shape is one still frame; while the pacer runs only its light breathes and the eyes
   close on holds; words, count and track still run. Kit: `~/.claude/skills/studio-site-design/kits/breath-figure/`.
 - Feelings wheel: after the third tap the segments fold away and the wheel becomes a pacer in place (Begin and the
