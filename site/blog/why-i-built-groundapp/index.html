@@ -66,12 +66,14 @@
   "inLanguage": "en"
 }
 </script>
+<link rel="preload" href="/assets/fonts/source-serif-4-v1.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+@font-face{font-family:"Source Serif 4";src:url("/assets/fonts/source-serif-4-v1.woff2") format("woff2");font-weight:200 900;font-style:normal;font-display:swap}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{--gold:#C4935A;--amber:#D4A574;--obsidian:#1A110E;--obsidian-mid:#231916;--obsidian-light:#2D201A;--bone:#E8DDD0;--driftwood:#A89585;--error:#E8A0A0;
---serif:'Iowan Old Style','Palatino Linotype','Book Antiqua',Palatino,Georgia,serif;--sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',sans-serif}
+--serif:"Source Serif 4",Georgia,"Times New Roman",serif;--sans:var(--serif)}
 html{background:var(--obsidian);color:var(--bone);-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
-body{background:var(--obsidian);font-family:var(--sans);min-height:100vh;overflow-x:hidden}
+body{background:var(--obsidian);font-family:var(--sans);font-optical-sizing:auto;font-synthesis:none;min-height:100vh;overflow-x:hidden}
 a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
@@ -104,13 +106,13 @@ h1.title{font-family:var(--serif);font-weight:400;font-size:clamp(2rem,5vw,3rem)
 .prose h3{font-family:var(--serif);font-weight:600;font-size:1.3rem;color:var(--amber);margin-top:1.8em}
 .prose h2 + *,.prose h3 + *{margin-top:.7em}
 .prose strong{color:var(--bone);font-weight:600}
-.prose em{font-style:italic}
+.prose em{font-style:normal;color:var(--bone)}
 .prose a{color:var(--gold);text-decoration:underline;text-underline-offset:3px}
 .prose a:hover{color:var(--amber)}
 .prose ul,.prose ol{padding-left:1.3em}
 .prose li + li{margin-top:.45em}
 .prose li::marker{color:var(--gold)}
-.prose blockquote{border-left:3px solid var(--gold);padding:.2em 0 .2em 1.1em;color:var(--bone);font-family:var(--serif);font-style:italic}
+.prose blockquote{border-left:3px solid var(--gold);padding:.2em 0 .2em 1.1em;color:var(--bone);font-family:var(--serif)}
 .table-wrap{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
 .prose table{width:100%;border-collapse:collapse;font-size:.95rem;line-height:1.5;min-width:520px}
 .prose th{text-align:left;background:var(--obsidian-light);color:var(--bone);font-weight:600;padding:.65rem .8rem;border-bottom:1px solid rgba(196,147,90,.2)}
@@ -176,6 +178,9 @@ h1.title{font-family:var(--serif);font-weight:400;font-size:clamp(2rem,5vw,3rem)
   .site-footer{padding:2rem 1rem 2.5rem}
 }
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none !important;animation:none !important}}
+/* Type G1 display (DESIGN.md): Source Serif 4 Light at opsz 60, caps */
+h1.title,.prose h2,.box h2,.more h2,.post-card h2{font-weight:300;font-variation-settings:"opsz" 60;text-transform:uppercase;letter-spacing:.01em;line-height:1.08}
+h1.title{font-size:clamp(1.75rem,4.4vw,2.6rem);line-height:1.06}
 </style>
 </head>
 <body>
