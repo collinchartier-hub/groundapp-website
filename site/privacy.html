@@ -216,6 +216,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
     <li><strong>Check-ins:</strong> The feeling you choose on the feelings wheel, how intense it is, and your energy level. If you use Aura, these are also sent to build your plan (Section 4.4).</li>
     <li><strong>Session reflections:</strong> Ratings, how you feel after a session, and any notes you write.</li>
     <li><strong>Saved sequences:</strong> Breathing sequences you build and save.</li>
+    <li><strong>Advanced apnea training:</strong> Table names and settings, reference holds you enter, recorded hold and recovery times, round outcomes, posture and preparation context, readiness-confirmation version and time, and any effort rating or notes you choose to save. These are self-reported training records, not sensor-verified breath holds or medical assessments. Condition-screening answers are used for the current start decision and are not saved.</li>
   </ul>
 
   <h3>2.2 Health and Biometric Data</h3>
@@ -279,7 +280,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
       <tr><td><strong>Live heart rate during sessions</strong></td><td>Heart rate from Apple Watch or a Bluetooth heart-rate strap</td></tr>
       <tr><td><strong>Session history, streaks and progress</strong></td><td>Session records, reflections, technique usage</td></tr>
       <tr><td><strong>Guided audio</strong></td><td>Narration and sound text written by us; no personal data</td></tr>
-      <tr><td><strong>Your account, sync and support</strong></td><td>Name, email, account ID</td></tr>
+      <tr><td><strong>Your account, sync and support</strong></td><td>Name, email, account ID, and the check-in, session and Advanced training records described in Section 4.2</td></tr>
       <tr><td><strong>Reminders and notifications</strong></td><td>Notification token, last active date, and your first name in some comeback reminders about the App. Turn reminders off anytime in iOS Settings &gt; Notifications &gt; GroundApp.</td></tr>
       <tr><td><strong>App improvement</strong></td><td>Product analytics, if Share Usage Data is on</td></tr>
     </tbody>
@@ -294,7 +295,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
 
   <h3>4.1 On-Device Storage</h3>
   <ul>
-    <li>Health readings, check-ins, session reflections and notes, and heart-rate samples are stored <strong>on your device</strong>.</li>
+    <li>Health readings, check-ins, session reflections and notes, heart-rate samples, and Advanced apnea records are stored on your device. Guest history stays local unless you explicitly choose to move it into an account. Signed-in history also syncs as described below; unfinished apnea checkpoints stay local.</li>
     <li>Daily health snapshots built from Apple Health and Oura data are kept on your device for up to 90 days.</li>
     <li>Oura sign-in tokens are stored in the iOS Keychain.</li>
     <li>GroundApp does not use iCloud or CloudKit to store your data. If you back up your device to iCloud or a computer, that backup may include data the App stores on your device.</li>
@@ -304,11 +305,15 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
   <p>When you are signed in, the App automatically syncs the following to our servers (hosted by Supabase, using PostgreSQL):</p>
   <ul>
     <li>Your profile: name, email, onboarding goals, experience level, and last active date</li>
-    <li>Your session history: technique, duration, cycles, the mood you picked, and the time of the session</li>
+    <li>Your session history: technique, duration, cycles, the mood you picked, the time of the session, and the check-in it followed, if any</li>
+    <li>Saved check-ins: selected feelings and their broader labels, intensity and energy, the nervous system state the App works out from your answers, check-in entry type, date, time and time zone, and saved plan information such as its title, affirmation and reframe. This private history sync is separate from optional product analytics and from asking Aura to generate a plan.</li>
+    <li>Advanced apnea training: saved table names and settings, manually entered reference holds, and finalized session results including planned and recorded hold/recovery times, round outcomes, context, date and time zone, session plan revisions, record revision numbers, and optional effort ratings and notes</li>
     <li>Breathing sequences you save</li>
     <li>Your notification token, account ID and app version, if you allow notifications</li>
   </ul>
-  <p>Health readings from Apple Health, Oura or a heart-rate strap are <strong>not</strong> uploaded to our servers. If you use Aura, your check-in and any Apple Health labels pass through our server on the way to Anthropic without being stored, and our server keeps your daily Aura token count and your subscription's Apple transaction ID (Section 4.4). Our servers are protected as follows:</p>
+  <p>Raw health readings from Apple Health, Oura, WHOOP or a heart-rate strap are <strong>not</strong> uploaded to our servers. Saved check-in answers and plan text sync as private history, including any context reflected in that text. If you choose Aura, its request and separately permitted coarse Apple Health labels pass through our server to Anthropic; the request processor does not keep a separate copy of the prompt or response. Saved history is distinct from this transient processing. The server also keeps your daily Aura token count and your subscription's Apple transaction ID (Section 4.4).</p>
+  <p>Apnea records sync only to your own signed-in account. Declining analytics or turning Aura off does not turn off this account backup; stay a guest if you do not want account sync. Apnea times, references, notes, effort and screening answers are not sent to product analytics or Aura. Condition-screening answers are not saved; records retain the confirmation version/time and posture/preparation context. Deleting a saved apnea table or reference clears its stored contents; a minimal deletion record with account ID, record ID, revision and timestamps remains to prevent an old offline copy from returning. A past session keeps its original snapshot. To request deletion of an individual finalized result from your account, email <a href="mailto:privacy@groundapp.live">privacy@groundapp.live</a>. Account deletion removes these account records.</p>
+  <p>Our servers are protected as follows:</p>
   <ul>
     <li>All data in transit is encrypted using TLS 1.2+</li>
     <li>All data at rest is encrypted using AES-256</li>
@@ -325,10 +330,10 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
       <tr><td><strong>Apple</strong> (HealthKit, Sign in with Apple, App Store, push notifications)</td><td data-label="Purpose">Read and write health data, sign in, purchases, deliver notifications</td><td data-label="Data shared">Health data is accessed on your device. Purchases are handled by Apple; we never see your payment details. If you use Aura, the App sends Apple's signed record of your subscription to our server so it can confirm Premium.</td></tr>
       <tr><td><strong>Google</strong> (Google Sign-In)</td><td data-label="Purpose">Sign in, if you choose Google</td><td data-label="Data shared">Your Google account name and email, as part of signing in</td></tr>
       <tr><td><strong>Oura</strong> (Oura API)</td><td data-label="Purpose">Retrieve readiness, sleep, stress, resilience and heart rate data</td><td data-label="Data shared">Login token stored in the Keychain; data is fetched directly to your device</td></tr>
-      <tr><td><strong>Supabase</strong></td><td data-label="Purpose">Account sign-in, sync, notification records, and the server that handles Aura requests</td><td data-label="Data shared">Profile, session history, saved sequences, notification token. For Aura: your daily Aura token count and the Apple transaction ID of your Premium subscription. Aura requests pass through without being stored (Section 4.4).</td></tr>
+      <tr><td><strong>Supabase</strong></td><td data-label="Purpose">Account sign-in, private history sync, notification records, and the server that handles Aura requests</td><td data-label="Data shared">Profile, session history, saved check-in answers and plan text, saved sequences, Advanced apnea tables, references and results including optional notes, and notification token. For Aura: your daily token count and the Apple transaction ID of your Premium subscription. The request processor does not keep a separate prompt/response log; saved history is described in Section 4.2.</td></tr>
       <tr><td><strong>PostHog</strong> (United States)</td><td data-label="Purpose">Product analytics, only if Share Usage Data is on</td><td data-label="Data shared">App events and screen views linked to a random account ID. No health readings, names, emails or typed text. PostHog also works out your approximate location (city or country) from your internet address.</td></tr>
       <tr><td><strong>Anthropic</strong> (Claude API)</td><td data-label="Purpose">Build your Aura plan after a check-in, only if you tap Use Aura (Section 4.4)</td><td data-label="Data shared">Your check-in answers, the time of day and any Less time or Alternatives request. With Aura's separate Apple Health switch on, up to six word labels such as "short sleep", never numbers. Not your name, email, account ID, Oura or WHOOP data, or any health numbers. Anthropic does not train on this data and deletes it within 30 days, with the exceptions in Section 4.4.</td></tr>
-      <tr><td><strong>Mistral</strong> and <strong>ElevenLabs</strong></td><td data-label="Purpose">Generate guided audio and sound effects that are not already in the App</td><td data-label="Data shared">Narration and sound text written by us, plus standard connection data such as your IP address, because the App requests the audio directly. No account or health information.</td></tr>
+      <tr><td><strong>Mistral</strong> and <strong>ElevenLabs</strong></td><td data-label="Purpose">Provide guided audio and sound effects written by us</td><td data-label="Data shared">Apnea cues and lessons in Collin's voice are generated by us before the App is installed and play offline without a provider request. For other, non-apnea audio requested directly by the App, the provider receives our narration or sound text and standard connection data such as your IP address. No account or health information.</td></tr>
       <tr><td><strong>Cloudflare</strong></td><td data-label="Purpose">Deliver audio files to the App, host the Website</td><td data-label="Data shared">Standard connection data, such as IP address</td></tr>
       <tr><td><strong>Loops</strong></td><td data-label="Purpose">Send app emails, such as a note if you have not practiced in a while</td><td data-label="Data shared">Email address, first name, account ID and last active date</td></tr>
     </tbody>
@@ -340,8 +345,8 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
   </div>
 
   <h3>4.4 Aura (AI Check-In)</h3>
-  <p>Aura is the App's AI check-in. It recommends breathwork for how you feel right now. Aura is part of Ground Premium, and nothing is sent until you say yes.</p>
-  <p><strong>Asking first.</strong> The first time you check in, the App shows a "Meet Aura" screen before anything leaves your phone. It explains what is sent, where it goes and how to turn it off. If you tap "Not now", nothing is sent and the App builds your plan on your phone from your answers. Everything you paid for keeps working either way.</p>
+  <p>Aura is the App's optional AI planning service. It recommends breathwork for how you feel right now. It is part of Ground Premium; no request is sent to Anthropic until you choose Use Aura.</p>
+  <p><strong>Asking first.</strong> When you first ask for an Aura plan, the App shows "Meet Aura" before your answers are sent to Anthropic. If you tap "Not now", it builds a plan on your phone instead. This does not turn off the separate signed-in sync of saved history (Section 4.2). Your other paid features keep working either way.</p>
   <p><strong>What is sent when Aura is on:</strong></p>
   <ul>
     <li>Your check-in: the feeling you pick on the feelings wheel and the broader feelings it sits under, how intense it is (1 to 10), your energy (low, medium or high), and the nervous system state the App works out from those answers</li>
@@ -350,16 +355,16 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
     <li>Only if you also turn on "Let Aura use rough Apple Health signals" (off by default): up to six word labels the App works out on your phone by comparing recent Apple Health data with your own usual levels. The labels are: HRV lower than usual, HRV higher than usual, resting heart rate higher than usual, short sleep, poor sleep quality, and several poor nights in a row. No numbers are sent.</li>
     <li>To our server only, never to Anthropic: your sign-in token, so the server knows the request is yours, and Apple's signed record of your Premium subscription, so the server can confirm Premium</li>
   </ul>
-  <p><strong>Never sent:</strong> your name, your email, anything you type, Oura or WHOOP data, or any health numbers such as heart rate, HRV or hours of sleep. Aura's labels come from Apple Health data only. Readings that came from Oura or WHOOP are left out.</p>
+  <p><strong>Never sent to Anthropic:</strong> your name, your email, anything you type, apnea training records, Oura or WHOOP data, or any health numbers such as heart rate, HRV or hours of sleep. Aura's labels come from Apple Health data only. Readings that came from Oura or WHOOP are left out.</p>
   <p><strong>Where it goes.</strong> The App sends the request over an encrypted connection to our server (a Supabase Edge Function). Our server checks that you are signed in, have Premium and have Aura tokens left. It then asks Anthropic's Claude to build your plan and sends the plan back to your phone.</p>
-  <p><strong>What our server keeps.</strong> Our server does not store your check-in answers, your Apple Health labels or your Aura plans. It keeps only:</p>
+  <p><strong>What the Aura request processor keeps.</strong> It does not keep a separate copy of your check-in answers, Apple Health labels or generated plan. Saved check-in and plan history sync separately as described in Section 4.2. The request service keeps:</p>
   <ul>
     <li>Your daily Aura token count: your account ID, the date and how many Aura plans you used that day (up to 3)</li>
     <li>The Apple transaction ID of your Premium subscription, linked to your account, so one subscription unlocks Aura for one account. We never see your payment details.</li>
     <li>Server logs: a request ID, a one-way hash of your account ID, the AI model used, timing, size counts and whether the request worked. Logs never include your answers, your labels or your plan.</li>
   </ul>
   <p><strong>What Anthropic does with it.</strong> Anthropic processes Aura requests for us under its commercial terms. Anthropic does not train its models on them. Anthropic deletes them within 30 days, unless its automated safety systems flag a request as breaking its Usage Policy (Anthropic can then keep it for up to 2 years) or the law requires it to keep it longer. Anthropic does not receive your name, email, account ID or purchase record.</p>
-  <p><strong>Changing your mind.</strong> Turn Aura off at any time in Settings &gt; Privacy &gt; Aura check-ins, and stop the Apple Health labels in Settings &gt; Privacy &gt; Let Aura use Apple Health signals. Turning Aura off stops anything new from being sent. Requests already sent are deleted by Anthropic as described above. If we ever change what Aura sends, the App asks you again first.</p>
+  <p><strong>Changing your mind.</strong> Turn Aura off at any time in Settings &gt; Privacy &gt; Aura check-ins, and stop the Apple Health labels in Settings &gt; Privacy &gt; Let Aura use Apple Health signals. Turning Aura off stops new Aura requests, not your separate account-history backup. Requests already sent are deleted by Anthropic as described above. If we ever change what Aura sends, the App asks you again first.</p>
   <p><strong>Wellness, not medical advice.</strong> Aura's plans are AI-generated wellness guidance. They are not medical advice, diagnosis or treatment.</p>
 
   <h2>5. Apple HealthKit Compliance</h2>
@@ -369,7 +374,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
     <li>We <strong>do not</strong> sell HealthKit data to third parties, including advertising platforms, data brokers, or information resellers</li>
     <li>We <strong>do not</strong> use HealthKit data for any purpose other than providing health and wellness services directly to you</li>
     <li>We share HealthKit data with a third party only through Aura, and only if you turn on its separate Apple Health switch: a few word labels worked out on your phone, never the numbers, sent through our server to Anthropic (Section 4.4). Never for advertising</li>
-    <li>We <strong>do not</strong> store HealthKit data in iCloud, CloudKit or on our servers. Aura's Apple Health labels pass through our server on the way to Anthropic without being stored there</li>
+    <li>Raw HealthKit readings and the coarse labels themselves are not stored on our servers. Aura's labels pass through the request processor to Anthropic without a separate stored copy. Plan text you save may reflect those labels and syncs as private history (Section 4.2). GroundApp does not use iCloud or CloudKit for this storage; your own device backup may include locally stored data (Section 4.1).</li>
     <li>You can revoke HealthKit access at any time through iOS Settings</li>
   </ul>
 
@@ -413,8 +418,8 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
       <tr><td><strong>Stop Aura using Apple Health labels</strong></td><td>Settings &gt; Privacy &gt; Let Aura use Apple Health signals</td></tr>
       <tr><td><strong>Revoke HealthKit access</strong></td><td>iOS Settings &gt; Privacy &amp; Security &gt; Health &gt; GroundApp</td></tr>
       <tr><td><strong>Disconnect Oura</strong></td><td>App Settings, or <a href="https://cloud.ouraring.com" target="_blank" rel="noopener">cloud.ouraring.com</a> &gt; Connected Apps</td></tr>
-      <tr><td><strong>Export your data</strong></td><td>Settings &gt; Export All Data (a CSV and JSON copy of the data stored on your device). For a copy of the data on our servers, email <a href="mailto:privacy@groundapp.live">privacy@groundapp.live</a></td></tr>
-      <tr><td><strong>Delete your account</strong></td><td>Settings &gt; Delete Account. This deletes your account, profile, session history, saved sequences and notification records from our servers.</td></tr>
+      <tr><td><strong>Export your data</strong></td><td>Profile &gt; Privacy &gt; Export All Data includes the Advanced apnea data stored on your device, with JSON detail and a CSV summary. For a copy of data on our servers that is not available locally, email <a href="mailto:privacy@groundapp.live">privacy@groundapp.live</a></td></tr>
+      <tr><td><strong>Delete your account</strong></td><td>Profile &gt; Privacy &gt; Delete Account. This deletes your account, profile, session and check-in history, saved sequences, Advanced apnea tables, references, results and deletion records, and notification records from our servers.</td></tr>
       <tr><td><strong>Delete data on your device</strong></td><td>Delete the App from your device</td></tr>
       <tr><td><strong>Stop website emails</strong></td><td>Use the unsubscribe link in any email</td></tr>
       <tr><td><strong>Access, correct or delete anything else</strong></td><td>Email <a href="mailto:privacy@groundapp.live">privacy@groundapp.live</a></td></tr>
@@ -422,13 +427,13 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
   </table>
   </div>
 
-  <p>Upon account deletion, the data synced to our servers is permanently removed within 30 days. Your Aura token counts and the Apple transaction ID linked to your account are deleted when you delete your account. Data stored only on your device stays there until you delete the App. Analytics events already sent to PostHog and any copy of your email held by our email providers can be deleted on request at <a href="mailto:privacy@groundapp.live">privacy@groundapp.live</a>.</p>
+  <p>Upon account deletion, the data synced to our servers is permanently removed within 30 days. Your Aura token counts and the Apple transaction ID linked to your account are deleted when you delete your account. The App also clears local data scoped to that account, retrying local cleanup if interrupted. Guest data and another account's data are not erased by that operation. Other device-only data remains until you erase it or delete the App. Analytics events already sent to PostHog and any copy of your email held by our email providers can be deleted on request at <a href="mailto:privacy@groundapp.live">privacy@groundapp.live</a>.</p>
 
   <h2>9. Data Retention</h2>
   <ul>
-    <li><strong>On-device data:</strong> Retained until you delete the App. Daily health snapshots are kept for up to 90 days.</li>
+    <li><strong>On-device data:</strong> Kept until you erase it or delete the App; account-scoped data is also cleared after confirmed account deletion. Daily health snapshots are kept for up to 90 days.</li>
     <li><strong>Cloud-synced data:</strong> Retained while your account is active; deleted within 30 days of account deletion</li>
-    <li><strong>Aura requests:</strong> Not stored on our servers. Anthropic deletes them within 30 days, with the exceptions in Section 4.4</li>
+    <li><strong>Aura requests:</strong> The request processor does not keep a separate copy. Saved check-ins and plan text are retained as cloud-synced history (Section 4.2) and removed with your account. Anthropic deletes its request copies within 30 days, with the exceptions in Section 4.4.</li>
     <li><strong>Aura token counts and Premium transaction ID:</strong> Kept while your account is active; deleted when you delete your account</li>
     <li><strong>Aura server logs:</strong> Contain no check-in content; kept only as long as needed to run and secure the service</li>
     <li><strong>Oura tokens:</strong> Deleted from your device when you disconnect Oura in the App</li>
