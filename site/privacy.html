@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Privacy Policy | GroundApp</title>
-<meta name="description" content="How GroundApp handles your data in the app and on groundapp.live, including health data from Apple Health and Oura, account sync, analytics and the email list.">
+<meta name="description" content="How GroundApp handles your data in the app and on groundapp.live, including health data from Apple Health, Health Connect and Oura, account sync, analytics and the email list.">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#1A110E">
 <meta name="apple-itunes-app" content="app-id=6760352779, affiliate-data=pt=128638571&amp;ct=site-banner">
 
 <!-- Open Graph -->
 <meta property="og:title" content="Privacy Policy | GroundApp">
-<meta property="og:description" content="How GroundApp handles your data in the app and on groundapp.live, including health data from Apple Health and Oura.">
+<meta property="og:description" content="How GroundApp handles your data in the app and on groundapp.live, including health data from Apple Health, Health Connect and Oura.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://groundapp.live/privacy">
 <meta property="og:image" content="https://groundapp.live/og-image.jpg">
@@ -197,26 +197,26 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
 <!-- HERO -->
 <div class="page-hero">
   <h1>Privacy <em>Policy</em></h1>
-  <p class="meta sans">GroundApp &middot; Effective Date: March 8, 2026 &middot; Last Updated: October 2026</p>
+  <p class="meta sans">GroundApp &middot; Effective Date: March 8, 2026 &middot; Last Updated: October 25, 2026</p>
 </div>
 
 <!-- CONTENT -->
 <div class="page-content">
 
   <h2>1. Introduction</h2>
-  <p>GroundApp ("we," "our," or "the App") is a breathwork app for iPhone and Apple Watch, created by Collin Chartier. This Privacy Policy describes how we collect, use, store, and protect your information when you use the App and our website, groundapp.live (the "Website"), including health data from Apple Health and connected devices.</p>
+  <p>GroundApp ("we," "our," or "the App") is a breathwork app for iPhone, Apple Watch and Android, created by Collin Chartier. This Privacy Policy describes how we collect, use, store, and protect your information when you use the App and our website, groundapp.live (the "Website"), including health data from Apple Health, Health Connect and connected devices.</p>
   <p>By using the App or the Website, you consent to the practices described in this policy. If you do not agree, please discontinue use of the App and the Website.</p>
 
   <h2>2. Information We Collect in the App</h2>
 
   <h3>2.1 Information You Provide Directly</h3>
   <ul>
-    <li><strong>Account information:</strong> Your name and email address when you create an account. You can sign in with Apple, with Google, or with an email and password.</li>
-    <li><strong>Onboarding answers:</strong> Your breathwork goals and experience level.</li>
-    <li><strong>Check-ins:</strong> The feeling you choose on the feelings wheel, how intense it is, and your energy level. If you use Aura, these are also sent to build your plan (Section 4.4).</li>
+    <li><strong>Account information:</strong> Your name and email address when you create an account. You can sign in with Apple (iPhone only), with Google, or with an email and password. On Android you can also skip sign-in; the App then tries to create an anonymous account with no name or email.</li>
+    <li><strong>Onboarding answers:</strong> Your breathwork goals and experience level. On Android these stay on your device.</li>
+    <li><strong>Check-ins:</strong> The feeling you choose on the feelings wheel, how intense it is, and your energy level. If you use Aura, these are also sent to build your plan (Section 4.4). On Android, asking for a check-in plan always sends them (Section 4.5).</li>
     <li><strong>Session reflections:</strong> Ratings, how you feel after a session, and any notes you write.</li>
     <li><strong>Saved sequences:</strong> Breathing sequences you build and save.</li>
-    <li><strong>Advanced apnea training:</strong> Table names and settings, reference holds you enter, recorded hold and recovery times, round outcomes, posture and preparation context, readiness-confirmation version and time, and any effort rating or notes you choose to save. These are self-reported training records, not sensor-verified breath holds or medical assessments. Condition-screening answers are used for the current start decision and are not saved.</li>
+    <li><strong>Advanced apnea training (iPhone only):</strong> Table names and settings, reference holds you enter, recorded hold and recovery times, round outcomes, posture and preparation context, readiness-confirmation version and time, and any effort rating or notes you choose to save. These are self-reported training records, not sensor-verified breath holds or medical assessments. Condition-screening answers are used for the current start decision and are not saved.</li>
   </ul>
 
   <h3>2.2 Health and Biometric Data</h3>
@@ -235,7 +235,15 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
   </ul>
   <p><strong>Apple Health (HealthKit), write:</strong> Mindful Minutes and workout records for your breathing sessions. On Apple Watch, the App reads your heart rate during a session and saves the session as a workout.</p>
 
-  <p><strong>Oura Ring (Oura API, connected with your Oura login):</strong></p>
+  <p><strong>Health Connect (Android), read:</strong> With your explicit permission, the App reads these record types from Health Connect, Android's on-device health data store:</p>
+  <ul>
+    <li>Heart rate: the last 24 hours. The App shows your lowest reading as resting heart rate on your Progress screen.</li>
+    <li>Sleep sessions: the last 24 hours, added up into hours slept for your Progress screen.</li>
+    <li>Steps: the App asks for permission to read steps, but does not currently read them.</li>
+  </ul>
+  <p><strong>Health Connect (Android), write:</strong> Exercise sessions. If you turn on Auto-Save Sessions in Settings &gt; Health Connect, the App saves each finished breathing session to Health Connect as a yoga exercise session, with its start time, end time and a title that begins "Ground:" followed by the technique name. Health Connect data is read and used on your device. It is not uploaded to our servers and is never sent to Aura, Anthropic or analytics (Section 6).</p>
+
+  <p><strong>Oura Ring (iPhone only; Oura API, connected with your Oura login):</strong></p>
   <ul>
     <li>Daily readiness</li>
     <li>Daily sleep and sleep sessions</li>
@@ -245,14 +253,14 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
 
   <p><strong>Garmin:</strong> GroundApp does not connect to Garmin directly. If your Garmin device syncs to Apple Health, the App can read that data through Apple Health, like any other Apple Health data listed above.</p>
 
-  <p><strong>Bluetooth heart-rate straps:</strong> If you pair a strap, the App reads your live heart rate during sessions. These readings are stored on your device only.</p>
+  <p><strong>Bluetooth heart-rate straps:</strong> If you pair a strap, the App reads your live heart rate during sessions. On iPhone, these readings are stored on your device only. On Android, the App asks for Bluetooth permission to find and connect to a strap that supports the standard Bluetooth Heart Rate Service, shows the readings live, and does not upload them to our servers.</p>
 
   <h3>2.3 Automatically Collected Information</h3>
   <ul>
-    <li><strong>Usage data (product analytics):</strong> Screens viewed, app opens and closes, and in-app events such as techniques started, session length, ratings, check-in type, music and voice choices, and paywall and purchase events. These events do not include health readings, your name, your email, or anything you type. They are linked to a random account ID, not your email. The App asks once, after setup ("Help improve GroundApp?"), and shares nothing until you answer. "Don't share" keeps it off. You can change your answer anytime in Settings &gt; Privacy &gt; Share Usage Data.</li>
+    <li><strong>Usage data (product analytics):</strong> Screens viewed, app opens and closes, and in-app events such as techniques started, session length, ratings, check-in type, music and voice choices, and paywall and purchase events. These events do not include health readings, your name, your email, or anything you type. They are linked to a random account ID, not your email. On iPhone and Android, the App asks once, after setup ("Help improve GroundApp?"), and shares nothing until you answer. Until you say yes, nothing is sent, in every country, and that includes any device ID. "Don't share" keeps it off. You can change your answer anytime in Settings &gt; Privacy &gt; Share Usage Data. Turning it off stops sending right away.</li>
     <li><strong>Device information:</strong> Device model, operating system version and app version, sent along with product analytics events.</li>
     <li><strong>Approximate location:</strong> Your city or country, worked out by our analytics provider from your internet address, only if Share Usage Data is on. We never collect your precise location.</li>
-    <li><strong>Notification token:</strong> If you allow notifications, a push notification token for your device, along with your account ID and app version.</li>
+    <li><strong>Notification token (iPhone only):</strong> If you allow notifications, a push notification token for your device, along with your account ID and app version. The Android App does not use push notifications and has no notification token: its reminders are scheduled on your device (Section 3).</li>
   </ul>
   <p><strong>Oura Usage Data Disclosure:</strong> When you connect your Oura Ring to GroundApp, Oura may collect certain Usage Data related to your use of the Oura API and platform. Oura may use this Usage Data for its own business purposes as described in <a href="https://ouraring.com/privacy-policy" target="_blank" rel="noopener">Oura's Privacy Policy</a>.</p>
 
@@ -261,8 +269,8 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
     <li>Precise geolocation</li>
     <li>Contacts or address book data</li>
     <li>Browsing history</li>
-    <li>Payment card or billing details. Purchases are handled entirely by Apple. To confirm Premium for Aura, our server checks Apple's signed record of your subscription and keeps its Apple transaction ID (Section 4.4).</li>
-    <li>Advertising identifiers. The App does not track you across other companies' apps or websites. (The Website uses the Meta Pixel to measure our ads. See Section 7.)</li>
+    <li>Payment card or billing details. Purchases are handled entirely by the app store: Apple on iPhone, and Google Play (Google Play Billing) on Android. We never see your card details. On iPhone, to confirm Premium for Aura, our server checks Apple's signed record of your subscription and keeps its Apple transaction ID (Section 4.4).</li>
+    <li>Advertising identifiers. The App does not track you across other companies' apps or websites. (The Website uses the Meta Pixel to measure our ads. See Section 8.)</li>
   </ul>
 
   <h2>3. How We Use Your Information</h2>
@@ -274,14 +282,14 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
       <tr><th>Purpose</th><th>Data Used</th></tr>
     </thead>
     <tbody>
-      <tr><td><strong>Building your plan after a check-in</strong></td><td>Your check-in answers (feeling, intensity, energy). With Aura on, these and the time of day go through our server to Anthropic, plus a few word labels from Apple Health if you turn on that separate switch (Section 4.4). With Aura off, the plan is built on your phone.</td></tr>
-      <tr><td><strong>Confirming Premium and counting Aura tokens</strong></td><td>Apple's signed subscription record and its transaction ID; your account ID, the date and how many Aura plans you used that day</td></tr>
-      <tr><td><strong>Health dashboard and nervous system insights</strong></td><td>HRV, resting heart rate, sleep, readiness and other health readings, processed on your device</td></tr>
+      <tr><td><strong>Building your plan after a check-in</strong></td><td>Your check-in answers (feeling, intensity, energy). With Aura on, these and the time of day go through our server to Anthropic, plus a few word labels from Apple Health if you turn on that separate switch (Section 4.4). With Aura off, the plan is built on your phone. On Android, your check-in answers and the time of day go from your phone straight to Anthropic, and so does anything you type in Aura chat (Section 4.5).</td></tr>
+      <tr><td><strong>Confirming Premium and counting Aura tokens (iPhone)</strong></td><td>Apple's signed subscription record and its transaction ID; your account ID, the date and how many Aura plans you used that day</td></tr>
+      <tr><td><strong>Health dashboard and nervous system insights</strong></td><td>HRV, resting heart rate, sleep, readiness and other health readings, processed on your device. On Android, heart rate and sleep from Health Connect, processed on your device.</td></tr>
       <tr><td><strong>Live heart rate during sessions</strong></td><td>Heart rate from Apple Watch or a Bluetooth heart-rate strap</td></tr>
       <tr><td><strong>Session history, streaks and progress</strong></td><td>Session records, reflections, technique usage</td></tr>
       <tr><td><strong>Guided audio</strong></td><td>Narration and sound text written by us; no personal data</td></tr>
       <tr><td><strong>Your account, sync and support</strong></td><td>Name, email, account ID, and the check-in, session and Advanced training records described in Section 4.2</td></tr>
-      <tr><td><strong>Reminders and notifications</strong></td><td>Notification token, last active date, and your first name in some comeback reminders about the App. Turn reminders off anytime in iOS Settings &gt; Notifications &gt; GroundApp.</td></tr>
+      <tr><td><strong>Reminders and notifications</strong></td><td>On iPhone: notification token, last active date, and your first name in some comeback reminders about the App. Turn reminders off anytime in iOS Settings &gt; Notifications &gt; GroundApp. On Android: reminders are scheduled on your device and use fixed text with no name or account data; nothing is sent from our servers. Turn them off in Android Settings &gt; Apps &gt; GroundApp &gt; Notifications.</td></tr>
       <tr><td><strong>App improvement</strong></td><td>Product analytics, if Share Usage Data is on</td></tr>
     </tbody>
   </table>
@@ -299,6 +307,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
     <li>Daily health snapshots built from Apple Health and Oura data are kept on your device for up to 90 days.</li>
     <li>Oura sign-in tokens are stored in the iOS Keychain.</li>
     <li>GroundApp does not use iCloud or CloudKit to store your data. If you back up your device to iCloud or a computer, that backup may include data the App stores on your device.</li>
+    <li>On Android, the App keeps your sessions, check-ins, settings and BOLT scores in a database and preferences on your device. Android may back up that app data to your Google account through Android's own backup (Auto Backup), depending on your device settings; that backup may include data the App stores on your device.</li>
   </ul>
 
   <h3>4.2 Cloud Storage (Account Sync)</h3>
@@ -313,6 +322,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
   </ul>
   <p>Raw health readings from Apple Health, Oura, WHOOP or a heart-rate strap are <strong>not</strong> uploaded to our servers. Saved check-in answers and plan text sync as private history, including any context reflected in that text. If you choose Aura, its request and separately permitted coarse Apple Health labels pass through our server to Anthropic; the request processor does not keep a separate copy of the prompt or response. Saved history is distinct from this transient processing. The server also keeps your daily Aura token count and your subscription's Apple transaction ID (Section 4.4).</p>
   <p>Apnea records sync only to your own signed-in account. Declining analytics or turning Aura off does not turn off this account backup; stay a guest if you do not want account sync. Apnea times, references, notes, effort and screening answers are not sent to product analytics or Aura. Condition-screening answers are not saved; records retain the confirmation version/time and posture/preparation context. Deleting a saved apnea table or reference clears its stored contents; a minimal deletion record with account ID, record ID, revision and timestamps remains to prevent an old offline copy from returning. A past session keeps its original snapshot. To request deletion of an individual finalized result from your account, email <a href="mailto:privacy@groundapp.live">privacy@groundapp.live</a>. Account deletion removes these account records.</p>
+  <p><strong>On Android</strong>, signed-in account sync is smaller. It covers: your profile (name, email and chosen voice guide); your session history (technique ID and name, duration, the feelings you picked after the session, and when it finished); and saved check-ins (mood before and after, energy and stress levels, emotion tags and any note). If you are offline, these wait on your device and sync when you are back online. Not uploaded from Android: onboarding goals and experience level, session ratings and reflection notes, saved sequences, BOLT scores, live heart-rate readings, and Health Connect data. The Android App has no Advanced apnea training.</p>
   <p>Our servers are protected as follows:</p>
   <ul>
     <li>All data in transit is encrypted using TLS 1.2+</li>
@@ -327,25 +337,26 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
       <tr><th>Service</th><th>Purpose</th><th>Data Shared</th></tr>
     </thead>
     <tbody>
-      <tr><td><strong>Apple</strong> (HealthKit, Sign in with Apple, App Store, push notifications)</td><td data-label="Purpose">Read and write health data, sign in, purchases, deliver notifications</td><td data-label="Data shared">Health data is accessed on your device. Purchases are handled by Apple; we never see your payment details. If you use Aura, the App sends Apple's signed record of your subscription to our server so it can confirm Premium.</td></tr>
-      <tr><td><strong>Google</strong> (Google Sign-In)</td><td data-label="Purpose">Sign in, if you choose Google</td><td data-label="Data shared">Your Google account name and email, as part of signing in</td></tr>
+      <tr><td><strong>Apple</strong> (HealthKit, Sign in with Apple, App Store, push notifications)</td><td data-label="Purpose">iPhone: read and write health data, sign in, purchases, deliver notifications</td><td data-label="Data shared">Health data is accessed on your device. Purchases are handled by Apple; we never see your payment details. If you use Aura, the App sends Apple's signed record of your subscription to our server so it can confirm Premium.</td></tr>
+      <tr><td><strong>Google</strong> (Google Sign-In, Google Play Billing, Health Connect)</td><td data-label="Purpose">Sign in, if you choose Google. On Android: purchases through Google Play, and Health Connect, the on-device health data store.</td><td data-label="Data shared">Sign-In: your Google account name and email, as part of signing in, and a Google ID token the App passes to Supabase to confirm it is you. Purchases on Android are handled by Google Play; we never see your card details. Health Connect data is read and written on your device only (Section 6); we do not send it to Google or anyone else.</td></tr>
       <tr><td><strong>Oura</strong> (Oura API)</td><td data-label="Purpose">Retrieve readiness, sleep, stress, resilience and heart rate data</td><td data-label="Data shared">Login token stored in the Keychain; data is fetched directly to your device</td></tr>
-      <tr><td><strong>Supabase</strong></td><td data-label="Purpose">Account sign-in, private history sync, notification records, and the server that handles Aura requests</td><td data-label="Data shared">Profile, session history, saved check-in answers and plan text, saved sequences, Advanced apnea tables, references and results including optional notes, and notification token. For Aura: your daily token count and the Apple transaction ID of your Premium subscription. The request processor does not keep a separate prompt/response log; saved history is described in Section 4.2.</td></tr>
-      <tr><td><strong>PostHog</strong> (United States)</td><td data-label="Purpose">Product analytics, only if Share Usage Data is on</td><td data-label="Data shared">App events and screen views linked to a random account ID. No health readings, names, emails or typed text. PostHog also works out your approximate location (city or country) from your internet address.</td></tr>
-      <tr><td><strong>Anthropic</strong> (Claude API)</td><td data-label="Purpose">Build your Aura plan after a check-in, only if you tap Use Aura (Section 4.4)</td><td data-label="Data shared">Your check-in answers, the time of day and any Less time or Alternatives request. With Aura's separate Apple Health switch on, up to six word labels such as "short sleep", never numbers. Not your name, email, account ID, Oura or WHOOP data, or any health numbers. Anthropic does not train on this data and deletes it within 30 days, with the exceptions in Section 4.4.</td></tr>
-      <tr><td><strong>Mistral</strong> and <strong>ElevenLabs</strong></td><td data-label="Purpose">Provide guided audio and sound effects written by us</td><td data-label="Data shared">Apnea cues and lessons in Collin's voice are generated by us before the App is installed and play offline without a provider request. For other, non-apnea audio requested directly by the App, the provider receives our narration or sound text and standard connection data such as your IP address. No account or health information.</td></tr>
-      <tr><td><strong>Cloudflare</strong></td><td data-label="Purpose">Deliver audio files to the App, host the Website</td><td data-label="Data shared">Standard connection data, such as IP address</td></tr>
+      <tr><td><strong>Supabase</strong></td><td data-label="Purpose">Account sign-in, private history sync, notification records, and the server that handles Aura requests</td><td data-label="Data shared">iPhone: profile, session history, saved check-in answers and plan text, saved sequences, Advanced apnea tables, references and results including optional notes, and notification token. For Aura: your daily token count and the Apple transaction ID of your Premium subscription. The request processor does not keep a separate prompt/response log; saved history is described in Section 4.2. Android: profile, sessions and saved check-ins as described in Section 4.2; Android does not use our Aura server.</td></tr>
+      <tr><td><strong>PostHog</strong> (United States)</td><td data-label="Purpose">Product analytics, only if Share Usage Data is on (iPhone and Android)</td><td data-label="Data shared">App events and screen views linked to a random account ID. No health readings, names, emails or typed text. PostHog also works out your approximate location (city or country) from your internet address.</td></tr>
+      <tr><td><strong>Anthropic</strong> (Claude API)</td><td data-label="Purpose">iPhone: build your Aura plan after a check-in, only if you tap Use Aura (Section 4.4). Android: build your check-in plan and run the Aura chat (Section 4.5).</td><td data-label="Data shared">iPhone: your check-in answers, the time of day and any Less time or Alternatives request. With Aura's separate Apple Health switch on, up to six word labels such as "short sleep", never numbers. Not your name, email, account ID, Oura or WHOOP data, or any health numbers. Android: your check-in answers, the time of day, and everything you type in Aura chat along with Aura's replies, sent straight from your phone to Anthropic and not through our servers. Anything you type in the chat is sent. Not your name, email, account ID, or any Health Connect or heart-rate data. Anthropic does not train on this data and deletes it within 30 days, with the exceptions in Section 4.4.</td></tr>
+      <tr><td><strong>Mistral</strong> and <strong>ElevenLabs</strong></td><td data-label="Purpose">Provide guided audio and sound effects written by us</td><td data-label="Data shared">Apnea cues and lessons in Collin's voice are generated by us before the App is installed and play offline without a provider request. For other, non-apnea audio requested directly by the iPhone App, the provider receives our narration or sound text and standard connection data such as your IP address. No account or health information. The Android App plays audio files bundled inside it and sends no text to Mistral or ElevenLabs.</td></tr>
+      <tr><td><strong>Cloudflare</strong></td><td data-label="Purpose">Deliver audio files to the iPhone App, host the Website</td><td data-label="Data shared">Standard connection data, such as IP address</td></tr>
       <tr><td><strong>Loops</strong></td><td data-label="Purpose">Send app emails, such as a note if you have not practiced in a while</td><td data-label="Data shared">Email address, first name, account ID and last active date</td></tr>
     </tbody>
   </table>
   </div>
 
   <div class="highlight-box">
-    <p><strong>Important:</strong> Your health readings stay on your device. Aura (Section 4.4) sends your check-in answers through our server to Anthropic and, only if you turn on its separate Apple Health switch, a few word labels such as "short sleep", never the numbers. Oura data is never sent to Aura or Anthropic.</p>
+    <p><strong>Important:</strong> Your health readings stay on your device. Aura (Section 4.4) sends your check-in answers through our server to Anthropic and, only if you turn on its separate Apple Health switch, a few word labels such as "short sleep", never the numbers. Oura data is never sent to Aura or Anthropic. On Android, your check-in answers and anything you type in Aura chat go straight from your phone to Anthropic (Section 4.5); Health Connect and heart-rate readings are never sent.</p>
   </div>
 
   <h3>4.4 Aura (AI Check-In)</h3>
   <p>Aura is the App's optional AI planning service. It recommends breathwork for how you feel right now. It is part of Ground Premium; no request is sent to Anthropic until you choose Use Aura.</p>
+  <p>This section describes Aura on iPhone. Aura works differently on Android; see Section 4.5.</p>
   <p><strong>Asking first.</strong> When you first ask for an Aura plan, the App shows "Meet Aura" before your answers are sent to Anthropic. If you tap "Not now", it builds a plan on your phone instead. This does not turn off the separate signed-in sync of saved history (Section 4.2). Your other paid features keep working either way.</p>
   <p><strong>What is sent when Aura is on:</strong></p>
   <ul>
@@ -367,6 +378,16 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
   <p><strong>Changing your mind.</strong> Turn Aura off at any time in Settings &gt; Privacy &gt; Aura check-ins, and stop the Apple Health labels in Settings &gt; Privacy &gt; Let Aura use Apple Health signals. Turning Aura off stops new Aura requests, not your separate account-history backup. Requests already sent are deleted by Anthropic as described above. If we ever change what Aura sends, the App asks you again first.</p>
   <p><strong>Wellness, not medical advice.</strong> Aura's plans are AI-generated wellness guidance. They are not medical advice, diagnosis or treatment.</p>
 
+  <h3>4.5 Aura on Android</h3>
+  <p>On Android, Aura is built differently and gives you less protection for what you type, so read this part. There is no separate "Meet Aura" screen and no Aura on/off switch in Settings yet. Aura has two parts:</p>
+  <ul>
+    <li><strong>Aura chat:</strong> a conversation where you tell Aura how you feel and it recommends a sequence. Every message you type is sent to Anthropic, along with Aura's earlier replies (the whole conversation is sent again with each new message so Aura remembers it). The App also sends its own instructions: a list of the App's breathing techniques, a broad time-of-day window such as "morning" worked out from your phone's clock, and an opening line the App adds itself ("Hello, I'd like to do a breathwork session."). <strong>Anything you type is sent, including anything personal or health related that you choose to write.</strong> Please don't type what you do not want to share.</li>
+    <li><strong>Check-in plan:</strong> when you finish a check-in and ask for your plan, the App sends the feeling you picked and the broader feelings it sits under, how intense it is (1 to 10), your energy level, the nervous system state the App works out from your feeling, and the same broad time-of-day window. If the request fails, the App builds a plan on your phone instead.</li>
+  </ul>
+  <p><strong>Never sent to Anthropic from Android:</strong> your name, your email, your account ID, your Health Connect data (heart rate, sleep, steps), live heart-rate readings from a strap, your saved history, or anything you type anywhere other than the Aura chat.</p>
+  <p><strong>Where it goes.</strong> The Android App sends these requests over an encrypted connection from your phone directly to Anthropic's Claude API, not through our servers. We do not receive or keep a copy of the prompts or replies, and Android has no Aura token count. Anthropic sees your IP address, as any web service would. Anthropic processes these requests for us under its commercial terms, does not train its models on them, and deletes them within 30 days, unless its automated safety systems flag a request as breaking its Usage Policy (Anthropic can then keep it for up to 2 years) or the law requires it to keep it longer.</p>
+  <p><strong>Changing your mind.</strong> To stop anything being sent, do not open Aura chat and do not ask for a check-in plan. Requests already sent are deleted by Anthropic as described above. Aura's plans are AI-generated wellness guidance, not medical advice, diagnosis or treatment.</p>
+
   <h2>5. Apple HealthKit Compliance</h2>
   <p>In accordance with Apple's HealthKit guidelines:</p>
   <ul>
@@ -378,7 +399,21 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
     <li>You can revoke HealthKit access at any time through iOS Settings</li>
   </ul>
 
-  <h2>6. Oura Data Usage Compliance</h2>
+  <h2>6. Health Connect Compliance</h2>
+  <p>GroundApp's use of information received from Health Connect will adhere to the Health Connect Permissions policy, including the Limited Use requirements.</p>
+  <p>For the Android App, that means:</p>
+  <ul>
+    <li>We <strong>do not</strong> use Health Connect data for advertising or similar services, including retargeting and interest-based ads</li>
+    <li>We <strong>do not</strong> sell Health Connect data to third parties, including ad platforms, data brokers, or information resellers</li>
+    <li>We <strong>do not</strong> use Health Connect data to determine credit-worthiness or insurance eligibility</li>
+    <li>We <strong>do not</strong> transfer Health Connect data to anyone except as needed to provide the features you see in the App. Today that means no one: heart rate and sleep are read and used on your device, and are not sent to our servers, Anthropic, analytics or any other third party. If you type your own health details into Aura chat, that is text you typed, and it is sent like any other message (Section 4.5).</li>
+    <li>We use Health Connect data only to provide features visible in the App: showing your lowest heart rate and hours slept from the last 24 hours on your Progress screen, and saving your breathing sessions back to Health Connect if you turn on Auto-Save Sessions</li>
+    <li>Nobody at GroundApp reads your Health Connect data, because it never leaves your device</li>
+    <li>The App reads two record types: heart rate and sleep sessions. It asks for permission to read steps but does not currently read them. It writes one: exercise sessions (Section 2.2)</li>
+    <li>Access happens only with your permission. You can revoke it at any time in the Health Connect app under App permissions &gt; GroundApp (Section 9). When you do, the App stops reading and writing. Exercise sessions the App already wrote stay in Health Connect until you delete them there.</li>
+  </ul>
+
+  <h2>7. Oura Data Usage Compliance</h2>
   <p>In accordance with the Oura API Agreement:</p>
   <ul>
     <li>Oura data is accessed only with your explicit authorization via OAuth 2.0</li>
@@ -390,7 +425,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
     <li>In the event of a data security incident involving Oura data, we will notify Oura within 24 hours of discovery</li>
   </ul>
 
-  <h2>7. Website and Email List</h2>
+  <h2>8. Website and Email List</h2>
   <p>This section covers groundapp.live, including the Breath Atlas pages and the blog.</p>
   <ul>
     <li><strong>Email list signups:</strong> When you join the email list, we collect your email address, your first name if you give it, and which signup form you used (for example, the homepage, the blog or a Breath Atlas page). This is stored in our database, hosted by Supabase.</li>
@@ -404,7 +439,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
   </ul>
   <p>To have your email removed from our list entirely, email <a href="mailto:privacy@groundapp.live">privacy@groundapp.live</a>.</p>
 
-  <h2>8. Your Rights and Controls</h2>
+  <h2>9. Your Rights and Controls</h2>
   <p>You have control over your data:</p>
 
   <div class="table-wrap">
@@ -413,38 +448,40 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
       <tr><th>Action</th><th>How</th></tr>
     </thead>
     <tbody>
-      <tr><td><strong>Turn off product analytics</strong></td><td>Settings &gt; Privacy &gt; Share Usage Data</td></tr>
-      <tr><td><strong>Turn Aura off</strong></td><td>Settings &gt; Privacy &gt; Aura check-ins. Check-ins then use a plan built on your phone</td></tr>
-      <tr><td><strong>Stop Aura using Apple Health labels</strong></td><td>Settings &gt; Privacy &gt; Let Aura use Apple Health signals</td></tr>
+      <tr><td><strong>Turn off product analytics</strong></td><td>Settings &gt; Privacy &gt; Share Usage Data (iPhone and Android). Turning it off stops sending right away.</td></tr>
+      <tr><td><strong>Turn Aura off</strong></td><td>iPhone: Settings &gt; Privacy &gt; Aura check-ins. Check-ins then use a plan built on your phone. Android has no Aura switch yet: do not open Aura chat or ask for a check-in plan (Section 4.5).</td></tr>
+      <tr><td><strong>Stop Aura using Apple Health labels</strong></td><td>iPhone: Settings &gt; Privacy &gt; Let Aura use Apple Health signals</td></tr>
       <tr><td><strong>Revoke HealthKit access</strong></td><td>iOS Settings &gt; Privacy &amp; Security &gt; Health &gt; GroundApp</td></tr>
+      <tr><td><strong>Revoke Health Connect access</strong></td><td>Android: Health Connect app &gt; App permissions &gt; GroundApp</td></tr>
       <tr><td><strong>Disconnect Oura</strong></td><td>App Settings, or <a href="https://cloud.ouraring.com" target="_blank" rel="noopener">cloud.ouraring.com</a> &gt; Connected Apps</td></tr>
-      <tr><td><strong>Export your data</strong></td><td>Profile &gt; Privacy &gt; Export All Data includes the Advanced apnea data stored on your device, with JSON detail and a CSV summary. For a copy of data on our servers that is not available locally, email <a href="mailto:privacy@groundapp.live">privacy@groundapp.live</a></td></tr>
-      <tr><td><strong>Delete your account</strong></td><td>Profile &gt; Privacy &gt; Delete Account. This deletes your account, profile, session and check-in history, saved sequences, Advanced apnea tables, references, results and deletion records, and notification records from our servers.</td></tr>
-      <tr><td><strong>Delete data on your device</strong></td><td>Delete the App from your device</td></tr>
+      <tr><td><strong>Export your data</strong></td><td>iPhone: Profile &gt; Privacy &gt; Export All Data includes the Advanced apnea data stored on your device, with JSON detail and a CSV summary. Android has no in-app export. For a copy of data on our servers that is not available locally, email <a href="mailto:privacy@groundapp.live">privacy@groundapp.live</a></td></tr>
+      <tr><td><strong>Delete your account</strong></td><td>iPhone: Profile &gt; Privacy &gt; Delete Account. Android: Settings &gt; Delete Account. Without the App: <a href="/delete-account">groundapp.live/delete-account</a>. This deletes your account, profile, session and check-in history, saved sequences, Advanced apnea tables, references, results and deletion records, and notification records from our servers.</td></tr>
+      <tr><td><strong>Delete data on your device</strong></td><td>iPhone: delete the App from your device. Android: uninstall the App, or go to Android Settings &gt; Apps &gt; GroundApp &gt; Storage &gt; Clear storage</td></tr>
       <tr><td><strong>Stop website emails</strong></td><td>Use the unsubscribe link in any email</td></tr>
       <tr><td><strong>Access, correct or delete anything else</strong></td><td>Email <a href="mailto:privacy@groundapp.live">privacy@groundapp.live</a></td></tr>
     </tbody>
   </table>
   </div>
 
-  <p>Upon account deletion, the data synced to our servers is permanently removed within 30 days. Your Aura token counts and the Apple transaction ID linked to your account are deleted when you delete your account. The App also clears local data scoped to that account, retrying local cleanup if interrupted. Guest data and another account's data are not erased by that operation. Other device-only data remains until you erase it or delete the App. Analytics events already sent to PostHog and any copy of your email held by our email providers can be deleted on request at <a href="mailto:privacy@groundapp.live">privacy@groundapp.live</a>.</p>
+  <p>Upon account deletion, the data synced to our servers is permanently removed within 30 days. Your Aura token counts and the Apple transaction ID linked to your account are deleted when you delete your account. The App also clears local data scoped to that account, retrying local cleanup if interrupted. Guest data and another account's data are not erased by that operation. Other device-only data remains until you erase it or delete the App. If you cannot open the App, you can ask for deletion on the web at <a href="/delete-account">groundapp.live/delete-account</a>. Analytics events already sent to PostHog and any copy of your email held by our email providers can be deleted on request at <a href="mailto:privacy@groundapp.live">privacy@groundapp.live</a>.</p>
 
-  <h2>9. Data Retention</h2>
+  <h2>10. Data Retention</h2>
   <ul>
-    <li><strong>On-device data:</strong> Kept until you erase it or delete the App; account-scoped data is also cleared after confirmed account deletion. Daily health snapshots are kept for up to 90 days.</li>
+    <li><strong>On-device data:</strong> Kept until you erase it or delete the App; account-scoped data is also cleared after confirmed account deletion. Daily health snapshots are kept for up to 90 days. On Android, uninstalling the App or clearing its storage erases it.</li>
     <li><strong>Cloud-synced data:</strong> Retained while your account is active; deleted within 30 days of account deletion</li>
-    <li><strong>Aura requests:</strong> The request processor does not keep a separate copy. Saved check-ins and plan text are retained as cloud-synced history (Section 4.2) and removed with your account. Anthropic deletes its request copies within 30 days, with the exceptions in Section 4.4.</li>
+    <li><strong>Aura requests:</strong> On iPhone, the request processor does not keep a separate copy. Saved check-ins and plan text are retained as cloud-synced history (Section 4.2) and removed with your account. On Android, we do not receive a copy at all. Anthropic deletes its request copies within 30 days, with the exceptions in Section 4.4.</li>
     <li><strong>Aura token counts and Premium transaction ID:</strong> Kept while your account is active; deleted when you delete your account</li>
     <li><strong>Aura server logs:</strong> Contain no check-in content; kept only as long as needed to run and secure the service</li>
     <li><strong>Oura tokens:</strong> Deleted from your device when you disconnect Oura in the App</li>
     <li><strong>Product analytics:</strong> Kept only as long as we need it to understand how the App is used, and deleted on request</li>
     <li><strong>Email list:</strong> Kept while you are subscribed. If you unsubscribe, we keep a record that you unsubscribed so we do not email you again. To delete it entirely, email us.</li>
+    <li><strong>Health Connect:</strong> We keep no copy of your Health Connect data. Exercise sessions the App wrote stay in Health Connect until you delete them there.</li>
     <li><strong>Upon access revocation by user or platform:</strong> We stop accessing and processing the affected data</li>
   </ul>
 
-  <h2>10. Data Security and Breach Notification</h2>
+  <h2>11. Data Security and Breach Notification</h2>
 
-  <h3>10.1 Security Measures</h3>
+  <h3>11.1 Security Measures</h3>
   <p>We employ commercially reasonable administrative, technical, and physical security measures to protect your data, consistent with GDPR Article 32 standards. These include:</p>
   <ul>
     <li>Encryption of data in transit (TLS 1.2+) and of data at rest on our servers (AES-256)</li>
@@ -453,7 +490,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
     <li>Access controls limited to authorized personnel</li>
   </ul>
 
-  <h3>10.2 Breach Notification</h3>
+  <h3>11.2 Breach Notification</h3>
   <p>In the event of a security breach affecting your personal or health data:</p>
   <ul>
     <li>We will notify affected users within 60 days of discovery, or sooner as required by applicable law</li>
@@ -462,48 +499,48 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
     <li>Notifications will describe the nature of the breach, the types of data involved, the steps we are taking, and how you can protect yourself</li>
   </ul>
 
-  <h2>11. Children's Privacy</h2>
+  <h2>12. Children's Privacy</h2>
   <p>The App and the Website are not directed at children under 13. We do not knowingly collect personal information from children under 13. If you believe a child under 13 has provided us with personal information, please contact us and we will delete it. If you live in the EU, EEA, UK or Switzerland and are under the age of digital consent where you live (between 13 and 16), you need a parent's or guardian's permission to use the App.</p>
 
-  <h2>12. State-Specific Privacy Rights</h2>
+  <h2>13. State-Specific Privacy Rights</h2>
 
-  <h3>12.1 California Residents (CCPA/CPRA)</h3>
+  <h3>13.1 California Residents (CCPA/CPRA)</h3>
   <p>If you are a California resident, you have the following rights under the California Consumer Privacy Act and California Privacy Rights Act:</p>
   <ul>
     <li><strong>Right to Know:</strong> You may request the categories and specific pieces of personal information we have collected about you, the sources, the business purposes, and the third parties with whom we share it.</li>
     <li><strong>Right to Delete:</strong> You may request deletion of your personal information, subject to certain exceptions.</li>
     <li><strong>Right to Correct:</strong> You may request correction of inaccurate personal information.</li>
-    <li><strong>Right to Opt Out of Sale or Sharing:</strong> We do <strong>not</strong> sell your personal information. The App does <strong>not</strong> share your personal information for cross-context behavioral advertising. The Website uses the Meta Pixel to measure and target our ads (Section 7), which California law may treat as sharing for cross-context behavioral advertising. To opt out, turn on Global Privacy Control in your browser (the Website then does not load the pixel), block cookies, or email <a href="mailto:privacy@groundapp.live">privacy@groundapp.live</a>.</li>
+    <li><strong>Right to Opt Out of Sale or Sharing:</strong> We do <strong>not</strong> sell your personal information. The App does <strong>not</strong> share your personal information for cross-context behavioral advertising. The Website uses the Meta Pixel to measure and target our ads (Section 8), which California law may treat as sharing for cross-context behavioral advertising. To opt out, turn on Global Privacy Control in your browser (the Website then does not load the pixel), block cookies, or email <a href="mailto:privacy@groundapp.live">privacy@groundapp.live</a>.</li>
     <li><strong>Right to Limit Use of Sensitive Personal Information:</strong> Health and biometric data is classified as sensitive personal information. We use this data only to provide the App's core services as described in Section 3.</li>
     <li><strong>Non-Discrimination:</strong> We will not discriminate against you for exercising your privacy rights.</li>
   </ul>
   <p>To exercise these rights, contact us at <a href="mailto:privacy@groundapp.live">privacy@groundapp.live</a>. We will respond within 45 days.</p>
 
-  <h3>12.2 Washington Residents (My Health My Data Act)</h3>
+  <h3>13.2 Washington Residents (My Health My Data Act)</h3>
   <p>If you are a Washington state resident, the following applies under the Washington My Health My Data Act (RCW 19.373):</p>
   <ul>
     <li><strong>Categories of Health Data Collected:</strong> Heart rate, resting heart rate, HRV, respiratory rate, sleep analysis, blood oxygen saturation, VO2 max, body and wrist temperature, activity data, mindful minutes, readiness, stress and resilience scores, the feelings, intensity and energy levels you log in check-ins, the mood you pick during a session, your breathwork goals (such as Sleep or Anxiety), and the word labels Aura can work out from Apple Health data (such as "short sleep").</li>
     <li><strong>Purpose of Collection:</strong> To show your health dashboard and nervous system insights, match you to breathing sessions, build Aura check-in plans if you choose to use Aura, show live heart rate during sessions, and track your progress.</li>
-    <li><strong>Sources of Health Data:</strong> You (check-ins and reflections), Apple HealthKit, Oura Ring (Oura API), Apple Watch, and Bluetooth heart-rate straps.</li>
-    <li><strong>Third Parties:</strong> Only if you agree on the "Meet Aura" screen, we share your check-in answers with Anthropic (Claude API) to build your Aura plan, and, only if you also turn on Aura's separate Apple Health switch, a few word labels worked out from Apple Health data, never numbers (Section 4.4). Our hosting provider, Supabase, handles these requests for us without storing them. We do not share health data with any other third party, and we never share Oura data with Anthropic or any other AI service.</li>
-    <li><strong>Your Rights:</strong> You have the right to access, delete, and withdraw consent for the collection and sharing of your health data. You can withdraw consent for Aura at any time in Settings &gt; Privacy &gt; Aura check-ins, and for its Apple Health labels in Settings &gt; Privacy &gt; Let Aura use Apple Health signals. To exercise your other rights, contact <a href="mailto:privacy@groundapp.live">privacy@groundapp.live</a>.</li>
-    <li><strong>Consent:</strong> We collect health data only after obtaining your affirmative consent. Aura asks for your consent to share before anything is sent, separately from the App's other permissions, and its Apple Health labels need their own switch. We will not collect, use, or share additional categories or purposes of health data beyond what is disclosed here without obtaining fresh consent.</li>
+    <li><strong>Sources of Health Data:</strong> You (check-ins and reflections), Apple HealthKit, Health Connect (Android), Oura Ring (Oura API), Apple Watch, and Bluetooth heart-rate straps.</li>
+    <li><strong>Third Parties:</strong> On iPhone, only if you agree on the "Meet Aura" screen, we share your check-in answers with Anthropic (Claude API) to build your Aura plan, and, only if you also turn on Aura's separate Apple Health switch, a few word labels worked out from Apple Health data, never numbers (Section 4.4). Our hosting provider, Supabase, handles these requests for us without storing them. On Android, your check-in answers and anything you type in Aura chat go straight from your phone to Anthropic (Section 4.5); there is no separate consent screen for this yet. We do not share health data with any other third party, and we never share Oura data with Anthropic or any other AI service. We never share Health Connect data with anyone.</li>
+    <li><strong>Your Rights:</strong> You have the right to access, delete, and withdraw consent for the collection and sharing of your health data. On iPhone, you can withdraw consent for Aura at any time in Settings &gt; Privacy &gt; Aura check-ins, and for its Apple Health labels in Settings &gt; Privacy &gt; Let Aura use Apple Health signals. On Android, you can revoke Health Connect access in the Health Connect app under App permissions &gt; GroundApp, and you can stop Aura requests by not using Aura chat or the check-in plan. To exercise your other rights, contact <a href="mailto:privacy@groundapp.live">privacy@groundapp.live</a>.</li>
+    <li><strong>Consent:</strong> We collect health data only after obtaining your affirmative consent. On iPhone, Aura asks for your consent to share before anything is sent, separately from the App's other permissions, and its Apple Health labels need their own switch. On Android, Health Connect and Bluetooth access are separate permissions you grant, and Aura chat and check-in plans send what is described in Section 4.5 when you use them. We will not collect, use, or share additional categories or purposes of health data beyond what is disclosed here without obtaining fresh consent.</li>
   </ul>
 
-  <h3>12.3 Other U.S. States</h3>
+  <h3>13.3 Other U.S. States</h3>
   <p>We comply with applicable state privacy laws, including but not limited to the Colorado Privacy Act, Connecticut Data Privacy Act, Virginia Consumer Data Protection Act, and other state laws that provide consumer privacy rights. If you are a resident of a state with applicable privacy legislation, you may exercise your rights by contacting <a href="mailto:privacy@groundapp.live">privacy@groundapp.live</a>.</p>
 
-  <h2>13. International Users and GDPR</h2>
+  <h2>14. International Users and GDPR</h2>
 
-  <h3>13.1 Legal Basis for Processing (EEA/UK Users)</h3>
+  <h3>14.1 Legal Basis for Processing (EEA/UK Users)</h3>
   <p>For users in the European Economic Area (EEA) or United Kingdom, we process your data under the following legal bases:</p>
   <ul>
-    <li><strong>Explicit Consent (Article 6(1)(a) and Article 9(2)(a) GDPR):</strong> For health and biometric data and wearable device integrations, which you allow during onboarding and device connection. For Aura, which you allow on the "Meet Aura" screen before anything is sent, with a separate switch for its Apple Health labels; you can withdraw it at any time in Settings &gt; Privacy, which does not affect processing that happened before you withdrew. Also for product analytics, which stay off until you agree when the App asks or turn on Share Usage Data, and for the email list, which you join yourself.</li>
+    <li><strong>Explicit Consent (Article 6(1)(a) and Article 9(2)(a) GDPR):</strong> For health and biometric data and wearable device integrations (Apple Health, Health Connect, Oura and Bluetooth straps), which you allow during onboarding and device connection. For Aura on iPhone, which you allow on the "Meet Aura" screen before anything is sent, with a separate switch for its Apple Health labels; you can withdraw it at any time in Settings &gt; Privacy, which does not affect processing that happened before you withdrew. Also for product analytics on iPhone and Android, which stay off until you agree when the App asks or turn on Share Usage Data, and for the email list, which you join yourself.</li>
     <li><strong>Contract Performance (Article 6(1)(b) GDPR):</strong> For account management, sync, session delivery, and core app functionality.</li>
     <li><strong>Legitimate Interest (Article 6(1)(f) GDPR):</strong> For keeping the App and Website secure, preventing spam and abuse, and counting Website page views without cookies.</li>
   </ul>
 
-  <h3>13.2 Your GDPR Rights</h3>
+  <h3>14.2 Your GDPR Rights</h3>
   <ul>
     <li>Right of access to your personal data</li>
     <li>Right to rectification of inaccurate data</li>
@@ -515,20 +552,20 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
     <li>Right to lodge a complaint with a supervisory authority</li>
   </ul>
 
-  <h3>13.3 Data Transfers</h3>
+  <h3>14.3 Data Transfers</h3>
   <p>Your data is processed mainly in the United States, including Aura requests sent to Anthropic. For transfers from the EEA/UK, we rely on Standard Contractual Clauses and your explicit consent for health data.</p>
 
-  <h2>14. Changes to This Policy</h2>
+  <h2>15. Changes to This Policy</h2>
   <p>We may update this Privacy Policy from time to time. We will notify you of material changes by posting the updated policy within the App and on the Website and updating the "Last Updated" date. For material changes affecting health data practices, we will provide prominent notice and, where required by law, obtain fresh consent. Continued use of the App after changes constitutes acceptance of the revised policy.</p>
 
-  <h2>15. Contact Us</h2>
+  <h2>16. Contact Us</h2>
   <p>If you have questions about this Privacy Policy or your data, contact us at:</p>
   <p><strong>Privacy Inquiries:</strong> <a href="mailto:privacy@groundapp.live">privacy@groundapp.live</a></p>
   <p><strong>Legal Inquiries:</strong> <a href="mailto:legal@groundapp.live">legal@groundapp.live</a></p>
   <p><strong>Everything Else:</strong> <a href="mailto:collin@groundapp.live">collin@groundapp.live</a></p>
   <p><strong>Website:</strong> <a href="https://groundapp.live/privacy">https://groundapp.live/privacy</a></p>
 
-  <p class="closing">This Privacy Policy was last reviewed and updated in October 2026.</p>
+  <p class="closing">This Privacy Policy was last reviewed and updated on October 25, 2026.</p>
 
 </div>
 </main>
@@ -543,6 +580,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
       <a href="/blog/">Blog</a>
       <a href="/privacy">Privacy</a>
       <a href="/terms">Terms</a>
+      <a href="/delete-account">Delete Account</a>
       <a href="https://instagram.com/collinchartier" target="_blank" rel="noopener">Instagram</a>
       <a href="mailto:collin@groundapp.live">Contact</a>
     </nav>
