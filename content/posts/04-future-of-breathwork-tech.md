@@ -34,7 +34,7 @@ It starts with a check-in: you tap how you feel on a feelings wheel with 102 fee
 
 The guided sessions are narrated in my voice. To be clear about how: the narration is an AI model of my voice, trained on my own recordings. I'd rather tell you that up front than have you wonder.
 
-It connects to Apple Health and Oura so you can see your HRV, resting heart rate and sleep next to your practice on a health dashboard. Bluetooth heart-rate straps and Apple Watch show your heart rate live during a session.
+It connects to Apple Health, which brings in data from wearables like Whoop, Garmin, Oura and COROS, so you can see your HRV, resting heart rate and sleep next to your practice on a health dashboard. Bluetooth heart-rate straps and Apple Watch show your heart rate live during a session.
 
 That's it. No magic. Just a coach's structure in your pocket.
 
@@ -70,6 +70,6 @@ A few things make this a moment worth paying attention to:
 
 ## Try It
 
-GroundApp is on the App Store for iPhone, with an Apple Watch app included. It's free to download, with four techniques free forever. GroundApp Premium is $29.99 a year and unlocks all 35 techniques, 15 guided sessions and the daily check-in.
+GroundApp is on the App Store for iPhone, with an Apple Watch app included. It's free to download, with four techniques free forever. GroundApp Premium is $39.99 a year and unlocks all 35 techniques, 15 guided sessions and the daily check-in.
 
 The future of breathwork isn't a better timer. It's something closer to a coach. GroundApp is my first step in that direction.

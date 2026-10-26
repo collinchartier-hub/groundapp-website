@@ -193,7 +193,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
 <!-- HERO -->
 <div class="page-hero">
   <h1>Terms of <em>Service</em></h1>
-  <p class="meta sans">GroundApp &middot; Effective Date: March 8, 2026 &middot; Last Updated: October 2, 2026</p>
+  <p class="meta sans">GroundApp &middot; Effective Date: March 8, 2026 &middot; Last Updated: October 26, 2026</p>
 </div>
 
 <!-- CONTENT -->
@@ -208,7 +208,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
   <ul>
     <li>Guided breathing exercises and techniques</li>
     <li>A check-in that suggests a breathing session based on how you feel and, if connected, your health data</li>
-    <li>Integration with Apple Health, Apple Watch, Oura Ring, and Bluetooth heart-rate straps (Garmin data is supported through Apple Health)</li>
+    <li>Integration with Apple Health, Apple Watch and Bluetooth heart-rate straps (Whoop, Garmin, Oura, COROS and other wearables work through Apple Health)</li>
     <li>Nervous system insights and a health dashboard based on your health data</li>
     <li>Guided sessions narrated by an AI model of Collin Chartier's voice, trained on his recordings</li>
     <li>Session tracking, progress history, and streaks</li>
@@ -276,30 +276,23 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
   <h2>6. Wearable Device Integrations</h2>
 
   <h3>6.1 Third-Party Services</h3>
-  <p>The App integrates with third-party hardware and platforms including Apple Health (HealthKit) and Oura Ring (Oura API). Garmin devices are supported only through Apple Health; the App does not connect to Garmin directly. These integrations are subject to the respective terms of service and privacy policies of each third party:</p>
+  <p>The App integrates with Apple Health (HealthKit). Wearables from Whoop, Garmin, Oura, COROS and other makers reach the App only through Apple Health; the App does not connect to any wearable maker's service directly. Apple's terms apply to HealthKit, and each wearable maker's own terms apply to its device and to what it writes to Apple Health:</p>
   <ul>
     <li><a href="https://www.apple.com/legal/sla/" target="_blank" rel="noopener">Apple HealthKit Terms</a></li>
-    <li><a href="https://ouraring.com/terms-and-conditions" target="_blank" rel="noopener">Oura Terms and Conditions</a></li>
-    <li><a href="https://www.garmin.com/en-US/legal/terms-of-use/" target="_blank" rel="noopener">Garmin Terms of Use</a></li>
   </ul>
-  <p>By connecting a wearable device to the App, you represent that you have accepted the applicable third-party terms and authorize the App to access your data through their APIs.</p>
+  <p>By allowing Apple Health access, you authorize the App to read the data types you choose.</p>
 
   <h3>6.2 Third-Party Warranty Disclaimers</h3>
-  <p class="caps-text"><strong>THE THIRD-PARTY SERVICES DESCRIBED IN SECTION 6.1, INCLUDING BUT NOT LIMITED TO APPLE, OURA, AND GARMIN, ARE PROVIDED BY THEIR RESPECTIVE OWNERS.</strong> We make no representations or warranties, express or implied, regarding any third-party service, hardware, software, or data. All third-party services are provided "AS IS" and "AS AVAILABLE." We disclaim all warranties on behalf of third-party providers, including implied warranties of merchantability, fitness for a particular purpose, and non-infringement.</p>
+  <p class="caps-text"><strong>THE THIRD-PARTY SERVICES DESCRIBED IN SECTION 6.1, INCLUDING BUT NOT LIMITED TO APPLE AND THE MAKERS OF THE WEARABLES YOU USE, ARE PROVIDED BY THEIR RESPECTIVE OWNERS.</strong> We make no representations or warranties, express or implied, regarding any third-party service, hardware, software, or data. All third-party services are provided "AS IS" and "AS AVAILABLE." We disclaim all warranties on behalf of third-party providers, including implied warranties of merchantability, fitness for a particular purpose, and non-infringement.</p>
 
   <h3>6.3 Third-Party Liability Exclusion</h3>
-  <p class="caps-text"><strong>IN NO EVENT SHALL ANY THIRD-PARTY SERVICE PROVIDER (INCLUDING APPLE, OURA, GARMIN, ANTHROPIC, MISTRAL, OR ELEVENLABS) BE LIABLE TO YOU FOR ANY CONSEQUENTIAL, SPECIAL, PUNITIVE, OR INDIRECT DAMAGES ARISING FROM OR RELATED TO THE APP OR YOUR USE OF THEIR DATA THROUGH THE APP.</strong> Your use of third-party data through the App does not create any direct relationship between you and those third-party service providers with respect to the App.</p>
+  <p class="caps-text"><strong>IN NO EVENT SHALL ANY THIRD-PARTY SERVICE PROVIDER (INCLUDING APPLE, THE MAKERS OF THE WEARABLES YOU USE, ANTHROPIC, OR MISTRAL AI) BE LIABLE TO YOU FOR ANY CONSEQUENTIAL, SPECIAL, PUNITIVE, OR INDIRECT DAMAGES ARISING FROM OR RELATED TO THE APP OR YOUR USE OF THEIR DATA THROUGH THE APP.</strong> Your use of third-party data through the App does not create any direct relationship between you and those third-party service providers with respect to the App.</p>
 
   <h3>6.4 Data Accuracy</h3>
   <p>Biometric data obtained from wearable devices and health platforms is provided by third-party hardware and software. We do <strong>not</strong> guarantee the accuracy, completeness, or reliability of any biometric data, health metrics, or derived assessments. Wearable device measurements may be affected by sensor placement, device condition, user activity, environmental factors, and other variables beyond our control.</p>
 
-  <h3>6.5 Connection and Disconnection</h3>
-  <p>You may connect and disconnect wearable devices at any time through the App's Settings. Disconnecting a device will:</p>
-  <ul>
-    <li>Stop the App from accessing new data from that device</li>
-    <li>Delete the App's stored login tokens for that device</li>
-  </ul>
-  <p>Data already stored on your device, and your session history, will be retained until you delete the App or your account.</p>
+  <h3>6.5 Turning Apple Health On and Off</h3>
+  <p>You may turn Apple Health off in the App's Settings, or change what the App can read in iOS Settings, at any time. Doing so stops the App from reading new data, including wearable data that comes through Apple Health. Data already stored on your device, and your session history, will be retained until you delete the App or your account.</p>
 
   <h3>6.6 Non-Conflict with Third-Party Terms</h3>
   <p>Nothing in these Terms is intended to conflict with or supersede the terms of service of any third-party platform with which the App integrates. In the event of any conflict between these Terms and the terms of a third-party platform regarding data from that platform, the third-party platform's terms shall govern with respect to that platform's data.</p>
@@ -316,11 +309,11 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
   </ul>
 
   <h3>7.2 Text-to-Speech</h3>
-  <p>Guided session narration is produced with text-to-speech technology (Mistral Voxtral), using an AI model of Collin Chartier's voice trained on his recordings. Most narration is generated in advance and included in the App. Some sound effects are generated with ElevenLabs. You acknowledge that:</p>
+  <p>Guided session narration is produced with text-to-speech technology (Mistral Voxtral), using an AI model of Collin Chartier's voice trained on his recordings. Most narration is generated in advance and included in the App. Some narration is generated when you use it: the App sends the narration text and your voice choice to our server, which asks Mistral AI to produce the audio. You acknowledge that:</p>
   <ul>
     <li>Generated audio is produced algorithmically and may vary between sessions</li>
     <li>No personal voice data is collected or stored for text-to-speech generation</li>
-    <li>Only narration and sound text written by us is transmitted to text-to-speech services</li>
+    <li>Only narration text written by us, and your voice choice, is transmitted to text-to-speech services</li>
   </ul>
 
   <h2>8. Acceptable Use</h2>
@@ -350,7 +343,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
   <h2>11. Subscription and Payments</h2>
 
   <h3>11.1 Pricing</h3>
-  <p>The App is free to download. Some features require GroundApp Premium, an auto-renewing yearly subscription, currently $29.99 per year in the United States. Prices in other countries are shown in the App Store before you buy. Subscription pricing, features, and terms will be clearly presented before purchase.</p>
+  <p>The App is free to download. Some features require GroundApp Premium, an auto-renewing yearly subscription, currently $39.99 per year in the United States. Prices in other countries are shown in the App Store before you buy. Subscription pricing, features, and terms will be clearly presented before purchase.</p>
 
   <h3>11.2 Billing and Auto-Renewal</h3>
   <p>Subscriptions are billed through Apple's App Store. Payment is charged to your Apple ID account when you confirm the purchase. Your subscription renews automatically each year unless you cancel it at least 24 hours before the end of the current period, and your account will be charged for the renewal within 24 hours before the end of the current period. You can manage or cancel your subscription at any time in your Apple ID account settings (on iPhone: Settings &gt; your name &gt; Subscriptions). Deleting the App does not cancel your subscription.</p>
@@ -422,7 +415,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
   <p><strong>Website:</strong> <a href="https://groundapp.live/terms">https://groundapp.live/terms</a></p>
 
   <p class="closing">By using GroundApp, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service.</p>
-  <p style="font-style: italic;">These Terms were last reviewed and updated on October 2, 2026.</p>
+  <p style="font-style: italic;">These Terms were last reviewed and updated on October 26, 2026.</p>
 
 </div>
 
@@ -438,6 +431,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
       <a href="/blog/">Blog</a>
       <a href="/privacy">Privacy</a>
       <a href="/terms">Terms</a>
+      <a href="/delete-account">Delete Account</a>
       <a href="https://instagram.com/collinchartier" target="_blank" rel="noopener">Instagram</a>
       <a href="mailto:collin@groundapp.live">Contact</a>
     </nav>
