@@ -70,6 +70,6 @@ A few things make this a moment worth paying attention to:
 
 ## Try It
 
-GroundApp is on the App Store for iPhone, with an Apple Watch app included. It's free to download, with four techniques free forever. GroundApp Premium is $29.99 a year and unlocks all 35 techniques, 15 guided sessions and the daily check-in.
+GroundApp is on the App Store for iPhone, with an Apple Watch app included. It's free to download, with four techniques free forever. GroundApp Premium is $39.99 a year and unlocks all 35 techniques, 15 guided sessions and the daily check-in.
 
 The future of breathwork isn't a better timer. It's something closer to a coach. GroundApp is my first step in that direction.
