@@ -20,7 +20,7 @@
 - BOLT CO2 tolerance test (free).
 - Apple Watch app: Box Breathing, Physiological Sigh, Resonance and Instant Calm on the wrist, with haptic breath cues and live heart rate.
 - Apple Health: reads HRV, resting heart rate, sleep and respiratory rate (and more); writes Mindful Minutes.
-- Oura Ring connects directly. Garmin data comes in through Apple Health. Bluetooth heart-rate straps are supported. Live heart rate and HRV during sessions.
+- Whoop, Garmin, Oura, COROS and other wearables come in through Apple Health. Bluetooth heart-rate straps are supported. Live heart rate and HRV during sessions.
 - Instant Calm: one tap, no voice, works offline.
 - Quick fixes for Sleep, Anxiety, Focus, Energy, Headache and Stress. 7 collections (for example Bedtime Wind-Down and Morning Ritual). 6 Learn modules on the nervous system.
 - Build your own breathing sequences with haptics and a counter.
