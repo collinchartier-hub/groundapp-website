@@ -23,7 +23,7 @@
   .wr-brand{position:absolute;left:var(--m);bottom:24px;display:flex;align-items:center;gap:.6rem;font-size:var(--t-small);color:var(--text-2)}
   .wr-brand img{width:28px;height:28px}
   .stage .controls{justify-content:center}
-  .stage .controls{justify-content:center}
+  @media (max-width: 700px){.wr-brand{position:static;justify-content:center;margin-top:12px}}
   /* Endless loop: no stop square on the running pill (a tap never stops it here). */
   .hero [data-loop].is-running .dial .pc-go::before{display:none}
 </style>
