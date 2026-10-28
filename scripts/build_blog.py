@@ -352,6 +352,7 @@ def footer():
       <a href="/blog/">Blog</a>
       <a href="/privacy">Privacy</a>
       <a href="/terms">Terms</a>
+      <a href="/support">Support</a>
       <a href="https://instagram.com/collinchartier" target="_blank" rel="noopener">Instagram</a>
       <a href="mailto:collin@groundapp.live">Contact</a>
     </nav>

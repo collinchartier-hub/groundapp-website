@@ -64,4 +64,5 @@
 
 - [Privacy Policy](https://groundapp.live/privacy): How GroundApp handles app and website data
 - [Terms of Service](https://groundapp.live/terms): Terms for using GroundApp
+- [Support](https://groundapp.live/support): Contact and quick answers on Premium, purchases, account deletion and wearables
 - Contact: collin@groundapp.live
