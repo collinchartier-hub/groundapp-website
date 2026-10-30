@@ -36,7 +36,7 @@
       @@DIAL@@
       <div>@@CONTROLS@@</div>
     </div>
-    <div class="qa-act"><a href="#" class="btn">@@APPLE@@Download on the App Store</a><p>Free to download. Premium $29.99/year.</p></div>
+    <div class="qa-act"><a href="#" class="btn">@@APPLE@@Download on the App Store</a><p>Free to download. Premium $39.99/year.</p></div>
   </div>
 </main>
 <script src="../site/js/pacer-v2.js"></script>
