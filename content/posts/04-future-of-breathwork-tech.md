@@ -1,5 +1,5 @@
 ---
-title: Where Breathwork Tech Is Going (and What It Should Never Replace)
+title: Where breathwork tech is going (and what it should never replace)
 slug: future-of-breathwork-tech
 description: Collin Chartier's take on where breathwork apps are headed, what GroundApp does today, and the human part no app should try to replace.
 date: 2026-03-26
@@ -13,7 +13,7 @@ That's not coaching. That's counting.
 
 I think the next few years of breathwork tech will be about closing that gap. Here's where I think it's going, what GroundApp does today, and what I think tech should never try to replace.
 
-## The One-Size-Fits-All Problem
+## The one-size-fits-all problem
 
 Open almost any breathwork app right now and you'll see a list of techniques: Box Breathing, 4-7-8, Wim Hof, Coherent Breathing. Pick one. Set a timer. Go.
 
@@ -26,7 +26,7 @@ But which one should you pick? That depends on:
 
 A static menu can't answer any of those questions. A good breathwork coach can.
 
-## What GroundApp Does Today
+## What GroundApp does today
 
 GroundApp is my attempt to bring a little of that coaching into an app, without pretending to be something it isn't.
 
@@ -38,7 +38,7 @@ It connects to Apple Health, which brings in data from wearables like Whoop, Gar
 
 That's it. No magic. Just a coach's structure in your pocket.
 
-## Where I Think Breathwork Tech Is Going
+## Where I think breathwork tech is going
 
 Here's what I expect the next generation of breathwork tools to try. To be clear: this is where I think the field is heading, not a list of what GroundApp does.
 
@@ -48,19 +48,19 @@ Here's what I expect the next generation of breathwork tools to try. To be clear
 
 Some of that is exciting. All of it raises real questions. Health data is personal. Language models can be confidently wrong. And a breathing cue delivered at the wrong moment, to someone in a panic, isn't a small mistake. Any app that goes down this road has to earn trust slowly and be honest about what it's doing with your data.
 
-## The Coaching Gap
+## The coaching gap
 
 One-on-one coaching costs real money, and good breathwork coaches can be hard to find. The people who need nervous system regulation the most, the chronically stressed, the anxious, the burned out, often can't get to a coach. They download an app, try Box Breathing once, and give up because nobody told them it wasn't the right breath for that moment.
 
 That's the gap I care about. Tech can make good guidance easier to reach. It can't replace a human who's paying attention to you.
 
-## What Tech Should Never Replace
+## What tech should never replace
 
 Nothing replaces human connection. A coach who notices your shoulders creeping up. A friend who breathes with you before a hard conversation. A therapist who helps you understand why your body keeps sounding the alarm.
 
 The best breathwork tech will be the kind that sends you back to your own body, and back to the people in your life, more often. Not the kind that keeps you staring at a screen.
 
-## Why Now
+## Why now
 
 A few things make this a moment worth paying attention to:
 
@@ -68,8 +68,8 @@ A few things make this a moment worth paying attention to:
 2. **The tools have gotten better.** Language models can now make sense of how people describe their feelings in their own words. That opens doors, and it raises the privacy and safety questions above.
 3. **Voice technology has matured.** A coach's voice can now be modeled from their own recordings, which is how the narration in GroundApp is made.
 
-## Try It
+## Try it
 
-GroundApp is on the App Store for iPhone, with an Apple Watch app included. It's free to download, with four techniques free forever. GroundApp Premium is $39.99 a year and unlocks all 35 techniques, 15 guided sessions and the daily check-in.
+GroundApp is on the App Store for iPhone, with an Apple Watch app included. It's free to download, with four techniques free forever. GroundApp Premium is $39.99 a year in the US and adds all techniques and guided sessions in Collin's voice.
 
 The future of breathwork isn't a better timer. It's something closer to a coach. GroundApp is my first step in that direction.

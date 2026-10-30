@@ -1,5 +1,5 @@
 ---
-title: Nervous System Regulation: The Skill Nobody Taught You
+title: Nervous system regulation: the skill nobody taught you
 slug: nervous-system-regulation-explained
 description: What your nervous system is actually doing, what it costs when it gets stuck in stress mode, and why your breath is the most direct way to shift it.
 date: 2026-03-26
@@ -11,7 +11,7 @@ You were taught how to read, how to write, how to solve equations. You were neve
 
 It's the most important skill you were never taught. And it changes everything.
 
-## What Is Your Nervous System Actually Doing?
+## What is your nervous system actually doing?
 
 Your autonomic nervous system has two main branches:
 
@@ -23,7 +23,7 @@ A healthy nervous system moves fluidly between the two. Sympathetic when you nee
 
 **The problem:** a lot of us spend most of the day stuck on the sympathetic side. Not because a lion is chasing us, but because the inbox is full, the phone won't stop buzzing, and we slept five and a half hours last night.
 
-## The Real Cost of a Dysregulated Nervous System
+## The real cost of a dysregulated nervous system
 
 When your nervous system gets stuck in stress mode, the effects show up everywhere:
 
@@ -36,7 +36,7 @@ When your nervous system gets stuck in stress mode, the effects show up everywhe
 
 This isn't weakness. It's physiology. Your body is doing exactly what it was built to do. It's just stuck in the wrong mode.
 
-## What Nervous System Regulation Actually Looks Like
+## What nervous system regulation actually looks like
 
 Nervous system regulation isn't about being calm all the time. It's about being able to **shift states on purpose**.
 
@@ -49,7 +49,7 @@ A well-regulated nervous system means:
 
 The good news: **this is a skill, and it can be trained.** Your nervous system adapts to the inputs you give it. And the most direct input you have is your breath.
 
-## Why Breathwork Is the Most Direct Way In
+## Why breathwork is the most direct way in
 
 Here's what makes breathwork different from journaling, exercise or most other stress tools: **breathing is the one part of your autonomic nervous system you can also control on purpose.**
 
@@ -64,7 +64,7 @@ Here's what's going on:
 3. **Heart rate variability (HRV):** Breathing at around 5.5 to 6 breaths a minute produces the largest swings in heart rate for most people. HRV is one of the best windows we have into how well your nervous system handles stress
 4. **Getting your thinking brain back:** Slowing down and focusing on your breath gives you something to do besides spiral, and as your body settles, it gets easier to think clearly
 
-## The Right Technique Matters
+## The right technique matters
 
 Not all breathwork does the same thing. Different techniques push your nervous system in different directions:
 
@@ -86,7 +86,7 @@ Not all breathwork does the same thing. Different techniques push your nervous s
 
 The challenge is knowing which technique to use, and when. When you're stressed, you're not in the best state to make that call. That's exactly why GroundApp starts with a check-in: you tap how you feel on a feelings wheel, add intensity and energy, and it matches you to a session. No guessing in the moment.
 
-## Start Here: One Technique, Two Minutes
+## Start here: one technique, two minutes
 
 If you've never done breathwork for nervous system regulation, start with this.
 
@@ -101,7 +101,7 @@ That's it. Three to five breaths. In the Stanford study (Balban, Huberman, Spieg
 
 If you'd rather have something guide you, Box Breathing is one of the four techniques that are free forever in GroundApp.
 
-## The Compound Effect
+## The compound effect
 
 Like any skill, nervous system regulation gets stronger with practice. The goal isn't one perfect session. It's a few minutes a day, most days, until shifting your state is something you can do on demand.
 

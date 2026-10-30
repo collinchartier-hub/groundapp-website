@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Bodie's Breath Run | A breathwork game by GroundApp</title>
+<meta name="description" content="A free breathwork game from GroundApp. Race Kip the Caffeine Crow with one button, hold your breath through Worry Clouds, and try The Big Hold to beat your own breath-hold record. Plays in your browser.">
+<meta name="theme-color" content="#1A110E">
+<meta name="author" content="Collin Chartier">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="apple-itunes-app" content="app-id=6760352779, affiliate-data=pt=128638571&amp;ct=site-banner">
+<meta property="og:title" content="Bodie's Breath Run">
+<meta property="og:description" content="Race Kip the Caffeine Crow, push your longest breath hold, and learn real breathing techniques. A free game from GroundApp.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://groundapp.live/play">
+<meta property="og:image" content="https://groundapp.live/img/play/bodie-run-og-v1.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Bodie, GroundApp's breathing figure, sitting on his cushion next to Kip the Caffeine Crow">
+<meta property="og:site_name" content="GroundApp">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Bodie's Breath Run">
+<meta name="twitter:description" content="Race Kip, push your longest breath hold, and learn real breathing techniques. A free game from GroundApp.">
+<meta name="twitter:image" content="https://groundapp.live/img/play/bodie-run-og-v1.jpg">
+<meta name="twitter:image:alt" content="Bodie, GroundApp's breathing figure, sitting on his cushion next to Kip the Caffeine Crow">
+<link rel="canonical" href="https://groundapp.live/play">
+<link rel="icon" type="image/svg+xml" href="/lung-logo.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preload" href="/assets/fonts/source-serif-4-latin-v1.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/ground-font-type-v1.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/ground-tokens-v1.css">
+<link rel="stylesheet" href="/assets/css/site-v3.css">
+<link rel="stylesheet" href="/assets/css/bodie-run-v1.css">
+<style>
+/* Site v3 header and footer on /play. site-v3.css loads before the game stylesheet, so the game's rules win where both
+   style the same thing; these lines undo the few site rules the game does not set itself, override the old bar and
+   footer rules still inside bodie-run-v1.css (SITE_CSS, kept until the next filename bump), and set the page around
+   the game (title, cast, courses) in kit v5 type. The game screen keeps its own type. */
+body > .wrap { padding-top: calc(var(--head-h) + 24px); }
+.btn:where(:not(.btn-gold)) { display: inline-block; min-height: 0; }
+.site-head .btn-gold, .menu .btn-gold { padding: 10px 18px; border: 0; border-radius: var(--radius-button); font: 600 15px/1.2 var(--font-text); letter-spacing: 0; }
+.menu .btn-gold { padding: 14px 26px; font-size: 16px; }
+.wrap .lede { font-size: inherit; line-height: inherit; color: inherit; }
+.wrap .quote { font: inherit; color: inherit; }
+.stage img, .stage svg, body > .wrap > section img { display: revert; }
+body > .wrap > header.top h1 { font: 400 clamp(30px, 1.4rem + 1.6vw, 44px)/1.1 var(--font-display); font-variation-settings: "opsz" 60; letter-spacing: -.01em; text-transform: none; }
+body > .wrap > header.top p { font: 400 16px/1.5 var(--font-text); }
+body > .wrap > section { font-family: var(--font-text); }
+body > .wrap > section h3 { font: 400 clamp(26px, 1.2rem + .8vw, 32px)/1.2 var(--font-display); font-variation-settings: "opsz" 60; letter-spacing: 0; text-transform: none; }
+body > .wrap > section h4, body > .wrap > section .nm, body > .wrap > section .rl, body > .wrap > section .btn { font-family: var(--font-text); }
+body > .site-foot { display: block; padding: 72px 0 calc(env(safe-area-inset-bottom) + 96px); border-top: 0; color: var(--text-2); font: 400 16px/1.6 var(--font-text); }
+body > .site-foot .foot-nav { gap: 0 4px; }
+body > .site-foot a { color: var(--text-2); }
+@media (hover: hover) and (pointer: fine) { body > .site-foot .foot-nav a:hover { color: var(--text); } }
+</style>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "VideoGame", "name": "Bodie's Breath Run", "url": "https://groundapp.live/play",
+  "description": "A free breathwork game from GroundApp. Race Kip the Caffeine Crow with one button, hold your breath through Worry Clouds, and try The Big Hold to beat your own breath-hold record. Plays in your browser.", "genre": ["Casual", "Health and fitness"], "gamePlatform": "Web browser", "applicationCategory": "Game",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+  "publisher": {"@type": "Organization", "name": "GroundApp", "url": "https://groundapp.live"}, "image": "https://groundapp.live/img/play/bodie-run-og-v1.jpg"}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <a class="skip" href="#stage">Skip to the game</a>
+  <svg width="0" height="0" class="vh" aria-hidden="true" focusable="false">
+    <symbol id="i-apple" viewBox="0 0 24 24"><path fill="currentColor" d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></symbol>
+    <symbol id="i-bodie" viewBox="0 0 24 24"><circle cx="12" cy="6.6" r="3.3" fill="currentColor"/><ellipse cx="12" cy="13.8" rx="4.8" ry="4.2" fill="currentColor"/><ellipse cx="12" cy="19.6" rx="8" ry="2" fill="currentColor" opacity=".5"/></symbol>
+  </svg>
+  <header class="site-head">
+    <a href="/" class="brand" aria-label="GroundApp home"><img src="/lung-logo.svg" alt="" width="28" height="28"><span>GroundApp</span></a>
+    <nav class="head-nav" aria-label="Main">
+      <a href="/#check-in">App</a>
+      <a href="/#story">Story</a>
+      <a href="/#pricing">Pricing</a>
+    </nav>
+    <a class="play-link" href="/play" aria-current="page"><svg aria-hidden="true"><use href="#i-bodie"/></svg>Play</a>
+    <a class="btn btn-gold btn-sm" href="https://apps.apple.com/app/apple-store/id6760352779?pt=128638571&amp;ct=site-play-bar&amp;mt=8" data-ct="play-bar"><svg aria-hidden="true"><use href="#i-apple"/></svg>Get the app</a>
+    <button type="button" class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu" aria-label="Open menu">Menu</button>
+  </header>
+  <nav class="menu" id="menu" aria-label="Menu" hidden>
+    <a href="/#check-in">App</a>
+    <a href="/#story">Story</a>
+    <a href="/#pricing">Pricing</a>
+    <a href="/play" aria-current="page">Play</a>
+    <a class="btn btn-gold" href="https://apps.apple.com/app/apple-store/id6760352779?pt=128638571&amp;ct=site-play-menu&amp;mt=8" data-ct="play-menu"><svg aria-hidden="true"><use href="#i-apple"/></svg>Download on the App Store</a>
+  </nav>
+  <header class="top">
+    <h1>Bodie's Breath Run</h1>
+    <p>A GroundApp game. One button. Hold your breath to win.</p>
+  </header>
+
+  <div class="stage" id="stage">
+    <canvas id="gl" aria-label="Game screen"></canvas>
+    <div class="fx" id="fx"></div>
+    <div class="hud" id="hud" hidden></div>
+    <div class="cue-zone callout" id="callout" hidden aria-live="polite"><b id="callout-t"></b><span id="callout-s"></span></div>
+    <div class="cue-zone countdown" id="countdown" hidden><b id="countdown-t"></b></div>
+    <div class="hud-btns" id="hud-btns">
+      <button class="icon-btn" id="btn-sound" type="button">Sound on</button>
+      <button class="icon-btn" id="btn-voice" type="button">Voice on</button>
+      <button class="icon-btn" id="btn-glow" type="button">Glow on</button>
+      <button class="icon-btn" id="btn-full" type="button">Full screen</button>
+      <button class="icon-btn" id="btn-pause" type="button" hidden>Pause</button>
+    </div>
+
+    <div class="overlay side" id="ov-title">
+      <div class="panel">
+        <div class="eyebrow">A GroundApp game</div>
+        <h2>Bodie's Breath Run</h2>
+        <p class="lede">Race Kip the Caffeine Crow, push your longest breath hold, and learn real breathwork along the way.</p>
+        <div class="menu-grid">
+          <button class="btn big" id="btn-race" type="button">Race Kip<small>5 courses, 5 breathing techniques</small></button>
+          <button class="btn big sea" id="btn-deep" type="button">The Big Hold<small>Max breath hold. Beat your record</small></button>
+          <button class="btn ghost" id="btn-surf" type="button">Breath Surf</button>
+          <button class="btn ghost" id="btn-daily" type="button">Daily Dash</button>
+          <button class="btn ghost" id="btn-duel" type="button">2 Player Duel</button>
+          <button class="btn ghost" id="btn-shop" type="button">Root Market</button>
+          <button class="btn ghost" id="btn-hall" type="button">Hall of Breath</button>
+          <button class="btn ghost" id="btn-cast" type="button">Meet the cast</button>
+          <button class="btn ghost" id="btn-help" type="button">How to play</button>
+        </div>
+        <div class="wallet" id="wallet-title"></div>
+        <div class="hint">Press and hold anywhere to breathe with Bodie</div>
+      </div>
+    </div>
+
+    <div class="overlay side" id="ov-courses" hidden>
+      <div class="panel">
+        <div class="eyebrow" id="courses-mode">Race Kip</div>
+        <h2>Pick a course</h2>
+        <div class="list" id="courses"></div>
+        <div class="row"><button class="btn ghost" id="btn-courses-back" type="button">Back</button></div>
+      </div>
+    </div>
+
+    <div class="overlay center" id="ov-brief" hidden>
+      <div class="card">
+        <div class="speaker"><img data-portrait="sage" alt="Sage the Owl">
+          <div><div class="eyebrow" id="brief-course">Course 1</div><h2 id="brief-title">Root Hollow</h2></div>
+        </div>
+        <p id="brief-tip"></p>
+        <ul class="chs" id="brief-ch"></ul>
+        <div class="bench" id="brief-bench"></div>
+        <p class="muted" id="brief-controls"></p>
+        <div class="row"><button class="btn big" id="btn-go" type="button">Start the race</button><button class="btn ghost" id="btn-brief-back" type="button">Back</button></div>
+      </div>
+    </div>
+
+    <div class="overlay center" id="ov-deep" hidden>
+      <div class="card">
+        <div class="eyebrow">Max breath hold</div>
+        <h2 class="sea">The Big Hold</h2>
+        <p>Put a thumb on the screen, hold your breath and keep it there. Bodie dives as long as your thumb stays down. Let go the moment you need to breathe. Your time and distance are saved, and next dive you'll see flags for your best and your last one.</p>
+        <div class="tabs" role="tablist"><button class="tab" id="tab-static" type="button" role="tab" aria-selected="true">Static: just hold</button><button class="tab" id="tab-dash" type="button" role="tab" aria-selected="false">Dash: hold and dodge</button></div>
+        <p class="muted" id="deep-sub-desc"></p>
+        <div class="bench" id="deep-bench"></div>
+        <svg class="chart" id="deep-chart" role="img" aria-label="Your recent dives"></svg>
+        <div class="safety"><b>Breathe safe.</b> Sit or lie down. Never practice breath holds in or near water, while driving, or standing up. Stop if you feel dizzy, tingly or light-headed. Skip this mode if you're pregnant or have a heart or lung condition.</div>
+        <div class="row"><button class="btn big sea" id="btn-deep-go" type="button">I'm sitting down. Let's dive</button><button class="btn ghost" id="btn-deep-back" type="button">Back</button></div>
+      </div>
+    </div>
+
+    <div class="overlay side" id="ov-surf" hidden>
+      <div class="panel">
+        <div class="eyebrow">Five breathing techniques</div>
+        <h2>Breath Surf</h2>
+        <p class="muted">Bodie floats on his cushion. Follow the golden ribbon: press and hold as you breathe in, let go as you breathe out. Breathe for real along with him.</p>
+        <div class="list" id="surf-list"></div>
+        <div class="row"><button class="btn ghost" id="btn-surf-back" type="button">Back</button></div>
+      </div>
+    </div>
+
+    <div class="overlay center" id="ov-result" hidden>
+      <div class="card">
+        <div class="eyebrow" id="res-eyebrow">Course 1</div>
+        <h2 id="res-title">Bodie wins</h2>
+        <p id="res-line"></p>
+        <div id="res-body"></div>
+        <div class="row">
+          <button class="btn" id="btn-next" type="button">Next course</button>
+          <button class="btn ghost" id="btn-again" type="button">Again</button>
+          <button class="btn ghost" id="btn-res-shop" type="button">Shop</button>
+          <button class="btn ghost" id="btn-res-menu" type="button">Menu</button>
+        </div>
+        <div class="wallet" id="wallet-res"></div>
+      </div>
+    </div>
+
+    <div class="overlay side" id="ov-shop" hidden>
+      <div class="panel">
+        <div class="speaker"><img data-portrait="ember" alt="Ember the Fox">
+          <div><div class="eyebrow">Ember the Fox</div><h2>Root Market</h2></div>
+        </div>
+        <p class="muted">"Seeds turn into Gold Leaves at the finish. Leaves buy upgrades and new looks. Some looks need stars from course challenges."</p>
+        <div class="tabs" role="tablist"><button class="tab" id="tab-up" type="button" role="tab" aria-selected="true">Upgrades</button><button class="tab" id="tab-looks" type="button" role="tab" aria-selected="false">Bodie's looks</button></div>
+        <div class="shop" id="shop-list"></div>
+        <div class="wallet" id="wallet-shop"></div>
+        <div class="row"><button class="btn ghost" id="btn-shop-back" type="button">Done</button></div>
+      </div>
+    </div>
+
+    <div class="overlay side" id="ov-hall" hidden>
+      <div class="panel">
+        <div class="eyebrow">Everyone who opens this page</div>
+        <h2>Hall of Breath</h2>
+        <div class="tabs" id="hall-tabs" role="tablist"></div>
+        <div class="hall" id="hall-list"></div>
+        <p class="muted" id="hall-note"></p>
+        <div class="row"><button class="btn ghost" id="btn-hall-back" type="button">Back</button></div>
+      </div>
+    </div>
+
+    <div class="overlay cast-ov" id="ov-cast" hidden>
+      <div class="card cast-card">
+        <div class="speaker"><img id="cast-img" alt=""><div><div class="eyebrow" id="cast-role">Hero</div><h2 id="cast-name">Bodie</h2></div></div>
+        <p class="cast-line" id="cast-line"></p>
+        <p class="muted" id="cast-fact"></p>
+        <div class="row"><button class="btn" id="btn-cast-next" type="button">Next</button><button class="btn ghost" id="btn-cast-replay" type="button">Hear it again</button><button class="btn ghost" id="btn-cast-skip" type="button">Skip</button></div>
+        <div class="cast-dots" id="cast-dots" aria-hidden="true"></div>
+      </div>
+    </div>
+
+    <div class="overlay center" id="ov-help" hidden>
+      <div class="card">
+        <div class="eyebrow">How to play</div>
+        <h2>One button. Real breathing.</h2>
+        <div class="help-sec"><h4>Race Kip</h4><p><b>Tap</b> to jump. <b>Press and keep holding</b> to hold your breath: Bodie's belly glows, he floats, walks through Worry Clouds and dives under logs. <b>Let go</b> to breathe out and refill. Hold too long and he goes PFFFT. Breathe in a Worry Cloud and he POPS. Hold 4 seconds for a <b>Box Breath</b> and get Flow.</p></div>
+        <div class="help-sec"><h4>Course techniques</h4><p><b>Sigh Swamp:</b> double tap to do a physiological sigh and blow storms away. <b>Power Peaks:</b> on a power pad, tap tap tap for power breaths, then hold through the thin air. <b>Starfall Temple:</b> ride an updraft, then hold to glide through the rhythm rings.</p></div>
+        <div class="help-sec"><h4>The Big Hold</h4><p>Thumb down, breath held, Bodie dives. Let go when you need air. In Dash, tap with a second finger (or <kbd>↑</kbd>) to swim up past jellyfish and coral while your first finger keeps holding. On a keyboard, hold <kbd>Space</kbd> or the mouse button.</p></div>
+        <div class="help-sec"><h4>Breath Surf</h4><p>Five techniques: resonance breathing, box breathing, 4-7-8, the physiological sigh and power breaths. Press as you breathe in, let go as you breathe out, and stay on the ribbon.</p></div>
+        <p class="muted"><kbd>Space</kbd> <kbd>↑</kbd> <kbd>W</kbd>, click or tap. Duel: Player 1 is <kbd>W</kbd>/<kbd>Space</kbd> or the left half of the screen, Player 2 is <kbd>↑</kbd>/<kbd>L</kbd> or the right half. <kbd>P</kbd> pauses.</p>
+        <div class="row"><button class="btn" id="btn-help-back" type="button">Got it</button></div>
+      </div>
+    </div>
+
+    <div class="overlay center" id="ov-pause" hidden>
+      <div class="card">
+        <div class="eyebrow">Paused</div>
+        <h2>Take a breath</h2>
+        <div class="row"><button class="btn" id="btn-resume" type="button">Resume</button><button class="btn ghost" id="btn-quit" type="button">Quit to menu</button></div>
+      </div>
+    </div>
+
+    <div class="overlay center" id="ov-nogl" hidden>
+      <div class="card">
+        <div class="eyebrow">Can't start the game</div>
+        <h2>3D isn't available</h2>
+        <p id="nogl-msg">This browser can't run WebGL, which the game needs. Try the latest Chrome, Safari or Firefox.</p>
+      </div>
+    </div>
+  </div>
+
+  <section>
+    <h3>The cast</h3>
+    <p class="muted cast-intro">Tap a card to hear them, or press Meet the cast in the game.</p>
+    <div class="cast">
+      <div class="who"><img data-portrait="bodie" alt="Bodie sitting on his cushion"><div class="rl">Hero</div><div class="nm">Bodie</div><p>GroundApp's breathing buddy. His belly fills and glows gold when he holds a breath, and his eyes close. Runs on belly breaths. Has never skipped an exhale.</p><button class="btn ghost hear" type="button" data-who="bodie">Hear Bodie</button></div>
+      <div class="who"><img data-portrait="kip" alt="Kip the Caffeine Crow"><div class="rl">Rival</div><div class="nm">Kip the Caffeine Crow</div><p>Fast, loud, on espresso number seven. Sprints in bursts, then crashes hard. Favorite drink: espresso. Second favorite: also espresso.</p><button class="btn ghost hear" type="button" data-who="kip">Hear Kip</button></div>
+      <div class="who"><img data-portrait="sage" alt="Sage the Owl"><div class="rl">Coach</div><div class="nm">Sage the Owl</div><p>Lives in the Great Tree. Ring eyes, calm voice, calls every breath cue. Has never rushed. Not once. Not even for dessert.</p><button class="btn ghost hear" type="button" data-who="sage">Hear Sage</button></div>
+      <div class="who"><img data-portrait="ember" alt="Ember the Fox"><div class="rl">Shopkeeper</div><div class="nm">Ember the Fox</div><p>Runs the Root Market. Swaps your Breath Seeds for Gold Leaves and sells upgrades and new looks. Accepts seeds, leaves and compliments.</p><button class="btn ghost hear" type="button" data-who="ember">Hear Ember</button></div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Five courses, five techniques</h3>
+    <div class="rules">
+      <div><h4>Root Hollow and Still Lake</h4><p>Box breathing and breath-hold dives. Hold through Worry Clouds, dive under logs, and hold 4 seconds for a Box Breath and a burst of Flow.</p></div>
+      <div><h4>Sigh Swamp and Power Peaks</h4><p>The physiological sigh (two breaths in, one long breath out) blows storms away. Power breaths charge your lungs past 100% for the long hold through thin air.</p></div>
+      <div><h4>Starfall Temple and The Big Hold</h4><p>Updrafts and rhythm rings test your glide control. Then push your real max hold in the deep, and beat your own flags on the sea floor.</p></div>
+    </div>
+  </section>
+</div>
+
+<footer class="site-foot" id="foot">
+  <div class="wrap foot-grid">
+    <p class="foot-tag">From the mind into the body. Breathwork by Collin Chartier.</p>
+    <nav class="foot-nav" aria-label="Footer">
+      <a href="/blog/">Blog</a><a href="/play">Play</a><a href="/support">Support</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="https://instagram.com/collinchartier" rel="noopener">Instagram</a><a href="mailto:collin@groundapp.live">Contact</a><a href="https://apps.apple.com/app/apple-store/id6760352779?pt=128638571&amp;ct=site-play-footer&amp;mt=8" data-ct="play-footer">App Store</a>
+    </nav>
+    <div class="foot-fine">
+      <p>GroundApp is coaching and education, not medical or mental health treatment.</p>
+      <p>&copy; 2026 GroundApp. Made by Collin Chartier.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+// If the 3D engine can't load (offline, blocked CDN), say so instead of leaving dead buttons.
+setTimeout(function () {
+  if (window.__bodieBoot) return;
+  var o = document.getElementById("ov-nogl"); if (!o) return;
+  document.getElementById("nogl-msg").textContent = "The 3D engine didn't load. Check your connection and reload the page.";
+  var t = document.getElementById("ov-title"); if (t) t.hidden = true;
+  o.hidden = false;
+}, 12000);
+</script>
+<script type="module" src="/js/bodie-run-v1.js"></script>
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "03e507bb97d74e78bc8de83dc6b261ec"}'></script>
+<script src="/js/app-links-v3.js" defer></script>
+<script src="/js/site-menu-v1.js" defer></script>
+</body>
+</html>

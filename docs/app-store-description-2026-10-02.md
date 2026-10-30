@@ -1,3 +1,5 @@
+> Superseded by app-store-description-2026-10-30.md; historical.
+
 # App Store description: corrected draft (2026-10-02)
 
 Paste into App Store Connect with the next submission (1.1.1). Every claim matches shipped v1.1.0 code (fact sheet from the 2026-10-02 website audit).

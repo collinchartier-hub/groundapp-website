@@ -1,0 +1,100 @@
+/* Ground Brand Kit v5 tokens (copied 2026-10-30 from ~/Desktop/Desktop-Archive/Ground Brand Kit/tokens.css; source of truth ~/dev/ground-type). Font URLs point at site/assets/fonts. */
+:root, [data-theme="night"] {
+  --bg: #1a110e;
+  --bg-2: #231916;
+  --card: #2d1e17;
+  --card-dark: #2d1e17;
+  --on-dark: #e8ddd0;
+  --text: #e8ddd0;
+  --text-2: #a89585;
+  --muted: #a89585;
+  --border: rgba(168,149,133,0.15);
+  --gold: #c4935a;
+  --gold-2: #d4a574;
+  --gold-text: #c4935a;
+  --gold-em: var(--gold-2);
+  --gold-tint: rgba(196,147,90,0.12);
+  --on-gold: #1a110e;
+  --sage: #7a8b6f;
+  --sage-tint: rgba(122,139,111,0.16);
+  --clay: #8b5e3c;
+  --clay-tint: rgba(139,94,60,0.2);
+  --danger: #e8a0a0;
+  --focus: var(--gold);
+  --breath-hold: #3d1218;
+  --breath-maroon: #5a2028;
+  --breath-exhale: #8b5e3c;
+  --breath-inhale: #c4935a;
+  --breath-amber: #d4a574;
+}
+[data-theme="paper"] {
+  --bg: #f7f3ec;
+  --bg-2: #efe7d9;
+  --card: #fdfbf7;
+  --card-dark: #1a110e;
+  --text: #1c1917;
+  --text-2: #3d3833;
+  --muted: #7a7169;
+  --border: #ddd3c4;
+  --gold-text: #8b5e3c;
+  --gold-em: var(--gold-text);
+  --gold-tint: #f3e6c4;
+  --sage: #4f6b55;
+  --sage-tint: #dde6db;
+  --clay: #a9502d;
+  --clay-tint: #f2ded3;
+  --danger: var(--clay);
+  --focus: var(--gold-text);
+}
+:root {
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 32px;
+  --card-pad: 32px;
+  --section: 112px;
+  --page-margin: 0.72in;
+  --radius-button: 14px;
+  --radius-pill: 100px;
+  --radius-feature: 4px;
+  --radius-card: 12px;
+  --radius-app-card: 16px;
+  --container: 1100px;
+  --measure: 620px;
+  --breath-cycle: 16s;
+  --glow: 0 8px 30px rgba(196,147,90,0.3);
+  --glow-soft: 0 4px 20px rgba(196,147,90,0.3);
+  --font-display: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-text: "Ground Font Type", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-data: "Ground Font Type", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-app-serif: ui-serif, "New York", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --font-app-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+}
+/* Type v5, 2026-10-15: Source Serif 4 headlines (sentence case) + Ground Font Type for everything else. Ground Font Type's italic is its slant axis, hence the oblique range. */
+@font-face { font-family: "Source Serif 4"; src: url("/assets/fonts/source-serif-4-latin-v1.woff2") format("woff2"); font-weight: 200 900; font-style: normal; font-display: swap; }
+@font-face { font-family: "Ground Font Type"; src: url("/assets/fonts/ground-font-type-v1.woff2") format("woff2"); font-weight: 100 900; font-style: oblique 0deg 12deg; font-display: swap; }
+.t-hero { font-family: var(--font-display); font-size: 64px; line-height: 1.05; font-weight: 400; font-variation-settings: "opsz" 60; }
+.t-h2 { font-family: var(--font-display); font-size: 44px; line-height: 1.1; font-weight: 400; font-variation-settings: "opsz" 60; }
+.t-letters { font-family: var(--font-display); font-size: 44px; line-height: 1.0; font-weight: 700; font-variation-settings: "opsz" 60; }
+.t-cue { font-family: var(--font-display); font-size: 21px; line-height: 1.35; font-weight: 400; }
+.t-card-title { font-family: var(--font-text); font-size: 22px; line-height: 1.25; font-weight: 500; }
+.t-lead { font-family: var(--font-text); font-size: 19px; line-height: 1.6; font-weight: 400; }
+.t-body { font-family: var(--font-text); font-size: 17px; line-height: 1.65; font-weight: 400; }
+.t-small { font-family: var(--font-text); font-size: 15px; line-height: 1.6; font-weight: 400; }
+.t-button { font-family: var(--font-text); font-size: 16px; line-height: 1.2; font-weight: 600; }
+.t-count { font-family: var(--font-data); font-size: 96px; line-height: 1.0; font-weight: 300; font-variant-numeric: tabular-nums; }
+.t-timer { font-family: var(--font-data); font-size: 32px; line-height: 1.1; font-weight: 400; font-variant-numeric: tabular-nums; }
+.t-data { font-family: var(--font-data); font-size: 13px; line-height: 1.4; font-weight: 500; font-variant-numeric: tabular-nums; }
+.t-breath { font-family: var(--font-data); font-size: 17px; line-height: 1.4; font-weight: 400; font-variant-numeric: tabular-nums; }
+.t-print-cover { font-family: var(--font-display); font-size: 90.67px; line-height: 1.0; font-weight: 400; font-variation-settings: "opsz" 60; }
+.t-print-band { font-family: var(--font-display); font-size: 48px; line-height: 1.05; font-weight: 400; font-variation-settings: "opsz" 60; }
+.t-print-h2 { font-family: var(--font-display); font-size: 33.33px; line-height: 1.1; font-weight: 400; font-variation-settings: "opsz" 60; }
+.t-print-card-title { font-family: var(--font-text); font-size: 24px; line-height: 1.15; font-weight: 500; }
+.t-print-h3 { font-family: var(--font-text); font-size: 18px; line-height: 1.25; font-weight: 500; }
+.t-print-lede { font-family: var(--font-text); font-size: 16.53px; line-height: 1.42; font-weight: 400; }
+.t-print-body { font-family: var(--font-text); font-size: 13.73px; line-height: 1.5; font-weight: 400; }
+.t-print-data { font-family: var(--font-data); font-size: 10.67px; line-height: 1.3; font-weight: 500; font-variant-numeric: tabular-nums; }
+.t-print-numeral { font-family: var(--font-data); font-size: 20px; line-height: 1; font-weight: 400; font-variant-numeric: tabular-nums; }
+.t-app-hero { font-family: var(--font-app-serif); font-size: 34px; line-height: 41px; font-weight: 400; }
+.t-app-h1 { font-family: var(--font-app-serif); font-size: 28px; line-height: 34px; font-weight: 400; }
+.t-app-body { font-family: var(--font-app-serif); font-size: 17px; line-height: 22px; font-weight: 400; }
+.t-app-overline { font-family: var(--font-app-sans); font-size: 11px; line-height: 13px; font-weight: 500; letter-spacing: 1.8px; }

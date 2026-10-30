@@ -1,0 +1,482 @@
+<title>Bodie's Breath Run</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=Source+Code+Pro:wght@400;600;700&display=swap">
+<style>
+/* Layout: the 3D stage is the page. Inside it, three fixed bands that never share space:
+   the HUD band on top, the cue band under it (breath instructions and countdown only), and the action band below.
+   Menus sit on the stage as a side panel or a centred card. One dark look on purpose: GroundApp colours at night. */
+:root {
+  --obsidian: #1A110E;
+  --soil: #2A1B14;
+  --bark: #3A2A1E;
+  --bone: #E8DDD0;
+  --golden: #C4935A;
+  --amber: #D4A574;
+  --driftwood: #A89585;
+  --leaf: #9AA06A;
+  --danger: #E07A5A;
+  --sea: #8FB3AC;
+  --serif: "Source Serif 4", "Iowan Old Style", Georgia, serif;
+  --mono: "Source Code Pro", ui-monospace, Menlo, monospace;
+  color-scheme: dark;
+}
+[hidden] { display: none !important; }
+html, body { background: var(--obsidian); color: var(--bone); }
+body { font-family: var(--serif); font-size: 16px; line-height: 1.55; font-optical-sizing: auto; font-synthesis: none; }
+h1, h2, .callout b, .countdown b { font-variation-settings: "opsz" 60; }
+.wrap {
+  max-width: 1180px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 18px 56px;
+  display: grid; gap: 36px;
+}
+header.top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+header.top h1 { margin: 0; font-weight: 300; font-size: clamp(22px, 3vw, 30px); letter-spacing: .01em; line-height: 1.06; text-transform: uppercase; text-wrap: balance; }
+header.top p { margin: 0; color: var(--driftwood); font-size: 14px; }
+
+.stage {
+  --hud-h: 92px; --cue-h: 96px;
+  position: relative; width: 100%; max-width: 100%; aspect-ratio: 16 / 9;
+  border-radius: 16px; overflow: hidden; background: var(--obsidian); isolation: isolate;
+  box-shadow: 0 0 0 1px rgba(196,147,90,.28), 0 30px 80px rgba(0,0,0,.55);
+  touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
+}
+@media (max-width: 700px) { .stage { --hud-h: 144px; --cue-h: 106px; aspect-ratio: 3 / 5; max-height: 84vh; } }
+.stage:fullscreen { border-radius: 0; aspect-ratio: auto; width: 100vw; height: 100vh; max-height: none; }
+canvas#gl { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+/* Action band labels (score pops, tutorial tags, Kip's chatter). JS keeps them below the cue band. */
+.fx { position: absolute; inset: 0; pointer-events: none; z-index: 2; overflow: hidden; }
+.float {
+  position: absolute; left: 0; top: 0; white-space: nowrap; translate: -50% 0;
+  font: 700 14px/1 var(--serif); letter-spacing: .04em; color: var(--amber);
+  text-shadow: 0 2px 0 rgba(26,17,14,.85), 0 0 12px rgba(26,17,14,.6);
+  animation: floatUp 1.1s ease-out forwards;
+}
+@keyframes floatUp { 0% { opacity: 0; } 15% { opacity: 1; } 100% { opacity: 0; translate: -50% -46px; } }
+.tag {
+  position: absolute; left: 0; top: 0; translate: -50% 0;
+  font: 700 12px/1 var(--serif); letter-spacing: .06em; color: var(--obsidian);
+  background: var(--amber); padding: 6px 10px; border-radius: 999px; white-space: nowrap; box-shadow: 0 4px 14px rgba(0,0,0,.4);
+}
+.say {
+  position: absolute; left: 0; top: 0; max-width: 210px;
+  font: 600 13px/1.3 var(--serif); color: var(--obsidian); background: var(--bone);
+  padding: 7px 10px; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,.4);
+}
+.say::before { content: ""; position: absolute; left: -6px; top: 50%; translate: 0 -50%; border: 6px solid transparent; border-left: 0; border-right-color: var(--bone); }
+
+/* The cue band: only breath instructions and the countdown live here. */
+.cue-zone {
+  position: absolute; left: 0; right: 0; top: calc(var(--hud-h) + 4px); height: var(--cue-h);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  text-align: center; pointer-events: none; z-index: 3; overflow: hidden;
+}
+.callout { background: linear-gradient(180deg, rgba(26,17,14,0), rgba(26,17,14,.42) 28%, rgba(26,17,14,.42) 72%, rgba(26,17,14,0)); }
+.callout b {
+  display: block; max-width: 100%; font: 300 clamp(22px, 4.3vw, 54px)/1.04 var(--serif); letter-spacing: .02em; text-transform: uppercase;
+  color: var(--amber); text-shadow: 0 3px 0 rgba(26,17,14,.7), 0 0 36px rgba(212,165,116,.4); text-wrap: balance;
+}
+.callout b:empty { display: none; }
+.callout span { display: block; max-width: 640px; font: 700 clamp(11px, 1.2vw, 13px)/1.4 var(--serif); letter-spacing: .1em; text-transform: uppercase; color: var(--bone); text-shadow: 0 2px 0 rgba(26,17,14,.8); text-wrap: balance; }
+.callout span:empty { display: none; }
+.callout.warn b { color: var(--danger); text-shadow: 0 3px 0 rgba(26,17,14,.7), 0 0 36px rgba(224,122,90,.5); }
+.callout.good b { color: #F3D7A8; }
+.callout.sea b { color: var(--sea); text-shadow: 0 3px 0 rgba(26,17,14,.7), 0 0 36px rgba(143,179,172,.45); }
+.callout.pulse b { animation: pulse .5s ease-in-out infinite alternate; }
+.callout.in b { animation: calloutIn .26s ease-out; }
+.callout.in.pulse b { animation: calloutIn .26s ease-out, pulse .5s ease-in-out .26s infinite alternate; }
+@keyframes pulse { from { scale: 1; } to { scale: 1.06; } }
+@keyframes calloutIn { from { opacity: 0; scale: 1.25; } to { opacity: 1; scale: 1; } }
+.countdown b { font: 300 clamp(34px, 7vw, 86px)/1 var(--serif); letter-spacing: .02em; text-transform: uppercase; color: var(--bone); text-shadow: 0 5px 0 rgba(26,17,14,.6), 0 0 44px rgba(212,165,116,.5); animation: calloutIn .3s ease-out; }
+
+/* HUD band */
+.hud { position: absolute; left: 0; right: 0; top: 0; height: var(--hud-h); pointer-events: none; z-index: 3; }
+.hp { position: absolute; top: 12px; left: max(12px, env(safe-area-inset-left, 0px)); display: flex; gap: 10px; align-items: center; }
+.hp.right { left: auto; right: max(12px, env(safe-area-inset-right, 0px)); flex-direction: row-reverse; text-align: right; }
+.lungs { position: relative; width: 64px; height: 64px; flex: none; }
+.lungs img { position: absolute; left: 7px; top: 7px; width: 50px; height: 50px; }
+.lungs .l-base { opacity: .2; }
+.lungs svg { position: absolute; inset: 0; width: 64px; height: 64px; rotate: -90deg; }
+.lungs circle { fill: none; stroke: var(--amber); stroke-width: 5; stroke-dasharray: 289; stroke-dashoffset: 289; stroke-linecap: round; }
+.lungs.low .l-fill { animation: blink .28s steps(2) infinite; }
+.lungs.low circle { stroke: var(--danger); }
+.lungs.box circle { stroke: #F3D7A8; }
+.lungs.super .l-fill { filter: drop-shadow(0 0 6px #F3D7A8); }
+@keyframes blink { 50% { opacity: .25; } }
+.hp-stats { display: grid; gap: 2px; font-variant-numeric: tabular-nums; }
+.hp-label { font: 700 11px/1 var(--serif); letter-spacing: .12em; color: var(--bone); }
+.hp-score { font: 600 22px/1 var(--mono); color: var(--amber); }
+.hp-score.big { font-size: 28px; }
+.hp-sub { font: 600 11px/1.25 var(--serif); letter-spacing: .08em; color: var(--driftwood); }
+.hp-sub .hot { color: #F3D7A8; }
+.hp-sub .ready { color: var(--leaf); }
+.track { position: absolute; top: 18px; left: 50%; translate: -50% 0; width: min(38%, 430px); }
+.t-line { position: relative; height: 4px; border-radius: 4px; background: rgba(232,221,208,.22); }
+.t-end { position: absolute; right: -8px; top: -9px; width: 18px; height: 18px; border-radius: 50%; background: radial-gradient(circle, var(--amber) 0 35%, rgba(212,165,116,.25) 36% 60%, transparent 61%); }
+.mk { position: absolute; top: -13px; width: 28px; height: 28px; translate: -50% 0; border-radius: 50%; object-fit: cover; background: var(--soil); box-shadow: 0 0 0 2px var(--obsidian); }
+.mk.kip { box-shadow: 0 0 0 2px var(--danger); }
+.mk.p0 { box-shadow: 0 0 0 2px var(--amber); z-index: 2; }
+.mk.p1 { box-shadow: 0 0 0 2px var(--leaf); }
+.mk.ghost { opacity: .55; box-shadow: 0 0 0 2px #F3D7A8; }
+.pin { position: absolute; top: -10px; width: 2px; height: 24px; translate: -50% 0; background: var(--driftwood); }
+.pin.best { background: #F3D7A8; }
+.t-txt { margin-top: 18px; text-align: center; font: 700 12px/1.35 var(--serif); letter-spacing: .08em; color: var(--bone); text-shadow: 0 2px 0 rgba(26,17,14,.8); }
+.t-txt .lead { color: var(--leaf); }
+.t-txt .trail { color: var(--danger); }
+.t-txt .gold { color: #F3D7A8; }
+.t-txt .dim { color: var(--driftwood); }
+@media (max-width: 700px) {
+  .track { top: 82px; width: 74%; }
+  .lungs, .lungs svg { width: 54px; height: 54px; }
+  .lungs img { left: 6px; top: 6px; width: 42px; height: 42px; }
+  .hp-score { font-size: 18px; } .hp-score.big { font-size: 22px; }
+}
+
+.hud-btns { position: absolute; right: max(10px, env(safe-area-inset-right, 0px)); bottom: 10px; display: flex; gap: 6px; z-index: 6; flex-wrap: wrap; justify-content: flex-end; }
+.icon-btn {
+  font: 600 12px/1 var(--serif); letter-spacing: .02em; color: var(--bone); background: rgba(26,17,14,.72);
+  border: 1px solid rgba(232,221,208,.25); border-radius: 999px; padding: 8px 11px; cursor: pointer;
+}
+.icon-btn:hover { border-color: var(--amber); color: var(--amber); }
+button:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+
+.overlay { position: absolute; inset: 0; z-index: 5; display: flex; align-items: center; padding: 16px 16px 54px; overflow: auto; }
+.overlay.side { justify-content: flex-start; background: linear-gradient(90deg, rgba(26,17,14,.92) 0%, rgba(26,17,14,.62) 44%, rgba(26,17,14,0) 68%); }
+.overlay.center { justify-content: center; background: radial-gradient(ellipse at center, rgba(26,17,14,.5), rgba(26,17,14,.92)); }
+.panel { width: min(430px, 100%); display: grid; gap: 14px; padding: 8px 8px 8px max(12px, 2vw); margin-block: auto; }
+.card { width: min(600px, 100%); display: grid; gap: 14px; background: rgba(42,27,20,.95); border: 1px solid rgba(196,147,90,.35); border-radius: 18px; padding: 22px 24px; margin: auto; }
+@media (max-width: 700px) {
+  #btn-full, #btn-glow { display: none; }
+  .overlay.side { align-items: flex-end; padding: 10px 10px 54px; background: linear-gradient(0deg, rgba(26,17,14,.97) 0%, rgba(26,17,14,.94) 62%, rgba(26,17,14,0) 80%); }
+  .panel { padding: 4px; margin-block: 0; gap: 10px; }
+  #ov-title .lede, #ov-title .hint { display: none; }
+  .menu-grid .btn { padding: 11px 12px; }
+  .menu-grid .btn.big { padding: 10px 14px; }
+  .card { padding: 18px; }
+}
+.panel h2, .card h2 { margin: 0; font-weight: 300; font-size: clamp(24px, 4vw, 40px); line-height: 1.06; letter-spacing: .01em; text-transform: uppercase; text-wrap: balance; }
+.card h2.win { color: var(--amber); }
+.card h2.lose { color: var(--danger); }
+.card h2.sea { color: var(--sea); }
+.panel p, .card p { margin: 0; }
+.muted { color: var(--driftwood); font-size: 14px; }
+.eyebrow { font: 400 15px/1.3 var(--serif); color: var(--driftwood); }
+.row { display: flex; gap: 10px; flex-wrap: wrap; }
+.btn {
+  font: 600 15px/1 var(--serif); letter-spacing: .04em; cursor: pointer; padding: 13px 18px; border-radius: 999px;
+  border: 1px solid var(--golden); background: var(--golden); color: var(--obsidian); text-align: center;
+}
+.btn:hover { background: var(--amber); }
+.btn.ghost { background: rgba(26,17,14,.4); color: var(--bone); border-color: rgba(232,221,208,.32); }
+.btn.ghost:hover { border-color: var(--amber); color: var(--amber); }
+.btn.big { font-size: 18px; padding: 13px 20px; }
+.btn.sea { background: var(--sea); border-color: var(--sea); }
+.btn:disabled { opacity: .4; cursor: not-allowed; }
+.menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.menu-grid .btn.big { grid-column: 1 / -1; display: grid; gap: 4px; }
+.menu-grid .btn.big small { font: 400 13px/1.2 var(--serif); opacity: .8; }
+.wallet { display: flex; gap: 16px; flex-wrap: wrap; font: 400 14px/1.3 var(--serif); color: var(--driftwood); }
+.wallet b { font: 600 14px/1.3 var(--mono); color: var(--amber); font-variant-numeric: tabular-nums; }
+.hint { font: 400 14px/1.4 var(--serif); color: var(--driftwood); }
+
+.list { display: grid; gap: 8px; }
+.pick {
+  text-align: left; cursor: pointer; padding: 12px 14px; border-radius: 12px; display: grid; gap: 3px; min-width: 0;
+  background: rgba(26,17,14,.6); border: 1px solid rgba(232,221,208,.18); color: var(--bone); font-family: var(--serif);
+}
+.pick:hover:not(:disabled) { border-color: var(--amber); }
+.pick .n { font: 400 14px/1.3 var(--serif); color: var(--amber); display: flex; justify-content: space-between; gap: 8px; }
+.pick .t { font-size: 18px; }
+.pick .b { font: 400 13px/1.4 var(--serif); color: var(--driftwood); }
+.pick:disabled { opacity: .45; cursor: not-allowed; }
+.stars { color: var(--amber); letter-spacing: .12em; }
+.stars i { font-style: normal; color: rgba(232,221,208,.25); }
+.chs { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.chs li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; font-size: 14px; align-items: baseline; }
+.chs li span:first-child { color: rgba(232,221,208,.3); }
+.chs li.got span:first-child { color: var(--amber); }
+.chs li.new span:last-child::after { content: " new"; font: 600 13px/1 var(--serif); color: var(--leaf); }
+.bench { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; font: 400 14px/1.4 var(--serif); color: var(--driftwood); }
+.bench b { font: 600 14px/1.4 var(--mono); color: #F3D7A8; font-variant-numeric: tabular-nums; }
+.safety { border: 1px solid rgba(224,122,90,.45); background: rgba(224,122,90,.08); border-radius: 12px; padding: 10px 12px; font-size: 13px; line-height: 1.45; }
+.safety b { color: var(--danger); }
+.chart { width: 100%; height: 120px; display: block; }
+.chart text { font: 400 11px var(--serif); fill: var(--driftwood); }
+.chart .val { font: 600 10px var(--mono); fill: var(--bone); }
+.chart .bar { fill: rgba(168,149,133,.55); }
+.chart .bar.best { fill: var(--amber); }
+.chart .bar.now { fill: var(--sea); }
+.chart .axis { stroke: rgba(232,221,208,.2); }
+
+.tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+.tab { font: 600 14px/1 var(--serif); padding: 9px 13px; border-radius: 999px; cursor: pointer; background: transparent; color: var(--driftwood); border: 1px solid rgba(232,221,208,.2); }
+.tab[aria-selected="true"] { color: var(--obsidian); background: var(--amber); border-color: var(--amber); }
+
+.shop { display: grid; gap: 8px; }
+.item { display: grid; grid-template-columns: 1fr auto; gap: 3px 12px; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(26,17,14,.6); border: 1px solid rgba(232,221,208,.14); }
+.item .nm { font-size: 16px; }
+.item .ds { font-size: 13px; color: var(--driftwood); grid-column: 1; }
+.item .btn { grid-row: 1 / span 2; grid-column: 2; padding: 9px 13px; font: 600 14px/1 var(--serif); }
+.item .btn .data { font: 600 13px/1 var(--mono); }
+.item.on { border-color: var(--amber); }
+
+.tally { display: grid; grid-template-columns: 1fr auto; gap: 5px 16px; font: 400 15px/1.3 var(--serif); }
+.tally span:nth-child(even) { text-align: right; color: var(--amber); font-family: var(--mono); font-size: 14px; font-variant-numeric: tabular-nums; }
+.tally .total { border-top: 1px solid rgba(232,221,208,.2); padding-top: 8px; color: var(--bone); font-weight: 700; }
+.duel-tally { display: grid; grid-template-columns: 1fr auto auto; gap: 5px 16px; font: 400 15px/1.3 var(--serif); }
+.duel-tally .h { color: var(--amber); font-weight: 600; }
+.duel-tally span:not(:nth-child(3n+1)) { text-align: right; font-family: var(--mono); font-size: 14px; font-variant-numeric: tabular-nums; }
+.big-num { font: 600 clamp(38px, 7vw, 64px)/1 var(--mono); color: #F3D7A8; font-variant-numeric: tabular-nums; }
+.badge { display: inline-block; font: 600 13px/1 var(--serif); padding: 6px 11px; border-radius: 999px; background: var(--leaf); color: var(--obsidian); }
+
+.speaker { display: flex; gap: 14px; align-items: center; }
+.speaker img { flex: none; width: 76px; height: 76px; border-radius: 50%; background: var(--soil); object-fit: cover; }
+
+.hall { display: grid; gap: 6px; }
+.hrow { display: grid; grid-template-columns: 26px 30px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 7px 10px; border-radius: 10px; background: rgba(26,17,14,.55); font-variant-numeric: tabular-nums; }
+.hrow.me { outline: 1px solid var(--amber); }
+.hrow .rk { font: 700 12px/1 var(--mono); color: var(--golden); }
+.hrow img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; }
+.hrow .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hrow .sc { font: 700 14px/1 var(--mono); color: var(--amber); }
+
+section h3 { margin: 0 0 14px; font-weight: 300; font-size: 22px; letter-spacing: .08em; text-transform: uppercase; }
+.cast { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+@media (max-width: 860px) { .cast { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.who { display: grid; gap: 6px; align-content: start; min-width: 0; }
+.who img { width: 100%; max-width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 14px; background: radial-gradient(circle at 50% 60%, #3a2619, var(--soil)); }
+.who .nm { font-size: 18px; }
+.who .rl { font: 400 14px/1 var(--serif); color: var(--amber); }
+.who p { margin: 0; font-size: 14px; color: var(--driftwood); }
+.who .hear { justify-self: start; padding: 9px 14px; font-size: 14px; }
+.who img.talk { animation: talk .22s ease-in-out 6 alternate; }
+@keyframes talk { to { transform: translateY(-6px) scale(1.02); } }
+.cast-intro { margin: -6px 0 14px; }
+.overlay.cast-ov { align-items: flex-end; justify-content: flex-start; background: linear-gradient(90deg, rgba(26,17,14,.88) 0%, rgba(26,17,14,.45) 42%, rgba(26,17,14,0) 60%); }
+.cast-card { width: min(470px, 100%); margin: 0; gap: 10px; }
+@media (max-width: 700px) {
+  .overlay.cast-ov { justify-content: center; background: linear-gradient(0deg, rgba(26,17,14,.94) 0%, rgba(26,17,14,.6) 40%, rgba(26,17,14,0) 58%); }
+  .cast-card .speaker img { display: none; }
+  .cast-card .cast-line { font-size: 16px; }
+}
+.cast-line { font-size: 18px; line-height: 1.45; }
+.cast-dots { display: flex; gap: 6px; }
+.cast-dots span { width: 8px; height: 8px; border-radius: 50%; background: rgba(232,221,208,.25); }
+.cast-dots span.on { background: var(--amber); }
+.speaker.quote img { width: 52px; height: 52px; }
+.speaker.quote p { font-size: 16px; line-height: 1.45; }
+.rules { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+@media (max-width: 760px) { .rules { grid-template-columns: 1fr; } }
+.rules div { min-width: 0; }
+.rules h4 { margin: 0 0 6px; font-weight: 600; font-size: 16px; }
+.rules p { margin: 0; color: var(--driftwood); font-size: 14px; max-width: 65ch; }
+.help-sec { display: grid; gap: 6px; }
+.help-sec h4 { margin: 0; font: 600 16px/1.2 var(--serif); color: var(--amber); }
+.help-sec p { font-size: 14px; }
+kbd { font: 700 12px/1 var(--mono); padding: 2px 6px; border: 1px solid rgba(232,221,208,.3); border-radius: 4px; color: var(--bone); }
+@media (prefers-reduced-motion: reduce) { .callout.pulse b, .callout.in b, .float, .countdown b { animation-duration: .01s !important; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <h1>Bodie's Breath Run</h1>
+    <p>A GroundApp game. One button. Hold your breath to win.</p>
+  </header>
+
+  <div class="stage" id="stage">
+    <canvas id="gl" aria-label="Game screen"></canvas>
+    <div class="fx" id="fx"></div>
+    <div class="hud" id="hud" hidden></div>
+    <div class="cue-zone callout" id="callout" hidden aria-live="polite"><b id="callout-t"></b><span id="callout-s"></span></div>
+    <div class="cue-zone countdown" id="countdown" hidden><b id="countdown-t"></b></div>
+    <div class="hud-btns" id="hud-btns">
+      <button class="icon-btn" id="btn-sound" type="button">Sound on</button>
+      <button class="icon-btn" id="btn-voice" type="button">Voice on</button>
+      <button class="icon-btn" id="btn-glow" type="button">Glow on</button>
+      <button class="icon-btn" id="btn-full" type="button">Full screen</button>
+      <button class="icon-btn" id="btn-pause" type="button" hidden>Pause</button>
+    </div>
+
+    <div class="overlay side" id="ov-title">
+      <div class="panel">
+        <div class="eyebrow">A GroundApp game</div>
+        <h2>Bodie's Breath Run</h2>
+        <p class="lede">Race Kip the Caffeine Crow, push your longest breath hold, and learn real breathwork along the way.</p>
+        <div class="menu-grid">
+          <button class="btn big" id="btn-race" type="button">Race Kip<small>5 courses, 5 breathing techniques</small></button>
+          <button class="btn big sea" id="btn-deep" type="button">The Big Hold<small>Max breath hold. Beat your record</small></button>
+          <button class="btn ghost" id="btn-surf" type="button">Breath Surf</button>
+          <button class="btn ghost" id="btn-daily" type="button">Daily Dash</button>
+          <button class="btn ghost" id="btn-duel" type="button">2 Player Duel</button>
+          <button class="btn ghost" id="btn-shop" type="button">Root Market</button>
+          <button class="btn ghost" id="btn-hall" type="button">Hall of Breath</button>
+          <button class="btn ghost" id="btn-cast" type="button">Meet the cast</button>
+          <button class="btn ghost" id="btn-help" type="button">How to play</button>
+        </div>
+        <div class="wallet" id="wallet-title"></div>
+        <div class="hint">Press and hold anywhere to breathe with Bodie</div>
+      </div>
+    </div>
+
+    <div class="overlay side" id="ov-courses" hidden>
+      <div class="panel">
+        <div class="eyebrow" id="courses-mode">Race Kip</div>
+        <h2>Pick a course</h2>
+        <div class="list" id="courses"></div>
+        <div class="row"><button class="btn ghost" id="btn-courses-back" type="button">Back</button></div>
+      </div>
+    </div>
+
+    <div class="overlay center" id="ov-brief" hidden>
+      <div class="card">
+        <div class="speaker"><img data-portrait="sage" alt="Sage the Owl">
+          <div><div class="eyebrow" id="brief-course">Course 1</div><h2 id="brief-title">Root Hollow</h2></div>
+        </div>
+        <p id="brief-tip"></p>
+        <ul class="chs" id="brief-ch"></ul>
+        <div class="bench" id="brief-bench"></div>
+        <p class="muted" id="brief-controls"></p>
+        <div class="row"><button class="btn big" id="btn-go" type="button">Start the race</button><button class="btn ghost" id="btn-brief-back" type="button">Back</button></div>
+      </div>
+    </div>
+
+    <div class="overlay center" id="ov-deep" hidden>
+      <div class="card">
+        <div class="eyebrow">Max breath hold</div>
+        <h2 class="sea">The Big Hold</h2>
+        <p>Put a thumb on the screen, hold your breath and keep it there. Bodie dives as long as your thumb stays down. Let go the moment you need to breathe. Your time and distance are saved, and next dive you'll see flags for your best and your last one.</p>
+        <div class="tabs" role="tablist"><button class="tab" id="tab-static" type="button" role="tab" aria-selected="true">Static: just hold</button><button class="tab" id="tab-dash" type="button" role="tab" aria-selected="false">Dash: hold and dodge</button></div>
+        <p class="muted" id="deep-sub-desc"></p>
+        <div class="bench" id="deep-bench"></div>
+        <svg class="chart" id="deep-chart" role="img" aria-label="Your recent dives"></svg>
+        <div class="safety"><b>Breathe safe.</b> Sit or lie down. Never practice breath holds in or near water, while driving, or standing up. Stop if you feel dizzy, tingly or light-headed. Skip this mode if you're pregnant or have a heart or lung condition.</div>
+        <div class="row"><button class="btn big sea" id="btn-deep-go" type="button">I'm sitting down. Let's dive</button><button class="btn ghost" id="btn-deep-back" type="button">Back</button></div>
+      </div>
+    </div>
+
+    <div class="overlay side" id="ov-surf" hidden>
+      <div class="panel">
+        <div class="eyebrow">Five breathing techniques</div>
+        <h2>Breath Surf</h2>
+        <p class="muted">Bodie floats on his cushion. Follow the golden ribbon: press and hold as you breathe in, let go as you breathe out. Breathe for real along with him.</p>
+        <div class="list" id="surf-list"></div>
+        <div class="row"><button class="btn ghost" id="btn-surf-back" type="button">Back</button></div>
+      </div>
+    </div>
+
+    <div class="overlay center" id="ov-result" hidden>
+      <div class="card">
+        <div class="eyebrow" id="res-eyebrow">Course 1</div>
+        <h2 id="res-title">Bodie wins</h2>
+        <p id="res-line"></p>
+        <div id="res-body"></div>
+        <div class="row">
+          <button class="btn" id="btn-next" type="button">Next course</button>
+          <button class="btn ghost" id="btn-again" type="button">Again</button>
+          <button class="btn ghost" id="btn-res-shop" type="button">Shop</button>
+          <button class="btn ghost" id="btn-res-menu" type="button">Menu</button>
+        </div>
+        <div class="wallet" id="wallet-res"></div>
+      </div>
+    </div>
+
+    <div class="overlay side" id="ov-shop" hidden>
+      <div class="panel">
+        <div class="speaker"><img data-portrait="ember" alt="Ember the Fox">
+          <div><div class="eyebrow">Ember the Fox</div><h2>Root Market</h2></div>
+        </div>
+        <p class="muted">"Seeds turn into Gold Leaves at the finish. Leaves buy upgrades and new looks. Some looks need stars from course challenges."</p>
+        <div class="tabs" role="tablist"><button class="tab" id="tab-up" type="button" role="tab" aria-selected="true">Upgrades</button><button class="tab" id="tab-looks" type="button" role="tab" aria-selected="false">Bodie's looks</button></div>
+        <div class="shop" id="shop-list"></div>
+        <div class="wallet" id="wallet-shop"></div>
+        <div class="row"><button class="btn ghost" id="btn-shop-back" type="button">Done</button></div>
+      </div>
+    </div>
+
+    <div class="overlay side" id="ov-hall" hidden>
+      <div class="panel">
+        <div class="eyebrow">Everyone who opens this page</div>
+        <h2>Hall of Breath</h2>
+        <div class="tabs" id="hall-tabs" role="tablist"></div>
+        <div class="hall" id="hall-list"></div>
+        <p class="muted" id="hall-note"></p>
+        <div class="row"><button class="btn ghost" id="btn-hall-back" type="button">Back</button></div>
+      </div>
+    </div>
+
+    <div class="overlay cast-ov" id="ov-cast" hidden>
+      <div class="card cast-card">
+        <div class="speaker"><img id="cast-img" alt=""><div><div class="eyebrow" id="cast-role">Hero</div><h2 id="cast-name">Bodie</h2></div></div>
+        <p class="cast-line" id="cast-line"></p>
+        <p class="muted" id="cast-fact"></p>
+        <div class="row"><button class="btn" id="btn-cast-next" type="button">Next</button><button class="btn ghost" id="btn-cast-replay" type="button">Hear it again</button><button class="btn ghost" id="btn-cast-skip" type="button">Skip</button></div>
+        <div class="cast-dots" id="cast-dots" aria-hidden="true"></div>
+      </div>
+    </div>
+
+    <div class="overlay center" id="ov-help" hidden>
+      <div class="card">
+        <div class="eyebrow">How to play</div>
+        <h2>One button. Real breathing.</h2>
+        <div class="help-sec"><h4>Race Kip</h4><p><b>Tap</b> to jump. <b>Press and keep holding</b> to hold your breath: Bodie's belly glows, he floats, walks through Worry Clouds and dives under logs. <b>Let go</b> to breathe out and refill. Hold too long and he goes PFFFT. Breathe in a Worry Cloud and he POPS. Hold 4 seconds for a <b>Box Breath</b> and get Flow.</p></div>
+        <div class="help-sec"><h4>Course techniques</h4><p><b>Sigh Swamp:</b> double tap to do a physiological sigh and blow storms away. <b>Power Peaks:</b> on a power pad, tap tap tap for power breaths, then hold through the thin air. <b>Starfall Temple:</b> ride an updraft, then hold to glide through the rhythm rings.</p></div>
+        <div class="help-sec"><h4>The Big Hold</h4><p>Thumb down, breath held, Bodie dives. Let go when you need air. In Dash, tap with a second finger (or <kbd>↑</kbd>) to swim up past jellyfish and coral while your first finger keeps holding. On a keyboard, hold <kbd>Space</kbd> or the mouse button.</p></div>
+        <div class="help-sec"><h4>Breath Surf</h4><p>Five techniques: resonance breathing, box breathing, 4-7-8, the physiological sigh and power breaths. Press as you breathe in, let go as you breathe out, and stay on the ribbon.</p></div>
+        <p class="muted"><kbd>Space</kbd> <kbd>↑</kbd> <kbd>W</kbd>, click or tap. Duel: Player 1 is <kbd>W</kbd>/<kbd>Space</kbd> or the left half of the screen, Player 2 is <kbd>↑</kbd>/<kbd>L</kbd> or the right half. <kbd>P</kbd> pauses.</p>
+        <div class="row"><button class="btn" id="btn-help-back" type="button">Got it</button></div>
+      </div>
+    </div>
+
+    <div class="overlay center" id="ov-pause" hidden>
+      <div class="card">
+        <div class="eyebrow">Paused</div>
+        <h2>Take a breath</h2>
+        <div class="row"><button class="btn" id="btn-resume" type="button">Resume</button><button class="btn ghost" id="btn-quit" type="button">Quit to menu</button></div>
+      </div>
+    </div>
+
+    <div class="overlay center" id="ov-nogl" hidden>
+      <div class="card">
+        <div class="eyebrow">Can't start the game</div>
+        <h2>3D isn't available</h2>
+        <p id="nogl-msg">This browser can't run WebGL, which the game needs. Try the latest Chrome, Safari or Firefox.</p>
+      </div>
+    </div>
+  </div>
+
+  <section>
+    <h3>The cast</h3>
+    <p class="muted cast-intro">Tap a card to hear them, or press Meet the cast in the game.</p>
+    <div class="cast">
+      <div class="who"><img data-portrait="bodie" alt="Bodie sitting on his cushion"><div class="rl">Hero</div><div class="nm">Bodie</div><p>GroundApp's breathing buddy. His belly fills and glows gold when he holds a breath, and his eyes close. Runs on belly breaths. Has never skipped an exhale.</p><button class="btn ghost hear" type="button" data-who="bodie">Hear Bodie</button></div>
+      <div class="who"><img data-portrait="kip" alt="Kip the Caffeine Crow"><div class="rl">Rival</div><div class="nm">Kip the Caffeine Crow</div><p>Fast, loud, on espresso number seven. Sprints in bursts, then crashes hard. Favorite drink: espresso. Second favorite: also espresso.</p><button class="btn ghost hear" type="button" data-who="kip">Hear Kip</button></div>
+      <div class="who"><img data-portrait="sage" alt="Sage the Owl"><div class="rl">Coach</div><div class="nm">Sage the Owl</div><p>Lives in the Great Tree. Ring eyes, calm voice, calls every breath cue. Has never rushed. Not once. Not even for dessert.</p><button class="btn ghost hear" type="button" data-who="sage">Hear Sage</button></div>
+      <div class="who"><img data-portrait="ember" alt="Ember the Fox"><div class="rl">Shopkeeper</div><div class="nm">Ember the Fox</div><p>Runs the Root Market. Swaps your Breath Seeds for Gold Leaves and sells upgrades and new looks. Accepts seeds, leaves and compliments.</p><button class="btn ghost hear" type="button" data-who="ember">Hear Ember</button></div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Five courses, five techniques</h3>
+    <div class="rules">
+      <div><h4>Root Hollow and Still Lake</h4><p>Box breathing and breath-hold dives. Hold through Worry Clouds, dive under logs, and hold 4 seconds for a Box Breath and a burst of Flow.</p></div>
+      <div><h4>Sigh Swamp and Power Peaks</h4><p>The physiological sigh (two breaths in, one long breath out) blows storms away. Power breaths charge your lungs past 100% for the long hold through thin air.</p></div>
+      <div><h4>Starfall Temple and The Big Hold</h4><p>Updrafts and rhythm rings test your glide control. Then push your real max hold in the deep, and beat your own flags on the sea floor.</p></div>
+    </div>
+  </section>
+</div>
+
+<script>
+// If the 3D engine can't load (offline, blocked CDN), say so instead of leaving dead buttons.
+setTimeout(function () {
+  if (window.__bodieBoot) return;
+  var o = document.getElementById("ov-nogl"); if (!o) return;
+  document.getElementById("nogl-msg").textContent = "The 3D engine didn't load. Check your connection and reload the page.";
+  var t = document.getElementById("ov-title"); if (t) t.hidden = true;
+  o.hidden = false;
+}, 12000);
+</script>

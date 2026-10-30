@@ -1,5 +1,5 @@
 ---
-title: 5 Breathing Techniques That Actually Help With Anxiety
+title: 5 breathing techniques that actually help with anxiety
 slug: breathing-techniques-for-anxiety
 description: The Physiological Sigh, 4-7-8, Box Breathing, Coherent Breathing and the long exhale. How each one works, what the research says, and when to use which.
 date: 2026-03-26
@@ -11,7 +11,7 @@ When anxiety hits, your body doesn't need a pep talk. It needs something physica
 
 I'm a breathwork coach, and these are the techniques I reach for with clients (and myself) when anxiety is real and in the moment. No fluff. Just how they work and how to do them.
 
-## 1. Physiological Sigh: The Fastest Reset (1 Breath Cycle)
+## 1. Physiological Sigh: the fastest reset (1 breath cycle)
 
 **The technique:** Two inhales through your nose (a full inhale, then a short "sip" of air on top), followed by a long, slow exhale through your mouth.
 
@@ -23,7 +23,7 @@ I'm a breathwork coach, and these are the techniques I reach for with clients (a
 
 **Best for:** Acute anxiety, the first wave of panic, nerves before a performance, stress in the middle of a conversation.
 
-## 2. 4-7-8 Breathing: The Anxiety and Sleep Technique
+## 2. 4-7-8 Breathing: the anxiety and sleep technique
 
 **The technique:** Inhale through your nose for 4 counts. Hold for 7 counts. Exhale through your mouth for 8 counts.
 
@@ -35,7 +35,7 @@ I'm a breathwork coach, and these are the techniques I reach for with clients (a
 
 **Best for:** Anxiety before sleep, racing thoughts, trouble unwinding at night.
 
-## 3. Box Breathing: Composure Under Pressure (4-4-4-4)
+## 3. Box Breathing: composure under pressure (4-4-4-4)
 
 **The technique:** Inhale for 4 counts. Hold for 4. Exhale for 4. Hold for 4. Repeat.
 
@@ -47,7 +47,7 @@ I'm a breathwork coach, and these are the techniques I reach for with clients (a
 
 **Best for:** High-pressure moments, nerves before a performance, staying alert but calm, decisions under stress. It's also one of the four techniques that are free forever in GroundApp.
 
-## 4. Coherent Breathing: The HRV Builder (5.5 In, 5.5 Out)
+## 4. Coherent Breathing: the HRV builder (5.5 in, 5.5 out)
 
 **The technique:** Inhale for about 5.5 seconds. Exhale for about 5.5 seconds. No holds. Smooth and continuous.
 
@@ -59,7 +59,7 @@ I'm a breathwork coach, and these are the techniques I reach for with clients (a
 
 **Best for:** Daily nervous system maintenance, HRV training, lowering your everyday anxiety baseline, long-term resilience.
 
-## 5. Extended Exhale Breathing: The Simplest Calm-Down (4-8 or 3-6)
+## 5. Extended Exhale Breathing: the simplest calm-down (4-8 or 3-6)
 
 **The technique:** Inhale for 4 counts, exhale for 8. Or inhale for 3, exhale for 6. The exact numbers don't matter. What matters is that the exhale is about twice as long as the inhale.
 
@@ -71,7 +71,7 @@ I'm a breathwork coach, and these are the techniques I reach for with clients (a
 
 **Best for:** Beginners, moments when you can't remember anything else, regulating throughout the day. GroundApp's free 2-to-1 Breathing is built on this same long-exhale idea.
 
-## Which One Should You Use Right Now?
+## Which one should you use right now?
 
 Here's my decision tree as a breathwork coach:
 
@@ -83,10 +83,10 @@ Here's my decision tree as a breathwork coach:
 
 Or let GroundApp's check-in do the choosing. Tap how you feel on the feelings wheel, add intensity and energy, and it matches you to a session.
 
-## The One Rule
+## The one rule
 
 The best breathing technique is the one you actually do. Pick one from this list and try it right now. Not later. Now.
 
 Close your eyes. Breathe. Feel the difference.
 
-If you want to be guided, GroundApp is free to download, with Box Breathing, Deep Slow Breathing, 2-to-1 Breathing and Triangle Breathing free forever. GroundApp Premium is $39.99 a year and unlocks all 35 techniques, 15 guided sessions and the daily check-in.
+If you want to be guided, GroundApp is free to download, with Box Breathing, Deep Slow Breathing, 2-to-1 Breathing and Triangle Breathing free forever. GroundApp Premium is $39.99 a year in the US and adds all techniques and guided sessions in Collin's voice.

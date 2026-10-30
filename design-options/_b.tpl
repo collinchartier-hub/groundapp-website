@@ -41,7 +41,7 @@
       @@CONTROLS@@
     </div>
     <p class="sb-lede">From the mind into the body. Breathwork by Collin Chartier.</p>
-    <div class="sb-act"><a href="#" class="btn">@@APPLE@@Download on the App Store</a><p>Free to download.<br>Premium $29.99/year.</p></div>
+    <div class="sb-act"><a href="#" class="btn">@@APPLE@@Download on the App Store</a><p>Free to download.<br>Premium $39.99/year.</p></div>
   </div>
 </main>
 <script src="../site/js/pacer-v2.js"></script>
