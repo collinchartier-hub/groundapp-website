@@ -81,6 +81,9 @@ html.low-power .still-note { display: block; }
 
 /* ---------- collin: the IRONMAN win, the bio, the intro film, Bodie waving at it ---------- */
 .collin-grid { row-gap: clamp(56px, 7vw, 96px); align-items: center; }
+/* the film row is the section's last beat: end it at the in-section gap, not a full section pad, so no dead band sits before Check-in */
+.collin { padding-bottom: clamp(56px, 7vw, 96px); }
+.collin-grid > * { align-self: center; }
 .ph { margin: 0; }
 .ph img { width: 100%; height: auto; border-radius: var(--radius-card); background-color: var(--card); }
 .ph figcaption { margin-top: 10px; font-size: 15px; color: var(--text-2); }
@@ -146,6 +149,7 @@ html.low-power .still-note { display: block; }
 .lib-stage .lede { max-width: 38rem; margin: 16px 0 0; }
 .lib-bodie { margin: clamp(16px, 2vh, 28px) 0 0; display: grid; justify-items: center; }
 /* Bodie as large as the screen allows while the heading, his readout and all four techniques share one view (400px from about 960px tall) */
+.library { padding-top: clamp(64px, 7vw, 104px); }
 .slot-lib { width: auto; height: clamp(240px, calc(100svh - 560px), 400px); }
 .lib-bodie figcaption { display: grid; justify-items: center; gap: 2px; }
 .readout-lib { font-size: 22px; margin-top: 0; }
