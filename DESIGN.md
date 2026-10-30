@@ -13,8 +13,9 @@ World study (the nouns): breath rings, box count (4-4-4-4), the exhale that runs
 resonance pace (about 5.5 breaths a minute), the lung mark, the 102-feeling wheel, Apple Watch haptic taps,
 Oura ring, mindful minutes, streak heatmap, Seedling to Master, BOLT seconds, Collin's voice, Golden Hour light,
 brown-black earth. Reference notes (from memory, no fresh crawl): Calm (borrow: one calm subject; avoid: email gate
-on entry), Headspace (borrow: plain words; avoid: mascots. Collin's call 2026-10-15: ONE original figure in the hero, because a
-belly that breathes teaches diaphragm breathing better than rings. No other characters anywhere), Breathwrk (borrow: the pacer as product demo; avoid:
+on entry), Headspace (borrow: plain words. Collin's call 2026-10-15: ONE original figure in the hero, because a belly that
+breathes teaches diaphragm breathing better than rings. Collin 2026-10-30: the old "no other characters anywhere" rule
+is gone; the game at /play has a full cast), Breathwrk (borrow: the pacer as product demo; avoid:
 neon fitness gradients), Othership (borrow: warm dark ground with real people; avoid: membership chrome),
 Waking Up (borrow: founder voice and restraint). Outside the field: hardware product pages that put one working
 object at real size, and metronome apps where tempo is the interface.
@@ -175,10 +176,15 @@ and `assets/css/bodie-run-v1.css` (the same source builds the Claude artifact co
 files. Bodie is the home page figure (`figure-v1.js`), ported and given running legs. Three.js 0.186.1 from jsDelivr,
 like the hero.
 
+The cast (Collin 2026-10-30: characters are welcome; introduce them, give them voices, make it fun): Bodie (hero),
+Kip the Caffeine Crow (rival), Sage the Owl (coach) and Ember the Fox (shopkeeper). "Meet the cast" on the title
+screen walks the camera to each one while they say hello; the cast cards under the game have a "Hear" button each.
+Voices are the browser's own speech with a pitch, speed and voice per character (Sage low and slow, Kip high and fast,
+Bodie bright, Ember warm). Sage calls the breath cues and coaches; Kip taunts out loud but never talks over a cue;
+Ember greets you in the market; one character speaks on every results card. Recorded voices (ElevenLabs) would be the
+upgrade.
+
 Ban exceptions, for /play only:
-- Other characters. The home page rule (one figure, no other characters) stays for every marketing page. /play is a
-  game Collin asked for, and a game needs a rival and a coach: Kip the Caffeine Crow, Sage the Owl and Ember the Fox.
-  They never appear on any other page.
 - Caps, mono and short "·" readouts inside the game screen. The in-play readout (breath, score, seeds, timers,
   distances and the labels that name them) and the breath cue band are an instrument panel, read at a glance mid-run.
   Menus, cards and the page around the game follow the site rules: sentence case, no caps eyebrows, mono only for

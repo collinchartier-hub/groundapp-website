@@ -403,7 +403,11 @@ function kipSay(text) {
   const K = G && G.kip; if (!K) return; K.sayT = 2.2;
   if (!kipSayEl) { kipSayEl = document.createElement("div"); kipSayEl.className = "say"; fx.appendChild(kipSayEl); }
   kipSayEl.textContent = "Kip: " + text;
+  Voice.say(text.replace(/\.\.\./g, ","), false, "kip");
 }
+// A line from one of the cast at the top of a results card, spoken in their voice.
+function quoteHTML(who, line) { return `<div class="speaker quote"><img alt="${CAST[who].name}" ${PORTRAIT[who] ? `src="${PORTRAIT[who]}"` : ""}><p><b>${CAST[who].name.split(" ")[0]}:</b> "${line}"</p></div>`; }
+function quote(who, line) { Voice.say(line, true, who === "sage" ? "sage" : who); return quoteHTML(who, line); }
 function updateKip(dt) {
   const K = G.kip, P = G.players[0];
   K.t -= dt;
@@ -659,8 +663,8 @@ function endRace(winner) {
   save(); G.result = res;
   showCallout(null);
   const W = winner >= 0 ? G.players[winner] : null;
-  if (W) { Sound.play("win"); Voice.say(duel ? `Player ${winner + 1} wins!` : "Bodie wins!", true); launchConfetti(W.x, 2, W.z); event(duel ? `PLAYER ${winner + 1} WINS` : "BODIE WINS!", "First to the Great Tree", "good", 3.4); }
-  else { Sound.play("lose"); Voice.say("Kip wins. Breathe, and try again.", true); kipSay("CAW! Winner winner, coffee dinner!"); event("KIP WINS", "So close. Breathe, then rematch", "warn", 3.4); }
+  if (W) { Sound.play("win"); if (duel) Voice.say(`Player ${winner + 1} wins!`, true); else Voice.say("Yes! I did it! Bodie wins!", true, "bodie"); launchConfetti(W.x, 2, W.z); event(duel ? `PLAYER ${winner + 1} WINS` : "BODIE WINS!", "First to the Great Tree", "good", 3.4); }
+  else { Sound.play("lose"); kipSay("CAW! Winner winner, coffee dinner!"); Voice.say("CAW! Winner winner, coffee dinner!", true, "kip"); event("KIP WINS", "So close. Breathe, then rematch", "warn", 3.4); }
   Sound.music(0, 128, 0);
   if (!duel) postScore();
 }
@@ -672,6 +676,7 @@ function showRaceResult() {
   if (duel) {
     t.textContent = `Player ${r.winner + 1} wins`; t.className = "win";
     $("res-line").textContent = `Player ${r.winner + 1} reached the Great Tree ${r.players[r.winner].margin}m ahead. Player ${2 - r.winner}, that's the loser seat. Rematch?`;
+    body += quote("sage", `Well raced, both of you. Player ${r.winner + 1} takes it. Now everyone, take a breath.`);
     const rows = [["", "P1", "P2"], ["Distance", ...G.players.map((P) => Math.floor(Math.min(P.x, G.finish)))], ["Seeds", ...G.players.map((P) => P.seeds + P.gold * 5)], ["Calm passes", ...G.players.map((P) => P.calm)], ["Box Breaths", ...G.players.map((P) => P.boxes)], ["Pops", ...G.players.map((P) => P.pops)], ["Points", ...r.players.map((p) => p.score)]];
     body = `<div class="duel-tally">${rows.map((row, i) => row.map((c) => `<span class="${i === 0 ? "h" : ""}">${c}</span>`).join("")).join("")}</div>`;
   } else {
@@ -684,6 +689,7 @@ function showRaceResult() {
     if (p.prevBestTime) bench.push(`<span>Best ${p.newBestTime ? "was " : ""}<b>${fmtT(p.prevBestTime)}</b></span>`);
     if (p.prevLast) bench.push(`<span>Last <b>${p.prevLast.time ? fmtT(p.prevLast.time) : p.prevLast.pct + "%"}</b></span>`);
     if (p.newBestTime) bench.push(`<span class="badge">New best time, ghost saved</span>`);
+    body += quote(p.won ? "sage" : "kip", p.won ? (p.margin >= 20 ? "Beautifully breathed. Kip is still looking for his coffee." : "Beautifully breathed. Kip is still catching his breath.") : "Rematch, slowpoke? I'll be here. Probably on espresso number eight.");
     body += `<div class="bench">${bench.join("")}</div>`;
     if (p.stars) body += `<ul class="chs">${p.stars.map((s) => `<li class="${s.got ? "got" : ""} ${s.fresh ? "new" : ""}"><span>★</span><span>${s.text}</span></li>`).join("")}</ul>`;
     const rows = [["Distance", Math.floor(Math.min(P.x, G.finish)) + " pts"], ["Seeds, rings, holds and tricks", P.points + " pts"], ["Win bonus", p.winBonus + " pts"], ["<b>Points</b>", `<b>${p.score}</b>`], ["Gold Leaves: seeds + purse", `${p.tokens} + ${p.purse} = +${p.leaves}`], ["Box Breaths, calm passes, best combo", `${P.boxes}, ${P.calm}, x${P.bestCombo}`]];

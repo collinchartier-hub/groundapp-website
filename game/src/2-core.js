@@ -235,17 +235,39 @@ const Sound = (() => {
     },
   };
 })();
+// The cast. Each one has a voice: the browser's own speech with a pitch, speed and preferred voice per character.
+const CAST = {
+  bodie: { name: "Bodie", role: "Hero", line: "Hi, I'm Bodie! When I hold my breath, my belly fills up and glows gold. Want to breathe with me?", fact: "Runs on belly breaths. Has never skipped an exhale." },
+  kip: { name: "Kip the Caffeine Crow", role: "Rival", line: "CAW! Kip's the name, speed's the game! Breathing? Never heard of it. Bet you can't catch me!", fact: "Favorite drink: espresso. Second favorite: also espresso." },
+  sage: { name: "Sage the Owl", role: "Coach", line: "Hello, friend. I'm Sage. I live in the Great Tree at the end of every course. Slow is smooth, and smooth is fast.", fact: "Has never rushed. Not once. Not even for dessert." },
+  ember: { name: "Ember the Fox", role: "Shopkeeper", line: "Ember's the name, deals are my game! Bring me Breath Seeds and I'll swap them for Gold Leaves. Fancy a new look?", fact: "Accepts seeds, leaves and compliments." },
+};
+const DEEP_VOICE = /Daniel|Arthur|Aaron|Alex|Fred|Rishi|Oliver|Google UK English Male|\bMale\b/i;
+const VOICE_STYLE = {
+  sage: { pitch: .8, rate: .9, pref: DEEP_VOICE },          // Sage, calm: coaching, the Big Hold, Breath Surf
+  cue: { pitch: .88, rate: 1.12, pref: DEEP_VOICE },        // Sage, urgent: "Hold your breath!"
+  kip: { pitch: 1.95, rate: 1.45, pref: /Samantha|Zira|Junior|Google US English|Karen/i },
+  bodie: { pitch: 1.6, rate: 1.05, pref: /Samantha|Tessa|Ava|Allison|Google US English/i },
+  ember: { pitch: 1.2, rate: 1.1, pref: /Moira|Fiona|Tessa|Karen|Serena|Google UK English Female|\bFemale\b/i },
+};
 const Voice = {
-  last: 0, voice: null,
-  pick() { try { const vs = speechSynthesis.getVoices(); this.voice = vs.find((v) => /en[-_]US/i.test(v.lang) && /Samantha|Google|Aria|Jenny|Zira/i.test(v.name)) || vs.find((v) => /^en/i.test(v.lang)) || null; } catch (e) {} },
-  say(text, force, calm) {
-    if (!text || !profile.voice || !profile.sound) return;
-    const s = window.speechSynthesis; if (!s || typeof SpeechSynthesisUtterance === "undefined") return;
-    const now = performance.now(); if (!force && now - this.last < 1400) return; this.last = now;
-    try { if (!this.voice) this.pick(); s.cancel(); const u = new SpeechSynthesisUtterance(text); u.rate = calm ? .95 : 1.2; u.pitch = calm ? 1.05 : 1.35; u.volume = 1; if (this.voice) u.voice = this.voice; s.speak(u); } catch (e) {}
+  last: 0, voices: null,
+  list() { try { const vs = speechSynthesis.getVoices().filter((v) => /^en/i.test(v.lang)); if (vs.length) this.voices = vs; } catch (e) {} return this.voices || []; },
+  pick(st) { const vs = this.list(); return vs.find((v) => st.pref.test(v.name)) || vs.find((v) => /en[-_]US/i.test(v.lang)) || vs[0] || null; },
+  // who: "cue" (default), "sage", "kip", "bodie" or "ember" (true still means calm Sage). Kip never talks over anyone.
+  // explicit: the visitor asked to hear it (a Hear button), so it plays even with voice switched off.
+  say(text, force, who = "cue", explicit = false) {
+    if (who === true) who = "sage";
+    if (!text || (!explicit && (!profile.voice || !profile.sound))) return false;
+    const s = window.speechSynthesis; if (!s || typeof SpeechSynthesisUtterance === "undefined") return false;
+    const now = performance.now();
+    if (who === "kip" && !force && (s.speaking || now - this.last < 2500)) return false;
+    if (!force && now - this.last < 1400) return false;
+    this.last = now;
+    try { const st = VOICE_STYLE[who] || VOICE_STYLE.cue; s.cancel(); const u = new SpeechSynthesisUtterance(text); u.rate = st.rate; u.pitch = st.pitch; u.volume = 1; const v = this.pick(st); if (v) u.voice = v; s.speak(u); return true; } catch (e) { return false; }
   },
 };
-try { speechSynthesis.onvoiceschanged = () => Voice.pick(); } catch (e) {}
+try { speechSynthesis.onvoiceschanged = () => Voice.list(); } catch (e) {}
 
 // ---------------------------------------------------------------- renderer + zones
 let renderer = null;

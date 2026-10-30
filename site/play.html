@@ -74,6 +74,7 @@
           <button class="btn ghost" id="btn-duel" type="button">2 Player Duel</button>
           <button class="btn ghost" id="btn-shop" type="button">Root Market</button>
           <button class="btn ghost" id="btn-hall" type="button">Hall of Breath</button>
+          <button class="btn ghost" id="btn-cast" type="button">Meet the cast</button>
           <button class="btn ghost" id="btn-help" type="button">How to play</button>
         </div>
         <div class="wallet" id="wallet-title"></div>
@@ -167,6 +168,16 @@
       </div>
     </div>
 
+    <div class="overlay cast-ov" id="ov-cast" hidden>
+      <div class="card cast-card">
+        <div class="speaker"><img id="cast-img" alt=""><div><div class="eyebrow" id="cast-role">Hero</div><h2 id="cast-name">Bodie</h2></div></div>
+        <p class="cast-line" id="cast-line"></p>
+        <p class="muted" id="cast-fact"></p>
+        <div class="row"><button class="btn" id="btn-cast-next" type="button">Next</button><button class="btn ghost" id="btn-cast-replay" type="button">Hear it again</button><button class="btn ghost" id="btn-cast-skip" type="button">Skip</button></div>
+        <div class="cast-dots" id="cast-dots" aria-hidden="true"></div>
+      </div>
+    </div>
+
     <div class="overlay center" id="ov-help" hidden>
       <div class="card">
         <div class="eyebrow">How to play</div>
@@ -199,11 +210,12 @@
 
   <section>
     <h3>The cast</h3>
+    <p class="muted cast-intro">Tap a card to hear them, or press Meet the cast in the game.</p>
     <div class="cast">
-      <div class="who"><img data-portrait="bodie" alt="Bodie sitting on his cushion"><div class="rl">Hero</div><div class="nm">Bodie</div><p>GroundApp's breathing buddy. His belly fills and glows gold when he holds a breath, and his eyes close. That glow is your power.</p></div>
-      <div class="who"><img data-portrait="kip" alt="Kip the Caffeine Crow"><div class="rl">Rival</div><div class="nm">Kip the Caffeine Crow</div><p>Fast, loud, on espresso number seven. Sprints in bursts, then crashes hard. Has never taken a full breath.</p></div>
-      <div class="who"><img data-portrait="sage" alt="Sage the Owl"><div class="rl">Coach</div><div class="nm">Sage the Owl</div><p>Lives in the Great Tree. Ring eyes, calm voice. Coaches every course and every dive.</p></div>
-      <div class="who"><img data-portrait="ember" alt="Ember the Fox"><div class="rl">Shopkeeper</div><div class="nm">Ember the Fox</div><p>Runs the Root Market. Swaps your Breath Seeds for Gold Leaves and sells upgrades and new looks.</p></div>
+      <div class="who"><img data-portrait="bodie" alt="Bodie sitting on his cushion"><div class="rl">Hero</div><div class="nm">Bodie</div><p>GroundApp's breathing buddy. His belly fills and glows gold when he holds a breath, and his eyes close. Runs on belly breaths. Has never skipped an exhale.</p><button class="btn ghost hear" type="button" data-who="bodie">Hear Bodie</button></div>
+      <div class="who"><img data-portrait="kip" alt="Kip the Caffeine Crow"><div class="rl">Rival</div><div class="nm">Kip the Caffeine Crow</div><p>Fast, loud, on espresso number seven. Sprints in bursts, then crashes hard. Favorite drink: espresso. Second favorite: also espresso.</p><button class="btn ghost hear" type="button" data-who="kip">Hear Kip</button></div>
+      <div class="who"><img data-portrait="sage" alt="Sage the Owl"><div class="rl">Coach</div><div class="nm">Sage the Owl</div><p>Lives in the Great Tree. Ring eyes, calm voice, calls every breath cue. Has never rushed. Not once. Not even for dessert.</p><button class="btn ghost hear" type="button" data-who="sage">Hear Sage</button></div>
+      <div class="who"><img data-portrait="ember" alt="Ember the Fox"><div class="rl">Shopkeeper</div><div class="nm">Ember the Fox</div><p>Runs the Root Market. Swaps your Breath Seeds for Gold Leaves and sells upgrades and new looks. Accepts seeds, leaves and compliments.</p><button class="btn ghost hear" type="button" data-who="ember">Hear Ember</button></div>
     </div>
   </section>
 
