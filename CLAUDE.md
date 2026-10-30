@@ -5,9 +5,9 @@
 - `site/` is exactly what gets deployed. Never put notes, scripts, send logs or subscriber data in it.
 - `functions/` holds Cloudflare Pages Functions (signup API, unsubscribe, host redirects).
 - `lib/` holds shared code for the functions, including the welcome email (`lib/welcome.js`). Local secrets go in `.dev.vars` (gitignored).
-- Deploy: GitHub Actions on every push (`.github/workflows/deploy.yml`). Branch = preview, `main` = live. Never run wrangler by hand; `scripts/deploy.sh` is retired. Full rules in AGENTS.md.
-- Writing rules: no em dashes, casual and direct. The product is spelled GroundApp.
-- Brand: Obsidian #1A110E, Bone #E8DDD0, Golden Hour #C4935A, Amber #D4A574, Driftwood #A89585. Type "G1" (2026-10-15): Source Serif 4 for display (Light, opsz 60, caps) and body, Source Code Pro for data only, self-hosted in `site/assets/fonts/` with OFL texts. No Fraunces, no italic.
+- Deploy: GitHub Actions on every push (`.github/workflows/deploy.yml`). Branch = preview, `main` = live. While GitHub is unavailable, direct upload from Collin's laptop only, as described in AGENTS.md. `scripts/deploy.sh` is retired. Full rules in AGENTS.md.
+- Writing rules: no em dashes, casual and direct. The product is spelled GroundApp; the companion is Bodie.
+- Brand: Ground Brand Kit v5 (`site/assets/css/ground-tokens-v1.css`, from `~/Desktop/Desktop-Archive/Ground Brand Kit/`). Night palette: Obsidian #1A110E, Bone #E8DDD0, Golden Hour #C4935A, Amber #D4A574, Driftwood #A89585. Type: Source Serif 4 headlines in sentence case (opsz 60, Regular), Ground Font Type for everything else, both self-hosted in `site/assets/fonts/` with their OFL texts. Source Code Pro is retired. No Fraunces, no italic, no coloured accent word, no caps eyebrow above a heading.
 
 ## Design rules
 - Read `DESIGN.md` (art direction, type reasons, palette, motion budget, the pacer) and `DESIGN-BANS.md` (studio ban list) before changing any page.
