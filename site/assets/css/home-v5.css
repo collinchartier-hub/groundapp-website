@@ -283,7 +283,7 @@ button.tech[aria-pressed="true"] { background-color: #3d2a1d; box-shadow: inset 
 }
 
 /* ---------- story: the whole arc in Collin's words, the two photos at their parts ---------- */
-.story-h { max-width: 18ch; }
+.story-h { max-width: 24ch; }
 .story-parts { list-style: none; margin: clamp(40px, 5vw, 72px) 0 0; padding: 0; display: grid; gap: clamp(40px, 5vw, 64px); }
 .part { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: clamp(32px, 6vw, 96px); align-items: center; }
 .part > .h3, .part > p, .part-text { grid-column: 1; }
