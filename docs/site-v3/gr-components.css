@@ -1,0 +1,100 @@
+/* Ground components. Hand-written from the GroundApp website (groundapp-website/site/index.html)
+   and the 8-week course PDF engine (ground-session-recap/engine/style.css), retyped 2026-10-15.
+   Type v5 (2026-10-15): headlines, cues and pull quotes in Source Serif 4 (400, sentence case, optical size 60 for
+   headlines); everything else in Ground Font Type (400 text, 500 titles, 600 buttons and bold lead-ins), figures tabular.
+   The GROUNDED wordmark keeps Source Serif 4 Light caps. No italic for emphasis.
+   Every color, face and radius comes from tokens.css, so the same markup works on night and paper. */
+
+.gr-page { background: var(--bg); color: var(--text-2); font-family: var(--font-text); font-size: 17px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+.gr-page :where(a) { color: var(--gold-text); }
+.gr-page :where(b, strong) { color: var(--text); font-weight: 600; }
+
+/* Display: Source Serif 4 Regular in sentence case, the size carries the weight */
+.gr-hero, .gr-h2 { font-family: var(--font-display); font-weight: 400; font-variation-settings: "opsz" 60; color: var(--text); margin: 0; text-wrap: balance; }
+.gr-hero { font-size: clamp(2.4rem, 6vw, 4rem); line-height: 1.05; }
+.gr-h2 { font-size: clamp(1.8rem, 4vw, 2.75rem); line-height: 1.1; margin: 0 0 16px; }
+.gr-hero em, .gr-h2 em { font-style: normal; color: inherit; } /* old markup: no italic, no coloured word */
+.gr-lead { font-size: 19px; line-height: 1.6; color: var(--text-2); max-width: var(--measure); margin: 0; }
+
+/* Data label: Ground Font Type for real data only (breath counts, timers, prices, dates, week ranges). Tabular
+   figures; the colon centres between figures by itself. Breath marks: &#xE010; inhale, &#xE011; hold, &#xE012; exhale */
+.gr-data { font: 500 13px/1.4 var(--font-data); font-variant-numeric: tabular-nums; letter-spacing: 0; text-transform: none; color: var(--gold-text); margin: 0; }
+.gr-timer { font: 400 32px/1.1 var(--font-data); font-variant-numeric: tabular-nums; color: var(--gold-text); margin: 0; }
+
+/* Buttons (GroundApp site .bg and .bo) */
+.gr-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; padding: 14px 32px; border: 0; border-radius: var(--radius-button); background: var(--gold); color: var(--on-gold); font: 600 16px/1.2 var(--font-text); text-decoration: none; cursor: pointer; transition: background .3s, transform .3s, box-shadow .3s; }
+.gr-btn:hover { background: var(--gold-2); transform: translateY(-2px); box-shadow: var(--glow); }
+.gr-btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+.gr-btn.is-outline { background: transparent; color: var(--text); border: 1px solid var(--gold-text); }
+.gr-btn.is-outline:hover { background: var(--gold-tint); box-shadow: none; }
+
+/* Chip (GroundApp site .stg) */
+.gr-chip { display: inline-block; padding: 8px 16px; border: 1px solid var(--border); border-radius: var(--radius-pill); font: 400 14px/1.2 var(--font-text); color: var(--text-2); }
+
+/* Card (course .card, .card.dark, .card.gold): heading first, data under it, never a label above it */
+.gr-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 18px 20px 15px; }
+.gr-card-h { font: 500 24px/1.15 var(--font-text); color: var(--text); margin: 0 0 6px; }
+.gr-card .gr-data { margin: 0 0 12px; }
+.gr-card p:where(:not(.gr-data, .gr-cue)) { margin: 0 0 8px; font-size: 15px; line-height: 1.6; color: var(--text-2); }
+.gr-card p:last-child { margin-bottom: 0; }
+.gr-card.is-dark { background: var(--card-dark); border-color: var(--card-dark); }
+.gr-card.is-dark .gr-card-h, .gr-card.is-dark p, .gr-card.is-dark b { color: var(--on-dark); }
+.gr-card.is-dark .gr-data { color: var(--gold-2); }
+.gr-card.is-gold { background: var(--gold-tint); border-color: transparent; }
+.gr-cue { font: 400 21px/1.35 var(--font-display); color: var(--text); margin: 0; }
+
+/* Tick list (course ul.ticks) */
+.gr-ticks { list-style: none; margin: 0; padding: 0; }
+.gr-ticks li { position: relative; padding-left: 19px; margin: 0 0 7px; color: var(--text-2); }
+.gr-ticks li::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 7px; height: 7px; border-radius: 50%; background: var(--gold); }
+.gr-card .gr-ticks li { font-size: 15px; line-height: 1.55; }
+.gr-card.is-dark .gr-ticks li { color: var(--on-dark); }
+.gr-card.is-dark .gr-ticks li::before { background: var(--gold-2); }
+
+/* Numbered points (course ol.pts): a real sequence only */
+.gr-points { list-style: none; counter-reset: pt; margin: 0; padding: 0; }
+.gr-points > li { counter-increment: pt; position: relative; padding-left: 32px; margin: 0 0 11px; color: var(--text-2); }
+.gr-points > li::before { content: counter(pt); position: absolute; left: 0; top: -2px; font: 400 20px/1 var(--font-data); font-variant-numeric: tabular-nums; color: var(--gold-text); }
+
+/* Pull quote (course .pull): the headline face at text size, upright, the size is the emphasis */
+.gr-pull { font: 400 22px/1.35 var(--font-display); color: var(--text); border-left: 3px solid var(--gold); padding: 1px 0 1px 17px; margin: 0; }
+
+/* Two gears: activated vs calm (course .gears). Title first, the system's name under it */
+.gr-gears { display: grid; grid-template-columns: 1fr 1fr; border-radius: var(--radius-card); overflow: hidden; }
+.gr-gear { padding: 16px 18px 13px; }
+.gr-gear.is-active { background: var(--clay-tint); }
+.gr-gear.is-calm { background: var(--sage-tint); }
+.gr-gear-t { font: 500 21px/1.15 var(--font-text); color: var(--text); margin: 0; }
+.gr-gear-n { font: 400 14px/1.3 var(--font-text); margin: 4px 0 10px; }
+.gr-gear.is-active .gr-gear-n { color: var(--clay); }
+.gr-gear.is-calm .gr-gear-n { color: var(--sage); }
+.gr-gear ul { list-style: none; margin: 0; padding: 0; }
+.gr-gear li { padding: 4px 0; border-top: 1px solid var(--border); font-size: 13px; color: var(--text-2); }
+
+/* Feature card (GroundApp site .cd, .cnum, .ct, .cx). The numeral only when the cards are steps in order */
+.gr-features { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2px; }
+.gr-feature { position: relative; padding: 38px 32px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-feature); transition: border-color .4s, transform .4s; }
+.gr-feature:hover { border-color: var(--gold-text); transform: translateY(-4px); }
+.gr-feature-num { position: absolute; top: 26px; right: 29px; font: 300 36px/1 var(--font-data); font-variant-numeric: tabular-nums; color: var(--gold); opacity: 0.3; }
+.gr-feature h3 { font: 500 19px/1.3 var(--font-text); color: var(--text); margin: 0 0 13px; }
+.gr-feature p { font-size: 15px; line-height: 1.65; color: var(--text-2); margin: 0; }
+
+/* Breath rings (GroundApp site hero .bc / .br): box breathing, 4 in, 4 hold, 4 out, 4 hold. Ground's signature motion */
+.gr-rings { position: relative; width: 260px; height: 260px; max-width: 100%; }
+.gr-rings span { position: absolute; top: 50%; left: 50%; border-radius: 50%; border: 1px solid var(--gold); transform: translate(-50%, -50%) scale(.85); animation: gr-boxbreath var(--breath-cycle) cubic-bezier(.37, 0, .63, 1) infinite; }
+.gr-rings span:nth-child(1) { width: 52px; height: 52px; opacity: .8; }
+.gr-rings span:nth-child(2) { width: 96px; height: 96px; opacity: .5; animation-delay: .12s; }
+.gr-rings span:nth-child(3) { width: 144px; height: 144px; opacity: .3; animation-delay: .24s; }
+.gr-rings span:nth-child(4) { width: 192px; height: 192px; opacity: .17; animation-delay: .36s; }
+.gr-rings span:nth-child(5) { width: 244px; height: 244px; opacity: .08; animation-delay: .48s; }
+@keyframes gr-boxbreath { 0% { transform: translate(-50%, -50%) scale(.85); } 25%, 50% { transform: translate(-50%, -50%) scale(1.08); } 75%, 100% { transform: translate(-50%, -50%) scale(.85); } }
+
+/* Wordmark: GROUNDED in Source Serif 4 Light caps (the one place light caps stay); "Live" or "Body" smaller on its own line, same colour */
+.gr-wordmark { font-family: var(--font-display); font-weight: 300; font-variation-settings: "opsz" 60; text-transform: uppercase; letter-spacing: 0.01em; color: var(--text); margin: 0; font-size: 84px; line-height: 0.95; }
+.gr-wordmark span { display: block; font-size: 0.42em; margin-top: 0.14em; }
+
+@media (prefers-reduced-motion: reduce) {
+  .gr-rings span { animation: none; transform: translate(-50%, -50%) scale(1); }
+  .gr-btn, .gr-feature { transition: none; }
+  .gr-btn:hover, .gr-feature:hover { transform: none; }
+}
