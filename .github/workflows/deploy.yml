@@ -9,8 +9,11 @@ on:
     branches: ["**"]
   workflow_dispatch:
 
+# deployments: write lets the run attach its link to the commit, so the pull request
+# shows a "View deployment" button (on github.com and in the GitHub app).
 permissions:
   contents: read
+  deployments: write
 
 # One deploy per branch at a time, so two pushes can't race each other.
 concurrency:
@@ -63,16 +66,29 @@ jobs:
 
       - name: Links
         env:
+          GH_TOKEN: ${{ github.token }}
           ENVIRONMENT: ${{ steps.deploy.outputs.pages-environment }}
           ALIAS: ${{ steps.deploy.outputs.pages-deployment-alias-url }}
           URL: ${{ steps.deploy.outputs.deployment-url }}
         run: |
+          if [ "$ENVIRONMENT" = "production" ]; then
+            env_name=Production; prod=true; link=https://groundapp.live
+          else
+            env_name=Preview; prod=false; link="${ALIAS:-$URL}"
+          fi
           {
-            if [ "$ENVIRONMENT" = "production" ]; then
-              echo "### Live: https://groundapp.live"
+            if [ "$prod" = true ]; then
+              echo "### Live: $link"
             else
-              echo "### Preview: ${ALIAS:-$URL}"
+              echo "### Preview: $link"
               echo "Sign in with Collin's Cloudflare login to view it. The signup form and /admin don't work on previews."
             fi
             echo "This deploy: $URL"
           } >> "$GITHUB_STEP_SUMMARY"
+          # Record it as a GitHub deployment. Previews stay active side by side (auto_inactive false),
+          # so every open pull request keeps its own link.
+          id=$(jq -n --arg ref "$GITHUB_SHA" --arg env "$env_name" --argjson prod "$prod" \
+            '{ref:$ref, environment:$env, auto_merge:false, required_contexts:[], production_environment:$prod, transient_environment:($prod|not), description:"Cloudflare Pages"}' \
+            | gh api "repos/$GITHUB_REPOSITORY/deployments" --input - --jq .id)
+          jq -n --arg url "$link" --argjson prod "$prod" '{state:"success", environment_url:$url, auto_inactive:$prod}' \
+            | gh api "repos/$GITHUB_REPOSITORY/deployments/$id/statuses" --input - > /dev/null
