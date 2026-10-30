@@ -46,7 +46,7 @@ function staticReadout(el, p) {
   if (!el) return;
   el.removeAttribute('data-idle');
   const parts = [['inhale', p.inhale], ['hold', p.hold], ['exhale', p.exhale], ['hold2', p.hold2]].filter(([, s]) => s > 0);
-  el.querySelector('.word').textContent = parts.map(([ph, s]) => `${MARK[ph]} ${s}`).join('   ');
+  el.querySelector('.word').textContent = parts.map(([ph, s]) => `${MARK[ph]}\u2009${s}`).join('\u2003');
   el.querySelector('.mark').textContent = '';
   el.querySelector('.count').textContent = '';
 }

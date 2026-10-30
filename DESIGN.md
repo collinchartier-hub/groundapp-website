@@ -70,18 +70,18 @@ Sound is off everywhere. The intro film plays with sound only on tap. Low Power 
 Bodie goes still, clips stay on their poster stills.
 
 ## Phone
-Phone cut: one 9:16 story. Bodie moves into each of his sections as its own beat above or below the copy (never
-behind it), the recordings play full width in the bezel, side-by-side pictures become swipe rails.
+Phone cut: one 9:16 story. Bodie moves into each of his sections as its own beat above, below or beside the copy
+(never behind it), the recordings keep their own 9:16 frame in the bezel, the five watch screens become a swipe rail.
 | Section | Desktop | Phone | Footage on phone | Copy | Thumb / motion | Low Power Mode |
 |---|---|---|---|---|---|---|
 | Hero | h1 over a large centred Bodie, actions under him | h1 in two lines, Bodie 300px tall in the middle of the screen, App Store button and Play under him | live canvas | above and below Bodie, never on him | touch and hold Bodie; entrance as desktop | Bodie still (canvas still frame) |
 | Collin | photo pair left, bio, accolades and press right, intro film card with Bodie waving beside it | IRONMAN photo full bleed, bio, Running Home photo, then film card and Bodie side by side | both photos, film poster, tap to play with sound | own beats between photos | Bodie waves as the slot arrives; film button 56px | poster; film still plays on tap |
-| Check-in | text left, phone recording centre, Bodie right leaning in | recording full width in the bezel, Bodie small beside the steps | ch06-check-in, same 9:16 file | above the phone | lean toward the phone | poster still |
-| Library | technique list left, Bodie and his readout right, four tabs and the Library screenshot below | Bodie and readout first, the tappable list under him (48px rows), tabs as a swipe rail with the screenshot | live canvas, 06-library shot | readout under Bodie | tap a row, Bodie breathes it | Bodie still, readout shows the pattern |
+| Check-in | text left, phone recording centre, Bodie right leaning in | copy, then the recording and Bodie side by side (Bodie leans toward it), steps, button | ch06-check-in, same 9:16 file | above the phone | lean toward the phone | poster still |
+| Library | technique list left, sticky Bodie and his readout right, four tabs and the Library screenshot below | Bodie and readout first, the list right under him (56px rows) so a tap and his breath share one screen, then tabs, screenshot | live canvas, 06-library shot | readout under Bodie | tap a row, Bodie breathes it | Bodie still, readout shows the pattern |
 | Advanced | recording left, copy, safety line and CO2 table right | recording, then the table full width, safety line set apart | ch05-advanced | own beat | rounds fill on scroll | poster still, table filled |
-| Play | band: pitch and modes left, cast tiles with Bodie right | cast rail first (Bodie, Kip, Sage, Ember), then pitch, modes, Play button | live canvas, three cast stills | own beat | cast peeks in; Play 56px | Bodie still |
+| Play | band: pitch and modes left, sticky cast tiles with Bodie right | the four cast tiles first (2 by 2, Bodie in his own), then pitch, modes, Play button | live canvas, three cast stills | own beat | cast peeks in; Play 52px | Bodie still |
 | Aura | copy left, plan screenshot right | screenshot after the copy | 05-check-in-plan | own beat | none | same |
-| Connections | four blocks, health recording, health shot, five watch screens | recording and health shot as a swipe rail, blocks, watch rail | ch07-health, 10-health, 5 watch shots | own beats | swipe rails | poster still |
+| Connections | health recording and health shot, four blocks, five watch screens | recording and health shot side by side, blocks, watch screens as a swipe rail | ch07-health, 10-health, 5 watch shots | own beats | swipe rail | poster still |
 | Progress | shot left, copy right | shot after the copy | 09-progress | own beat | none | same |
 | Story | six parts down a centre column, the two photos beside parts 1 and 5 | one column, photos full width at their parts | both photos | between photos | none | same |
 | Pricing | Free and Premium side by side | stacked, Premium second | none | in the plans | buttons 52px | same |
@@ -105,6 +105,10 @@ Defaults used on purpose, one line why each (check-tells reads the `- <rule-id>:
 - grey-body: running text is Driftwood (#A89585, 6.3:1 on Obsidian) because the kit makes it the reading ink; headlines, titles and quotes are Bone.
 - character: Bodie is the app's own companion with a job (the breath pacer), drawn from the shipped app, kept away from prices and reviews.
 - headline-on-load: "Breathe with Bodie." is in the first paint (it is the LCP); Bodie's wake carries the entrance instead of the headline arriving on the exhale.
+- side-scroll: the five watch screens are a swipe rail on phones and tablets (inspect WARN at 768 and 390); each screen keeps a readable size and the next one peeks in.
+- size-count: inspect counts 14 sizes because the kit's scale (102/52 display, 22-26 serif quotes, 22/19/18/17/16/15 text) meets the price numerals (48) and breath readout (18-22); every size is a kit token or its clamp.
+- phone-100vh: atlas pages and delete-account only, not this page; Task 7 swaps their chrome. (check-tells cannot excuse this rule id from Choices because its id contains digits, so it stays a WARN.)
+- pill: the phone's "Get the app" pill fades out while a headline, quote or price passes behind it and at Download and the footer, so it never sits on large text.
 
 ## Checker notes
 Run before every review round: `python3 ~/.claude/skills/studio-site-design/check-tells.py site --design-md DESIGN.md`
