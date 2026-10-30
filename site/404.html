@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Page Not Found | GroundApp</title>
 <meta name="description" content="This page doesn't exist. Take one slow breath, then head back to GroundApp.">
 <meta name="robots" content="noindex">
@@ -18,91 +18,74 @@
 <meta name="twitter:image" content="https://groundapp.live/og-image.jpg">
 <link rel="icon" type="image/svg+xml" href="/lung-logo.svg">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="preload" href="/assets/fonts/source-serif-4-v1.woff2" as="font" type="font/woff2" crossorigin>
-<style>
-@font-face{font-family:"Source Serif 4";src:url("/assets/fonts/source-serif-4-v1.woff2") format("woff2");font-weight:200 900;font-style:normal;font-display:swap}
-
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{--gold:#C4935A;--amber:#D4A574;--obsidian:#1A110E;--obsidian-mid:#231916;--bone:#E8DDD0;--driftwood:#A89585;
---serif:"Source Serif 4", Georgia, "Times New Roman", serif;--sans:var(--serif)}
-html,body{background:var(--obsidian);color:var(--bone);-webkit-font-smoothing:antialiased}
-body{font-family:var(--sans);font-optical-sizing:auto;font-synthesis:none;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:2rem 1rem;overflow-x:hidden}
-a:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
-.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-
-.logo{display:flex;align-items:center;gap:.6rem;color:var(--bone);text-decoration:none;margin-bottom:auto}
-.logo img{width:30px;height:30px}
-.logo span{font-family:var(--serif);font-size:1.2rem;font-weight:600}
-
-main{width:100%;max-width:520px;text-align:center;padding:3rem 0 2rem;margin:auto 0}
-.eyebrow{font-size:.78rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem}
-h1{font-family:var(--serif);font-weight:300;font-variation-settings:"opsz" 60;text-transform:uppercase;letter-spacing:.01em;font-size:clamp(2rem,7vw,2.8rem);line-height:1.06;margin-bottom:1rem;text-wrap:balance}
-.lead{color:var(--driftwood);font-size:1.1rem;line-height:1.65;max-width:38ch;margin:0 auto}
-
-/* One slow breath: 4 seconds in, 6 seconds out, six rounds, then rest */
-.breath{position:relative;width:200px;height:200px;margin:2.4rem auto 2.2rem;display:flex;align-items:center;justify-content:center}
-.ring{position:absolute;inset:0;border-radius:50%;border:1px solid rgba(196,147,90,.18)}
-.circle{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle,rgba(196,147,90,.38) 0%,rgba(196,147,90,.14) 55%,rgba(196,147,90,.04) 72%,transparent 73%);transform:scale(.55);animation:breathe 10s ease-in-out 6}
-.cue{position:relative;font-family:var(--serif);font-size:1.2rem;color:var(--bone)}
-.cue span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);white-space:nowrap;opacity:0}
-.cue .in{animation:cueIn 10s ease-in-out 6}
-.cue .out{animation:cueOut 10s ease-in-out 6}
-.cue .rest{animation:cueRest 60s steps(1,end) 1 forwards}
-@keyframes breathe{0%{transform:scale(.55)}40%{transform:scale(1)}100%{transform:scale(.55)}}
-@keyframes cueIn{0%,34%{opacity:1}40%,100%{opacity:0}}
-@keyframes cueOut{0%,38%{opacity:0}44%,94%{opacity:1}100%{opacity:0}}
-@keyframes cueRest{0%{opacity:0}100%{opacity:1}}
-.breath-help{color:var(--driftwood);font-size:.92rem;margin-bottom:2.2rem}
-
-.actions{display:flex;flex-wrap:wrap;gap:.8rem;justify-content:center}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:.55rem;min-height:48px;padding:.75rem 1.5rem;border-radius:100px;text-decoration:none;font-size:.95rem;font-weight:600;letter-spacing:.02em;transition:background .3s,color .3s}
-.btn-primary{background:var(--gold);color:var(--obsidian)}
-.btn-primary:hover{background:var(--amber)}
-.btn-ghost{border:1px solid rgba(196,147,90,.5);color:var(--gold)}
-.btn-ghost:hover{background:rgba(196,147,90,.1)}
-.btn svg{width:18px;height:18px}
-
-footer{margin-top:auto;padding-top:2rem;color:var(--driftwood);font-size:.82rem;text-align:center;line-height:1.7}
-footer a{color:var(--driftwood)}
-
-@media (prefers-reduced-motion: reduce){
-  .circle{animation:none;transform:scale(.8)}
-  .cue .in,.cue .out{animation:none;opacity:0}
-  .cue .rest{animation:none;opacity:0}
-  .cue .still{opacity:1}
-  .btn{transition:none}
-}
-</style>
+<link rel="preload" href="/assets/fonts/source-serif-4-latin-v1.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/ground-font-type-v1.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/ground-tokens-v1.css">
+<link rel="stylesheet" href="/assets/css/site-v3.css">
+<link rel="stylesheet" href="/assets/css/page-v1.css">
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
+<svg width="0" height="0" class="vh" aria-hidden="true" focusable="false">
+  <symbol id="i-apple" viewBox="0 0 24 24"><path fill="currentColor" d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></symbol>
+  <symbol id="i-bodie" viewBox="0 0 24 24"><circle cx="12" cy="6.6" r="3.3" fill="currentColor"/><ellipse cx="12" cy="13.8" rx="4.8" ry="4.2" fill="currentColor"/><ellipse cx="12" cy="19.6" rx="8" ry="2" fill="currentColor" opacity=".5"/></symbol>
+</svg>
 
-<a class="logo" href="/"><img src="/lung-logo.svg" alt="" width="30" height="30"><span>GroundApp</span></a>
+<header class="site-head">
+  <a href="/" class="brand" aria-label="GroundApp home"><img src="/lung-logo.svg" alt="" width="28" height="28"><span>GroundApp</span></a>
+  <nav class="head-nav" aria-label="Main">
+    <a href="/#check-in">App</a>
+    <a href="/#story">Story</a>
+    <a href="/#pricing">Pricing</a>
+  </nav>
+  <a class="play-link" href="/play"><svg aria-hidden="true"><use href="#i-bodie"/></svg>Play</a>
+  <a class="btn btn-gold btn-sm" href="https://apps.apple.com/app/apple-store/id6760352779?pt=128638571&amp;ct=site-nav&amp;mt=8" data-ct="nav"><svg aria-hidden="true"><use href="#i-apple"/></svg>Get the app</a>
+  <button type="button" class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu" aria-label="Open menu">Menu</button>
+</header>
+<nav class="menu" id="menu" aria-label="Menu" hidden>
+  <a href="/#check-in">App</a>
+  <a href="/#story">Story</a>
+  <a href="/#pricing">Pricing</a>
+  <a href="/play">Play</a>
+  <a class="btn btn-gold" href="https://apps.apple.com/app/apple-store/id6760352779?pt=128638571&amp;ct=site-menu&amp;mt=8" data-ct="menu"><svg aria-hidden="true"><use href="#i-apple"/></svg>Download on the App Store</a>
+</nav>
 
-<main>
-  <p class="eyebrow">404</p>
-  <h1>This page wandered off.</h1>
-  <p class="lead">The link might be old, or the page moved. Before you go looking, take one slow breath with the circle.</p>
+<main id="main" class="lost">
+<div class="wrap">
+    <p class="lost-code">404</p>
+    <h1 class="h2">This page wandered off.</h1>
+    <p class="lede">The link might be old, or the page moved. Before you go looking, take one slow breath with the circle.</p>
 
-  <div class="breath" aria-hidden="true">
-    <div class="ring"></div>
-    <div class="circle"></div>
-    <div class="cue"><span class="in">Breathe in</span><span class="out">Breathe out</span><span class="rest">Nice.</span><span class="still">One slow breath</span></div>
-  </div>
-  <p class="breath-help">In through your nose for four. Out slowly for six.</p>
+    <div class="breath" aria-hidden="true">
+      <div class="ring"></div>
+      <div class="circle"></div>
+      <div class="cue"><span class="in">Breathe in</span><span class="out">Breathe out</span><span class="rest">Nice.</span><span class="still">One slow breath</span></div>
+    </div>
+    <p class="breath-help">In through your nose for four. Out slowly for six.</p>
 
-  <div class="actions">
-    <a class="btn btn-primary" href="/">Back to GroundApp</a>
-    <a class="btn btn-ghost" href="/blog/">Read the blog</a>
-    <a class="btn btn-ghost" href="https://apps.apple.com/app/apple-store/id6760352779?pt=128638571&amp;ct=site-404&amp;mt=8" data-ct="404"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>Get the app</a>
-  </div>
+    <div class="actions">
+      <a class="btn btn-gold" href="/">Back to GroundApp</a>
+      <a class="btn" href="/blog/">Read the blog</a>
+      <a class="btn" href="https://apps.apple.com/app/apple-store/id6760352779?pt=128638571&amp;ct=site-404&amp;mt=8" data-ct="404"><svg aria-hidden="true"><use href="#i-apple"/></svg>Get the app</a>
+    </div>
+</div>
 </main>
 
-<footer>
-  <a href="/about">About</a> &middot; <a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a> &middot; <a href="/support">Support</a> &middot; <a href="mailto:collin@groundapp.live">Contact</a><br>
-  &copy; 2026 GroundApp. Made by Collin Chartier.
+<footer class="site-foot" id="foot">
+  <div class="wrap foot-grid">
+    <p class="foot-tag">From the mind into the body. Breathwork by Collin Chartier.</p>
+    <nav class="foot-nav" aria-label="Footer">
+      <a href="/blog/">Blog</a><a href="/play">Play</a><a href="/support">Support</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="https://instagram.com/collinchartier" rel="noopener">Instagram</a><a href="mailto:collin@groundapp.live">Contact</a><a href="https://apps.apple.com/app/apple-store/id6760352779?pt=128638571&amp;ct=site-footer&amp;mt=8" data-ct="footer">App Store</a>
+    </nav>
+    <div class="foot-fine">
+      <p>GroundApp is coaching and education, not medical or mental health treatment.</p>
+      <p>&copy; 2026 GroundApp. Made by Collin Chartier.</p>
+    </div>
+  </div>
 </footer>
 
-<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "03e507bb97d74e78bc8de83dc6b261ec"}'></script><!-- End Cloudflare Web Analytics -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "03e507bb97d74e78bc8de83dc6b261ec"}'></script>
 <script src="/js/app-links-v3.js" defer></script>
+<script src="/js/site-menu-v1.js" defer></script>
 </body>
 </html>

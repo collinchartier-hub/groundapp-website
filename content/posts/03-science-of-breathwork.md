@@ -1,5 +1,5 @@
 ---
-title: The Science of Breathwork: What Actually Happens When You Control Your Breathing
+title: The science of breathwork: what actually happens when you control your breathing
 slug: science-of-breathwork
 description: The vagus nerve, CO2, heart rate variability and your diaphragm. A plain-language look at what changes in your body when you change how you breathe.
 date: 2026-03-26
@@ -9,13 +9,13 @@ old: 03-science-of-breathwork
 
 Breathwork isn't mystical. It's mechanical. When you change the way you breathe, you change your blood chemistry and your heart rate within seconds, and with practice you can change how your body handles stress. Here's what's actually going on.
 
-## Your Breath Is a Remote Control for Your Nervous System
+## Your breath is a remote control for your nervous system
 
 Most of your autonomic nervous system runs on autopilot. You can't decide to slow your heart or speed up your digestion. But you can decide how you breathe. And because breathing is tightly wired into the rest of that system, starting with your heart rate, **it gives you a manual override.**
 
 That's the unique power of breathwork: breathing is one of the few automatic functions you can also run on purpose, and it pulls the others along with it.
 
-## Mechanism 1: The Vagus Nerve
+## Mechanism 1: the vagus nerve
 
 The vagus nerve is the longest cranial nerve in your body. It runs from your brainstem down through your neck, chest and abdomen, connecting to your heart, lungs and digestive organs. It's the main highway of the parasympathetic (rest and digest) nervous system.
 
@@ -27,7 +27,7 @@ Your heart rate naturally rises a little as you inhale and falls as you exhale. 
 
 This is why so many calming techniques, like 4-7-8 Breathing, Coherent Breathing and the Physiological Sigh, put the emphasis on the exhale. The exhale is the parasympathetic switch.
 
-## Mechanism 2: Blood Gas Chemistry (CO2 and O2)
+## Mechanism 2: blood gas chemistry (CO2 and O2)
 
 Your urge to breathe isn't mainly triggered by low oxygen. It's triggered by rising carbon dioxide (CO2). Sensors in your brainstem track CO2 and trigger the breathing reflex.
 
@@ -37,7 +37,7 @@ Slow breathing and gentle breath holds, like the holds in Box Breathing, are com
 
 Fast-breathing techniques like the Wim Hof Method work the other way. The rapid breathing deliberately drops CO2, which shifts your blood chemistry for a while and brings tingling, lightheadedness and a surge of adrenaline. People use it for energy and cold exposure. Never practice it in water, while driving, or anywhere passing out would be dangerous.
 
-## Mechanism 3: Heart Rate Variability (HRV)
+## Mechanism 3: heart rate variability (HRV)
 
 Heart rate variability is the variation in time between heartbeats. Higher HRV is associated with better cardiovascular health, emotional regulation and stress resilience. It's one of the most useful windows we have into how your nervous system is handling stress.
 
@@ -45,7 +45,7 @@ HRV isn't random. A big part of it comes from **respiratory sinus arrhythmia (RS
 
 For most adults, breathing somewhere around 5.5 to 6 breaths a minute lines your breathing up with your body's blood pressure reflexes and produces the biggest swings in heart rate. That's why slow paced breathing is often called HRV training, and why HRV biofeedback, studied for decades by researchers like Paul Lehrer, is built around it. A 2017 meta-analysis of HRV biofeedback found it reduced self-reported stress and anxiety.
 
-## Mechanism 4: Your Thinking Brain Under Stress
+## Mechanism 4: your thinking brain under stress
 
 When you're stressed, your brain shifts resources toward threat detection and away from the prefrontal cortex, the part of your brain that plans, focuses and makes decisions. That's why it's so hard to think clearly when you're anxious.
 
@@ -53,7 +53,7 @@ Controlled breathing gives you a way to interrupt the loop. Paced breathing take
 
 It's a big reason Box Breathing is so popular with people who have to perform under pressure, from first responders to athletes.
 
-## Mechanism 5: The Diaphragm
+## Mechanism 5: the diaphragm
 
 Under stress, a lot of people shift toward fast, shallow chest breathing. Diaphragmatic (belly) breathing is slower and deeper.
 
@@ -61,7 +61,7 @@ When your diaphragm moves down on the inhale, it changes the pressure inside you
 
 Shifting from fast chest breathing to slow belly breathing is one of the simplest ways to settle your body.
 
-## Technique Breakdown
+## Technique breakdown
 
 | Technique | What it does | Best for |
 |-----------|--------------|----------|
@@ -72,7 +72,7 @@ Shifting from fast chest breathing to slow belly breathing is one of the simples
 | **Wim Hof Method** | Fast breathing then a hold; drops CO2 and spikes adrenaline | Energy (not for anxiety, never in water) |
 | **Alternate Nostril** | Slow breathing through one nostril at a time | Steady, calm focus |
 
-## The Dosage Question
+## The dosage question
 
 There's no perfect dose, but a few principles hold up:
 
@@ -82,7 +82,7 @@ There's no perfect dose, but a few principles hold up:
 
 Consistency over intensity. Five minutes a day beats thirty minutes once a week.
 
-## Why Matching Matters
+## Why matching matters
 
 Not every technique works for every person in every state. Telling someone in the middle of a panic attack to do fast Wim Hof breathing can make them feel worse, not better. Telling someone who needs energy before a workout to do 4-7-8 breathing might put them to sleep.
 

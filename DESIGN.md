@@ -94,20 +94,16 @@ Defaults used on purpose, one line why each (check-tells reads the `- <rule-id>:
 - stock-copy: okh78's App Store review says "game changer"; customer quotes stay word for word (hard rule exemption for verbatim quotes), so the HTML writes it `game&nbsp;changer` and the visitor reads the exact words.
 - phone-no-portrait-cut: every app clip is already a portrait screen recording (588x1280) and the intro film is 720x1280, so the phone and desktop play the same 9:16 files; nothing is cropped.
 - fake-sequence: the check-in steps 1 to 3 and the story's six parts are real sequences (the app's order, Collin's life in order).
-- eyebrow-labels: only on `/play` (the game's instrument panel, see the /play section below) and the 404 page (restyled in Task 7).
+- eyebrow-labels: only on `/play` (the game's instrument panel, see the /play section below).
 - middot-meta: inside the game's in-play readout (`js/bodie-run-v1.js`) and the admin dashboard, which is not public.
 - phone-touch-none: the game canvas on `/play` takes every touch as a breath; the page around it scrolls.
-- italic-accent-word: legal pages (terms, privacy, delete-account) keep their old markup until Task 7 restyles them with words unchanged.
-- heading-em-css: same legal and support pages, Task 7.
-- glassmorphism: same legacy pages (support, terms, privacy, delete-account), Task 7; the landing page has none.
-- phone-100vh: atlas pages and delete-account, not part of this page; Task 7 swaps their chrome.
-- phone-hover-only: legacy stylesheets still used by the masterclass waiting room (`home-v4.css`) and the blog; every hover on the landing page sits inside `(hover: hover) and (pointer: fine)`.
+- phone-hover-only: legacy stylesheets (`home-v2/3/4.css`; `home-v4.css` still styles the masterclass waiting room) and the game's `bodie-run-v1.css`; every other hover sits inside `(hover: hover) and (pointer: fine)`.
 - grey-body: running text is Driftwood (#A89585, 6.3:1 on Obsidian) because the kit makes it the reading ink; headlines, titles and quotes are Bone.
 - character: Bodie is the app's own companion with a job (the breath pacer), drawn from the shipped app, kept away from prices and reviews.
 - headline-on-load: "Breathe with Bodie." is in the first paint (it is the LCP); Bodie's wake carries the entrance instead of the headline arriving on the exhale.
 - side-scroll: the five watch screens are a swipe rail on phones and tablets (inspect WARN at 768 and 390); each screen keeps a readable size and the next one peeks in.
 - size-count: inspect counts 14 sizes because the kit's scale (102/52 display, 22-26 serif quotes, 22/19/18/17/16/15 text) meets the price numerals (48) and breath readout (18-22); every size is a kit token or its clamp.
-- phone-100vh: atlas pages and delete-account only, not this page; Task 7 swaps their chrome. (check-tells cannot excuse this rule id from Choices because its id contains digits, so it stays a WARN.)
+- phone-100vh: only `.stage:fullscreen` in the game's `bodie-run-v1.css` (from `game/src/1-page.html`), where there is no browser toolbar. (check-tells cannot excuse this rule id from Choices because its id contains digits, so it stays a WARN.)
 - pill: the phone's "Get the app" pill fades out while a headline, quote or price passes behind it and at Download and the footer, so it never sits on large text.
 
 ## Checker notes

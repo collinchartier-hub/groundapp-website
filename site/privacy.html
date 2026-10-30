@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Privacy Policy | GroundApp</title>
 <meta name="description" content="How GroundApp handles your data in the app and on groundapp.live, including health data from Apple Health, Health Connect and wearables that sync to Apple Health, account sync, analytics and the email list.">
 <meta name="robots" content="index, follow">
@@ -30,186 +30,54 @@
 <link rel="icon" type="image/svg+xml" href="/lung-logo.svg">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
-<link rel="preload" href="/assets/fonts/source-serif-4-v1.woff2" as="font" type="font/woff2" crossorigin>
-<style>
-@font-face{font-family:"Source Serif 4";src:url("/assets/fonts/source-serif-4-v1.woff2") format("woff2");font-weight:200 900;font-style:normal;font-display:swap}
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-:root {
-  --gold: #C4935A;
-  --amber: #D4A574;
-  --obsidian: #1A110E;
-  --obsidian-mid: #231916;
-  --obsidian-light: #2D201A;
-  --bone: #E8DDD0;
-  --driftwood: #A89585;
-}
-
-html {
-  scroll-behavior: smooth;
-  background: var(--obsidian);
-  color: var(--bone);
-  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
-  -webkit-font-smoothing: antialiased;
-}
-
-body { background: var(--obsidian); min-height: 100vh; overflow-x: hidden; }
-
-.sans { font-family: "Source Serif 4", Georgia, "Times New Roman", serif; }
-
-.skip-link { position: absolute; left: -9999px; top: 0; }
-.skip-link:focus { left: 1rem; top: 1rem; z-index: 200; background: var(--gold); color: var(--obsidian); padding: 0.5rem 1rem; border-radius: 6px; font-family: "Source Serif 4", Georgia, "Times New Roman", serif; }
-
-/* Nav */
-nav.top {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  padding: 1.25rem 2.5rem;
-  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-  background: rgba(26, 17, 14, 0.88);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(196, 147, 90, 0.08);
-}
-.nav-logo { display: flex; align-items: center; gap: 0.65rem; text-decoration: none; color: var(--bone); }
-.nav-logo img { width: 32px; height: 32px; display: block; }
-.nav-logo-text { display: flex; flex-direction: column; }
-.nav-logo-text .nav-name { font-size: 1.2rem; font-weight: 600; letter-spacing: 0.02em; line-height: 1.1; }
-.nav-logo-byline { font-family: "Source Serif 4", Georgia, "Times New Roman", serif; font-size: 0.68rem; color: var(--driftwood); letter-spacing: 0.06em; margin-top: 2px; }
-.nav-cta {
-  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
-  font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap;
-  padding: 0.6rem 1.4rem; border: 1px solid var(--gold); color: var(--gold);
-  text-decoration: none; border-radius: 100px; transition: background 0.3s, color 0.3s;
-}
-.nav-cta:hover, .nav-cta:focus-visible { background: var(--gold); color: var(--obsidian); }
-
-/* Page Content */
-.page-hero { padding: 9.5rem 2rem 2.5rem; max-width: 800px; margin: 0 auto; }
-.page-hero h1 { font-size: clamp(2rem, 4.5vw, 3.2rem); font-weight: 400; line-height: 1.2; margin-bottom: 0.75rem; }
-.page-hero h1 em { font-style: italic; color: var(--gold); }
-.page-hero .meta { font-family: "Source Serif 4", Georgia, "Times New Roman", serif; font-size: 0.88rem; color: var(--driftwood); }
-
-.page-content { max-width: 800px; margin: 0 auto; padding: 0 2rem 6rem; }
-.page-content h2 {
-  font-size: 1.5rem; font-weight: 400; margin: 2.5rem 0 0.75rem; color: var(--bone);
-  border-bottom: 1px solid rgba(196, 147, 90, 0.15); padding-bottom: 0.5rem;
-}
-.page-content h3 { font-size: 1.15rem; font-weight: 600; margin: 1.5rem 0 0.5rem; color: var(--amber); }
-.page-content p {
-  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
-  font-size: 1rem; line-height: 1.75; color: var(--driftwood); margin-bottom: 1rem;
-}
-.page-content ul, .page-content ol {
-  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
-  font-size: 1rem; line-height: 1.75; color: var(--driftwood);
-  margin-left: 1.5rem; margin-bottom: 1rem;
-}
-.page-content li { margin-bottom: 0.35rem; }
-.page-content strong { color: var(--bone); font-weight: 600; }
-.page-content a { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; overflow-wrap: anywhere; }
-.page-content a:hover { color: var(--amber); }
-
-.table-wrap { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 1rem 0 1.5rem; }
-.page-content table {
-  width: 100%; border-collapse: collapse;
-  font-family: "Source Serif 4", Georgia, "Times New Roman", serif; font-size: 0.9rem;
-}
-.page-content th {
-  text-align: left; padding: 0.65rem 1rem; background: var(--obsidian-light); color: var(--bone);
-  font-weight: 600; border-bottom: 1px solid rgba(196, 147, 90, 0.15);
-}
-.page-content td {
-  padding: 0.65rem 1rem; color: var(--driftwood); line-height: 1.6;
-  border-bottom: 1px solid rgba(196, 147, 90, 0.06); vertical-align: top;
-}
-
-.highlight-box {
-  background: var(--obsidian-light); border-left: 3px solid var(--gold);
-  padding: 1rem 1.25rem; margin: 1rem 0 1.5rem; border-radius: 0 8px 8px 0;
-}
-.highlight-box p { margin-bottom: 0; }
-
-.warning-box {
-  background: rgba(196, 147, 90, 0.08); border: 1px solid rgba(196, 147, 90, 0.2);
-  padding: 1.25rem 1.5rem; margin: 1rem 0 1.5rem; border-radius: 8px;
-}
-.warning-box p { margin-bottom: 0.5rem; }
-.warning-box p:last-child { margin-bottom: 0; }
-.warning-box .warning-title {
-  font-family: "Source Serif 4", Georgia, "Times New Roman", serif; font-size: 0.85rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.06em; color: var(--gold); margin-bottom: 0.5rem;
-}
-.caps-text { font-family: "Source Serif 4", Georgia, "Times New Roman", serif; font-size: 0.9rem; line-height: 1.75; color: var(--driftwood); margin-bottom: 1rem; }
-.closing { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid rgba(196, 147, 90, 0.1); font-style: italic; }
-
-/* Footer */
-.site-footer { border-top: 1px solid rgba(196, 147, 90, 0.1); padding: 2.5rem 1.5rem 3rem; font-family: "Source Serif 4", Georgia, "Times New Roman", serif; }
-.sf-inner { max-width: 1000px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.25rem 2rem; }
-.sf-brand { display: inline-flex; align-items: center; gap: 0.55rem; color: var(--bone); text-decoration: none; font-family: "Source Serif 4", Georgia, "Times New Roman", serif; font-size: 1.05rem; letter-spacing: 0.02em; }
-.sf-brand img { width: 22px; height: 22px; }
-.sf-links { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; }
-.sf-links a { color: var(--driftwood); text-decoration: none; font-size: 0.88rem; padding: 0.4rem 0; transition: color 0.2s; }
-.sf-links a:hover, .sf-links a:focus-visible { color: var(--gold); }
-.sf-copy { width: 100%; color: var(--driftwood); font-size: 0.8rem; }
-
-a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; }
-
-@media (max-width: 600px) {
-  nav.top { padding: 0.9rem 1rem; }
-  .nav-logo-byline { display: none; }
-  .nav-cta { padding: 0.55rem 1rem; font-size: 0.72rem; }
-  .page-hero { padding: 7.5rem 1rem 1.75rem; }
-  .page-content { padding: 0 1rem 4rem; }
-  .page-content p, .page-content ul, .page-content ol { font-size: 1.05rem; }
-  .page-content ul, .page-content ol { margin-left: 1.2rem; }
-  .page-content table { font-size: 0.85rem; }
-  .table-wrap.wide table { min-width: 0; }
-  .table-wrap.wide thead { position: absolute; left: -9999px; }
-  .table-wrap.wide tr { display: block; padding: 0.75rem 0; border-bottom: 1px solid rgba(196, 147, 90, 0.15); }
-  .table-wrap.wide td { display: block; border: none; padding: 0.15rem 0; }
-  .table-wrap.wide td[data-label]::before { content: attr(data-label); display: block; margin-top: 0.4rem; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); }
-  .page-content th, .page-content td { padding: 0.5rem 0.65rem; }
-  .site-footer { padding: 2rem 1rem 2.5rem; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after { transition: none !important; animation: none !important; }
-}
-</style>
+<link rel="preload" href="/assets/fonts/source-serif-4-latin-v1.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/ground-font-type-v1.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/ground-tokens-v1.css">
+<link rel="stylesheet" href="/assets/css/site-v3.css">
+<link rel="stylesheet" href="/assets/css/page-v1.css">
 </head>
 <body>
-<a class="skip-link" href="#main">Skip to content</a>
+<a class="skip" href="#main">Skip to content</a>
+<svg width="0" height="0" class="vh" aria-hidden="true" focusable="false">
+  <symbol id="i-apple" viewBox="0 0 24 24"><path fill="currentColor" d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></symbol>
+  <symbol id="i-bodie" viewBox="0 0 24 24"><circle cx="12" cy="6.6" r="3.3" fill="currentColor"/><ellipse cx="12" cy="13.8" rx="4.8" ry="4.2" fill="currentColor"/><ellipse cx="12" cy="19.6" rx="8" ry="2" fill="currentColor" opacity=".5"/></symbol>
+</svg>
 
-<!-- NAV -->
-<nav class="top" aria-label="Main">
-  <a class="nav-logo" href="/">
-    <img src="/lung-logo.svg" alt="" width="32" height="32">
-    <span class="nav-logo-text">
-      <span class="nav-name">GroundApp</span>
-      <span class="nav-logo-byline">By Collin Chartier</span>
-    </span>
-  </a>
-  <a class="nav-cta" href="/">Back to Home</a>
+<header class="site-head">
+  <a href="/" class="brand" aria-label="GroundApp home"><img src="/lung-logo.svg" alt="" width="28" height="28"><span>GroundApp</span></a>
+  <nav class="head-nav" aria-label="Main">
+    <a href="/#check-in">App</a>
+    <a href="/#story">Story</a>
+    <a href="/#pricing">Pricing</a>
+  </nav>
+  <a class="play-link" href="/play"><svg aria-hidden="true"><use href="#i-bodie"/></svg>Play</a>
+  <a class="btn btn-gold btn-sm" href="https://apps.apple.com/app/apple-store/id6760352779?pt=128638571&amp;ct=site-nav&amp;mt=8" data-ct="nav"><svg aria-hidden="true"><use href="#i-apple"/></svg>Get the app</a>
+  <button type="button" class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu" aria-label="Open menu">Menu</button>
+</header>
+<nav class="menu" id="menu" aria-label="Menu" hidden>
+  <a href="/#check-in">App</a>
+  <a href="/#story">Story</a>
+  <a href="/#pricing">Pricing</a>
+  <a href="/play">Play</a>
+  <a class="btn btn-gold" href="https://apps.apple.com/app/apple-store/id6760352779?pt=128638571&amp;ct=site-menu&amp;mt=8" data-ct="menu"><svg aria-hidden="true"><use href="#i-apple"/></svg>Download on the App Store</a>
 </nav>
 
-<main id="main">
-<!-- HERO -->
+<main id="main" class="page">
+<div class="wrap">
 <div class="page-hero">
-  <h1>Privacy <em>Policy</em></h1>
-  <p class="meta sans">GroundApp &middot; Effective Date: March 8, 2026 &middot; Last Updated: October 26, 2026</p>
+  <h1 class="h2">Privacy policy</h1>
+  <p class="page-meta">GroundApp &middot; Effective Date: March 8, 2026 &middot; Last Updated: October 26, 2026</p>
 </div>
 
-<!-- CONTENT -->
-<div class="page-content">
+<div class="doc">
 
   <h2>1. Introduction</h2>
   <p>GroundApp ("we," "our," or "the App") is a breathwork app for iPhone, Apple Watch and Android, created by Collin Chartier. This Privacy Policy describes how we collect, use, store, and protect your information when you use the App and our website, groundapp.live (the "Website"), including health data from Apple Health, Health Connect and connected devices.</p>
   <p>By using the App or the Website, you consent to the practices described in this policy. If you do not agree, please discontinue use of the App and the Website.</p>
 
-  <h2>2. Information We Collect in the App</h2>
+  <h2>2. Information we collect in the app</h2>
 
-  <h3>2.1 Information You Provide Directly</h3>
+  <h3>2.1 Information you provide directly</h3>
   <ul>
     <li><strong>Account information:</strong> Your name and email address when you create an account. You can sign in with Apple (iPhone only), with Google, or with an email and password. Apple gives us your name only the first time you sign in. GroundApp stores your name and email in your account profile (Section 4.2). We use them to run your account and to send GroundApp's own marketing emails, and every email has an unsubscribe link. We never sell them and never use them for tracking. On Android you can also skip sign-in; the App then tries to create an anonymous account with no name or email.</li>
     <li><strong>Onboarding answers:</strong> Your breathwork goals and experience level. On Android these stay on your device.</li>
@@ -219,7 +87,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
     <li><strong>Advanced apnea training (iPhone only):</strong> Table names and settings, reference holds you enter, recorded hold and recovery times, round outcomes, posture and preparation context, readiness-confirmation version and time, and any effort rating or notes you choose to save. These are self-reported training records, not sensor-verified breath holds or medical assessments. Condition-screening answers are used for the current start decision and are not saved.</li>
   </ul>
 
-  <h3>2.2 Health and Biometric Data</h3>
+  <h3>2.2 Health and biometric data</h3>
   <p>With your explicit permission, the App accesses the following data. You choose what to allow, and you can change it at any time.</p>
 
   <p><strong>Apple Health (HealthKit), read:</strong></p>
@@ -247,14 +115,14 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
 
   <p><strong>Bluetooth heart-rate straps:</strong> If you pair a strap, the App reads your live heart rate during sessions. On iPhone, these readings are stored on your device only. On Android, the App asks for Bluetooth permission to find and connect to a strap that supports the standard Bluetooth Heart Rate Service, shows the readings live, and does not upload them to our servers.</p>
 
-  <h3>2.3 Automatically Collected Information</h3>
+  <h3>2.3 Automatically collected information</h3>
   <ul>
     <li><strong>Usage data (product analytics):</strong> Screens viewed, app opens and closes, and in-app events such as techniques started, session length, ratings, check-in type, music and voice choices, and paywall and purchase events. These events do not include health readings, your name, your email, or anything you type. They are linked to a random account ID, not your email. On iPhone and Android, the App asks once, after setup ("Help improve GroundApp?"), and shares nothing until you answer. Until you say yes, nothing is sent, in every country, and that includes any device ID. "Don't share" keeps it off. You can change your answer anytime in Settings &gt; Privacy &gt; Share Usage Data. Turning it off stops sending right away.</li>
     <li><strong>Device information:</strong> Device model, operating system version and app version, sent along with product analytics events.</li>
     <li><strong>Approximate (coarse) location:</strong> Your city or country, worked out by our analytics provider from your internet address, only if Share Usage Data is on. We never collect your precise location.</li>
     <li><strong>Notification token (iPhone only):</strong> If you allow notifications, a push notification token for your device, along with your account ID and app version. The Android App does not use push notifications and has no notification token: its reminders are scheduled on your device (Section 3).</li>
   </ul>
-  <h3>2.4 Information We Do NOT Collect</h3>
+  <h3>2.4 Information we do NOT collect</h3>
   <ul>
     <li>Precise geolocation</li>
     <li>Contacts or address book data</li>
@@ -263,7 +131,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
     <li>Advertising identifiers. The App does not track you across other companies' apps or websites. (The Website uses the Meta Pixel to measure our ads. See Section 8.)</li>
   </ul>
 
-  <h2>3. How We Use Your Information</h2>
+  <h2>3. How we use your information</h2>
   <p>We use your data to provide and improve the App:</p>
 
   <div class="table-wrap">
@@ -290,9 +158,9 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
     <p>We do <strong>not</strong> use your health data for advertising or marketing, and we do <strong>not</strong> sell your personal information or your health data. Your name and email are used to run your account and to send GroundApp's own marketing emails. Every email has an unsubscribe link. We never sell them and never use them for tracking.</p>
   </div>
 
-  <h2>4. How We Store and Protect Your Data</h2>
+  <h2>4. How we store and protect your data</h2>
 
-  <h3>4.1 On-Device Storage</h3>
+  <h3>4.1 On-device storage</h3>
   <ul>
     <li>Health readings, check-ins, session reflections and notes, heart-rate samples, and Advanced apnea records are stored on your device. Guest history stays local unless you explicitly choose to move it into an account. Signed-in history also syncs as described below; unfinished apnea checkpoints stay local.</li>
     <li>Daily health snapshots built from Apple Health data are kept on your device for up to 90 days.</li>
@@ -300,7 +168,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
     <li>On Android, the App keeps your sessions, check-ins, settings and BOLT scores in a database and preferences on your device. Android may back up that app data to your Google account through Android's own backup (Auto Backup), depending on your device settings; that backup may include data the App stores on your device.</li>
   </ul>
 
-  <h3>4.2 Cloud Storage (Account Sync)</h3>
+  <h3>4.2 Cloud storage (account sync)</h3>
   <p>When you are signed in, the App automatically syncs the following to our servers (hosted by Supabase, using PostgreSQL):</p>
   <ul>
     <li>Your profile: name, email, onboarding goals, experience level, and last active date</li>
@@ -320,7 +188,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
     <li>Row-level security ensures you can only access your own data</li>
   </ul>
 
-  <h3>4.3 Third-Party Services</h3>
+  <h3>4.3 Third-party services</h3>
   <div class="table-wrap wide">
   <table>
     <thead>
@@ -343,7 +211,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
     <p><strong>Important:</strong> Your health readings stay on your device. Aura (Section 4.4) sends your check-in answers through our server to Anthropic and, only if you turn on its separate Apple Health switch, a few word labels such as "short sleep", never the numbers. On Android, your check-in answers and anything you type in Aura chat go straight from your phone to Anthropic (Section 4.5); Health Connect and heart-rate readings are never sent.</p>
   </div>
 
-  <h3>4.4 Aura (AI Check-In)</h3>
+  <h3>4.4 Aura (AI check-in)</h3>
   <p>Aura is the App's optional AI planning service. It recommends breathwork for how you feel right now. It is part of Ground Premium; no request is sent to Anthropic until you choose Use Aura.</p>
   <p>This section describes Aura on iPhone. Aura works differently on Android; see Section 4.5.</p>
   <p><strong>Asking first.</strong> When you first ask for an Aura plan, the App shows "Meet Aura" before your answers are sent to Anthropic. If you tap "Not now", it builds a plan on your phone instead. This does not turn off the separate signed-in sync of saved history (Section 4.2). Your other paid features keep working either way.</p>
@@ -377,7 +245,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
   <p><strong>Where it goes.</strong> The Android App sends these requests over an encrypted connection from your phone directly to Anthropic's Claude API, not through our servers. We do not receive or keep a copy of the prompts or replies, and Android has no Aura token count. Anthropic sees your IP address, as any web service would. Anthropic processes these requests for us under its commercial terms, does not train its models on them, and deletes them within 30 days, unless its automated safety systems flag a request as breaking its Usage Policy (Anthropic can then keep it for up to 2 years) or the law requires it to keep it longer.</p>
   <p><strong>Changing your mind.</strong> To stop anything being sent, do not open Aura chat and do not ask for a check-in plan. Requests already sent are deleted by Anthropic as described above. Aura's plans are AI-generated wellness guidance, not medical advice, diagnosis or treatment.</p>
 
-  <h2>5. Apple HealthKit Compliance</h2>
+  <h2>5. Apple HealthKit compliance</h2>
   <p>In accordance with Apple's HealthKit guidelines:</p>
   <ul>
     <li>We <strong>do not</strong> use HealthKit data for advertising or similar services</li>
@@ -388,7 +256,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
     <li>You can revoke HealthKit access at any time through iOS Settings</li>
   </ul>
 
-  <h2>6. Health Connect Compliance</h2>
+  <h2>6. Health Connect compliance</h2>
   <p>GroundApp's use of information received from Health Connect will adhere to the Health Connect Permissions policy, including the Limited Use requirements.</p>
   <p>For the Android App, that means:</p>
   <ul>
@@ -402,7 +270,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
     <li>Access happens only with your permission. You can revoke it at any time in the Health Connect app under App permissions &gt; GroundApp (Section 9). When you do, the App stops reading and writing. Exercise sessions the App already wrote stay in Health Connect until you delete them there.</li>
   </ul>
 
-  <h2>7. Wearables Through Apple Health</h2>
+  <h2>7. Wearables through Apple Health</h2>
   <p>GroundApp does not connect to Oura, WHOOP, Garmin, COROS or any other wearable maker's service. Data from Whoop, Garmin, Oura, COROS and other wearables reaches the App only through Apple Health, and only the data types you allow. The App does not log in to a wearable maker's account and does not contact a wearable maker's cloud.</p>
   <ul>
     <li>Wearable data in Apple Health is treated like any other Apple Health data in this policy: it is read on your device, covered by Section 5, and never sold or used for advertising</li>
@@ -412,7 +280,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
     <li>What a wearable writes to Apple Health is set in that wearable's own app. You control what GroundApp can read in iOS Settings (Section 9)</li>
   </ul>
 
-  <h2>8. Website and Email List</h2>
+  <h2>8. Website and email list</h2>
   <p>This section covers groundapp.live, including the Breath Atlas pages and the blog.</p>
   <ul>
     <li><strong>Email list signups:</strong> When you join the email list, we collect your email address, your first name if you give it, and which signup form you used (for example, the homepage, the blog or a Breath Atlas page). This is stored in our database, hosted by Supabase.</li>
@@ -426,7 +294,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
   </ul>
   <p>To have your email removed from our list entirely, email <a href="mailto:privacy@groundapp.live">privacy@groundapp.live</a>.</p>
 
-  <h2>9. Your Rights and Controls</h2>
+  <h2>9. Your rights and controls</h2>
   <p>You have control over your data:</p>
 
   <div class="table-wrap">
@@ -452,7 +320,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
 
   <p>Upon account deletion, the data synced to our servers is permanently removed within 30 days. Your Aura token counts and the Apple transaction ID linked to your account are deleted when you delete your account. The App also clears local data scoped to that account, retrying local cleanup if interrupted. Guest data and another account's data are not erased by that operation. Other device-only data remains until you erase it or delete the App. If you cannot open the App, you can ask for deletion on the web at <a href="/delete-account">groundapp.live/delete-account</a>. Analytics events already sent to PostHog and any copy of your email held by our email providers can be deleted on request at <a href="mailto:privacy@groundapp.live">privacy@groundapp.live</a>.</p>
 
-  <h2>10. Data Retention</h2>
+  <h2>10. Data retention</h2>
   <ul>
     <li><strong>On-device data:</strong> Kept until you erase it or delete the App; account-scoped data is also cleared after confirmed account deletion. Daily health snapshots are kept for up to 90 days. On Android, uninstalling the App or clearing its storage erases it.</li>
     <li><strong>Cloud-synced data:</strong> Retained while your account is active; deleted within 30 days of account deletion</li>
@@ -466,9 +334,9 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
     <li><strong>Upon access revocation by user or platform:</strong> We stop accessing and processing the affected data</li>
   </ul>
 
-  <h2>11. Data Security and Breach Notification</h2>
+  <h2>11. Data security and breach notification</h2>
 
-  <h3>11.1 Security Measures</h3>
+  <h3>11.1 Security measures</h3>
   <p>We employ commercially reasonable administrative, technical, and physical security measures to protect your data, consistent with GDPR Article 32 standards. These include:</p>
   <ul>
     <li>Encryption of data in transit (TLS 1.2+) and of data at rest on our servers (AES-256)</li>
@@ -477,7 +345,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
     <li>Access controls limited to authorized personnel</li>
   </ul>
 
-  <h3>11.2 Breach Notification</h3>
+  <h3>11.2 Breach notification</h3>
   <p>In the event of a security breach affecting your personal or health data:</p>
   <ul>
     <li>We will notify affected users within 60 days of discovery, or sooner as required by applicable law</li>
@@ -485,12 +353,12 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
     <li>Notifications will describe the nature of the breach, the types of data involved, the steps we are taking, and how you can protect yourself</li>
   </ul>
 
-  <h2>12. Children's Privacy</h2>
+  <h2>12. Children's privacy</h2>
   <p>The App and the Website are not directed at children under 13. We do not knowingly collect personal information from children under 13. If you believe a child under 13 has provided us with personal information, please contact us and we will delete it. If you live in the EU, EEA, UK or Switzerland and are under the age of digital consent where you live (between 13 and 16), you need a parent's or guardian's permission to use the App.</p>
 
-  <h2>13. State-Specific Privacy Rights</h2>
+  <h2>13. State-specific privacy rights</h2>
 
-  <h3>13.1 California Residents (CCPA/CPRA)</h3>
+  <h3>13.1 California residents (CCPA/CPRA)</h3>
   <p>If you are a California resident, you have the following rights under the California Consumer Privacy Act and California Privacy Rights Act:</p>
   <ul>
     <li><strong>Right to Know:</strong> You may request the categories and specific pieces of personal information we have collected about you, the sources, the business purposes, and the third parties with whom we share it.</li>
@@ -502,7 +370,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
   </ul>
   <p>To exercise these rights, contact us at <a href="mailto:privacy@groundapp.live">privacy@groundapp.live</a>. We will respond within 45 days.</p>
 
-  <h3>13.2 Washington Residents (My Health My Data Act)</h3>
+  <h3>13.2 Washington residents (My Health My Data Act)</h3>
   <p>If you are a Washington state resident, the following applies under the Washington My Health My Data Act (RCW 19.373):</p>
   <ul>
     <li><strong>Categories of Health Data Collected:</strong> Heart rate, resting heart rate, HRV, respiratory rate, sleep analysis, blood oxygen saturation, VO2 max, body and wrist temperature, activity data, mindful minutes, the feelings, intensity and energy levels you log in check-ins, the mood you pick during a session, your breathwork goals (such as Sleep or Anxiety), and the word labels Aura can work out from Apple Health data (such as "short sleep").</li>
@@ -513,12 +381,12 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
     <li><strong>Consent:</strong> We collect health data only after obtaining your affirmative consent. On iPhone, Aura asks for your consent to share before anything is sent, separately from the App's other permissions, and its Apple Health labels need their own switch. On Android, Health Connect and Bluetooth access are separate permissions you grant, and Aura chat and check-in plans send what is described in Section 4.5 when you use them. We will not collect, use, or share additional categories or purposes of health data beyond what is disclosed here without obtaining fresh consent.</li>
   </ul>
 
-  <h3>13.3 Other U.S. States</h3>
+  <h3>13.3 Other U.S. states</h3>
   <p>We comply with applicable state privacy laws, including but not limited to the Colorado Privacy Act, Connecticut Data Privacy Act, Virginia Consumer Data Protection Act, and other state laws that provide consumer privacy rights. If you are a resident of a state with applicable privacy legislation, you may exercise your rights by contacting <a href="mailto:privacy@groundapp.live">privacy@groundapp.live</a>.</p>
 
-  <h2>14. International Users and GDPR</h2>
+  <h2>14. International users and GDPR</h2>
 
-  <h3>14.1 Legal Basis for Processing (EEA/UK Users)</h3>
+  <h3>14.1 Legal basis for processing (EEA/UK users)</h3>
   <p>For users in the European Economic Area (EEA) or United Kingdom, we process your data under the following legal bases:</p>
   <ul>
     <li><strong>Explicit Consent (Article 6(1)(a) and Article 9(2)(a) GDPR):</strong> For health and biometric data and wearable device integrations (Apple Health, including data from wearables that sync to it, Health Connect and Bluetooth straps), which you allow during onboarding and device connection. For Aura on iPhone, which you allow on the "Meet Aura" screen before anything is sent, with a separate switch for its Apple Health labels; you can withdraw it at any time in Settings &gt; Privacy, which does not affect processing that happened before you withdrew. Also for product analytics on iPhone and Android, which stay off until you agree when the App asks or turn on Share Usage Data, and for the email list, which you join yourself.</li>
@@ -526,7 +394,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
     <li><strong>Legitimate Interest (Article 6(1)(f) GDPR):</strong> For keeping the App and Website secure, preventing spam and abuse, and counting Website page views without cookies.</li>
   </ul>
 
-  <h3>14.2 Your GDPR Rights</h3>
+  <h3>14.2 Your GDPR rights</h3>
   <ul>
     <li>Right of access to your personal data</li>
     <li>Right to rectification of inaccurate data</li>
@@ -538,13 +406,13 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
     <li>Right to lodge a complaint with a supervisory authority</li>
   </ul>
 
-  <h3>14.3 Data Transfers</h3>
+  <h3>14.3 Data transfers</h3>
   <p>Your data is processed mainly in the United States, including Aura requests sent to Anthropic. For transfers from the EEA/UK, we rely on Standard Contractual Clauses and your explicit consent for health data.</p>
 
-  <h2>15. Changes to This Policy</h2>
+  <h2>15. Changes to this policy</h2>
   <p>We may update this Privacy Policy from time to time. We will notify you of material changes by posting the updated policy within the App and on the Website and updating the "Last Updated" date. For material changes affecting health data practices, we will provide prominent notice and, where required by law, obtain fresh consent. Continued use of the App after changes constitutes acceptance of the revised policy.</p>
 
-  <h2>16. Contact Us</h2>
+  <h2>16. Contact us</h2>
   <p>If you have questions about this Privacy Policy or your data, contact us at:</p>
   <p><strong>Privacy Inquiries:</strong> <a href="mailto:privacy@groundapp.live">privacy@groundapp.live</a></p>
   <p><strong>Legal Inquiries:</strong> <a href="mailto:legal@groundapp.live">legal@groundapp.live</a></p>
@@ -554,27 +422,24 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
   <p class="closing">This Privacy Policy was last reviewed and updated on October 26, 2026.</p>
 
 </div>
+</div>
 </main>
 
-<!-- FOOTER -->
-<footer class="site-footer">
-  <div class="sf-inner">
-    <a href="/" class="sf-brand"><img src="/lung-logo.svg" alt="" width="22" height="22">GroundApp</a>
-    <nav class="sf-links" aria-label="Footer">
-      <a href="/">Home</a>
-      <a href="/about">About</a>
-      <a href="/blog/">Blog</a>
-      <a href="/privacy">Privacy</a>
-      <a href="/terms">Terms</a>
-      <a href="/support">Support</a>
-      <a href="/delete-account">Delete Account</a>
-      <a href="https://instagram.com/collinchartier" target="_blank" rel="noopener">Instagram</a>
-      <a href="mailto:collin@groundapp.live">Contact</a>
+<footer class="site-foot" id="foot">
+  <div class="wrap foot-grid">
+    <p class="foot-tag">From the mind into the body. Breathwork by Collin Chartier.</p>
+    <nav class="foot-nav" aria-label="Footer">
+      <a href="/blog/">Blog</a><a href="/play">Play</a><a href="/support">Support</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="https://instagram.com/collinchartier" rel="noopener">Instagram</a><a href="mailto:collin@groundapp.live">Contact</a><a href="https://apps.apple.com/app/apple-store/id6760352779?pt=128638571&amp;ct=site-footer&amp;mt=8" data-ct="footer">App Store</a>
     </nav>
-    <p class="sf-copy">&copy; 2026 GroundApp. Made by Collin Chartier.</p>
+    <div class="foot-fine">
+      <p>GroundApp is coaching and education, not medical or mental health treatment.</p>
+      <p>&copy; 2026 GroundApp. Made by Collin Chartier.</p>
+    </div>
   </div>
 </footer>
 
-<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "03e507bb97d74e78bc8de83dc6b261ec"}'></script><!-- End Cloudflare Web Analytics -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "03e507bb97d74e78bc8de83dc6b261ec"}'></script>
+<script src="/js/app-links-v3.js" defer></script>
+<script src="/js/site-menu-v1.js" defer></script>
 </body>
 </html>

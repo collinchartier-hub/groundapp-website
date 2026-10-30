@@ -51,19 +51,47 @@ a:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
 web_css = ("/* Bodie's Breath Run (groundapp.live/play). Built from one source with the Claude artifact version.\n"
            "   Bump the filename (v2, v3) when editing: /assets is cached for 7 days. */\n") + FONTS + css + SITE_CSS
 store = lambda ct: f"https://apps.apple.com/app/apple-store/id6760352779?pt=128638571&amp;ct=site-{ct}&amp;mt=8"
-BAR = f"""  <nav class="site-bar" aria-label="GroundApp">
-    <a class="brand" href="/"><img src="/lung-logo.svg" alt="" width="28" height="28"><span>GroundApp</span></a>
-    <a class="site-cta" href="{store('play-bar')}" data-ct="play-bar">Get the app</a>
+# Site v3 header (copied from site/index.html). It is position: fixed, so it sits at the top of .wrap in the markup.
+BAR = f"""  <a class="skip" href="#stage">Skip to the game</a>
+  <svg width="0" height="0" class="vh" aria-hidden="true" focusable="false">
+    <symbol id="i-apple" viewBox="0 0 24 24"><path fill="currentColor" d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></symbol>
+    <symbol id="i-bodie" viewBox="0 0 24 24"><circle cx="12" cy="6.6" r="3.3" fill="currentColor"/><ellipse cx="12" cy="13.8" rx="4.8" ry="4.2" fill="currentColor"/><ellipse cx="12" cy="19.6" rx="8" ry="2" fill="currentColor" opacity=".5"/></symbol>
+  </svg>
+  <header class="site-head">
+    <a href="/" class="brand" aria-label="GroundApp home"><img src="/lung-logo.svg" alt="" width="28" height="28"><span>GroundApp</span></a>
+    <nav class="head-nav" aria-label="Main">
+      <a href="/#check-in">App</a>
+      <a href="/#story">Story</a>
+      <a href="/#pricing">Pricing</a>
+    </nav>
+    <a class="play-link" href="/play" aria-current="page"><svg aria-hidden="true"><use href="#i-bodie"/></svg>Play</a>
+    <a class="btn btn-gold btn-sm" href="{store('play-bar')}" data-ct="play-bar"><svg aria-hidden="true"><use href="#i-apple"/></svg>Get the app</a>
+    <button type="button" class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu" aria-label="Open menu">Menu</button>
+  </header>
+  <nav class="menu" id="menu" aria-label="Menu" hidden>
+    <a href="/#check-in">App</a>
+    <a href="/#story">Story</a>
+    <a href="/#pricing">Pricing</a>
+    <a href="/play" aria-current="page">Play</a>
+    <a class="btn btn-gold" href="{store('play-menu')}" data-ct="play-menu"><svg aria-hidden="true"><use href="#i-apple"/></svg>Download on the App Store</a>
   </nav>
 """
-FOOT = f"""  <footer class="site-foot">
-    <p>Bodie's Breath Run is a free game from GroundApp, breathwork by Collin Chartier.</p>
-    <nav aria-label="Footer"><a href="/">GroundApp</a><a href="/about">About</a><a href="/blog/">Blog</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="{store('play-footer')}" data-ct="play-footer">App Store</a></nav>
-    <p class="copy">&copy; 2026 GroundApp. All rights reserved.</p>
-  </footer>
+# Site v3 footer (copied from site/index.html), full width under the game's .wrap.
+FOOT = f"""<footer class="site-foot" id="foot">
+  <div class="wrap foot-grid">
+    <p class="foot-tag">From the mind into the body. Breathwork by Collin Chartier.</p>
+    <nav class="foot-nav" aria-label="Footer">
+      <a href="/blog/">Blog</a><a href="/play">Play</a><a href="/support">Support</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="https://instagram.com/collinchartier" rel="noopener">Instagram</a><a href="mailto:collin@groundapp.live">Contact</a><a href="{store('play-footer')}" data-ct="play-footer">App Store</a>
+    </nav>
+    <div class="foot-fine">
+      <p>GroundApp is coaching and education, not medical or mental health treatment.</p>
+      <p>&copy; 2026 GroundApp. Made by Collin Chartier.</p>
+    </div>
+  </div>
+</footer>
 """
 assert body.count('<div class="wrap">') == 1 and body.count("</section>\n</div>\n\n<script>") == 1
-web_body = body.replace('<div class="wrap">\n', '<div class="wrap">\n' + BAR, 1).replace("</section>\n</div>\n\n<script>", "</section>\n" + FOOT + "</div>\n\n<script>", 1)
+web_body = body.replace('<div class="wrap">\n', '<div class="wrap">\n' + BAR, 1).replace("</section>\n</div>\n\n<script>", "</section>\n</div>\n\n" + FOOT + "\n<script>", 1)
 TITLE = "Bodie's Breath Run | A breathwork game by GroundApp"
 DESC = ("A free breathwork game from GroundApp. Race Kip the Caffeine Crow with one button, hold your breath through "
         "Worry Clouds, and try The Big Hold to beat your own breath-hold record. Plays in your browser.")
@@ -97,8 +125,33 @@ head = f"""<!DOCTYPE html>
 <link rel="canonical" href="https://groundapp.live/play">
 <link rel="icon" type="image/svg+xml" href="/lung-logo.svg">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="preload" href="/assets/fonts/source-serif-4-v1.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/source-serif-4-latin-v1.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/ground-font-type-v1.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/ground-tokens-v1.css">
+<link rel="stylesheet" href="/assets/css/site-v3.css">
 <link rel="stylesheet" href="/assets/css/bodie-run-{VER}.css">
+<style>
+/* Site v3 header and footer on /play. site-v3.css loads before the game stylesheet, so the game's rules win where both
+   style the same thing; these lines undo the few site rules the game does not set itself, override the old bar and
+   footer rules still inside bodie-run-{VER}.css (SITE_CSS, kept until the next filename bump), and set the page around
+   the game (title, cast, courses) in kit v5 type. The game screen keeps its own type. */
+body > .wrap {{ padding-top: calc(var(--head-h) + 24px); }}
+.btn:where(:not(.btn-gold)) {{ display: inline-block; min-height: 0; }}
+.site-head .btn-gold, .menu .btn-gold {{ padding: 10px 18px; border: 0; border-radius: var(--radius-button); font: 600 15px/1.2 var(--font-text); letter-spacing: 0; }}
+.menu .btn-gold {{ padding: 14px 26px; font-size: 16px; }}
+.wrap .lede {{ font-size: inherit; line-height: inherit; color: inherit; }}
+.wrap .quote {{ font: inherit; color: inherit; }}
+.stage img, .stage svg, body > .wrap > section img {{ display: revert; }}
+body > .wrap > header.top h1 {{ font: 400 clamp(30px, 1.4rem + 1.6vw, 44px)/1.1 var(--font-display); font-variation-settings: "opsz" 60; letter-spacing: -.01em; text-transform: none; }}
+body > .wrap > header.top p {{ font: 400 16px/1.5 var(--font-text); }}
+body > .wrap > section {{ font-family: var(--font-text); }}
+body > .wrap > section h3 {{ font: 400 clamp(26px, 1.2rem + .8vw, 32px)/1.2 var(--font-display); font-variation-settings: "opsz" 60; letter-spacing: 0; text-transform: none; }}
+body > .wrap > section h4, body > .wrap > section .nm, body > .wrap > section .rl, body > .wrap > section .btn {{ font-family: var(--font-text); }}
+body > .site-foot {{ display: block; padding: 72px 0 calc(env(safe-area-inset-bottom) + 96px); border-top: 0; color: var(--text-2); font: 400 16px/1.6 var(--font-text); }}
+body > .site-foot .foot-nav {{ gap: 0 4px; }}
+body > .site-foot a {{ color: var(--text-2); }}
+@media (hover: hover) and (pointer: fine) {{ body > .site-foot .foot-nav a:hover {{ color: var(--text); }} }}
+</style>
 <script type="application/ld+json">
 {{"@context": "https://schema.org", "@type": "VideoGame", "name": "Bodie's Breath Run", "url": "https://groundapp.live/play",
   "description": "{DESC}", "genre": ["Casual", "Health and fitness"], "gamePlatform": "Web browser", "applicationCategory": "Game",
@@ -111,6 +164,7 @@ head = f"""<!DOCTYPE html>
 tail = f"""<script type="module" src="/js/bodie-run-{VER}.js"></script>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{{"token": "03e507bb97d74e78bc8de83dc6b261ec"}}'></script>
 <script src="/js/app-links-v3.js" defer></script>
+<script src="/js/site-menu-v1.js" defer></script>
 </body>
 </html>
 """

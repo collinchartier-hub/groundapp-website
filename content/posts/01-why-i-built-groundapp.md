@@ -1,5 +1,5 @@
 ---
-title: Why I Built GroundApp: From Breathwork Coach to App Creator
+title: Why I built GroundApp: from breathwork coach to app creator
 slug: why-i-built-groundapp
 description: Collin Chartier on the gap between coaching sessions, why most breathwork apps hand you a menu, and what he built instead.
 date: 2026-03-26
@@ -11,7 +11,7 @@ I never planned to build an app. I'm a breathwork coach. I coach people through 
 
 But I kept running into the same problem.
 
-## The Gap Between Sessions
+## The gap between sessions
 
 My clients would leave a session feeling incredible: regulated, grounded, present in their body. Then they'd go back to their inbox, their commute, their 14-hour workday. By the time our next session came around, they were right back where they started. Chest tight, breathing shallow, nervous system on fire.
 
@@ -19,7 +19,7 @@ They'd try breathwork apps. Generic ones with countdown timers and ambient sound
 
 That's the question that started GroundApp.
 
-## The Problem With Most Breathwork Apps
+## The problem with most breathwork apps
 
 I tried a lot of breathwork apps. Most of them did the same thing: gave you a menu of techniques and let you pick one.
 
@@ -29,7 +29,7 @@ What they need is for someone to say: *"I hear you. Here's exactly what to do ri
 
 That's what I do in person. That's what I wanted an app to do.
 
-## Building the App I Wished Existed
+## Building the app I wished existed
 
 GroundApp starts the way a good coaching session starts: with a check-in. You open the app and tap how you feel on a feelings wheel. Anxious. Overwhelmed. Flat. Wired. There are 102 feelings in there, from broad to specific. Add how intense it is and how much energy you have, and the app matches you to a breathing session: calming, energizing, focusing or balancing. The matching is simple and rule-based. No guesswork in the moment.
 
@@ -37,13 +37,13 @@ Then it guides you through it. And if you don't want to think at all, there's In
 
 No decision fatigue. Just: tell me what's happening, and breathe.
 
-## Why the Voice Matters
+## Why the voice matters
 
 In my coaching, I noticed that how someone is guided matters as much as the technique. A calm, steady voice that tells you exactly when to breathe in and when to let go gives your nervous system something to follow.
 
 That's why the guided sessions in GroundApp are narrated in my voice. To be straight with you about how: the narration is an AI model of my voice, trained on my own recordings. And if you'd rather not hear a voice at all, there's a haptic-only mode that lets you breathe with vibrations.
 
-## What the Name Means
+## What the name means
 
 The name isn't an accident. From the mind into the body, this is where we feel grounded.
 
@@ -51,7 +51,7 @@ Every technique in the app is a tool for the same thing: getting out of your hea
 
 GroundApp is that bridge in your pocket.
 
-## Who This Is For
+## Who this is for
 
 I built GroundApp for the people I coach:
 
@@ -63,9 +63,9 @@ I built GroundApp for the people I coach:
 
 If you've ever needed someone to tell you exactly how to breathe in a moment of stress, GroundApp is what I built for you.
 
-## Try It
+## Try it
 
-GroundApp is on the App Store for iPhone, with an Apple Watch app included. It's free to download, and four techniques are free forever: Box Breathing, Deep Slow Breathing, 2-to-1 Breathing and Triangle Breathing, along with the breathing timer, streaks and basic stats. GroundApp Premium is $39.99 a year and unlocks all 35 techniques, 15 guided sessions and the daily check-in.
+GroundApp is on the App Store for iPhone, with an Apple Watch app included. It's free to download, and four techniques are free forever: Box Breathing, Deep Slow Breathing, 2-to-1 Breathing and Triangle Breathing, along with the breathing timer, streaks and basic stats. GroundApp Premium is $39.99 a year in the US and adds all techniques, guided sessions in Collin's voice and Aura.
 
 From the mind into the body.
 

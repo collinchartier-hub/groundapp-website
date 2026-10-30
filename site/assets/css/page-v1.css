@@ -1,0 +1,71 @@
+/* GroundApp site v3: reading pages (support, privacy, terms, delete-account) and the 404 page.
+   Loads after ground-tokens-v1.css and site-v3.css, which bring the kit v5 fonts, colours, header and footer.
+   Headlines Source Serif 4 in sentence case, everything else Ground Font Type. Bump the filename (v2) when editing. */
+
+/* Reading page */
+.page { padding: calc(var(--head-h) + clamp(48px, 7vw, 96px)) 0 var(--sec); }
+.page .wrap { max-width: calc(760px + 2 * var(--gutter)); }
+.page-hero { margin: 0 0 clamp(40px, 5vw, 64px); }
+.page-hero .h2 { margin-bottom: 16px; }
+.page-meta { margin: 0; font-size: 15px; line-height: 1.55; color: var(--text-2); }
+
+.doc { font-size: 18px; line-height: 1.65; }
+.doc h2 { margin: 56px 0 16px; font: 400 clamp(26px, 1.2rem + 0.8vw, 32px)/1.2 var(--font-display); font-variation-settings: "opsz" 60; color: var(--text); text-wrap: balance; }
+.doc > h2:first-child { margin-top: 0; }
+.doc h3 { margin: 32px 0 8px; font: 500 20px/1.3 var(--font-text); color: var(--text); }
+.doc p, .doc ul, .doc ol { margin: 0 0 16px; max-width: 68ch; text-wrap: pretty; }
+.doc ul, .doc ol { padding-left: 1.3em; }
+.doc li { margin-bottom: 6px; }
+.doc li::marker { color: var(--gold); }
+.doc strong { color: var(--text); font-weight: 600; }
+.doc a { overflow-wrap: anywhere; }
+
+.table-wrap { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 16px 0 24px; }
+.doc table { width: 100%; border-collapse: collapse; font-size: 16px; line-height: 1.55; }
+.doc th { text-align: left; padding: 12px 16px; background: var(--card); color: var(--text); font-weight: 600; vertical-align: bottom; }
+.doc td { padding: 12px 16px; border-bottom: 1px solid var(--border); vertical-align: top; }
+
+.highlight-box, .warning-box { margin: 24px 0 32px; padding: 20px 24px; border-radius: var(--radius-card); }
+.highlight-box { background: var(--card); }
+.warning-box { background: var(--gold-tint); }
+.highlight-box p:last-child, .warning-box p:last-child { margin-bottom: 0; }
+.warning-box .warning-title { margin-bottom: 8px; color: var(--gold-2); font-weight: 600; }
+.caps-text { font-size: 16px; }
+.closing { margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border); }
+
+@media (max-width: 600px) {
+  .doc table { font-size: 15px; }
+  .doc th, .doc td { padding: 10px 12px; }
+  /* Wide tables become one card per row, each cell under its own label */
+  .table-wrap.wide thead { position: absolute; left: -9999px; }
+  .table-wrap.wide tr { display: block; padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .table-wrap.wide td { display: block; border: 0; padding: 2px 0; }
+  .table-wrap.wide td[data-label]::before { content: attr(data-label); display: block; margin-top: 8px; color: var(--text); font-weight: 600; }
+}
+@media (min-width: 601px) { .table-wrap.wide table { min-width: 560px; } }
+
+/* 404: one slow breath with the circle */
+.lost { min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; justify-content: center; padding: calc(var(--head-h) + 48px) 0 72px; text-align: center; }
+.lost .wrap { max-width: calc(560px + 2 * var(--gutter)); }
+.lost-code { margin: 0 0 12px; color: var(--gold-2); font: 500 17px/1 var(--font-data); font-variant-numeric: tabular-nums; }
+.lost .h2 { margin-bottom: 16px; }
+.lost .lede { max-width: 38ch; margin: 0 auto; color: var(--text-2); }
+.breath { position: relative; width: 200px; height: 200px; margin: 40px auto 32px; display: flex; align-items: center; justify-content: center; }
+.breath .ring { position: absolute; inset: 0; border-radius: 50%; border: 1px solid rgba(196,147,90,.22); }
+.breath .circle { position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle, rgba(196,147,90,.38) 0%, rgba(196,147,90,.14) 55%, rgba(196,147,90,.04) 72%, transparent 73%); transform: scale(.55); animation: breathe 10s var(--ease-breath) 6; }
+.cue { position: relative; font: 400 21px/1.35 var(--font-display); color: var(--text); }
+.cue span { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); white-space: nowrap; opacity: 0; }
+.cue .in { animation: cue-in 10s var(--ease-breath) 6; }
+.cue .out { animation: cue-out 10s var(--ease-breath) 6; }
+.cue .rest { animation: cue-rest 60s steps(1, end) 1 forwards; }
+@keyframes breathe { 0% { transform: scale(.55); } 40% { transform: scale(1); } 100% { transform: scale(.55); } }
+@keyframes cue-in { 0%, 34% { opacity: 1; } 40%, 100% { opacity: 0; } }
+@keyframes cue-out { 0%, 38% { opacity: 0; } 44%, 94% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes cue-rest { 0% { opacity: 0; } 100% { opacity: 1; } }
+.breath-help { margin: 0 0 32px; font-size: 16px; color: var(--text-2); }
+.lost .actions { justify-content: center; }
+@media (prefers-reduced-motion: reduce) {
+  .breath .circle { animation: none; transform: scale(.8); }
+  .cue .in, .cue .out, .cue .rest { animation: none; opacity: 0; }
+  .cue .still { opacity: 1; }
+}

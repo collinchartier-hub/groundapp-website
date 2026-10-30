@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Terms of Service | GroundApp</title>
 <meta name="description" content="The terms for using GroundApp, including the medical disclaimer, GroundApp Premium subscription terms, and liability information.">
 <meta name="robots" content="index, follow">
@@ -30,180 +30,52 @@
 <link rel="icon" type="image/svg+xml" href="/lung-logo.svg">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
-<link rel="preload" href="/assets/fonts/source-serif-4-v1.woff2" as="font" type="font/woff2" crossorigin>
-<style>
-@font-face{font-family:"Source Serif 4";src:url("/assets/fonts/source-serif-4-v1.woff2") format("woff2");font-weight:200 900;font-style:normal;font-display:swap}
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-:root {
-  --gold: #C4935A;
-  --amber: #D4A574;
-  --obsidian: #1A110E;
-  --obsidian-mid: #231916;
-  --obsidian-light: #2D201A;
-  --bone: #E8DDD0;
-  --driftwood: #A89585;
-}
-
-html {
-  scroll-behavior: smooth;
-  background: var(--obsidian);
-  color: var(--bone);
-  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
-  -webkit-font-smoothing: antialiased;
-}
-
-body { background: var(--obsidian); min-height: 100vh; overflow-x: hidden; }
-
-.sans { font-family: "Source Serif 4", Georgia, "Times New Roman", serif; }
-
-.skip-link { position: absolute; left: -9999px; top: 0; }
-.skip-link:focus { left: 1rem; top: 1rem; z-index: 200; background: var(--gold); color: var(--obsidian); padding: 0.5rem 1rem; border-radius: 6px; font-family: "Source Serif 4", Georgia, "Times New Roman", serif; }
-
-/* Nav */
-nav.top {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  padding: 1.25rem 2.5rem;
-  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-  background: rgba(26, 17, 14, 0.88);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(196, 147, 90, 0.08);
-}
-.nav-logo { display: flex; align-items: center; gap: 0.65rem; text-decoration: none; color: var(--bone); }
-.nav-logo img { width: 32px; height: 32px; display: block; }
-.nav-logo-text { display: flex; flex-direction: column; }
-.nav-logo-text .nav-name { font-size: 1.2rem; font-weight: 600; letter-spacing: 0.02em; line-height: 1.1; }
-.nav-logo-byline { font-family: "Source Serif 4", Georgia, "Times New Roman", serif; font-size: 0.68rem; color: var(--driftwood); letter-spacing: 0.06em; margin-top: 2px; }
-.nav-cta {
-  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
-  font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap;
-  padding: 0.6rem 1.4rem; border: 1px solid var(--gold); color: var(--gold);
-  text-decoration: none; border-radius: 100px; transition: background 0.3s, color 0.3s;
-}
-.nav-cta:hover, .nav-cta:focus-visible { background: var(--gold); color: var(--obsidian); }
-
-/* Page Content */
-.page-hero { padding: 9.5rem 2rem 2.5rem; max-width: 800px; margin: 0 auto; }
-.page-hero h1 { font-size: clamp(2rem, 4.5vw, 3.2rem); font-weight: 400; line-height: 1.2; margin-bottom: 0.75rem; }
-.page-hero h1 em { font-style: italic; color: var(--gold); }
-.page-hero .meta { font-family: "Source Serif 4", Georgia, "Times New Roman", serif; font-size: 0.88rem; color: var(--driftwood); }
-
-.page-content { max-width: 800px; margin: 0 auto; padding: 0 2rem 6rem; }
-.page-content h2 {
-  font-size: 1.5rem; font-weight: 400; margin: 2.5rem 0 0.75rem; color: var(--bone);
-  border-bottom: 1px solid rgba(196, 147, 90, 0.15); padding-bottom: 0.5rem;
-}
-.page-content h3 { font-size: 1.15rem; font-weight: 600; margin: 1.5rem 0 0.5rem; color: var(--amber); }
-.page-content p {
-  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
-  font-size: 1rem; line-height: 1.75; color: var(--driftwood); margin-bottom: 1rem;
-}
-.page-content ul, .page-content ol {
-  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
-  font-size: 1rem; line-height: 1.75; color: var(--driftwood);
-  margin-left: 1.5rem; margin-bottom: 1rem;
-}
-.page-content li { margin-bottom: 0.35rem; }
-.page-content strong { color: var(--bone); font-weight: 600; }
-.page-content a { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; overflow-wrap: anywhere; }
-.page-content a:hover { color: var(--amber); }
-
-.table-wrap { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 1rem 0 1.5rem; }
-.page-content table {
-  width: 100%; border-collapse: collapse;
-  font-family: "Source Serif 4", Georgia, "Times New Roman", serif; font-size: 0.9rem;
-}
-.page-content th {
-  text-align: left; padding: 0.65rem 1rem; background: var(--obsidian-light); color: var(--bone);
-  font-weight: 600; border-bottom: 1px solid rgba(196, 147, 90, 0.15);
-}
-.page-content td {
-  padding: 0.65rem 1rem; color: var(--driftwood); line-height: 1.6;
-  border-bottom: 1px solid rgba(196, 147, 90, 0.06); vertical-align: top;
-}
-
-.highlight-box {
-  background: var(--obsidian-light); border-left: 3px solid var(--gold);
-  padding: 1rem 1.25rem; margin: 1rem 0 1.5rem; border-radius: 0 8px 8px 0;
-}
-.highlight-box p { margin-bottom: 0; }
-
-.warning-box {
-  background: rgba(196, 147, 90, 0.08); border: 1px solid rgba(196, 147, 90, 0.2);
-  padding: 1.25rem 1.5rem; margin: 1rem 0 1.5rem; border-radius: 8px;
-}
-.warning-box p { margin-bottom: 0.5rem; }
-.warning-box p:last-child { margin-bottom: 0; }
-.warning-box .warning-title {
-  font-family: "Source Serif 4", Georgia, "Times New Roman", serif; font-size: 0.85rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.06em; color: var(--gold); margin-bottom: 0.5rem;
-}
-.caps-text { font-family: "Source Serif 4", Georgia, "Times New Roman", serif; font-size: 0.9rem; line-height: 1.75; color: var(--driftwood); margin-bottom: 1rem; }
-.closing { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid rgba(196, 147, 90, 0.1); font-style: italic; }
-
-/* Footer */
-.site-footer { border-top: 1px solid rgba(196, 147, 90, 0.1); padding: 2.5rem 1.5rem 3rem; font-family: "Source Serif 4", Georgia, "Times New Roman", serif; }
-.sf-inner { max-width: 1000px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.25rem 2rem; }
-.sf-brand { display: inline-flex; align-items: center; gap: 0.55rem; color: var(--bone); text-decoration: none; font-family: "Source Serif 4", Georgia, "Times New Roman", serif; font-size: 1.05rem; letter-spacing: 0.02em; }
-.sf-brand img { width: 22px; height: 22px; }
-.sf-links { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; }
-.sf-links a { color: var(--driftwood); text-decoration: none; font-size: 0.88rem; padding: 0.4rem 0; transition: color 0.2s; }
-.sf-links a:hover, .sf-links a:focus-visible { color: var(--gold); }
-.sf-copy { width: 100%; color: var(--driftwood); font-size: 0.8rem; }
-
-a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; }
-
-@media (max-width: 600px) {
-  nav.top { padding: 0.9rem 1rem; }
-  .nav-logo-byline { display: none; }
-  .nav-cta { padding: 0.55rem 1rem; font-size: 0.72rem; }
-  .page-hero { padding: 7.5rem 1rem 1.75rem; }
-  .page-content { padding: 0 1rem 4rem; }
-  .page-content p, .page-content ul, .page-content ol { font-size: 1.05rem; }
-  .page-content ul, .page-content ol { margin-left: 1.2rem; }
-  .page-content table { font-size: 0.85rem; }
-  .table-wrap.wide table { min-width: 560px; }
-  .page-content th, .page-content td { padding: 0.5rem 0.65rem; }
-  .site-footer { padding: 2rem 1rem 2.5rem; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after { transition: none !important; animation: none !important; }
-}
-</style>
+<link rel="preload" href="/assets/fonts/source-serif-4-latin-v1.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/ground-font-type-v1.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/ground-tokens-v1.css">
+<link rel="stylesheet" href="/assets/css/site-v3.css">
+<link rel="stylesheet" href="/assets/css/page-v1.css">
 </head>
 <body>
-<a class="skip-link" href="#main">Skip to content</a>
+<a class="skip" href="#main">Skip to content</a>
+<svg width="0" height="0" class="vh" aria-hidden="true" focusable="false">
+  <symbol id="i-apple" viewBox="0 0 24 24"><path fill="currentColor" d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></symbol>
+  <symbol id="i-bodie" viewBox="0 0 24 24"><circle cx="12" cy="6.6" r="3.3" fill="currentColor"/><ellipse cx="12" cy="13.8" rx="4.8" ry="4.2" fill="currentColor"/><ellipse cx="12" cy="19.6" rx="8" ry="2" fill="currentColor" opacity=".5"/></symbol>
+</svg>
 
-<!-- NAV -->
-<nav class="top" aria-label="Main">
-  <a class="nav-logo" href="/">
-    <img src="/lung-logo.svg" alt="" width="32" height="32">
-    <span class="nav-logo-text">
-      <span class="nav-name">GroundApp</span>
-      <span class="nav-logo-byline">By Collin Chartier</span>
-    </span>
-  </a>
-  <a class="nav-cta" href="/">Back to Home</a>
+<header class="site-head">
+  <a href="/" class="brand" aria-label="GroundApp home"><img src="/lung-logo.svg" alt="" width="28" height="28"><span>GroundApp</span></a>
+  <nav class="head-nav" aria-label="Main">
+    <a href="/#check-in">App</a>
+    <a href="/#story">Story</a>
+    <a href="/#pricing">Pricing</a>
+  </nav>
+  <a class="play-link" href="/play"><svg aria-hidden="true"><use href="#i-bodie"/></svg>Play</a>
+  <a class="btn btn-gold btn-sm" href="https://apps.apple.com/app/apple-store/id6760352779?pt=128638571&amp;ct=site-nav&amp;mt=8" data-ct="nav"><svg aria-hidden="true"><use href="#i-apple"/></svg>Get the app</a>
+  <button type="button" class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu" aria-label="Open menu">Menu</button>
+</header>
+<nav class="menu" id="menu" aria-label="Menu" hidden>
+  <a href="/#check-in">App</a>
+  <a href="/#story">Story</a>
+  <a href="/#pricing">Pricing</a>
+  <a href="/play">Play</a>
+  <a class="btn btn-gold" href="https://apps.apple.com/app/apple-store/id6760352779?pt=128638571&amp;ct=site-menu&amp;mt=8" data-ct="menu"><svg aria-hidden="true"><use href="#i-apple"/></svg>Download on the App Store</a>
 </nav>
 
-<main id="main">
-<!-- HERO -->
+<main id="main" class="page">
+<div class="wrap">
 <div class="page-hero">
-  <h1>Terms of <em>Service</em></h1>
-  <p class="meta sans">GroundApp &middot; Effective Date: March 8, 2026 &middot; Last Updated: October 26, 2026</p>
+  <h1 class="h2">Terms of service</h1>
+  <p class="page-meta">GroundApp &middot; Effective Date: March 8, 2026 &middot; Last Updated: October 26, 2026</p>
 </div>
 
-<!-- CONTENT -->
-<div class="page-content">
+<div class="doc">
 
-  <h2>1. Acceptance of Terms</h2>
+  <h2>1. Acceptance of terms</h2>
   <p>By downloading, installing, or using GroundApp ("App," "Service," "we," "our," or "us"), you ("User," "you," or "your") agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, do not use the App.</p>
   <p>We reserve the right to modify these Terms at any time. Material changes will be communicated through the App or via email. Your continued use of the App following any changes constitutes acceptance of the revised Terms.</p>
 
-  <h2>2. Description of Service</h2>
+  <h2>2. Description of service</h2>
   <p>GroundApp is a mobile wellness application for iPhone and Apple Watch that provides:</p>
   <ul>
     <li>Guided breathing exercises and techniques</li>
@@ -214,20 +86,20 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
     <li>Session tracking, progress history, and streaks</li>
   </ul>
 
-  <h2>3. Medical Disclaimer</h2>
+  <h2>3. Medical disclaimer</h2>
 
   <div class="warning-box">
     <p class="warning-title">This is the most important section of these terms. Please read it carefully.</p>
   </div>
 
-  <h3>3.1 Not Medical Advice</h3>
+  <h3>3.1 Not medical advice</h3>
   <p>The App is a <strong>wellness tool</strong>, not a medical device. The App does <strong>not</strong> provide medical advice, diagnosis, or treatment. All content, features, recommendations, and biometric assessments provided through the App are for <strong>informational and educational purposes only</strong>.</p>
   <p>The nervous system state assessments, biometric interpretations, and breathwork recommendations generated by the App, whether derived from artificial intelligence, wearable device data, or algorithmic analysis, are <strong>not</strong> clinical evaluations and should <strong>not</strong> be used as a substitute for professional medical judgment.</p>
 
-  <h3>3.2 Not a Medical Device</h3>
+  <h3>3.2 Not a medical device</h3>
   <p>The App is <strong>not</strong> a medical device as defined by the U.S. Food and Drug Administration (FDA) or any equivalent regulatory body. The App is not intended to diagnose, treat, cure, or prevent any disease or medical condition. Biometric data displayed within the App (including but not limited to heart rate variability, heart rate, respiratory rate, sleep analysis, stress scores, and readiness scores) is presented for general wellness purposes only and has not been validated for clinical use.</p>
 
-  <h3>3.3 Consult Your Healthcare Provider</h3>
+  <h3>3.3 Consult your healthcare provider</h3>
   <p>You should consult a qualified healthcare professional before:</p>
   <ul>
     <li>Beginning any breathwork practice, especially if you have a pre-existing medical condition</li>
@@ -240,7 +112,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
     <p><strong>If you are experiencing a medical emergency, call your local emergency number immediately. Do not rely on the App for emergency medical guidance.</strong></p>
   </div>
 
-  <h3>3.4 Assumption of Risk</h3>
+  <h3>3.4 Assumption of risk</h3>
   <p>Breathwork practices involve intentional modification of breathing patterns, which may cause dizziness, lightheadedness, tingling, emotional release, or other physical and psychological responses. By using the App, you acknowledge that you understand these risks and voluntarily assume all risks associated with your use of the App and participation in breathwork exercises.</p>
   <p>You agree that:</p>
   <ul>
@@ -253,9 +125,9 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
   <h2>4. Eligibility</h2>
   <p>You must be at least 13 years of age to use the App. If you are under 18, you represent that you have your parent's or legal guardian's consent to use the App. We do not knowingly collect personal information from children under 13.</p>
 
-  <h2>5. User Accounts</h2>
+  <h2>5. User accounts</h2>
 
-  <h3>5.1 Account Creation</h3>
+  <h3>5.1 Account creation</h3>
   <p>Certain features of the App require account creation. You agree to:</p>
   <ul>
     <li>Provide accurate, current, and complete information</li>
@@ -264,7 +136,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
     <li>Accept responsibility for all activity under your account</li>
   </ul>
 
-  <h3>5.2 Account Termination</h3>
+  <h3>5.2 Account termination</h3>
   <p>You may delete your account at any time through the App's Settings. We may suspend or terminate your account if you violate these Terms or engage in conduct that we determine is harmful to other users or the Service.</p>
   <p>Upon account deletion:</p>
   <ul>
@@ -273,33 +145,33 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
     <li>See our <a href="/privacy">Privacy Policy</a> for details on what is stored where</li>
   </ul>
 
-  <h2>6. Wearable Device Integrations</h2>
+  <h2>6. Wearable device integrations</h2>
 
-  <h3>6.1 Third-Party Services</h3>
+  <h3>6.1 Third-party services</h3>
   <p>The App integrates with Apple Health (HealthKit). Wearables from Whoop, Garmin, Oura, COROS and other makers reach the App only through Apple Health; the App does not connect to any wearable maker's service directly. Apple's terms apply to HealthKit, and each wearable maker's own terms apply to its device and to what it writes to Apple Health:</p>
   <ul>
     <li><a href="https://www.apple.com/legal/sla/" target="_blank" rel="noopener">Apple HealthKit Terms</a></li>
   </ul>
   <p>By allowing Apple Health access, you authorize the App to read the data types you choose.</p>
 
-  <h3>6.2 Third-Party Warranty Disclaimers</h3>
+  <h3>6.2 Third-party warranty disclaimers</h3>
   <p class="caps-text"><strong>THE THIRD-PARTY SERVICES DESCRIBED IN SECTION 6.1, INCLUDING BUT NOT LIMITED TO APPLE AND THE MAKERS OF THE WEARABLES YOU USE, ARE PROVIDED BY THEIR RESPECTIVE OWNERS.</strong> We make no representations or warranties, express or implied, regarding any third-party service, hardware, software, or data. All third-party services are provided "AS IS" and "AS AVAILABLE." We disclaim all warranties on behalf of third-party providers, including implied warranties of merchantability, fitness for a particular purpose, and non-infringement.</p>
 
-  <h3>6.3 Third-Party Liability Exclusion</h3>
+  <h3>6.3 Third-party liability exclusion</h3>
   <p class="caps-text"><strong>IN NO EVENT SHALL ANY THIRD-PARTY SERVICE PROVIDER (INCLUDING APPLE, THE MAKERS OF THE WEARABLES YOU USE, ANTHROPIC, OR MISTRAL AI) BE LIABLE TO YOU FOR ANY CONSEQUENTIAL, SPECIAL, PUNITIVE, OR INDIRECT DAMAGES ARISING FROM OR RELATED TO THE APP OR YOUR USE OF THEIR DATA THROUGH THE APP.</strong> Your use of third-party data through the App does not create any direct relationship between you and those third-party service providers with respect to the App.</p>
 
-  <h3>6.4 Data Accuracy</h3>
+  <h3>6.4 Data accuracy</h3>
   <p>Biometric data obtained from wearable devices and health platforms is provided by third-party hardware and software. We do <strong>not</strong> guarantee the accuracy, completeness, or reliability of any biometric data, health metrics, or derived assessments. Wearable device measurements may be affected by sensor placement, device condition, user activity, environmental factors, and other variables beyond our control.</p>
 
-  <h3>6.5 Turning Apple Health On and Off</h3>
+  <h3>6.5 Turning Apple Health on and off</h3>
   <p>You may turn Apple Health off in the App's Settings, or change what the App can read in iOS Settings, at any time. Doing so stops the App from reading new data, including wearable data that comes through Apple Health. Data already stored on your device, and your session history, will be retained until you delete the App or your account.</p>
 
-  <h3>6.6 Non-Conflict with Third-Party Terms</h3>
+  <h3>6.6 Non-conflict with third-party terms</h3>
   <p>Nothing in these Terms is intended to conflict with or supersede the terms of service of any third-party platform with which the App integrates. In the event of any conflict between these Terms and the terms of a third-party platform regarding data from that platform, the third-party platform's terms shall govern with respect to that platform's data.</p>
 
-  <h2>7. Artificial Intelligence Features</h2>
+  <h2>7. Artificial intelligence features</h2>
 
-  <h3>7.1 AI-Generated Content</h3>
+  <h3>7.1 AI-generated content</h3>
   <p>The App may use artificial intelligence (Anthropic's Claude) to help generate the result of your check-in. You acknowledge that:</p>
   <ul>
     <li>AI-generated content is produced algorithmically and may contain inaccuracies</li>
@@ -308,7 +180,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
     <li>We do not guarantee any specific health outcome from following AI-generated recommendations</li>
   </ul>
 
-  <h3>7.2 Text-to-Speech</h3>
+  <h3>7.2 Text-to-speech</h3>
   <p>Guided session narration is produced with text-to-speech technology (Mistral Voxtral), using an AI model of Collin Chartier's voice trained on his recordings. Most narration is generated in advance and included in the App. Some narration is generated when you use it: the App sends the narration text and your voice choice to our server, which asks Mistral AI to produce the audio. You acknowledge that:</p>
   <ul>
     <li>Generated audio is produced algorithmically and may vary between sessions</li>
@@ -316,7 +188,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
     <li>Only narration text written by us, and your voice choice, is transmitted to text-to-speech services</li>
   </ul>
 
-  <h2>8. Acceptable Use</h2>
+  <h2>8. Acceptable use</h2>
   <p>You agree not to:</p>
   <ul>
     <li>Use the App for any unlawful purpose</li>
@@ -329,30 +201,30 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
     <li>Attempt to gain unauthorized access to other users' accounts or data</li>
   </ul>
 
-  <h2>9. User Legal Compliance</h2>
+  <h2>9. User legal compliance</h2>
   <p>You represent and warrant that your use of the App, including any data you provide and any actions you take, complies with all applicable federal, state, local, and international laws and regulations. You are solely responsible for ensuring your use of the App is lawful in your jurisdiction.</p>
 
-  <h2>10. Intellectual Property</h2>
+  <h2>10. Intellectual property</h2>
 
-  <h3>10.1 Our Property</h3>
+  <h3>10.1 Our property</h3>
   <p>The App, including its design, code, algorithms, content, breathing techniques library, graphics, and trademarks, is owned by GroundApp and protected by applicable intellectual property laws. These Terms do not grant you any rights to our intellectual property except the limited right to use the App as described herein.</p>
 
-  <h3>10.2 Your Content</h3>
+  <h3>10.2 Your content</h3>
   <p>You retain ownership of content you create within the App, including session notes and feedback.</p>
 
-  <h2>11. Subscription and Payments</h2>
+  <h2>11. Subscription and payments</h2>
 
   <h3>11.1 Pricing</h3>
   <p>The App is free to download. Some features require GroundApp Premium, an auto-renewing yearly subscription, currently $39.99 per year in the United States. Prices in other countries are shown in the App Store before you buy. Subscription pricing, features, and terms will be clearly presented before purchase.</p>
 
-  <h3>11.2 Billing and Auto-Renewal</h3>
+  <h3>11.2 Billing and auto-renewal</h3>
   <p>Subscriptions are billed through Apple's App Store. Payment is charged to your Apple ID account when you confirm the purchase. Your subscription renews automatically each year unless you cancel it at least 24 hours before the end of the current period, and your account will be charged for the renewal within 24 hours before the end of the current period. You can manage or cancel your subscription at any time in your Apple ID account settings (on iPhone: Settings &gt; your name &gt; Subscriptions). Deleting the App does not cancel your subscription.</p>
   <p>All billing, renewals, and cancellations are governed by Apple's terms. We do not directly process payments or store payment information.</p>
 
   <h3>11.3 Refunds</h3>
   <p>Refund requests are handled by Apple in accordance with their refund policies. Contact Apple Support for refund inquiries.</p>
 
-  <h2>12. Limitation of Liability</h2>
+  <h2>12. Limitation of liability</h2>
 
   <p class="caps-text"><strong>TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW:</strong></p>
 
@@ -389,9 +261,9 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
     <li>Any health consequences resulting from your use of the App</li>
   </ul>
 
-  <h2>14. Dispute Resolution</h2>
+  <h2>14. Dispute resolution</h2>
 
-  <h3>14.1 Informal Resolution</h3>
+  <h3>14.1 Informal resolution</h3>
   <p>Before initiating formal proceedings, you agree to contact us at <a href="mailto:legal@groundapp.live">legal@groundapp.live</a> to attempt to resolve any dispute informally within 30 days.</p>
 
   <h3>14.2 Arbitration</h3>
@@ -400,16 +272,16 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
   <h3>14.3 Exceptions</h3>
   <p>Either party may bring claims in small claims court if the claim qualifies. Either party may seek injunctive relief in any court of competent jurisdiction for violations of intellectual property rights.</p>
 
-  <h2>15. Governing Law</h2>
+  <h2>15. Governing law</h2>
   <p>These Terms shall be governed by and construed in accordance with the laws of the State of California, United States, without regard to conflict of law principles.</p>
 
   <h2>16. Severability</h2>
   <p>If any provision of these Terms is found to be unenforceable or invalid, that provision shall be modified to the minimum extent necessary to make it enforceable, and the remaining provisions shall continue in full force and effect.</p>
 
-  <h2>17. Entire Agreement</h2>
+  <h2>17. Entire agreement</h2>
   <p>These Terms, together with our <a href="/privacy">Privacy Policy</a>, constitute the entire agreement between you and GroundApp regarding your use of the App and supersede all prior agreements and understandings.</p>
 
-  <h2>18. Contact Information</h2>
+  <h2>18. Contact information</h2>
   <p>For questions about these Terms:</p>
   <p><strong>Email:</strong> <a href="mailto:legal@groundapp.live">legal@groundapp.live</a></p>
   <p><strong>Website:</strong> <a href="https://groundapp.live/terms">https://groundapp.live/terms</a></p>
@@ -418,28 +290,24 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline
   <p style="font-style: italic;">These Terms were last reviewed and updated on October 26, 2026.</p>
 
 </div>
-
+</div>
 </main>
 
-<!-- FOOTER -->
-<footer class="site-footer">
-  <div class="sf-inner">
-    <a href="/" class="sf-brand"><img src="/lung-logo.svg" alt="" width="22" height="22">GroundApp</a>
-    <nav class="sf-links" aria-label="Footer">
-      <a href="/">Home</a>
-      <a href="/about">About</a>
-      <a href="/blog/">Blog</a>
-      <a href="/privacy">Privacy</a>
-      <a href="/terms">Terms</a>
-      <a href="/support">Support</a>
-      <a href="/delete-account">Delete Account</a>
-      <a href="https://instagram.com/collinchartier" target="_blank" rel="noopener">Instagram</a>
-      <a href="mailto:collin@groundapp.live">Contact</a>
+<footer class="site-foot" id="foot">
+  <div class="wrap foot-grid">
+    <p class="foot-tag">From the mind into the body. Breathwork by Collin Chartier.</p>
+    <nav class="foot-nav" aria-label="Footer">
+      <a href="/blog/">Blog</a><a href="/play">Play</a><a href="/support">Support</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="https://instagram.com/collinchartier" rel="noopener">Instagram</a><a href="mailto:collin@groundapp.live">Contact</a><a href="https://apps.apple.com/app/apple-store/id6760352779?pt=128638571&amp;ct=site-footer&amp;mt=8" data-ct="footer">App Store</a>
     </nav>
-    <p class="sf-copy">&copy; 2026 GroundApp. Made by Collin Chartier.</p>
+    <div class="foot-fine">
+      <p>GroundApp is coaching and education, not medical or mental health treatment.</p>
+      <p>&copy; 2026 GroundApp. Made by Collin Chartier.</p>
+    </div>
   </div>
 </footer>
 
-<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "03e507bb97d74e78bc8de83dc6b261ec"}'></script><!-- End Cloudflare Web Analytics -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "03e507bb97d74e78bc8de83dc6b261ec"}'></script>
+<script src="/js/app-links-v3.js" defer></script>
+<script src="/js/site-menu-v1.js" defer></script>
 </body>
 </html>
