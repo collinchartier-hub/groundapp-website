@@ -118,7 +118,7 @@ html.low-power .still-note { display: block; }
   .film-act { flex-direction: column; align-items: stretch; }
 }
 
-/* ---------- check-in: the recording, Bodie leaning in, then the plan and Aura (Premium) ---------- */
+/* ---------- check-in: the recording, Bodie leaning in, then the session built from your answers ---------- */
 .checkin-grid { row-gap: clamp(56px, 7vw, 96px); align-items: center; }
 .checkin-copy { grid-column: 1 / 7; grid-row: 1; }
 .checkin-copy .lede { margin: 16px 0 24px; }
@@ -128,19 +128,19 @@ html.low-power .still-note { display: block; }
 .checkin-cta { margin-top: 32px; }
 .slot-lean { grid-column: 7 / 10; grid-row: 1; max-width: 240px; justify-self: center; align-self: end; }
 .checkin-phone { grid-column: 10 / 13; grid-row: 1; }
-.aura { grid-column: 1 / 7; grid-row: 2; }
+.plan-step { grid-column: 1 / 7; grid-row: 2; }
 .h2-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; }
-.aura-h { font: 400 clamp(26px, 1.1rem + 1vw, 32px)/1.2 var(--font-display); font-variation-settings: "opsz" 60; }
-.aura .lede { margin: 14px 0 14px; }
-.aura .small { margin: 0; }
+.plan-step-h { font: 400 clamp(26px, 1.1rem + 1vw, 32px)/1.2 var(--font-display); font-variation-settings: "opsz" 60; }
+.plan-step .lede { margin: 14px 0 14px; }
+.plan-step .small { margin: 0; }
 .plan-shot { grid-column: 7 / 10; grid-row: 2; margin: 0; }
 @media (max-width: 860px) {
-  .checkin-grid { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); row-gap: 32px; column-gap: 12px; grid-template-areas: "copy copy" "phone slot" "aura aura" "plan plan"; }
+  .checkin-grid { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); row-gap: 32px; column-gap: 12px; grid-template-areas: "copy copy" "phone slot" "step step" "plan plan"; }
   .checkin-copy { grid-area: copy; }
   .checkin-cta { width: 100%; }
   .checkin-phone { grid-area: phone; width: min(100%, 320px); justify-self: end; }
   .slot-lean { grid-area: slot; justify-self: start; align-self: center; width: 100%; }
-  .aura { grid-area: aura; margin-top: 24px; }
+  .plan-step { grid-area: step; margin-top: 24px; }
   .plan-shot { grid-area: plan; width: min(280px, 72%); justify-self: center; }
 }
 

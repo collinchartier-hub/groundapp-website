@@ -627,3 +627,5 @@ Source: [S1] [S5] [S12] (current `site/llms.txt` structure and rating line)
 - The Alternate nostril and Resonance one-liners ("Breathe through one nostril at a time", "Even in, even out") describe the technique names only; the app's own sub-lines for those two are cut off in screenshot 06.
 - Which techniques are the free four comes from the plan Facts (Box, Deep Slow Breathing, 2-to-1, Triangle). The Library table marks Box and 2-to-1 as Free because both are visible in screenshot 06 and in that list.
 - Thrive Real Estate Group appears in Collin's collinchartier.com bio. It is left out here on purpose (not about breathwork).
+
+> 2026-10-30: Aura was removed from the app (Collin). Its section became "Your session, built from your answers." in Check-in; every Aura line below is retired.

@@ -70,6 +70,6 @@ A few things make this a moment worth paying attention to:
 
 ## Try it
 
-GroundApp is on the App Store for iPhone, with an Apple Watch app included. It's free to download, with four techniques free forever. GroundApp Premium is $39.99 a year in the US and adds all techniques, guided sessions in Collin's voice and Aura.
+GroundApp is on the App Store for iPhone, with an Apple Watch app included. It's free to download, with four techniques free forever. GroundApp Premium is $39.99 a year in the US and adds all techniques and guided sessions in Collin's voice.
 
 The future of breathwork isn't a better timer. It's something closer to a coach. GroundApp is my first step in that direction.

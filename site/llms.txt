@@ -9,7 +9,7 @@
 ## Pricing
 
 - Free to download. Four core techniques are free, along with the session timer, streaks, basic stats, check-ins with Bodie and live heart rate.
-- GroundApp Premium is $39.99 a year (US). It adds all techniques, the Advanced O2 and CO2 tables, guided sessions and Aura. Eligible new subscribers get a 3-day free trial. Billed through Apple; cancel any time in Settings > your name > Subscriptions.
+- GroundApp Premium is $39.99 a year (US). It adds all techniques, the Advanced O2 and CO2 tables and guided sessions. Eligible new subscribers get a 3-day free trial. Billed through Apple; cancel any time in Settings > your name > Subscriptions.
 
 ## Features
 
@@ -17,7 +17,6 @@
 - Check in with Bodie: name how you feel and get breathwork matched to it
 - Advanced O2 and CO2 tables for breath-hold training (dry land only)
 - Guided sessions in Collin's voice, with ambient sound and haptic cues (Premium)
-- Aura, Collin's AI expert in nervous system regulation, builds a plan (Premium)
 - Live heart rate and HRV from a Bluetooth heart rate monitor or a Whoop or Garmin broadcasting heart rate
 - Apple Health, plus Whoop, Garmin, Oura and COROS through Apple Health
 - Apple Watch app

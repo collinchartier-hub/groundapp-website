@@ -65,7 +65,7 @@ If you've ever needed someone to tell you exactly how to breathe in a moment of 
 
 ## Try it
 
-GroundApp is on the App Store for iPhone, with an Apple Watch app included. It's free to download, and four techniques are free forever: Box Breathing, Deep Slow Breathing, 2-to-1 Breathing and Triangle Breathing, along with the breathing timer, streaks and basic stats. GroundApp Premium is $39.99 a year in the US and adds all techniques, guided sessions in Collin's voice and Aura.
+GroundApp is on the App Store for iPhone, with an Apple Watch app included. It's free to download, and four techniques are free forever: Box Breathing, Deep Slow Breathing, 2-to-1 Breathing and Triangle Breathing, along with the breathing timer, streaks and basic stats. GroundApp Premium is $39.99 a year in the US and adds all techniques and guided sessions in Collin's voice.
 
 From the mind into the body.
 

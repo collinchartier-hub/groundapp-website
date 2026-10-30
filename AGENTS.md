@@ -62,7 +62,7 @@ These are done from Collin's laptop, through Claude Code only. If a change needs
   - Free to download.
   - More than 40 techniques. 4 are free forever: Box Breathing, Deep Slow Breathing, 2-to-1 Breathing, Triangle Breathing.
   - Free also includes the session timer, streaks, basic stats, check-ins with Bodie and live heart rate.
-  - GroundApp Premium: $39.99 a year in the US. Adds all techniques, the Advanced O2 and CO2 tables, guided sessions in Collin's voice and Aura.
+  - GroundApp Premium: $39.99 a year in the US. Adds all techniques, the Advanced O2 and CO2 tables and guided sessions in Collin's voice. Aura was removed from the app: never mention it.
   - Eligible new subscribers get a 3-day free trial. Say "eligible new subscribers"; never promise a trial to everyone.
   - iPhone and Apple Watch. Wearables (Whoop, Garmin, Oura, COROS) reach GroundApp through Apple Health; live heart rate comes from a Bluetooth monitor or a Whoop or Garmin broadcasting heart rate.
 - Advanced tables always carry: "Dry land only. Never in or near water."

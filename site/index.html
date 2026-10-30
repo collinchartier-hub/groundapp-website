@@ -65,14 +65,13 @@
       "downloadUrl": "https://apps.apple.com/us/app/groundapp-breathwork/id6760352779",
       "applicationCategory": "HealthApplication",
       "operatingSystem": "iOS 17 or later",
-      "description": "Breathwork app by Collin Chartier. Meet Bodie, your breathing companion. More than 40 breathing techniques, a check-in that matches breathwork to how you feel, Advanced O2 and CO2 tables, guided sessions in Collin's voice, and live heart rate. Free to download. GroundApp Premium is $39.99 a year in the US and adds all techniques, the Advanced tables, guided sessions and Aura.",
+      "description": "Breathwork app by Collin Chartier. Meet Bodie, your breathing companion. More than 40 breathing techniques, a check-in that matches breathwork to how you feel, Advanced O2 and CO2 tables, guided sessions in Collin's voice, and live heart rate. Free to download. GroundApp Premium is $39.99 a year in the US and adds all techniques, the Advanced tables and guided sessions.",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
       "featureList": [
         "More than 40 breathing techniques, each with a practice guide",
-        "Check in with Bodie: name how you feel and get breathwork matched to it",
+        "Check in with Bodie: name how you feel and get a short session matched to it",
         "Advanced O2 and CO2 tables for breath-hold training (dry land only)",
         "Guided sessions in Collin's voice, with ambient sound and haptic cues (Premium)",
-        "Aura, Collin's AI expert in nervous system regulation, builds a plan (Premium)",
         "Live heart rate and HRV from a Bluetooth heart rate monitor or a Whoop or Garmin broadcasting heart rate",
         "Apple Health, plus Whoop, Garmin, Oura and COROS through Apple Health",
         "Apple Watch app",
@@ -85,12 +84,11 @@
       "@type": "FAQPage",
       "@id": "https://groundapp.live/#faq",
       "mainEntity": [
-        { "@type": "Question", "name": "What does GroundApp cost?", "acceptedAnswer": { "@type": "Answer", "text": "GroundApp is free to download. GroundApp Premium is $39.99 a year in the US and adds all 40+ techniques, the Advanced O2 and CO2 tables, guided sessions in my voice and Aura. Eligible new subscribers get a 3-day free trial." } },
+        { "@type": "Question", "name": "What does GroundApp cost?", "acceptedAnswer": { "@type": "Answer", "text": "GroundApp is free to download. GroundApp Premium is $39.99 a year in the US and adds all 40+ techniques, the Advanced O2 and CO2 tables and guided sessions in my voice. Eligible new subscribers get a 3-day free trial." } },
         { "@type": "Question", "name": "What do I get for free?", "acceptedAnswer": { "@type": "Answer", "text": "Four core techniques: Box breathing, Deep slow breathing, 2-to-1 breathing and Triangle breathing. You also get the session timer, streaks, basic stats, check-ins with Bodie and live heart rate." } },
         { "@type": "Question", "name": "Who is Bodie?", "acceptedAnswer": { "@type": "Answer", "text": "Bodie is your breathing companion. He sits in the middle of Home and breathes the rhythm of your technique. Press and hold on Bodie and breathe with him. My 3-minute intro film shows why I made GroundApp and how to use it. You can find it in Profile > Help." } },
-        { "@type": "Question", "name": "How does the check-in work?", "acceptedAnswer": { "@type": "Answer", "text": "Tap Check in on Home. Name how you feel, then rate how strong it is and your energy. GroundApp maps that to a nervous system state and matches breathwork to it." } },
-        { "@type": "Question", "name": "What is Aura?", "acceptedAnswer": { "@type": "Answer", "text": "Aura is my AI expert in nervous system regulation, and it is part of Premium. Sign in, check in, and Aura builds a plan: two or three techniques, about 10 minutes, with a note on why each fits. Aura asks before anything leaves your phone, and you can turn it off any time in Profile. Without Aura you still get a plan from your answers." } },
-        { "@type": "Question", "name": "Do I need an account?", "acceptedAnswer": { "@type": "Answer", "text": "No. Use GroundApp as a guest, or sign in with Apple or Google. Aura needs you to sign in. You can delete your account any time in Settings." } },
+        { "@type": "Question", "name": "How does the check-in work?", "acceptedAnswer": { "@type": "Answer", "text": "Tap Check in on Home. Name how you feel, then rate how strong it is and your energy. GroundApp maps that to a nervous system state and builds you a short session for it: a few techniques in order, each with a line on why it fits." } },
+        { "@type": "Question", "name": "Do I need an account?", "acceptedAnswer": { "@type": "Answer", "text": "No. Use GroundApp as a guest, or sign in with Apple or Google. You can delete your account any time in Settings." } },
         { "@type": "Question", "name": "Is that really Collin's voice?", "acceptedAnswer": { "@type": "Answer", "text": "The guided sessions use an AI model of my voice, trained on my own recordings. If you'd rather not hear a voice at all, haptic-only mode lets you breathe with vibrations." } },
         { "@type": "Question", "name": "What are the Advanced tables, and are they safe?", "acceptedAnswer": { "@type": "Answer", "text": "O2 and CO2 tables are breath-hold training. You can start from a ready-made table or build one from your own reference hold, you begin each hold, and you can stop any time. Dry land only. Never in or near water. Intense techniques show a short safety note before you start. If you have a heart, lung or other medical condition, check with your doctor before you begin a new breathing practice." } },
         { "@type": "Question", "name": "Which devices and wearables does it work with?", "acceptedAnswer": { "@type": "Answer", "text": "GroundApp runs on iPhone with iOS 17 or later. The Apple Watch app (watchOS 11 or later) breathes with Bodie on your wrist. Apple Health reads your heart rate, HRV, sleep, steps and active energy, and saves your sessions as mindful minutes. For live heart rate and HRV in a session, connect a standard Bluetooth heart rate monitor, or a Whoop or Garmin with heart rate broadcast on. Whoop, Garmin, Oura, COROS and other wearables also reach GroundApp through Apple Health. Readings inform suggestions. They are not a medical assessment." } },
@@ -222,23 +220,22 @@
     </div>
     <div class="slot slot-lean" data-slot="check-in" data-react="lean" data-dir="right"></div>
     <div class="phone checkin-phone" data-ui>
-      <img src="/media/v3/clips/ch06-check-in-poster.webp" width="588" height="1280" loading="lazy" alt="The check-in in GroundApp. Bodie sits in the corner asking how you're feeling. You pick a feeling, narrow it down, rate how strong it is and your energy, then tap Save check-in.">
+      <img src="/media/v3/clips/ch06-check-in-poster.webp" width="588" height="1280" loading="lazy" alt="The check-in in GroundApp. Bodie asks how you're feeling. You pick Anxious, narrow it to Worried, then Nervous, rate it 6 with medium energy, save the check-in, tap Build my guided session and get a 4-minute session.">
       <video data-clip src="/media/v3/clips/ch06-check-in.mp4" poster="/media/v3/clips/ch06-check-in-poster.webp" muted playsinline loop preload="none" aria-hidden="true"></video>
     </div>
-    <div class="aura" id="aura">
-      <div class="h2-row"><h3 class="h3 aura-h">Aura builds your plan.</h3><span class="chip">Premium</span></div>
-      <p class="lede">Aura is my AI expert in nervous system regulation.</p>
+    <div class="plan-step" id="session">
+      <h3 class="h3 plan-step-h">Your session, built from your answers.</h3>
+      <p class="lede">Save your check-in, tap Build my guided session, and GroundApp lines up a short session for how you feel right now.</p>
       <div class="copy">
-        <p>Sign in, check in, and Aura builds a plan: two or three techniques, about 10 minutes, with a note on why each one fits how you feel.</p>
-        <p>Aura asks before anything leaves your phone, and you can turn it off any time in Profile. Without Aura you still get a plan from your answers.</p>
+        <p>A few techniques in order, each with a line on why it fits. Tap Begin session and breathe it through.</p>
+        <p>Check-ins with Bodie are free.</p>
       </div>
-      <p class="small">A 3-day free trial for eligible new subscribers. Then $39.99 a year.</p>
     </div>
     <figure class="plan-shot">
       <div class="phone" data-ui>
-        <img src="/media/v3/shots/05-check-in-plan-480.webp" srcset="/media/v3/shots/05-check-in-plan-480.webp 480w, /media/v3/shots/05-check-in-plan-960.webp 960w" sizes="(min-width: 861px) 280px, 72vw" width="480" height="1043" loading="lazy" alt="A plan from a check-in titled &quot;Your session, 4 minutes&quot;: Physiological sigh, 4-7-8 breathing and Resonance breathing, each with a line on why, and a Begin session button.">
+        <img src="/media/v3/shots/05-check-in-plan-480.webp" srcset="/media/v3/shots/05-check-in-plan-480.webp 480w, /media/v3/shots/05-check-in-plan-960.webp 960w" sizes="(min-width: 861px) 280px, 72vw" width="480" height="1043" loading="lazy" alt="A session from a check-in titled &quot;Your session, 4 minutes&quot;: Physiological sigh, 4-7-8 breathing and Resonance breathing, each with a line on why, and a Begin session button.">
       </div>
-      <figcaption class="shot-cap">Without Aura, your answers still build a plan on your phone, like this one.</figcaption>
+      <figcaption class="shot-cap">From one check-in: Physiological sigh, <span class="nw">4-7-8</span> and Resonance, 4 minutes.</figcaption>
     </figure>
   </div>
 </section>
@@ -455,7 +452,6 @@
           <li>All 40+ techniques</li>
           <li>Advanced O2 and CO2 tables</li>
           <li>Guided sessions in Collin's voice</li>
-          <li>Aura, Collin's AI expert in nervous system regulation</li>
         </ul>
         <a class="btn btn-gold plan-btn" href="https://apps.apple.com/app/apple-store/id6760352779?pt=128638571&amp;ct=site-pricing-premium&amp;mt=8" data-ct="pricing-premium"><svg aria-hidden="true"><use href="#i-apple"/></svg>Try Premium</a>
         <p class="small plan-fine">Premium is a yearly subscription that renews automatically. It is billed through your Apple ID. Cancel any time in Settings &gt; your name &gt; Subscriptions, at least 24 hours before the period ends.</p>
@@ -532,12 +528,11 @@
   <div class="wrap faq-grid">
     <h2 class="h2 faq-h" id="faq-h">Questions, answered</h2>
     <div class="faq-list">
-      <details><summary>What does GroundApp cost?</summary><p>GroundApp is free to download. GroundApp Premium is $39.99 a year in the US and adds all 40+ techniques, the Advanced O2 and CO2 tables, guided sessions in my voice and Aura. Eligible new subscribers get a 3-day free trial.</p></details>
+      <details><summary>What does GroundApp cost?</summary><p>GroundApp is free to download. GroundApp Premium is $39.99 a year in the US and adds all 40+ techniques, the Advanced O2 and CO2 tables and guided sessions in my voice. Eligible new subscribers get a 3-day free trial.</p></details>
       <details><summary>What do I get for free?</summary><p>Four core techniques: Box breathing, Deep slow breathing, <span class="nw">2-to-1 breathing</span> and Triangle breathing. You also get the session timer, streaks, basic stats, check-ins with Bodie and live heart rate.</p></details>
       <details><summary>Who is Bodie?</summary><p>Bodie is your breathing companion. He sits in the middle of Home and breathes the rhythm of your technique. Press and hold on Bodie and breathe with him. My 3-minute intro film shows why I made GroundApp and how to use it. You can find it in Profile &gt; Help.</p></details>
-      <details><summary>How does the check-in work?</summary><p>Tap Check in on Home. Name how you feel, then rate how strong it is and your energy. GroundApp maps that to a nervous system state and matches breathwork to it.</p></details>
-      <details><summary>What is Aura?</summary><p>Aura is my AI expert in nervous system regulation, and it is part of Premium. Sign in, check in, and Aura builds a plan: two or three techniques, about 10 minutes, with a note on why each fits. Aura asks before anything leaves your phone, and you can turn it off any time in Profile. Without Aura you still get a plan from your answers.</p></details>
-      <details><summary>Do I need an account?</summary><p>No. Use GroundApp as a guest, or sign in with Apple or Google. Aura needs you to sign in. You can delete your account any time in Settings.</p></details>
+      <details><summary>How does the check-in work?</summary><p>Tap Check in on Home. Name how you feel, then rate how strong it is and your energy. GroundApp maps that to a nervous system state and builds you a short session for it: a few techniques in order, each with a line on why it fits.</p></details>
+      <details><summary>Do I need an account?</summary><p>No. Use GroundApp as a guest, or sign in with Apple or Google. You can delete your account any time in Settings.</p></details>
       <details><summary>Is that really Collin's voice?</summary><p>The guided sessions use an AI model of my voice, trained on my own recordings. If you'd rather not hear a voice at all, haptic-only mode lets you breathe with vibrations.</p></details>
       <details><summary>What are the Advanced tables, and are they safe?</summary><p>O2 and CO2 tables are breath-hold training. You can start from a ready-made table or build one from your own reference hold, you begin each hold, and you can stop any time. Dry land only. Never in or near water. Intense techniques show a short safety note before you start. If you have a heart, lung or other medical condition, check with your doctor before you begin a new breathing practice.</p></details>
       <details><summary>Which devices and wearables does it work with?</summary><p>GroundApp runs on iPhone with iOS 17 or later. The Apple Watch app (watchOS 11 or later) breathes with Bodie on your wrist. Apple Health reads your heart rate, HRV, sleep, steps and active energy, and saves your sessions as mindful minutes. For live heart rate and HRV in a session, connect a standard Bluetooth heart rate monitor, or a Whoop or Garmin with heart rate broadcast on. Whoop, Garmin, Oura, COROS and other wearables also reach GroundApp through Apple Health. Readings inform suggestions. They are not a medical assessment.</p></details>
