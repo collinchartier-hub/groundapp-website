@@ -183,13 +183,13 @@ mqDesk.addEventListener('change', (e) => { if (e.matches && !menu.hidden) setMen
 
 /* ---------- Phone action pill: after the hero, out of the way at Download ---------- */
 const pill = $('#pill');
-const seen = { hero: true, download: false };
+const seen = { hero: true, download: false, foot: false };
 function syncPill() { if (pill) pill.classList.toggle('is-on', !seen.hero && !seen.download && menu.hidden); }
 const pillIO = new IntersectionObserver((es) => {
   es.forEach((e) => { seen[e.target.id] = e.isIntersecting; });
   syncPill();
 });
-['hero', 'download'].forEach((id) => { const el = document.getElementById(id); if (el) pillIO.observe(el); });
+['hero', 'download', 'foot'].forEach((id) => { const el = document.getElementById(id); if (el) pillIO.observe(el); });
 
 /* ---------- Newsletter: posts to /api/subscribe exactly as the site always has (name, email, source, website, t) ---------- */
 const T0 = window.__gaT0 || Date.now();

@@ -72,3 +72,101 @@ html.low-power .still-note { display: block; }
   .hero-meta { text-align: center; max-width: 30ch; }
   .scroll-cue { display: none; }
 }
+
+/* ---------- collin: two photos, the bio, the intro film, Bodie waving at the film ---------- */
+.collin-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: clamp(20px, 2.4vw, 32px); row-gap: clamp(40px, 5vw, 72px); align-items: start; }
+.ph { margin: 0; }
+.ph img { width: 100%; height: auto; border-radius: var(--radius-card); background-color: var(--card); }
+.ph figcaption { margin-top: 10px; font-size: 15px; color: var(--text-2); }
+.ph-win { grid-column: 1 / 8; grid-row: 1; }
+.collin-copy { grid-column: 8 / 13; grid-row: 1; align-self: center; }
+.collin-copy .lede { margin: 20px 0 22px; }
+.collin-then { margin: 0 0 10px; }
+.accolades { margin: 0 0 24px; color: var(--text); }
+.press { margin: 0; font-size: 16px; line-height: 1.6; max-width: 34rem; }
+.press-label { color: var(--text); font-weight: 600; margin-right: 6px; }
+.ph-run { grid-column: 1 / 6; grid-row: 2; align-self: center; }
+.film { grid-column: 6 / 9; grid-row: 2; position: relative; aspect-ratio: 9 / 16; border-radius: var(--radius-card); overflow: hidden; background-color: var(--card); }
+.film > img, .film > video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.film > video { opacity: 0; background-color: #000; transition: opacity var(--t-ui) ease; }
+.film > video.is-playing, .film.is-on > video { opacity: 1; }
+.film-play { position: absolute; left: 50%; bottom: 20px; translate: -50% 0; display: grid; place-items: center; width: 72px; height: 72px; border: 0; border-radius: 50%; background-color: var(--gold); color: var(--on-gold); cursor: pointer; }
+.film-play svg { width: 28px; height: 28px; margin-left: 4px; }
+.film.is-on .film-play { display: none; }
+.film-side { grid-column: 9 / 13; grid-row: 2; align-self: center; display: grid; gap: 18px; }
+.film-line { margin: 0; font: 400 24px/1.35 var(--font-display); color: var(--text); }
+.film-act { flex-direction: column; align-items: stretch; }
+.film-note { margin: 0; }
+.slot-side { width: min(200px, 100%); justify-self: start; margin-top: 4px; }
+@media (max-width: 860px) {
+  .collin-grid { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); row-gap: 28px; column-gap: 16px;
+    grid-template-areas: "win win" "copy copy" "run run" "film slot" "line line" "act act" "note note"; }
+  .ph-win { grid-area: win; margin: 0 calc(-1 * var(--gutter)); }
+  .ph-win img { border-radius: 0; }
+  .ph-win figcaption { padding: 0 var(--gutter); }
+  .collin-copy { grid-area: copy; }
+  .ph-run { grid-area: run; }
+  .film { grid-area: film; }
+  .film-side { display: contents; }
+  .film-line { grid-area: line; font-size: 22px; }
+  .film-act { grid-area: act; }
+  .film-note { grid-area: note; }
+  .slot-side { grid-area: slot; align-self: center; width: 100%; margin: 0; }
+}
+
+/* ---------- check-in: the recording in a phone, Bodie leaning in toward it ---------- */
+.checkin-grid { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 3fr) minmax(0, 3fr); grid-template-rows: auto auto 1fr; column-gap: clamp(24px, 3vw, 48px); align-items: start; }
+.checkin-copy { grid-column: 1; grid-row: 1; }
+.checkin-copy .lede { margin: 16px 0 24px; }
+.steps { grid-column: 1; grid-row: 2; list-style: none; counter-reset: st; margin: 12px 0 0; padding: 0; display: grid; gap: 14px; max-width: 30rem; }
+.steps li { counter-increment: st; display: grid; grid-template-columns: 40px 1fr; align-items: baseline; color: var(--text); font-size: 19px; }
+.steps li::before { content: counter(st); font: 300 30px/1 var(--font-data); font-variant-numeric: tabular-nums; color: var(--gold); }
+.checkin-cta { grid-column: 1; grid-row: 3; justify-self: start; margin-top: 32px; }
+.checkin-phone { grid-column: 2; grid-row: 1 / 4; max-width: 300px; justify-self: center; }
+.slot-lean { grid-column: 3; grid-row: 1 / 4; align-self: center; max-width: 240px; }
+@media (max-width: 860px) {
+  .checkin-grid { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); grid-template-rows: none; grid-template-areas: "copy copy" "phone slot" "steps steps" "cta cta"; row-gap: 28px; column-gap: 12px; }
+  .checkin-copy { grid-area: copy; }
+  .checkin-phone { grid-area: phone; max-width: none; }
+  .slot-lean { grid-area: slot; max-width: none; }
+  .steps { grid-area: steps; margin: 0; }
+  .checkin-cta { grid-area: cta; margin: 0; justify-self: stretch; }
+}
+
+/* ---------- library: tap a technique, Bodie breathes it ---------- */
+.lib-grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: clamp(32px, 5vw, 80px); align-items: start; }
+.lib-head { grid-column: 1; grid-row: 1; }
+.lib-head .lede { margin: 16px 0 16px; }
+.lib-head .copy { margin: 0; }
+.lib-bodie { grid-column: 2; grid-row: 1 / 3; position: sticky; top: calc(var(--head-h) + 24px); margin: 0; display: grid; justify-items: center; }
+.slot-lib { width: min(330px, 100%); }
+.lib-bodie figcaption { display: grid; justify-items: center; gap: 4px; text-align: center; }
+.readout-lib { font-size: 22px; }
+.lib-name { font-size: 16px; color: var(--text-2); }
+.lib-list { grid-column: 1; grid-row: 2; margin-top: 40px; }
+.lib-label { margin: 0 0 14px; color: var(--text); font-weight: 600; }
+.techs { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.tech { width: 100%; display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr) auto; align-items: center; gap: 4px 20px; min-height: 60px; padding: 12px 18px; border: 0; border-radius: var(--radius-card); background-color: transparent; color: var(--text-2); font: 400 17px/1.4 var(--font-text); text-align: left; }
+button.tech { background-color: var(--card); cursor: pointer; touch-action: manipulation; transition: background-color var(--t-hover) ease; }
+button.tech[aria-pressed="true"] { background-color: #3d2a1d; box-shadow: inset 3px 0 0 var(--gold); }
+.tech-name { color: var(--text); font-weight: 500; font-size: 18px; }
+@media (hover: hover) and (pointer: fine) { button.tech:hover { background-color: #36251c; } }
+.lib-more { grid-column: 1 / -1; grid-row: 3; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 260px); gap: clamp(32px, 5vw, 80px); align-items: center; margin-top: clamp(64px, 8vw, 112px); }
+.tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 32px; margin: 20px 0 28px; }
+.tabs dt { color: var(--text); font-weight: 500; font-size: 19px; }
+.tabs dd { margin: 4px 0 0; font-size: 16px; }
+.lib-tabs .copy { margin: 0; }
+@media (max-width: 860px) {
+  .lib-grid { grid-template-columns: minmax(0, 1fr); }
+  .lib-head, .lib-bodie, .lib-list, .lib-more { grid-column: 1; grid-row: auto; }
+  .lib-bodie { position: static; margin-top: 28px; }
+  .slot-lib { width: 190px; }
+  .lib-list { margin-top: 12px; }
+  .tech { grid-template-columns: minmax(0, 1fr) auto; min-height: 56px; padding: 9px 16px; gap: 0 12px; }
+  .tech-name { grid-column: 1; font-size: 17px; }
+  .tech-line { grid-column: 1; font-size: 15px; }
+  .tech .free { grid-column: 2; grid-row: 1 / 3; }
+  .lib-more { grid-template-columns: minmax(0, 1fr); margin-top: 72px; }
+  .tabs { grid-template-columns: minmax(0, 1fr); }
+  .lib-phone { width: min(260px, 70%); justify-self: center; }
+}

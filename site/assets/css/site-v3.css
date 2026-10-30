@@ -89,7 +89,7 @@ a { color: var(--gold-text); text-underline-offset: 3px; text-decoration-thickne
 .site-foot { padding: 72px 0 calc(env(safe-area-inset-bottom) + 96px); background-color: var(--bg-2); }
 .foot-grid { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px 48px; align-items: start; }
 .foot-tag { margin: 0; color: var(--text); font: 400 22px/1.35 var(--font-display); max-width: 30ch; }
-.foot-nav { display: flex; flex-wrap: wrap; gap: 0 4px; justify-content: flex-end; max-width: 560px; }
+.foot-nav { display: flex; flex-wrap: wrap; gap: 0 4px; justify-content: flex-end; max-width: 720px; }
 .foot-nav a { display: inline-flex; align-items: center; min-height: 48px; padding: 0 10px; color: var(--text-2); font-size: 16px; text-decoration: none; transition: color var(--t-hover) ease; }
 .foot-fine { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; margin: 24px 0 0; font-size: 15px; color: var(--text-2); }
 .foot-fine p { margin: 0; }
