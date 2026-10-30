@@ -52,11 +52,11 @@ Measured output inventory. Dimensions and durations are from ffprobe; bytes are 
 | `site/media/v3/watch/04-box-breathing-breathe-out-416.webp` | 416×496 | — | 7,342 |
 | `site/media/v3/watch/05-physiological-sigh-breathe-out-416.webp` | 416×496 | — | 7,446 |
 
-Added by the landing page build (Task 6): Bodie's still frame (rendered from `site/js/bodie-v3.js`, asleep pose, transparent, shown until the canvas draws and kept as the no-WebGL fallback) and the game's own cast portraits (rendered by `/play`, `game/src/6-app.js` `renderPortraits`).
+Added by the landing page build (Task 6): Bodie's still frame (rendered from `site/js/bodie-v3.js`, asleep pose, transparent, shown until the canvas draws and kept as the no-WebGL fallback) and the game's own cast portraits (rendered by `/play`, `game/src/6-app.js` `renderPortraits`; Kip re-rendered with the camera pulled back to 5.0 so his wing and eye stay in the tile).
 
 | Path | Pixel size | Duration | Bytes |
 |---|---:|---:|---:|
 | `site/media/v3/bodie/bodie-still-600.webp` | 600×744 | — | 13,968 |
-| `site/img/play/cast-kip-v1.webp` | 320×320 | — | 4,094 |
+| `site/img/play/cast-kip-v2.webp` | 320×320 | — | 2,812 |
 | `site/img/play/cast-sage-v1.webp` | 320×320 | — | 4,162 |
 | `site/img/play/cast-ember-v1.webp` | 320×320 | — | 3,208 |

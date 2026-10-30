@@ -172,7 +172,7 @@ function setMenu(open, focusBack) {
   menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
   menuBtn.textContent = open ? 'Close' : 'Menu';
   root.classList.toggle('menu-open', open);
-  syncPill();
+  syncDock();
   if (open) menu.querySelector('a').focus();
   else if (focusBack) menuBtn.focus();
 }
@@ -181,28 +181,30 @@ menu.addEventListener('click', (e) => { if (e.target.closest('a')) setMenu(false
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !menu.hidden) setMenu(false, true); });
 mqDesk.addEventListener('change', (e) => { if (e.matches && !menu.hidden) setMenu(false, false); });
 
-/* ---------- Phone action pill: after the hero, out of the way at Download ---------- */
-const pill = $('#pill');
+/* ---------- Phone dock: after the hero; away at Download and the footer ---------- */
+// It also slides away while anything that must stay readable is in the bottom 120px: Bodie and his readout, safety
+// lines, the technique list, the plans, headlines and quotes. Copy otherwise scrolls under its opaque top edge.
+const dock = $('#dock');
 const seen = { hero: true, download: false, foot: false };
-// It also steps aside while a headline or quote passes behind it, so it never sits on large text.
-const big = new Set();
-function syncPill() { if (pill) pill.classList.toggle('is-on', !seen.hero && !seen.download && !seen.foot && !big.size && menu.hidden); }
-const pillIO = new IntersectionObserver((es) => {
+const under = new Set();
+function syncDock() { if (dock) dock.classList.toggle('is-on', !seen.hero && !seen.download && !seen.foot && !under.size && menu.hidden); }
+const zoneIO = new IntersectionObserver((es) => {
   es.forEach((e) => { seen[e.target.id] = e.isIntersecting; });
-  syncPill();
+  syncDock();
 });
-['hero', 'download', 'foot'].forEach((id) => { const el = document.getElementById(id); if (el) pillIO.observe(el); });
+['hero', 'download', 'foot'].forEach((id) => { const el = document.getElementById(id); if (el) zoneIO.observe(el); });
+const KEEP_CLEAR = '[data-slot], .readout, .lib-name, .safety, .mode-safe, .techs, .plan, main h2, main .h3, main .quote, main .film-line';
 let bandIO = null;
 function watchBand() {
   if (bandIO) bandIO.disconnect();
-  big.clear();
+  under.clear();
   bandIO = new IntersectionObserver((es) => {
-    es.forEach((e) => { if (e.isIntersecting) big.add(e.target); else big.delete(e.target); });
-    syncPill();
-  }, { rootMargin: `-${Math.max(0, innerHeight - 110)}px 0px 0px 0px` });
-  $$('main h2, main .quote, main .film-line, main .price .data').forEach((el) => bandIO.observe(el));
+    es.forEach((e) => { if (e.isIntersecting) under.add(e.target); else under.delete(e.target); });
+    syncDock();
+  }, { rootMargin: `-${Math.max(0, innerHeight - 120)}px 0px 0px 0px` });
+  $$(KEEP_CLEAR).forEach((el) => bandIO.observe(el));
 }
-if (pill) { watchBand(); addEventListener('resize', () => { clearTimeout(watchBand.t); watchBand.t = setTimeout(watchBand, 200); }); }
+if (dock) { watchBand(); addEventListener('resize', () => { clearTimeout(watchBand.t); watchBand.t = setTimeout(watchBand, 200); }); }
 
 /* ---------- Newsletter: posts to /api/subscribe exactly as the site always has (name, email, source, website, t) ---------- */
 const T0 = window.__gaT0 || Date.now();

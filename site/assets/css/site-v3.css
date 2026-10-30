@@ -55,7 +55,7 @@ a { color: var(--gold-text); text-underline-offset: 3px; text-decoration-thickne
 }
 
 /* Header: lung + GroundApp left; App, Story, Pricing, Play, App Store right. Phone: logo, Play, Menu */
-.site-head { position: fixed; top: 0; left: 0; right: 0; z-index: 50; height: var(--head-h); display: flex; align-items: center; gap: 28px; padding: 0 var(--gutter); background-color: rgb(26 17 14 / .94); }
+.site-head { position: fixed; top: 0; left: 0; right: 0; z-index: 50; height: var(--head-h); display: flex; align-items: center; gap: 28px; padding: 0 var(--gutter); background-color: var(--bg); }
 .brand { display: inline-flex; align-items: center; gap: 10px; margin-right: auto; color: var(--text); font: 600 19px/1 var(--font-text); text-decoration: none; min-height: 48px; }
 .brand img { width: 28px; height: 28px; }
 .head-nav { display: flex; gap: 4px; }
@@ -77,12 +77,20 @@ a { color: var(--gold-text); text-underline-offset: 3px; text-decoration-thickne
 }
 @media (min-width: 861px) { .menu { display: none; } }
 
-/* Phone action pill: one action that never hides, above the home bar */
-.pill { position: fixed; left: 50%; bottom: calc(env(safe-area-inset-bottom) + 14px); z-index: 40; transform: translateX(-50%); display: none; }
-.pill .btn { min-height: 56px; padding: 0 28px; border-radius: var(--radius-pill); }
+/* Phone dock (copy.md "Sticky phone bar"): full width and opaque at the bottom edge, so copy scrolls under an edge
+   instead of under a floating button. home-v5.js slides it away over Bodie, safety lines, the technique list, the
+   plans, headlines and quotes, and over the hero, Download and the footer. */
+.dock { display: none; }
 @media (max-width: 860px) {
-  .pill { display: block; opacity: 0; visibility: hidden; transition: opacity var(--t-ui) ease, visibility 0s linear var(--t-ui); }
-  .pill.is-on { opacity: 1; visibility: visible; transition: opacity var(--t-ui) ease; }
+  .dock { position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px var(--gutter) calc(env(safe-area-inset-bottom) + 10px); background-color: var(--bg); box-shadow: 0 -1px 0 rgb(168 149 133 / .16); visibility: hidden; transform: translateY(110%); transition: transform var(--t-ui) var(--ease-out), visibility 0s linear var(--t-ui); }
+  .dock.is-on { visibility: visible; transform: none; transition: transform var(--t-ui) var(--ease-out); }
+  .dock-txt { display: flex; align-items: center; gap: 10px; margin: 0; font-size: 16px; line-height: 1.3; color: var(--text-2); }
+  .dock-txt b { display: block; color: var(--text); font-weight: 600; }
+  .dock .btn { min-height: 52px; flex: none; }
+}
+@media (max-width: 860px) and (prefers-reduced-motion: reduce) {
+  .dock, .dock.is-on { transform: none; opacity: 0; transition: opacity var(--t-ui) ease, visibility 0s linear var(--t-ui); }
+  .dock.is-on { opacity: 1; transition: opacity var(--t-ui) ease; }
 }
 
 /* Footer */
