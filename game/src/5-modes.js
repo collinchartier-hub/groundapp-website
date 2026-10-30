@@ -259,7 +259,7 @@ function showDeepResult() {
   const diff = r.prevBest ? (dash ? `${e.d - r.prevBest.d >= 0 ? "+" : ""}${e.d - r.prevBest.d}m vs your best` : `${e.t - r.prevBest.t >= 0 ? "+" : ""}${(e.t - r.prevBest.t).toFixed(1)}s vs your best`) : "Your first recorded dive. Now there's a flag to beat.";
   $("res-line").textContent = r.better && r.prevBest ? `You beat your old best of ${dash ? r.prevBest.d + "m" : fmtT(r.prevBest.t)}. ${diff}.` : diff;
   const ch = deepChart(D.sub);
-  $("res-body").innerHTML = `<div class="big-num">${dash ? e.d + " m" : fmtT(e.t)}</div>
+  $("res-body").innerHTML = quote("sage", r.better ? "A new record. Breathe easy, you earned it." : "Well held. Rest a couple of minutes before you dive again.") + `<div class="big-num">${dash ? e.d + " m" : fmtT(e.t)}</div>
     <div class="bench"><span>Held <b>${fmtT(e.t)}</b></span><span>Swum <b>${e.d} m</b></span>${dash ? `<span>Bonks <b>${e.bonks}</b></span>` : ""}${r.prevLast ? `<span>Last <b>${dash ? r.prevLast.d + "m" : fmtT(r.prevLast.t)}</b></span>` : ""}<span>Gold Leaves <b>+${r.leaves}</b></span>${r.better ? `<span class="badge">New ${dash ? "distance" : "hold"} record</span>` : ""}</div>
     <svg class="chart" viewBox="0 0 560 120" role="img" aria-label="Your last ${Math.min(10, ch.n)} dives">${ch.svg}</svg>
     <p class="muted">Next dive, a flag on the sea floor marks your best and your last one. Rest a couple of minutes between max holds.</p>`;
@@ -382,7 +382,7 @@ function showSurfResult() {
   $("res-eyebrow").textContent = `Breath Surf, ${S.p.goal.toLowerCase()}`;
   const t = $("res-title"); t.textContent = S.p.name; t.className = "win";
   $("res-line").textContent = acc >= 88 ? "Locked in. Your breath and Bodie moved as one." : acc >= 75 ? "Smooth. A little more patience on the long phases." : acc >= 60 ? "Good start. Follow the ribbon a beat earlier." : "Keep practicing: press as you start breathing in, let go as you start breathing out.";
-  $("res-body").innerHTML = `<div class="big-num">${acc}%</div><div class="stars" aria-label="${stars} of 3 stars">${"★".repeat(stars)}<i>${"★".repeat(3 - stars)}</i></div>
+  $("res-body").innerHTML = quote("sage", stars >= 2 ? "Lovely rhythm. Come back tomorrow and do it again." : "Good practice. Let the ribbon lead you a little more.") + `<div class="big-num">${acc}%</div><div class="stars" aria-label="${stars} of 3 stars">${"★".repeat(stars)}<i>${"★".repeat(3 - stars)}</i></div>
     <div class="bench"><span>Orbs <b>${S.got}/${S.total}</b></span>${prev ? `<span>Best ${better ? "was " : ""}<b>${prev.best}%</b></span><span>Last <b>${prev.last}%</b></span>` : ""}<span>Gold Leaves <b>+${leaves}</b></span>${better && prev ? `<span class="badge">New best</span>` : ""}</div>
     <p class="muted">${S.p.desc}</p>`;
   const next = $("btn-next"), ni = (S.pi + 1) % PATTERNS.length; next.hidden = false; next.textContent = "Next: " + PATTERNS[ni].name; next.onclick = () => surfStart(ni);

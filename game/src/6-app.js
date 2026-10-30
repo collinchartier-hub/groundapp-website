@@ -1,6 +1,8 @@
 
 // ---------------------------------------------------------------- menus
-const OVERLAYS = ["ov-title", "ov-courses", "ov-brief", "ov-deep", "ov-surf", "ov-result", "ov-shop", "ov-hall", "ov-help", "ov-pause"];
+const OVERLAYS = ["ov-title", "ov-courses", "ov-brief", "ov-deep", "ov-surf", "ov-result", "ov-shop", "ov-hall", "ov-help", "ov-pause", "ov-cast"];
+const SAGE_SAY = { hollow: "When the cloud comes, hold your breath.", lake: "Hold your breath to dive under the logs.", swamp: "Double tap to sigh the storms away.", peaks: "Tap fast on the pads, then hold through the thin air.", temple: "Ride the updraft, then glide through the rings." };
+const pickOne = (a) => a[Math.floor(Math.random() * a.length)];
 function show(id) {
   OVERLAYS.forEach((o) => ($(o).hidden = o !== id));
   $("btn-pause").hidden = !(state === "play" && id === null && mode !== "deep");
@@ -34,6 +36,7 @@ function openBrief(co) {
   briefCourse = co;
   $("brief-course").textContent = co.daily ? `Today's course, ${co.len}m` : `Course ${co.idx + 1}, ${co.tech.toLowerCase()}, ${co.len}m ${raceMode === "duel" ? "for two players" : "against Kip"}`;
   $("brief-title").textContent = co.daily ? "Daily Dash" : co.name;
+  Voice.say(co.daily ? "A new course every day. Breathe well." : SAGE_SAY[co.key], true, "sage");
   $("brief-tip").textContent = `Sage: "${co.tip} ${SAGE_LINES[(co.idx + 5) % SAGE_LINES.length]}"`;
   const st = profile.stars[co.key] || [];
   $("brief-ch").innerHTML = raceMode === "duel" ? "" : co.ch.map((c, j) => `<li class="${st[j] ? "got" : ""}"><span>★</span><span>${c.text}</span></li>`).join("");
@@ -90,7 +93,8 @@ function renderShop() {
   }
   $("shop-list").innerHTML = html;
   $("shop-list").querySelectorAll("button").forEach((b) => b.addEventListener("click", () => {
-    if (b.dataset.up) { const it = UPS.find((u) => u.id === b.dataset.up), lv = profile.up[it.id] || 0, cost = it.cost(lv); if (lv < it.max && profile.leaves >= cost) { profile.leaves -= cost; profile.up[it.id] = lv + 1; Sound.play("buy"); } }
+    if (b.dataset.up) { const it = UPS.find((u) => u.id === b.dataset.up), lv = profile.up[it.id] || 0, cost = it.cost(lv); if (lv < it.max && profile.leaves >= cost) { profile.leaves -= cost; profile.up[it.id] = lv + 1; Sound.play("buy"); Voice.say(pickOne(["Good choice!", "Pleasure doing business!", "A fine trade!"]), true, "ember"); } }
+    if ((b.dataset.skin || b.dataset.acc) && !b.disabled) Voice.say(pickOne(["Looking sharp, Bodie!", "Oh, that suits you.", "Very dashing!"]), true, "ember");
     if (b.dataset.skin) { const k = b.dataset.skin, s = SKINS[k]; if (!profile.owned.includes(k)) { if (profile.leaves < s.cost || (s.stars && stars < s.stars)) return; profile.leaves -= s.cost; profile.owned.push(k); Sound.play("buy"); } else Sound.play("click"); profile.skin = k; rebuildMenuBodie(); }
     if (b.dataset.acc) { const k = b.dataset.acc, a = ACCS[k]; if (!profile.owned.includes(k)) { if (profile.leaves < a.cost || (a.stars && stars < a.stars)) return; profile.leaves -= a.cost; profile.owned.push(k); profile.acc.push(k); Sound.play("buy"); } else { profile.acc = profile.acc.includes(k) ? profile.acc.filter((x) => x !== k) : profile.acc.concat(k); Sound.play("click"); } rebuildMenuBodie(); }
     save(); renderShop(); refreshWallets();
@@ -270,7 +274,30 @@ $("btn-daily").addEventListener("click", () => { Sound.play("click"); raceMode =
 $("btn-deep").addEventListener("click", () => { Sound.play("click"); openDeep(); });
 $("btn-surf").addEventListener("click", () => { Sound.play("click"); menuView = "ov-surf"; renderSurfList(); show("ov-surf"); });
 $("btn-courses-back").addEventListener("click", () => { Sound.play("click"); menuView = "title"; show("ov-title"); });
-$("btn-shop").addEventListener("click", () => { Sound.play("click"); menuView = "ov-shop"; renderShop(); refreshWallets(); show("ov-shop"); });
+$("btn-shop").addEventListener("click", () => { Sound.play("click"); menuView = "ov-shop"; renderShop(); refreshWallets(); show("ov-shop"); Voice.say("Welcome to the Root Market! Have a look around.", true, "ember"); });
+// Meet the cast: the camera visits each character while they say hello.
+const CAST_ORDER = ["bodie", "kip", "sage", "ember"];
+let castI = 0, castT = 0;
+function openCast(i = 0) { castI = i; menuView = "ov-cast"; show("ov-cast"); castStep(); }
+function castStep() {
+  const k = CAST_ORDER[castI], c = CAST[k];
+  $("cast-img").src = PORTRAIT[k] || ""; $("cast-img").alt = c.name;
+  $("cast-role").textContent = c.role; $("cast-name").textContent = c.name;
+  $("cast-line").textContent = `"${c.line}"`; $("cast-fact").textContent = c.fact;
+  $("btn-cast-next").textContent = castI < CAST_ORDER.length - 1 ? "Next: " + CAST[CAST_ORDER[castI + 1]].name.split(" ")[0] : "Let's play";
+  $("cast-dots").innerHTML = CAST_ORDER.map((_, j) => `<span class="${j === castI ? "on" : ""}"></span>`).join("");
+  castT = 0; castSpeak();
+}
+function castSpeak() { const k = CAST_ORDER[castI]; castT = 0; if (k === "kip") Sound.play("caw"); if (k === "bodie" && menuBodie) menuBodie.press(); Voice.say(CAST[k].line, true, k, true); }
+$("btn-cast").addEventListener("click", () => { Sound.play("click"); openCast(0); });
+$("btn-cast-next").addEventListener("click", () => { Sound.play("click"); if (castI < CAST_ORDER.length - 1) { castI++; castStep(); } else { try { speechSynthesis.cancel(); } catch (e) {} menuView = "title"; show("ov-title"); } });
+$("btn-cast-replay").addEventListener("click", castSpeak);
+$("btn-cast-skip").addEventListener("click", () => { try { speechSynthesis.cancel(); } catch (e) {} Sound.play("click"); menuView = "title"; show("ov-title"); });
+document.querySelectorAll(".hear").forEach((b) => b.addEventListener("click", () => {
+  Sound.unlock(); const k = b.dataset.who, ok = Voice.say(CAST[k].line, true, k, true); if (k === "kip") Sound.play("caw");
+  const im = b.parentElement.querySelector("img"); im.classList.remove("talk"); void im.offsetWidth; im.classList.add("talk");
+  if (!ok) b.textContent = "This browser has no voices";
+}));
 $("btn-hall").addEventListener("click", () => { Sound.play("click"); menuView = "ov-hall"; renderHall(); show("ov-hall"); });
 $("btn-help").addEventListener("click", () => { Sound.play("click"); show("ov-help"); });
 $("btn-help-back").addEventListener("click", () => { Sound.play("click"); show("ov-title"); });
@@ -296,7 +323,21 @@ $("btn-glow").addEventListener("click", () => setGlow(!(glowOn && composer)));
 $("btn-full").addEventListener("click", async () => { try { if (document.fullscreenElement) await document.exitFullscreen(); else await stage.requestFullscreen(); } catch (e) { $("btn-full").hidden = true; } });
 
 // ---------------------------------------------------------------- menu scene + main loop
+function castCamera(dt, t) {
+  const k = CAST_ORDER[castI], obj = { bodie: menuBodie, kip: menuKip, sage: menuSage, ember: menuEmber }[k].root;
+  const f = new THREE.Vector3(); obj.getWorldPosition(f); f.y += k === "kip" ? 0 : k === "bodie" ? 1.2 : .9;
+  const phone = aspect < .9, d = phone ? 13 : 9.5, a = -.22 + Math.sin(t * .2) * .05;
+  // Pan so the character sits right of the card on wide screens and above it on phones.
+  const pan = new THREE.Vector3(Math.cos(a), 0, -Math.sin(a)).multiplyScalar(phone ? 0 : -d * TANH * aspect * .3);
+  pan.y = ((phone ? .2 : .46) * vh - vh / 2) * (2 * d * TANH / vh);
+  const look = f.clone().add(pan);
+  tPos.set(f.x + Math.sin(a) * d, f.y + .5, f.z + Math.cos(a) * d).add(pan);
+  camPos.lerp(tPos, Math.min(1, dt * 3)); camLook.lerp(look, Math.min(1, dt * 3));
+  camera.position.copy(camPos); camera.lookAt(camLook);
+  key.position.set(f.x + 4, 9, f.z + 8); key.target.position.copy(f); rim.position.set(f.x - 4, 5, f.z - 8); rim.target.position.copy(f);
+}
 function menuCamera(dt, t) {
+  if (menuView === "ov-cast") return castCamera(dt, t);
   const a = -.42 + Math.sin(t * .12) * .12, d = aspect < .9 ? 13 : 9.6;
   const look = new THREE.Vector3(0, 1.15, 0);
   if (aspect >= .9) { const right = new THREE.Vector3(Math.cos(a), 0, -Math.sin(a)); look.addScaledVector(right, -d * TANH * aspect * .36); }
@@ -310,16 +351,25 @@ function menuCamera(dt, t) {
 let last = performance.now(), clock = 0;
 function updateMenu(dt) {
   menuIdleT += dt;
+  const cast = menuView === "ov-cast", focus = cast ? CAST_ORDER[castI] : null;
+  if (cast) castT += dt;
   let target;
-  if (menuHold) target = 1;
+  if (focus === "bodie") target = castT < 3.4 ? 1 : .35;
+  else if (menuHold) target = 1;
   else if (menuIdleT > 2.5) { const c = clock % 12; target = c < 4 ? c / 4 : c < 6 ? 1 : c < 10 ? 1 - (c - 6) / 4 : 0; }
   else target = Math.max(0, menuFill - dt * .5);
   menuFill += (target - menuFill) * Math.min(1, dt * (menuHold ? 1.6 : 3));
   const holdPhase = menuFill > .96 || (menuIdleT > 2.5 && (clock % 12) >= 4 && (clock % 12) < 6);
   if (menuBodie) { menuBodie.update(dt, menuFill, reduceMotion, holdPhase ? "hold" : null, menuFill, menuHold && menuFill > .9 ? .5 : 0); menuBodie.root.rotation.y = .15; menuBodie.head.rotation.y = -.2 + Math.sin(clock * .5) * .1; }
-  menuKip.root.visible = ["title", "ov-courses", "ov-help", "ov-brief"].includes(menuView); menuKip.update(dt, clock, "cruise"); menuKip.root.position.y = 2.1 + Math.sin(clock * 2.6) * .25;
-  menuSage.root.visible = menuView === "ov-hall" || menuView === "ov-surf" || menuView === "ov-deep"; menuSage.update(dt, clock);
-  menuEmber.root.visible = menuView === "ov-shop"; menuEmber.update(dt, clock);
+  // In Meet the cast everyone is on stage at once; elsewhere each one turns up where they belong.
+  menuBodie.root.visible = !cast || focus === "bodie";
+  menuKip.root.visible = cast ? focus === "kip" : ["title", "ov-courses", "ov-help", "ov-brief"].includes(menuView);
+  menuKip.update(dt, clock, focus === "kip" && castT < 3 ? "sprint" : "cruise");
+  menuKip.root.position.set(cast ? 1.7 : 2.3, (cast ? 2.5 : 2.1) + Math.sin(clock * 2.6) * .25 + (focus === "kip" ? Math.sin(clock * 9) * .08 : 0), cast ? -1.5 : -1.2);
+  menuSage.root.visible = cast ? focus === "sage" : menuView === "ov-hall" || menuView === "ov-surf" || menuView === "ov-deep";
+  menuSage.root.position.set(cast ? -2.4 : 2.1, 0, cast ? -.9 : -.6); menuSage.root.rotation.y = cast ? .5 : -.5; menuSage.update(dt, clock);
+  menuEmber.root.visible = cast ? focus === "ember" : menuView === "ov-shop";
+  menuEmber.root.position.set(cast ? 2.5 : 2.0, 0, cast ? .5 : .3); menuEmber.update(dt, focus === "ember" ? clock * 2.5 : clock);
   menuCamera(dt, clock);
 }
 function frame(now) {
@@ -338,7 +388,7 @@ function frame(now) {
 
 // ---------------------------------------------------------------- boot
 async function boot() {
-  if (!HAS_HALL) { $("btn-hall").remove(); $("btn-help").style.gridColumn = "1 / -1"; }
+  if (!HAS_HALL) $("btn-hall").remove(); else $("btn-help").style.gridColumn = "1 / -1"; // keep the menu grid even
   resize(); new ResizeObserver(resize).observe(stage);
   try { ({ mergeVertices } = await import(JSM + "utils/BufferGeometryUtils.js/+esm")); } catch (e) { mergeVertices = null; }
   try {

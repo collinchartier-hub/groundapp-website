@@ -236,17 +236,39 @@ const Sound = (() => {
     },
   };
 })();
+// The cast. Each one has a voice: the browser's own speech with a pitch, speed and preferred voice per character.
+const CAST = {
+  bodie: { name: "Bodie", role: "Hero", line: "Hi, I'm Bodie! When I hold my breath, my belly fills up and glows gold. Want to breathe with me?", fact: "Runs on belly breaths. Has never skipped an exhale." },
+  kip: { name: "Kip the Caffeine Crow", role: "Rival", line: "CAW! Kip's the name, speed's the game! Breathing? Never heard of it. Bet you can't catch me!", fact: "Favorite drink: espresso. Second favorite: also espresso." },
+  sage: { name: "Sage the Owl", role: "Coach", line: "Hello, friend. I'm Sage. I live in the Great Tree at the end of every course. Slow is smooth, and smooth is fast.", fact: "Has never rushed. Not once. Not even for dessert." },
+  ember: { name: "Ember the Fox", role: "Shopkeeper", line: "Ember's the name, deals are my game! Bring me Breath Seeds and I'll swap them for Gold Leaves. Fancy a new look?", fact: "Accepts seeds, leaves and compliments." },
+};
+const DEEP_VOICE = /Daniel|Arthur|Aaron|Alex|Fred|Rishi|Oliver|Google UK English Male|\bMale\b/i;
+const VOICE_STYLE = {
+  sage: { pitch: .8, rate: .9, pref: DEEP_VOICE },          // Sage, calm: coaching, the Big Hold, Breath Surf
+  cue: { pitch: .88, rate: 1.12, pref: DEEP_VOICE },        // Sage, urgent: "Hold your breath!"
+  kip: { pitch: 1.95, rate: 1.45, pref: /Samantha|Zira|Junior|Google US English|Karen/i },
+  bodie: { pitch: 1.6, rate: 1.05, pref: /Samantha|Tessa|Ava|Allison|Google US English/i },
+  ember: { pitch: 1.2, rate: 1.1, pref: /Moira|Fiona|Tessa|Karen|Serena|Google UK English Female|\bFemale\b/i },
+};
 const Voice = {
-  last: 0, voice: null,
-  pick() { try { const vs = speechSynthesis.getVoices(); this.voice = vs.find((v) => /en[-_]US/i.test(v.lang) && /Samantha|Google|Aria|Jenny|Zira/i.test(v.name)) || vs.find((v) => /^en/i.test(v.lang)) || null; } catch (e) {} },
-  say(text, force, calm) {
-    if (!text || !profile.voice || !profile.sound) return;
-    const s = window.speechSynthesis; if (!s || typeof SpeechSynthesisUtterance === "undefined") return;
-    const now = performance.now(); if (!force && now - this.last < 1400) return; this.last = now;
-    try { if (!this.voice) this.pick(); s.cancel(); const u = new SpeechSynthesisUtterance(text); u.rate = calm ? .95 : 1.2; u.pitch = calm ? 1.05 : 1.35; u.volume = 1; if (this.voice) u.voice = this.voice; s.speak(u); } catch (e) {}
+  last: 0, voices: null,
+  list() { try { const vs = speechSynthesis.getVoices().filter((v) => /^en/i.test(v.lang)); if (vs.length) this.voices = vs; } catch (e) {} return this.voices || []; },
+  pick(st) { const vs = this.list(); return vs.find((v) => st.pref.test(v.name)) || vs.find((v) => /en[-_]US/i.test(v.lang)) || vs[0] || null; },
+  // who: "cue" (default), "sage", "kip", "bodie" or "ember" (true still means calm Sage). Kip never talks over anyone.
+  // explicit: the visitor asked to hear it (a Hear button), so it plays even with voice switched off.
+  say(text, force, who = "cue", explicit = false) {
+    if (who === true) who = "sage";
+    if (!text || (!explicit && (!profile.voice || !profile.sound))) return false;
+    const s = window.speechSynthesis; if (!s || typeof SpeechSynthesisUtterance === "undefined") return false;
+    const now = performance.now();
+    if (who === "kip" && !force && (s.speaking || now - this.last < 2500)) return false;
+    if (!force && now - this.last < 1400) return false;
+    this.last = now;
+    try { const st = VOICE_STYLE[who] || VOICE_STYLE.cue; s.cancel(); const u = new SpeechSynthesisUtterance(text); u.rate = st.rate; u.pitch = st.pitch; u.volume = 1; const v = this.pick(st); if (v) u.voice = v; s.speak(u); return true; } catch (e) { return false; }
   },
 };
-try { speechSynthesis.onvoiceschanged = () => Voice.pick(); } catch (e) {}
+try { speechSynthesis.onvoiceschanged = () => Voice.list(); } catch (e) {}
 
 // ---------------------------------------------------------------- renderer + zones
 let renderer = null;
@@ -1255,7 +1277,11 @@ function kipSay(text) {
   const K = G && G.kip; if (!K) return; K.sayT = 2.2;
   if (!kipSayEl) { kipSayEl = document.createElement("div"); kipSayEl.className = "say"; fx.appendChild(kipSayEl); }
   kipSayEl.textContent = "Kip: " + text;
+  Voice.say(text.replace(/\.\.\./g, ","), false, "kip");
 }
+// A line from one of the cast at the top of a results card, spoken in their voice.
+function quoteHTML(who, line) { return `<div class="speaker quote"><img alt="${CAST[who].name}" ${PORTRAIT[who] ? `src="${PORTRAIT[who]}"` : ""}><p><b>${CAST[who].name.split(" ")[0]}:</b> "${line}"</p></div>`; }
+function quote(who, line) { Voice.say(line, true, who === "sage" ? "sage" : who); return quoteHTML(who, line); }
 function updateKip(dt) {
   const K = G.kip, P = G.players[0];
   K.t -= dt;
@@ -1511,8 +1537,8 @@ function endRace(winner) {
   save(); G.result = res;
   showCallout(null);
   const W = winner >= 0 ? G.players[winner] : null;
-  if (W) { Sound.play("win"); Voice.say(duel ? `Player ${winner + 1} wins!` : "Bodie wins!", true); launchConfetti(W.x, 2, W.z); event(duel ? `PLAYER ${winner + 1} WINS` : "BODIE WINS!", "First to the Great Tree", "good", 3.4); }
-  else { Sound.play("lose"); Voice.say("Kip wins. Breathe, and try again.", true); kipSay("CAW! Winner winner, coffee dinner!"); event("KIP WINS", "So close. Breathe, then rematch", "warn", 3.4); }
+  if (W) { Sound.play("win"); if (duel) Voice.say(`Player ${winner + 1} wins!`, true); else Voice.say("Yes! I did it! Bodie wins!", true, "bodie"); launchConfetti(W.x, 2, W.z); event(duel ? `PLAYER ${winner + 1} WINS` : "BODIE WINS!", "First to the Great Tree", "good", 3.4); }
+  else { Sound.play("lose"); kipSay("CAW! Winner winner, coffee dinner!"); Voice.say("CAW! Winner winner, coffee dinner!", true, "kip"); event("KIP WINS", "So close. Breathe, then rematch", "warn", 3.4); }
   Sound.music(0, 128, 0);
   if (!duel) postScore();
 }
@@ -1524,6 +1550,7 @@ function showRaceResult() {
   if (duel) {
     t.textContent = `Player ${r.winner + 1} wins`; t.className = "win";
     $("res-line").textContent = `Player ${r.winner + 1} reached the Great Tree ${r.players[r.winner].margin}m ahead. Player ${2 - r.winner}, that's the loser seat. Rematch?`;
+    body += quote("sage", `Well raced, both of you. Player ${r.winner + 1} takes it. Now everyone, take a breath.`);
     const rows = [["", "P1", "P2"], ["Distance", ...G.players.map((P) => Math.floor(Math.min(P.x, G.finish)))], ["Seeds", ...G.players.map((P) => P.seeds + P.gold * 5)], ["Calm passes", ...G.players.map((P) => P.calm)], ["Box Breaths", ...G.players.map((P) => P.boxes)], ["Pops", ...G.players.map((P) => P.pops)], ["Points", ...r.players.map((p) => p.score)]];
     body = `<div class="duel-tally">${rows.map((row, i) => row.map((c) => `<span class="${i === 0 ? "h" : ""}">${c}</span>`).join("")).join("")}</div>`;
   } else {
@@ -1536,6 +1563,7 @@ function showRaceResult() {
     if (p.prevBestTime) bench.push(`<span>Best ${p.newBestTime ? "was " : ""}<b>${fmtT(p.prevBestTime)}</b></span>`);
     if (p.prevLast) bench.push(`<span>Last <b>${p.prevLast.time ? fmtT(p.prevLast.time) : p.prevLast.pct + "%"}</b></span>`);
     if (p.newBestTime) bench.push(`<span class="badge">New best time, ghost saved</span>`);
+    body += quote(p.won ? "sage" : "kip", p.won ? (p.margin >= 20 ? "Beautifully breathed. Kip is still looking for his coffee." : "Beautifully breathed. Kip is still catching his breath.") : "Rematch, slowpoke? I'll be here. Probably on espresso number eight.");
     body += `<div class="bench">${bench.join("")}</div>`;
     if (p.stars) body += `<ul class="chs">${p.stars.map((s) => `<li class="${s.got ? "got" : ""} ${s.fresh ? "new" : ""}"><span>★</span><span>${s.text}</span></li>`).join("")}</ul>`;
     const rows = [["Distance", Math.floor(Math.min(P.x, G.finish)) + " pts"], ["Seeds, rings, holds and tricks", P.points + " pts"], ["Win bonus", p.winBonus + " pts"], ["<b>Points</b>", `<b>${p.score}</b>`], ["Gold Leaves: seeds + purse", `${p.tokens} + ${p.purse} = +${p.leaves}`], ["Box Breaths, calm passes, best combo", `${P.boxes}, ${P.calm}, x${P.bestCombo}`]];
@@ -1812,7 +1840,7 @@ function showDeepResult() {
   const diff = r.prevBest ? (dash ? `${e.d - r.prevBest.d >= 0 ? "+" : ""}${e.d - r.prevBest.d}m vs your best` : `${e.t - r.prevBest.t >= 0 ? "+" : ""}${(e.t - r.prevBest.t).toFixed(1)}s vs your best`) : "Your first recorded dive. Now there's a flag to beat.";
   $("res-line").textContent = r.better && r.prevBest ? `You beat your old best of ${dash ? r.prevBest.d + "m" : fmtT(r.prevBest.t)}. ${diff}.` : diff;
   const ch = deepChart(D.sub);
-  $("res-body").innerHTML = `<div class="big-num">${dash ? e.d + " m" : fmtT(e.t)}</div>
+  $("res-body").innerHTML = quote("sage", r.better ? "A new record. Breathe easy, you earned it." : "Well held. Rest a couple of minutes before you dive again.") + `<div class="big-num">${dash ? e.d + " m" : fmtT(e.t)}</div>
     <div class="bench"><span>Held <b>${fmtT(e.t)}</b></span><span>Swum <b>${e.d} m</b></span>${dash ? `<span>Bonks <b>${e.bonks}</b></span>` : ""}${r.prevLast ? `<span>Last <b>${dash ? r.prevLast.d + "m" : fmtT(r.prevLast.t)}</b></span>` : ""}<span>Gold Leaves <b>+${r.leaves}</b></span>${r.better ? `<span class="badge">New ${dash ? "distance" : "hold"} record</span>` : ""}</div>
     <svg class="chart" viewBox="0 0 560 120" role="img" aria-label="Your last ${Math.min(10, ch.n)} dives">${ch.svg}</svg>
     <p class="muted">Next dive, a flag on the sea floor marks your best and your last one. Rest a couple of minutes between max holds.</p>`;
@@ -1935,7 +1963,7 @@ function showSurfResult() {
   $("res-eyebrow").textContent = `Breath Surf, ${S.p.goal.toLowerCase()}`;
   const t = $("res-title"); t.textContent = S.p.name; t.className = "win";
   $("res-line").textContent = acc >= 88 ? "Locked in. Your breath and Bodie moved as one." : acc >= 75 ? "Smooth. A little more patience on the long phases." : acc >= 60 ? "Good start. Follow the ribbon a beat earlier." : "Keep practicing: press as you start breathing in, let go as you start breathing out.";
-  $("res-body").innerHTML = `<div class="big-num">${acc}%</div><div class="stars" aria-label="${stars} of 3 stars">${"★".repeat(stars)}<i>${"★".repeat(3 - stars)}</i></div>
+  $("res-body").innerHTML = quote("sage", stars >= 2 ? "Lovely rhythm. Come back tomorrow and do it again." : "Good practice. Let the ribbon lead you a little more.") + `<div class="big-num">${acc}%</div><div class="stars" aria-label="${stars} of 3 stars">${"★".repeat(stars)}<i>${"★".repeat(3 - stars)}</i></div>
     <div class="bench"><span>Orbs <b>${S.got}/${S.total}</b></span>${prev ? `<span>Best ${better ? "was " : ""}<b>${prev.best}%</b></span><span>Last <b>${prev.last}%</b></span>` : ""}<span>Gold Leaves <b>+${leaves}</b></span>${better && prev ? `<span class="badge">New best</span>` : ""}</div>
     <p class="muted">${S.p.desc}</p>`;
   const next = $("btn-next"), ni = (S.pi + 1) % PATTERNS.length; next.hidden = false; next.textContent = "Next: " + PATTERNS[ni].name; next.onclick = () => surfStart(ni);
@@ -1944,7 +1972,9 @@ function showSurfResult() {
 }
 
 // ---------------------------------------------------------------- menus
-const OVERLAYS = ["ov-title", "ov-courses", "ov-brief", "ov-deep", "ov-surf", "ov-result", "ov-shop", "ov-hall", "ov-help", "ov-pause"];
+const OVERLAYS = ["ov-title", "ov-courses", "ov-brief", "ov-deep", "ov-surf", "ov-result", "ov-shop", "ov-hall", "ov-help", "ov-pause", "ov-cast"];
+const SAGE_SAY = { hollow: "When the cloud comes, hold your breath.", lake: "Hold your breath to dive under the logs.", swamp: "Double tap to sigh the storms away.", peaks: "Tap fast on the pads, then hold through the thin air.", temple: "Ride the updraft, then glide through the rings." };
+const pickOne = (a) => a[Math.floor(Math.random() * a.length)];
 function show(id) {
   OVERLAYS.forEach((o) => ($(o).hidden = o !== id));
   $("btn-pause").hidden = !(state === "play" && id === null && mode !== "deep");
@@ -1978,6 +2008,7 @@ function openBrief(co) {
   briefCourse = co;
   $("brief-course").textContent = co.daily ? `Today's course, ${co.len}m` : `Course ${co.idx + 1}, ${co.tech.toLowerCase()}, ${co.len}m ${raceMode === "duel" ? "for two players" : "against Kip"}`;
   $("brief-title").textContent = co.daily ? "Daily Dash" : co.name;
+  Voice.say(co.daily ? "A new course every day. Breathe well." : SAGE_SAY[co.key], true, "sage");
   $("brief-tip").textContent = `Sage: "${co.tip} ${SAGE_LINES[(co.idx + 5) % SAGE_LINES.length]}"`;
   const st = profile.stars[co.key] || [];
   $("brief-ch").innerHTML = raceMode === "duel" ? "" : co.ch.map((c, j) => `<li class="${st[j] ? "got" : ""}"><span>★</span><span>${c.text}</span></li>`).join("");
@@ -2034,7 +2065,8 @@ function renderShop() {
   }
   $("shop-list").innerHTML = html;
   $("shop-list").querySelectorAll("button").forEach((b) => b.addEventListener("click", () => {
-    if (b.dataset.up) { const it = UPS.find((u) => u.id === b.dataset.up), lv = profile.up[it.id] || 0, cost = it.cost(lv); if (lv < it.max && profile.leaves >= cost) { profile.leaves -= cost; profile.up[it.id] = lv + 1; Sound.play("buy"); } }
+    if (b.dataset.up) { const it = UPS.find((u) => u.id === b.dataset.up), lv = profile.up[it.id] || 0, cost = it.cost(lv); if (lv < it.max && profile.leaves >= cost) { profile.leaves -= cost; profile.up[it.id] = lv + 1; Sound.play("buy"); Voice.say(pickOne(["Good choice!", "Pleasure doing business!", "A fine trade!"]), true, "ember"); } }
+    if ((b.dataset.skin || b.dataset.acc) && !b.disabled) Voice.say(pickOne(["Looking sharp, Bodie!", "Oh, that suits you.", "Very dashing!"]), true, "ember");
     if (b.dataset.skin) { const k = b.dataset.skin, s = SKINS[k]; if (!profile.owned.includes(k)) { if (profile.leaves < s.cost || (s.stars && stars < s.stars)) return; profile.leaves -= s.cost; profile.owned.push(k); Sound.play("buy"); } else Sound.play("click"); profile.skin = k; rebuildMenuBodie(); }
     if (b.dataset.acc) { const k = b.dataset.acc, a = ACCS[k]; if (!profile.owned.includes(k)) { if (profile.leaves < a.cost || (a.stars && stars < a.stars)) return; profile.leaves -= a.cost; profile.owned.push(k); profile.acc.push(k); Sound.play("buy"); } else { profile.acc = profile.acc.includes(k) ? profile.acc.filter((x) => x !== k) : profile.acc.concat(k); Sound.play("click"); } rebuildMenuBodie(); }
     save(); renderShop(); refreshWallets();
@@ -2214,7 +2246,30 @@ $("btn-daily").addEventListener("click", () => { Sound.play("click"); raceMode =
 $("btn-deep").addEventListener("click", () => { Sound.play("click"); openDeep(); });
 $("btn-surf").addEventListener("click", () => { Sound.play("click"); menuView = "ov-surf"; renderSurfList(); show("ov-surf"); });
 $("btn-courses-back").addEventListener("click", () => { Sound.play("click"); menuView = "title"; show("ov-title"); });
-$("btn-shop").addEventListener("click", () => { Sound.play("click"); menuView = "ov-shop"; renderShop(); refreshWallets(); show("ov-shop"); });
+$("btn-shop").addEventListener("click", () => { Sound.play("click"); menuView = "ov-shop"; renderShop(); refreshWallets(); show("ov-shop"); Voice.say("Welcome to the Root Market! Have a look around.", true, "ember"); });
+// Meet the cast: the camera visits each character while they say hello.
+const CAST_ORDER = ["bodie", "kip", "sage", "ember"];
+let castI = 0, castT = 0;
+function openCast(i = 0) { castI = i; menuView = "ov-cast"; show("ov-cast"); castStep(); }
+function castStep() {
+  const k = CAST_ORDER[castI], c = CAST[k];
+  $("cast-img").src = PORTRAIT[k] || ""; $("cast-img").alt = c.name;
+  $("cast-role").textContent = c.role; $("cast-name").textContent = c.name;
+  $("cast-line").textContent = `"${c.line}"`; $("cast-fact").textContent = c.fact;
+  $("btn-cast-next").textContent = castI < CAST_ORDER.length - 1 ? "Next: " + CAST[CAST_ORDER[castI + 1]].name.split(" ")[0] : "Let's play";
+  $("cast-dots").innerHTML = CAST_ORDER.map((_, j) => `<span class="${j === castI ? "on" : ""}"></span>`).join("");
+  castT = 0; castSpeak();
+}
+function castSpeak() { const k = CAST_ORDER[castI]; castT = 0; if (k === "kip") Sound.play("caw"); if (k === "bodie" && menuBodie) menuBodie.press(); Voice.say(CAST[k].line, true, k, true); }
+$("btn-cast").addEventListener("click", () => { Sound.play("click"); openCast(0); });
+$("btn-cast-next").addEventListener("click", () => { Sound.play("click"); if (castI < CAST_ORDER.length - 1) { castI++; castStep(); } else { try { speechSynthesis.cancel(); } catch (e) {} menuView = "title"; show("ov-title"); } });
+$("btn-cast-replay").addEventListener("click", castSpeak);
+$("btn-cast-skip").addEventListener("click", () => { try { speechSynthesis.cancel(); } catch (e) {} Sound.play("click"); menuView = "title"; show("ov-title"); });
+document.querySelectorAll(".hear").forEach((b) => b.addEventListener("click", () => {
+  Sound.unlock(); const k = b.dataset.who, ok = Voice.say(CAST[k].line, true, k, true); if (k === "kip") Sound.play("caw");
+  const im = b.parentElement.querySelector("img"); im.classList.remove("talk"); void im.offsetWidth; im.classList.add("talk");
+  if (!ok) b.textContent = "This browser has no voices";
+}));
 $("btn-hall").addEventListener("click", () => { Sound.play("click"); menuView = "ov-hall"; renderHall(); show("ov-hall"); });
 $("btn-help").addEventListener("click", () => { Sound.play("click"); show("ov-help"); });
 $("btn-help-back").addEventListener("click", () => { Sound.play("click"); show("ov-title"); });
@@ -2240,7 +2295,21 @@ $("btn-glow").addEventListener("click", () => setGlow(!(glowOn && composer)));
 $("btn-full").addEventListener("click", async () => { try { if (document.fullscreenElement) await document.exitFullscreen(); else await stage.requestFullscreen(); } catch (e) { $("btn-full").hidden = true; } });
 
 // ---------------------------------------------------------------- menu scene + main loop
+function castCamera(dt, t) {
+  const k = CAST_ORDER[castI], obj = { bodie: menuBodie, kip: menuKip, sage: menuSage, ember: menuEmber }[k].root;
+  const f = new THREE.Vector3(); obj.getWorldPosition(f); f.y += k === "kip" ? 0 : k === "bodie" ? 1.2 : .9;
+  const phone = aspect < .9, d = phone ? 13 : 9.5, a = -.22 + Math.sin(t * .2) * .05;
+  // Pan so the character sits right of the card on wide screens and above it on phones.
+  const pan = new THREE.Vector3(Math.cos(a), 0, -Math.sin(a)).multiplyScalar(phone ? 0 : -d * TANH * aspect * .3);
+  pan.y = ((phone ? .2 : .46) * vh - vh / 2) * (2 * d * TANH / vh);
+  const look = f.clone().add(pan);
+  tPos.set(f.x + Math.sin(a) * d, f.y + .5, f.z + Math.cos(a) * d).add(pan);
+  camPos.lerp(tPos, Math.min(1, dt * 3)); camLook.lerp(look, Math.min(1, dt * 3));
+  camera.position.copy(camPos); camera.lookAt(camLook);
+  key.position.set(f.x + 4, 9, f.z + 8); key.target.position.copy(f); rim.position.set(f.x - 4, 5, f.z - 8); rim.target.position.copy(f);
+}
 function menuCamera(dt, t) {
+  if (menuView === "ov-cast") return castCamera(dt, t);
   const a = -.42 + Math.sin(t * .12) * .12, d = aspect < .9 ? 13 : 9.6;
   const look = new THREE.Vector3(0, 1.15, 0);
   if (aspect >= .9) { const right = new THREE.Vector3(Math.cos(a), 0, -Math.sin(a)); look.addScaledVector(right, -d * TANH * aspect * .36); }
@@ -2254,16 +2323,25 @@ function menuCamera(dt, t) {
 let last = performance.now(), clock = 0;
 function updateMenu(dt) {
   menuIdleT += dt;
+  const cast = menuView === "ov-cast", focus = cast ? CAST_ORDER[castI] : null;
+  if (cast) castT += dt;
   let target;
-  if (menuHold) target = 1;
+  if (focus === "bodie") target = castT < 3.4 ? 1 : .35;
+  else if (menuHold) target = 1;
   else if (menuIdleT > 2.5) { const c = clock % 12; target = c < 4 ? c / 4 : c < 6 ? 1 : c < 10 ? 1 - (c - 6) / 4 : 0; }
   else target = Math.max(0, menuFill - dt * .5);
   menuFill += (target - menuFill) * Math.min(1, dt * (menuHold ? 1.6 : 3));
   const holdPhase = menuFill > .96 || (menuIdleT > 2.5 && (clock % 12) >= 4 && (clock % 12) < 6);
   if (menuBodie) { menuBodie.update(dt, menuFill, reduceMotion, holdPhase ? "hold" : null, menuFill, menuHold && menuFill > .9 ? .5 : 0); menuBodie.root.rotation.y = .15; menuBodie.head.rotation.y = -.2 + Math.sin(clock * .5) * .1; }
-  menuKip.root.visible = ["title", "ov-courses", "ov-help", "ov-brief"].includes(menuView); menuKip.update(dt, clock, "cruise"); menuKip.root.position.y = 2.1 + Math.sin(clock * 2.6) * .25;
-  menuSage.root.visible = menuView === "ov-hall" || menuView === "ov-surf" || menuView === "ov-deep"; menuSage.update(dt, clock);
-  menuEmber.root.visible = menuView === "ov-shop"; menuEmber.update(dt, clock);
+  // In Meet the cast everyone is on stage at once; elsewhere each one turns up where they belong.
+  menuBodie.root.visible = !cast || focus === "bodie";
+  menuKip.root.visible = cast ? focus === "kip" : ["title", "ov-courses", "ov-help", "ov-brief"].includes(menuView);
+  menuKip.update(dt, clock, focus === "kip" && castT < 3 ? "sprint" : "cruise");
+  menuKip.root.position.set(cast ? 1.7 : 2.3, (cast ? 2.5 : 2.1) + Math.sin(clock * 2.6) * .25 + (focus === "kip" ? Math.sin(clock * 9) * .08 : 0), cast ? -1.5 : -1.2);
+  menuSage.root.visible = cast ? focus === "sage" : menuView === "ov-hall" || menuView === "ov-surf" || menuView === "ov-deep";
+  menuSage.root.position.set(cast ? -2.4 : 2.1, 0, cast ? -.9 : -.6); menuSage.root.rotation.y = cast ? .5 : -.5; menuSage.update(dt, clock);
+  menuEmber.root.visible = cast ? focus === "ember" : menuView === "ov-shop";
+  menuEmber.root.position.set(cast ? 2.5 : 2.0, 0, cast ? .5 : .3); menuEmber.update(dt, focus === "ember" ? clock * 2.5 : clock);
   menuCamera(dt, clock);
 }
 function frame(now) {
@@ -2282,7 +2360,7 @@ function frame(now) {
 
 // ---------------------------------------------------------------- boot
 async function boot() {
-  if (!HAS_HALL) { $("btn-hall").remove(); $("btn-help").style.gridColumn = "1 / -1"; }
+  if (!HAS_HALL) $("btn-hall").remove(); else $("btn-help").style.gridColumn = "1 / -1"; // keep the menu grid even
   resize(); new ResizeObserver(resize).observe(stage);
   try { ({ mergeVertices } = await import(JSM + "utils/BufferGeometryUtils.js/+esm")); } catch (e) { mergeVertices = null; }
   try {
