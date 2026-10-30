@@ -1,0 +1,99 @@
+/* GroundApp site v3 chrome: base, type scale, buttons, header, phone menu, action pill, footer.
+   Shared by every page from site v3 on. Needs ground-tokens-v1.css (kit v5 colours, fonts) loaded first.
+   Motion values: the studio motion tokens (motion.md), copied below. Bump the filename (v4) when editing. */
+:root {
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-soft: cubic-bezier(0.33, 1, 0.68, 1);
+  --ease-breath: cubic-bezier(0.37, 0, 0.63, 1);
+  --t-press: 140ms; --t-hover: 180ms; --t-ui: 240ms; --t-panel: 400ms; --t-reveal: 800ms; --stagger: 70ms;
+  --wrap: 1200px;
+  --gutter: clamp(20px, 4vw, 56px);
+  --sec: clamp(88px, 10vw, 144px);
+  --head-h: 72px;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { background-color: var(--bg); color-scheme: dark; -webkit-text-size-adjust: 100%; scroll-padding-top: calc(var(--head-h) + 16px); }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+body { margin: 0; background-color: var(--bg); color: var(--text-2); font: 400 18px/1.6 var(--font-text); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; overflow-x: clip; }
+img, video, canvas, svg { display: block; max-width: 100%; }
+a { color: var(--gold-text); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 6px; }
+::selection { background: var(--gold); color: var(--on-gold); }
+.wrap { width: 100%; max-width: calc(var(--wrap) + 2 * var(--gutter)); margin: 0 auto; padding: 0 var(--gutter); }
+.vh { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.skip { position: absolute; left: 12px; top: -80px; z-index: 100; padding: 12px 18px; background: var(--gold); color: var(--on-gold); border-radius: var(--radius-button); font-weight: 600; text-decoration: none; }
+.skip:focus { top: 12px; }
+
+/* Type: Source Serif 4 for headlines (sentence case, opsz 60), Ground Font Type for everything else */
+.h1, .h2 { font-family: var(--font-display); font-weight: 400; font-variation-settings: "opsz" 60; color: var(--text); margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+.h1 { font-size: clamp(2.75rem, 1.5rem + 5.4vw, 6.5rem); line-height: 1.02; }
+.h2 { font-size: clamp(2rem, 1.4rem + 2.4vw, 3.25rem); line-height: 1.08; }
+.h3 { font: 500 22px/1.25 var(--font-text); color: var(--text); margin: 0; }
+.lede { font-size: clamp(19px, 1rem + 0.4vw, 22px); line-height: 1.5; color: var(--text); margin: 0; text-wrap: pretty; }
+.copy p, p.copy { margin: 0 0 1em; max-width: 62ch; text-wrap: pretty; }
+.small { font-size: 15px; line-height: 1.55; color: var(--text-2); }
+.data { font-family: var(--font-data); font-variant-numeric: tabular-nums; }
+.quote { font: 400 clamp(21px, 1rem + 0.6vw, 26px)/1.4 var(--font-display); color: var(--text); margin: 0; }
+
+/* Buttons: one gold fill for the App Store, a quiet card fill for everything else. No outlines, no shadows at rest */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; padding: 14px 26px; border: 0; border-radius: var(--radius-button); background: var(--card); color: var(--text); font: 600 16px/1.2 var(--font-text); text-decoration: none; cursor: pointer; touch-action: manipulation; transition: background-color var(--t-hover) ease, color var(--t-hover) ease; }
+.btn svg { width: 20px; height: 20px; flex: none; }
+.btn-gold { background: var(--gold); color: var(--on-gold); }
+.btn-sm { min-height: 44px; padding: 10px 18px; font-size: 15px; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover { background: #3a2820; }
+  .btn-gold:hover { background: var(--gold-2); }
+  a:hover { color: var(--gold-2); }
+  .head-nav a:hover, .foot-nav a:hover { color: var(--text); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .btn { transition: background-color var(--t-hover) ease, color var(--t-hover) ease, transform var(--t-press) var(--ease-out); }
+  .btn:active { transform: scale(.97); }
+}
+
+/* Header: lung + GroundApp left; App, Story, Pricing, Play, App Store right. Phone: logo, Play, Menu */
+.site-head { position: fixed; top: 0; left: 0; right: 0; z-index: 50; height: var(--head-h); display: flex; align-items: center; gap: 28px; padding: 0 var(--gutter); background-color: rgb(26 17 14 / .94); }
+.brand { display: inline-flex; align-items: center; gap: 10px; margin-right: auto; color: var(--text); font: 600 19px/1 var(--font-text); text-decoration: none; min-height: 48px; }
+.brand img { width: 28px; height: 28px; }
+.head-nav { display: flex; gap: 4px; }
+.head-nav a { display: inline-flex; align-items: center; min-height: 48px; padding: 0 12px; color: var(--text-2); font: 500 16px/1 var(--font-text); text-decoration: none; transition: color var(--t-hover) ease; }
+.play-link { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px 0 10px; border-radius: var(--radius-pill); background: var(--card); color: var(--gold-2); font: 600 15px/1 var(--font-text); text-decoration: none; }
+.play-link svg { width: 24px; height: 24px; }
+.menu-btn { display: none; min-height: 48px; min-width: 72px; padding: 0 14px; border: 0; border-radius: var(--radius-button); background: transparent; color: var(--text); font: 600 16px/1 var(--font-text); cursor: pointer; touch-action: manipulation; }
+.menu { position: fixed; inset: 0; z-index: 49; padding: calc(var(--head-h) + 24px) var(--gutter) calc(env(safe-area-inset-bottom) + 32px); background-color: var(--bg); display: flex; flex-direction: column; gap: 4px; overflow-y: auto; }
+.menu[hidden] { display: none; }
+.menu a:not(.btn) { display: flex; align-items: center; min-height: 64px; color: var(--text); font: 400 34px/1.1 var(--font-display); font-variation-settings: "opsz" 60; text-decoration: none; }
+.menu .btn { margin-top: 24px; align-self: flex-start; }
+@media (prefers-reduced-motion: no-preference) { .menu:not([hidden]) { animation: menu-in var(--t-panel) var(--ease-out) both; } }
+@keyframes menu-in { from { opacity: 0; } }
+@media (max-width: 860px) {
+  :root { --head-h: 60px; }
+  .site-head { gap: 8px; padding-right: 8px; }
+  .head-nav, .site-head .btn-gold { display: none; }
+  .menu-btn { display: inline-flex; align-items: center; justify-content: center; }
+}
+@media (min-width: 861px) { .menu { display: none; } }
+
+/* Phone action pill: one action that never hides, above the home bar */
+.pill { position: fixed; left: 50%; bottom: calc(env(safe-area-inset-bottom) + 14px); z-index: 40; transform: translateX(-50%); display: none; }
+.pill .btn { min-height: 56px; padding: 0 28px; border-radius: var(--radius-pill); }
+@media (max-width: 860px) {
+  .pill { display: block; opacity: 0; visibility: hidden; transition: opacity var(--t-ui) ease, visibility 0s linear var(--t-ui); }
+  .pill.is-on { opacity: 1; visibility: visible; transition: opacity var(--t-ui) ease; }
+}
+
+/* Footer */
+.site-foot { padding: 72px 0 calc(env(safe-area-inset-bottom) + 96px); background-color: var(--bg-2); }
+.foot-grid { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px 48px; align-items: start; }
+.foot-tag { margin: 0; color: var(--text); font: 400 22px/1.35 var(--font-display); max-width: 30ch; }
+.foot-nav { display: flex; flex-wrap: wrap; gap: 0 4px; justify-content: flex-end; max-width: 560px; }
+.foot-nav a { display: inline-flex; align-items: center; min-height: 48px; padding: 0 10px; color: var(--text-2); font-size: 16px; text-decoration: none; transition: color var(--t-hover) ease; }
+.foot-fine { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; margin: 24px 0 0; font-size: 15px; color: var(--text-2); }
+.foot-fine p { margin: 0; }
+@media (max-width: 720px) {
+  .foot-grid { grid-template-columns: 1fr; }
+  .foot-nav { justify-content: flex-start; margin-left: -10px; }
+}
