@@ -96,4 +96,5 @@ a { color: var(--gold-text); text-underline-offset: 3px; text-decoration-thickne
 @media (max-width: 720px) {
   .foot-grid { grid-template-columns: 1fr; }
   .foot-nav { justify-content: flex-start; margin-left: -10px; }
+  .foot-fine { font-size: 16px; }
 }
