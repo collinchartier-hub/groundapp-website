@@ -55,7 +55,7 @@ Gold is Collin's and Ground's: fills and data, never a headline word.
   (`data-ui`), Bodie's slot is a 2.5:3.1 box in the layout so he is never over text.
 - Each photo of Collin appears once: the IRONMAN win in "Hi, I'm Collin", Running Home full width (16:10) in the Story.
 - Gold App Store buttons only in hero, Check-in, Pricing and Download, so gold keeps meaning "here". Other sections
-  end on their content.
+  end on their content, and the newsletter submit is the dark secondary button.
 - Header: lung + GroundApp left; App, Story, Pricing, a distinct Play link (/play) and the App Store button right, on
   solid Obsidian. Phone: logo, Play, Menu (labelled), plus a full-width opaque bottom dock after the hero
   ("GroundApp. Free to download." and one 52px gold "Get the app").
@@ -67,7 +67,7 @@ Tokens: studio `motion-tokens.css` (copied into `site/assets/css/site-v3.css`). 
 |---|---|---|---|---|
 | Signature | always, press and hold | Bodie canvas (`/js/bodie-v3.js`) | breath clock, sine in-out | `setStill(true, { glow: false })`: one still frame, press still answers |
 | Hero entrance | load | Bodie `react('wake')`; lede, hint, actions (stagger 70ms) | wake 1.3 s; --t-reveal, --ease-expo, 24px rise | Bodie awake and still, copy in place |
-| Bodie travels (desktop) | a section with a Bodie slot crosses the middle of the screen | the one canvas moves to that slot, then reacts: wave (Collin), lean (Check-in), breathes the tapped pattern (Library), wave (Play, Connections), cheer (Download) | --t-reveal + 100ms, --ease-in-out | moves with no travel, fade only |
+| Bodie moves (desktop) | a section with a Bodie slot crosses the middle of the screen | the one canvas moves to that slot, then reacts: wave (Collin), lean (Check-in), breathes the tapped pattern (Library), wave (Play, Connections), cheer (Download). He flies only when his old slot is on screen and his straight path (sampled 12 times, his figure as the middle 60% of the box) stays clear of copy and buttons; otherwise he fades out at the old slot and in at the new one, so he never crosses a headline or the App Store button | fly: --t-reveal + 100ms, --ease-in-out; fade: 250ms out, 400ms in, ease | appears at the new slot, no travel, no fade |
 | Bodie appears (phone) | same | canvas moves into the section's own beat | --t-panel opacity fade | instant |
 | Library pattern | tap Box, 4-7-8, Physiological sigh, Resonance | Bodie's breath, readout with breath marks | the real pattern | readout shows the pattern, no live count |
 | CO2 rounds fill (scroll moment) | table scrolls through view | 6 holds, 5 rests, recovery | scroll-linked, linear | filled |
@@ -84,16 +84,16 @@ Phone cut: one 9:16 story. Bodie moves into each of his sections as its own beat
 |---|---|---|---|---|---|---|
 | Hero | h1 over a large centred Bodie, lede left, actions right | h1 in two lines, Bodie sized to what 100svh leaves (190-380px), hint, App Store and Play buttons and the meta line all inside the first screen above Safari's toolbar; the lede follows | live canvas | above and below Bodie, never on him | touch and hold Bodie; entrance as desktop | Bodie still (canvas still frame) |
 | Collin | IRONMAN photo left, bio, accolades and press right; then the film line and buttons, Bodie waving, the intro film | IRONMAN photo full bleed, bio, then film card and Bodie side by side, film line and buttons | IRONMAN photo, film poster, tap to play with sound | own beats | Bodie waves as the slot arrives; film button 72px | poster; film still plays on tap |
-| Check-in (with Aura) | copy, steps and button left, Bodie leaning in, the recording right; then Aura (Premium) left and the plan screen | copy, then the recording and Bodie side by side (Bodie leans toward it), Aura, the plan screen | ch06-check-in, 05-check-in-plan | above the phone | lean toward the phone | poster still |
-| Library | head and the four tappable techniques left, sticky Bodie and his readout right; the Library's tabs and practice notes below | Bodie and readout right under the head, then the four techniques (60px rows) so a tap and his breath share one screen, then tabs | live canvas | readout under Bodie | tap a row, Bodie breathes it | Bodie still, readout shows the pattern |
+| Check-in (with Aura) | copy, steps and button left, Bodie leaning in, the recording right; then Aura (Premium) as text left and the plan screen, captioned for what it shows (the plan built on the phone without Aura; no Aura capture exists yet) | copy, then the recording and Bodie side by side (Bodie leans toward it), Aura, the plan screen | ch06-check-in, 05-check-in-plan | above the phone | lean toward the phone | poster still |
+| Library | the page's second live stage, centred across 12 columns: h2 and lede, Bodie (up to 400px, sized so the stage fits one screen) with his readout, the four tappable techniques as a 2x2 grid right under him; below, practice notes and "Also in the list" on column 1, "More in the Library" and the safety line on column 7 | the same stage in one column: Bodie 190px, readout, the four techniques (60px rows) so a tap and his breath share one screen, then the notes and tabs | live canvas | readout under Bodie | tap a row, Bodie breathes it | Bodie still, readout shows the pattern |
 | Advanced | recording left, copy, safety line and CO2 table right (unboxed, on column 7) | copy, recording, then the table on its own band | ch05-advanced | own beat | rounds fill on scroll | poster still, table filled |
 | Play | band: pitch and modes left, sticky cast tiles with Bodie right | the four cast tiles first (2 by 2, Bodie in his own), then pitch, modes, Play button | live canvas, three cast stills | own beat | cast peeks in; Play 52px | Bodie still |
 | Connections (with Progress) | head left and Bodie waving right; health recording, health and progress screens in a row; four blocks on the two edges; the watch rail | head, Bodie, the three screens as a swipe rail, blocks, watch rail | ch07-health, 10-health, 09-progress, 5 watch shots | own beats | swipe rails; Bodie waves | poster still |
 | Story | one centred 62ch column; the client's question at quote size; Running Home full width 16:10 | one column; the photo full bleed | Running Home photo | own column | none | same |
 | Pricing | Free and Premium side by side | stacked, Premium second | none | in the plans | buttons 52px | same |
-| Reviews | one large quote, two beside it | stacked quotes | none | quotes | Leave a review 52px | same |
-| Download | App Store block with Bodie cheering, newsletter, connect | Bodie, App Store button, form, links | live canvas | own beats | cheer; form fields 52px | Bodie still |
-| FAQ | two columns of questions | one column | none | accordions | 56px summaries | same |
+| Reviews | the large quote (30px serif) left, two quotes stacked right, cards sized to their words | stacked quotes | none | quotes | Leave a review 52px | same |
+| Download | the closing poster, centred: h2, lede, Bodie cheering (up to 400px), the gold App Store button and its line under him, the review prompt; then a quieter row: newsletter (dark button) on column 1, Say hi on column 7 | the same poster with Bodie 220px and a full-width App Store button, then the form and links | live canvas | own beats | cheer; form fields 52px | Bodie still |
+| FAQ | "Questions, answered" sticky on the left while the questions scroll on the right | one column | none | accordions | 60px summaries | same |
 
 ## Choices
 Defaults used on purpose, one line why each (check-tells reads the `- <rule-id>: <reason>` lines).
