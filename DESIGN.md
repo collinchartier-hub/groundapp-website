@@ -168,3 +168,30 @@ on 156, their reading text or lists on 732. Gold is only for the rings, Begin an
   `no-footage`: owned Traverse footage exists; a loop is Collin's call (see Imagery). The figure is the moving picture.
 - web-3d: `verify-webgl.mjs check` PASS at 1440 and 390 (served without the analytics beacon; 0 FAIL since the hero
   grid of 2026-10-15 gave the headline halves their own columns), `check-3d-budget.py` PASS.
+
+## /play: Bodie's Breath Run (game page, Collin's request 2026-10-30)
+A free browser game, built from `game/src/` by `python3 game/build.py` into `site/play.html`, `js/bodie-run-v1.js`
+and `assets/css/bodie-run-v1.css` (the same source builds the Claude artifact copy). Edit the source, never the built
+files. Bodie is the home page figure (`figure-v1.js`), ported and given running legs. Three.js 0.186.1 from jsDelivr,
+like the hero.
+
+Ban exceptions, for /play only:
+- Other characters. The home page rule (one figure, no other characters) stays for every marketing page. /play is a
+  game Collin asked for, and a game needs a rival and a coach: Kip the Caffeine Crow, Sage the Owl and Ember the Fox.
+  They never appear on any other page.
+- Caps, mono and short "·" readouts inside the game screen. The in-play readout (breath, score, seeds, timers,
+  distances and the labels that name them) and the breath cue band are an instrument panel, read at a glance mid-run.
+  Menus, cards and the page around the game follow the site rules: sentence case, no caps eyebrows, mono only for
+  numbers.
+- Gold fills on game buttons, inside the game screen only. The page's own App Store link is an outline.
+- The cue band ("HOLD YOUR BREATH!") is the one place on the page that shouts; it has its own band so it never sits on
+  other text (checked by script in every mode at 1440, 960 and 390 wide).
+
+Copy: technique names and timings match the app (Resonance 5.5/5.5, Physiological Sigh 2 in, 1 more in, 6 out, Box
+4-4-4-4, 4-7-8). No health or outcome claims. The Big Hold keeps its safety note (sit or lie down, never in or near
+water, stop if dizzy) on the start card. Records live in the visitor's browser; the Hall of Breath leaderboard is
+artifact-only for now (a site version would need a Supabase table and a Pages Function).
+
+Not run yet: `check-tells.py` and the `studio-site-design` screenshots (the cloud session that built /play does not
+have the skill). Run `python3 ~/.claude/skills/studio-site-design/check-tells.py site --design-md DESIGN.md` before
+deploying and note any new WARN here.
