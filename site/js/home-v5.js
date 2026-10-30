@@ -184,12 +184,25 @@ mqDesk.addEventListener('change', (e) => { if (e.matches && !menu.hidden) setMen
 /* ---------- Phone action pill: after the hero, out of the way at Download ---------- */
 const pill = $('#pill');
 const seen = { hero: true, download: false, foot: false };
-function syncPill() { if (pill) pill.classList.toggle('is-on', !seen.hero && !seen.download && menu.hidden); }
+// It also steps aside while a headline or quote passes behind it, so it never sits on large text.
+const big = new Set();
+function syncPill() { if (pill) pill.classList.toggle('is-on', !seen.hero && !seen.download && !seen.foot && !big.size && menu.hidden); }
 const pillIO = new IntersectionObserver((es) => {
   es.forEach((e) => { seen[e.target.id] = e.isIntersecting; });
   syncPill();
 });
 ['hero', 'download', 'foot'].forEach((id) => { const el = document.getElementById(id); if (el) pillIO.observe(el); });
+let bandIO = null;
+function watchBand() {
+  if (bandIO) bandIO.disconnect();
+  big.clear();
+  bandIO = new IntersectionObserver((es) => {
+    es.forEach((e) => { if (e.isIntersecting) big.add(e.target); else big.delete(e.target); });
+    syncPill();
+  }, { rootMargin: `-${Math.max(0, innerHeight - 110)}px 0px 0px 0px` });
+  $$('main h2, main .quote, main .film-line, main .price .data').forEach((el) => bandIO.observe(el));
+}
+if (pill) { watchBand(); addEventListener('resize', () => { clearTimeout(watchBand.t); watchBand.t = setTimeout(watchBand, 200); }); }
 
 /* ---------- Newsletter: posts to /api/subscribe exactly as the site always has (name, email, source, website, t) ---------- */
 const T0 = window.__gaT0 || Date.now();
