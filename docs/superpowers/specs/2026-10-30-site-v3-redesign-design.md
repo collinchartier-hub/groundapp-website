@@ -61,7 +61,7 @@ Blog (index, posts and `scripts/build_blog.py` template, which must keep produci
 
 ## Motion
 
-- Signature: Bodie breathes at Resonance pace (5.5 s in, 5.5 s out); press and hold takes over the breath.
+- Signature: Bodie breathes at Resonance pace (6 s in, 6 s out, the app default); press and hold takes over the breath.
 - Opening: Bodie wakes on his disc and takes a first breath; the headline arrives on the exhale.
 - Desktop: Bodie travels beside the sections and reacts (waves at Meet Collin, leans in at Check in, cheers at Download). Phone: one Bodie moment per section, never over text.
 - Scroll moments: Library pattern breathing, CO2 rounds filling, cast peeking in at the game.

@@ -24,3 +24,7 @@ https://:project.groundapp.pages.dev/*
 /admin/*
   X-Robots-Tag: noindex, nofollow
   Cache-Control: no-store
+
+# Web fonts for the welcome email (mail apps load them cross-origin)
+/assets/fonts/*
+  Access-Control-Allow-Origin: *
