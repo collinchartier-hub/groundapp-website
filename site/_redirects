@@ -1,5 +1,5 @@
 # Instagram short links (App Store campaign provider token 128638571)
-# Bio link: lands on the site; app-links-v2.js tags App Store buttons ig-<placement>
+# Bio link: lands on the site; app-links-v3.js tags App Store buttons ig-<placement>
 /ig /?utm_source=instagram&utm_medium=social&utm_campaign=bio 302
 # Story link sticker: straight to the App Store
 /get https://apps.apple.com/app/apple-store/id6760352779?pt=128638571&ct=ig-direct&mt=8 302

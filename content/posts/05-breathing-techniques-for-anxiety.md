@@ -89,4 +89,4 @@ The best breathing technique is the one you actually do. Pick one from this list
 
 Close your eyes. Breathe. Feel the difference.
 
-If you want to be guided, GroundApp is free to download, with Box Breathing, Deep Slow Breathing, 2-to-1 Breathing and Triangle Breathing free forever. GroundApp Premium is $29.99 a year and unlocks all 35 techniques, 15 guided sessions and the daily check-in.
+If you want to be guided, GroundApp is free to download, with Box Breathing, Deep Slow Breathing, 2-to-1 Breathing and Triangle Breathing free forever. GroundApp Premium is $39.99 a year and unlocks all 35 techniques, 15 guided sessions and the daily check-in.

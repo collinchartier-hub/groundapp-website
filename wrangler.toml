@@ -17,3 +17,5 @@ ACCESS_AUD = "3e0571cf2dde6f22ddad60da9b48f731f16a4b872f8c3f9345f2b3830aecb6ed"
 # Secret: CF_ANALYTICS_TOKEN (read-only Account Analytics token)
 # Postal address for the email footer (CAN-SPAM). Same as collinchartier.com (Collin, 2026-10-02).
 MAILING_ADDRESS = "5599 S. Rio Grande St, Littleton, CO 80120"
+# Meta breathwork pixel (shared with collinchartier.com). Secret META_CAPI_TOKEN = Keychain meta-capi-token-breathwork.
+META_PIXEL_ID = "1617764016511042"
