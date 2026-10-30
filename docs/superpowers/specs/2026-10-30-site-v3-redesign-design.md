@@ -94,3 +94,17 @@ Then a Codex `cross-reviewer` pass, then go-live by direct upload after Collin s
 - Accolade wording, and whether any other credentials belong in the row.
 - Which reviews to quote (only real App Store or verified reviews).
 - Socials beyond Instagram (`instagram.com/collinchartier` is the only one found).
+
+## Changes after Collin's review (2026-10-30, these win over anything above)
+
+- One landing page. Everything scrolls on `/`, including the story (the separate About page is dropped; `/about` redirects to `/#story`). `/play` stays as the game's own page.
+- Opening headline: "Breathe with Bodie." Bodie is front and centre.
+- Play: a Play link in the top-right of the menu, plus a Play section in the middle of the page (after Library and Advanced, before Connections) that links to `/play`.
+- Copy: Claude writes all of it. No per-line confirmation. Short bio from collinchartier.com and the facts in this spec. Collin's writing rules apply.
+- Photos of Collin: two only. Running Home (`portraits/collin-run-home.jpg` or `collinchartier-com-about-now-800.jpg`) and the IRONMAN win (`portraits/collin-ironman-win.jpg`). These are the headshots.
+- Reviews: the three already on the site, verbatim (Fraenkie, okh78, Jshehebd), with the App Store rating.
+- Socials: Instagram only (`https://instagram.com/collinchartier`).
+- Free to download: say it.
+- Rulebook: rewrite `AGENTS.md` and `CLAUDE.md` for the current facts (free download, 40+ techniques, Premium $39.99/year, 3-day free trial for eligible new subscribers, brand kit v5 type) and the deploy path while GitHub is down.
+- Welcome email (`lib/welcome.js`): redesigned in brand kit v5 (night palette, Source Serif 4 headline with a Georgia fallback, Ground Font Type with system fallbacks), current facts.
+- Review: one full round with the whole page, desktop and phone screenshots plus the Access-protected preview, instead of three partial rounds.
