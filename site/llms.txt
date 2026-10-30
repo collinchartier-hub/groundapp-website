@@ -52,6 +52,10 @@
 - [Where Breathwork Tech Is Going (and What It Should Never Replace)](https://groundapp.live/blog/future-of-breathwork-tech/)
 - [5 Breathing Techniques That Actually Help With Anxiety](https://groundapp.live/blog/breathing-techniques-for-anxiety/)
 
+## Free game
+
+- [Bodie's Breath Run](https://groundapp.live/play): a free browser game with Bodie, the breathing figure from the home page. Race Kip the Caffeine Crow on five courses built around box breathing, breath-hold dives, the physiological sigh, power breaths and glide control. The Big Hold times your longest breath hold (sit down, never in water) and Breath Surf guides resonance, box, 4-7-8, physiological sigh and power breathing. Records stay in your browser.
+
 ## Use Cases
 
 - Calming down in a stressful moment

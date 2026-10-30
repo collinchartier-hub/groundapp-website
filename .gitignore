@@ -6,3 +6,6 @@ node_modules/
 
 # App Store Connect API keys (keep them outside the repo)
 *.p8
+
+# Bodie's Breath Run build output (artifact copy, syntax checks)
+game/out/
