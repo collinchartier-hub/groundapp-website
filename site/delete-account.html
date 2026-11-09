@@ -66,7 +66,7 @@
 <div class="wrap">
 <div class="page-hero">
   <h1 class="h2">Delete your GroundApp account</h1>
-  <p class="page-meta">GroundApp &middot; Developer: Collin Chartier &middot; Last Updated: October 25, 2026</p>
+  <p class="page-meta">GroundApp &middot; Developer: Collin Chartier &middot; Last Updated: November 10, 2026</p>
 </div>
 
 <div class="doc">
@@ -75,10 +75,10 @@
 
   <h2>Option 1: Delete it in the app</h2>
   <ul>
-    <li><strong>iPhone:</strong> Profile &gt; Account &gt; Delete account</li>
+    <li><strong>iPhone:</strong> Profile &gt; Account &gt; Delete account. The app asks you to confirm twice: tap Continue, then Delete my account.</li>
     <li><strong>Android:</strong> Settings &gt; Delete Account. You will be asked to type DELETE to confirm.</li>
   </ul>
-  <p>Deletion starts as soon as you confirm, and you are signed out. Data synced to our servers is permanently removed within 30 days.</p>
+  <p>Deletion starts as soon as you confirm, and you are signed out. Data synced to our servers is permanently removed within 30 days. On iPhone you need an internet connection; if the app says it could not confirm the deletion, try again.</p>
 
   <h2>Option 2: Delete it without the app</h2>
   <p>Email <a href="mailto:privacy@groundapp.live?subject=Delete%20my%20GroundApp%20account">privacy@groundapp.live</a> from the email address on your account, with the subject <strong>Delete my GroundApp account</strong>. We will confirm by reply and delete your account within 30 days.</p>
@@ -90,25 +90,28 @@
   <h2>What gets deleted</h2>
   <p>From our servers (hosted by Supabase), within 30 days:</p>
   <ul>
-    <li>Your account and profile</li>
+    <li>Your account, sign-in details and profile</li>
     <li>Your session history</li>
     <li>Your saved check-ins</li>
     <li>Your saved sequences</li>
     <li>Advanced apnea training tables, references, results and deletion records (iPhone only)</li>
-    <li>Your notification records</li>
-    <li>Your daily Aura token counts</li>
-    <li>The Apple transaction ID linked to your account, which we keep so one Premium subscription unlocks Aura for one account</li>
+    <li>Your push notification token and comeback reminder records</li>
+    <li>Your daily plan counts, the link between Bodie's AI plans and your subscription, and your subscription reminder records</li>
+    <li>Your account link on the Apple subscription-status record (plan, App Store country, dates and renewal state). We keep that record, including Apple's transaction ID, without the link until 30 days after the subscription ends, then delete it.</li>
   </ul>
-  <p>If you delete in the app, the app also clears the local data tied to that account on your phone.</p>
+  <p>If you delete in the app, the app also clears the local data tied to that account on your phone. If that cleanup is interrupted, the app finishes it later, and Profile shows a Finish local cleanup button until it is done.</p>
 
   <h2>What we keep, and for how long</h2>
   <ul>
     <li><strong>Product analytics already sent to PostHog:</strong> Not removed automatically. We keep it only as long as we need it to understand how the App is used, and we delete it if you ask. Email <a href="mailto:privacy@groundapp.live?subject=Delete%20my%20GroundApp%20analytics%20data">privacy@groundapp.live</a>.</li>
     <li><strong>Copies of your email held by our email providers:</strong> Deleted on request, at the same address. If you joined the email list and later unsubscribed, we keep a record that you unsubscribed so we do not email you again. To delete that too, email us.</li>
-    <li><strong>Aura server logs (iPhone):</strong> They hold a request ID, a one-way hash of your account ID, the AI model used, timing, size counts and whether the request worked, and no check-in content. We keep them only as long as needed to run and secure the service.</li>
-    <li><strong>Aura requests at Anthropic:</strong> Anthropic deletes them within 30 days of the request. If its safety systems flag a request as breaking its Usage Policy, it can keep that request for up to 2 years, or longer if the law requires it.</li>
-    <li><strong>Data only on your phone:</strong> Account deletion does not erase everything on your device. Guest data and other device-only data stay until you erase it. On iPhone, delete the App. On Android, uninstall it or go to Android Settings &gt; Apps &gt; GroundApp &gt; Storage &gt; Clear storage.</li>
+    <li><strong>Bodie server logs (iPhone):</strong> They hold a request ID, a one-way hash of your account ID, the AI model used, timing, size counts and whether the request worked, and no check-in content. We keep them only as long as needed to run and secure the service.</li>
+    <li><strong>Bodie requests (Aura on Android) at Anthropic:</strong> Anthropic deletes them within 30 days of the request. If its safety systems flag a request as breaking its Usage Policy, it can keep that request for up to 2 years, or longer if the law requires it.</li>
+    <li><strong>Data only on your phone:</strong> Account deletion does not erase everything on your device. History left from before you had an account, other accounts' data and other device-only data stay until you erase it. On iPhone, delete the App. On Android, uninstall it or go to Android Settings &gt; Apps &gt; GroundApp &gt; Storage &gt; Clear storage.</li>
     <li><strong>Health Connect records (Android):</strong> Exercise sessions the App wrote to Health Connect stay there until you delete them in the Health Connect app. We keep no copy of them.</li>
+    <li><strong>Apple Health and Photos (iPhone and Apple Watch):</strong> Deleting your GroundApp account or the App does not delete Mindful Minutes or workouts already saved to Apple Health, or session cards saved to Photos. Delete those separately in the Health or Photos app. Copies you sent to other people or services are not removed by GroundApp account deletion.</li>
+    <li><strong>Voice request counters (iPhone):</strong> An hourly count kept against a one-way hash of your account ID or your IP address, only to limit abuse. They are not removed when you delete your account and do not contain your name or email.</li>
+    <li><strong>Sign in with Apple and Google:</strong> Deleting your account here does not revoke the permission you gave Apple or Google when you signed in. To remove GroundApp from that list, use the Sign in with Apple settings of your Apple Account or the security settings of your Google Account.</li>
   </ul>
 
   <p>The full details are in our <a href="/privacy">Privacy Policy</a> (see Your Rights and Controls, and Data Retention). Questions? Email <a href="mailto:privacy@groundapp.live">privacy@groundapp.live</a>.</p>
