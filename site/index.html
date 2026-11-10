@@ -107,8 +107,8 @@
 <link rel="preload" href="/assets/fonts/source-serif-4-latin-v1.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/ground-font-type-v1.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/css/ground-tokens-v1.css">
-<link rel="stylesheet" href="/assets/css/site-v3.css">
-<link rel="stylesheet" href="/assets/css/home-v5.css">
+<link rel="stylesheet" href="/assets/css/site-v4.css">
+<link rel="stylesheet" href="/assets/css/home-v6.css">
 <script type="importmap">{ "imports": {
   "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/+esm",
   "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/" } }</script>
@@ -121,6 +121,7 @@
   <symbol id="i-bodie" viewBox="0 0 24 24"><circle cx="12" cy="6.6" r="3.3" fill="currentColor"/><ellipse cx="12" cy="13.8" rx="4.8" ry="4.2" fill="currentColor"/><ellipse cx="12" cy="19.6" rx="8" ry="2" fill="currentColor" opacity=".5"/></symbol>
   <symbol id="i-play" viewBox="0 0 24 24"><path fill="currentColor" d="M8 5.5v13a1 1 0 0 0 1.52.85l10.4-6.5a1 1 0 0 0 0-1.7L9.52 4.65A1 1 0 0 0 8 5.5z"/></symbol>
   <symbol id="i-star" viewBox="0 0 16 16"><path fill="currentColor" d="M8 .8l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5L.8 6.1l5-.7z"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><path fill="currentColor" d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></symbol>
 </svg>
 
 <header class="site-head">
@@ -147,6 +148,7 @@
   <div class="wrap hero-in">
     <h1 class="h1 hero-h" id="hero-h">Breathe with Bodie.</h1>
     <figure class="hero-bodie">
+      <button type="button" class="motion-btn" id="motionBtn" aria-label="Pause motion" hidden><svg aria-hidden="true"><use href="#i-pause"/></svg></button>
       <div class="slot slot-hero" data-slot="hero" data-readout="read-hero">
         <img class="bodie-still" src="/media/v3/bodie/bodie-still-600.webp" alt="" width="600" height="744" fetchpriority="high">
         <canvas id="bodie" tabindex="0" role="button" aria-label="Bodie, GroundApp's breathing companion, sitting on his cushion. Press and hold to breathe in, let go to breathe out."></canvas>
@@ -192,11 +194,24 @@
         <a class="btn" href="#story">My story</a>
       </div>
       <p class="small film-note">Captions are on. The film has sound once you press play.</p>
+      <details class="transcript">
+        <summary>Read the film's transcript</summary>
+        <p>Hi, I'm Collin Chartier, and I built GroundApp for myself and anyone like me who wants to regulate my nervous system real time throughout the day, having something that's really simple, easy to use, and also something that's a tool to help me improve my performance.</p>
+        <p>When I feel anxious, I want a clear next step, something with zero friction, something I can just start with the tap of my finger and let myself be guided so I don't have to think my way out of it.</p>
+        <p>And when I'm looking to improve my performance, and when I'm training, I want something I can track like the BOLT score, body oxygen level test, and I can see progress over time. Both of these are integrated features in this app. I'm gonna walk you through step by step exactly how to use this app.</p>
+        <p>So this is Bodie, and to start a session, you can tap and hold and get right into it. Under Bodie, you can scroll down and select which breathwork technique you want to start. The start button brings the guide first and it'll show you what this breathwork technique is, how to do it, and why it's important.</p>
+        <p>There's a pause button down there. You can look at the X at the top left. Now just follow along. It'll guide you on the inhale and you'll hold at the top, it's a box breath, and on that exhale, you'll see the diaphragm and stomach coming in as you're drawing in that belly button.</p>
+        <p>Next to the pause button, you can hit the speaker. You can change music, you can change tones, you can raise the volume of the music, or lower it. To finish, tap the X and then hit End. You'll be shown a congratulations screen. Your session will be logged in your history.</p>
+        <p>Once you go to the library, you can see all the techniques. Here in the advanced section are O2 and CO2 tables. You can also just jump right in by one of our pre-loaded sessions.</p>
+        <p>The progress section is where the BOLT score lives. You can test any time you'd like, and all your tests are measured and tracked over time. The BOLT score will help you track your CO2 tolerance. Science has shown that people with lower CO2 tolerance have greater states of anxiety and panic. Through regular practice of breathwork and slowing down our breath, we can actually improve the CO2 tolerance over time and be less anxious and have less panic attacks.</p>
+        <p>So the check-ins, there's a three-part check-in. This is all to help dial in really your mood state, which is related to your nervous system state. We have subjective feedback combined with our metric driven HRV, Apple HealthKit, resting heart rate, sleeping trends. We combine these to guide you with a session specifically for you.</p>
+        <p>That's it. Go ahead and tap and hold Bodie and let's get started.</p>
+      </details>
     </div>
     <div class="slot slot-side" data-slot="collin" data-react="wave" data-dir="right"></div>
     <div class="film">
       <img class="film-still" src="/media/v3/film/intro-poster.webp" width="1080" height="1080" loading="lazy" alt="Collin talking to the camera in a cream collared shirt, at the start of his three-minute GroundApp intro film.">
-      <video id="intro" src="/media/v3/film/intro-720.mp4" poster="/media/v3/film/intro-poster.webp" preload="none" playsinline aria-label="GroundApp intro film with Collin"></video>
+      <video id="intro" src="/media/v3/film/intro-720.mp4" poster="/media/v3/film/intro-poster.webp" preload="none" playsinline aria-label="GroundApp intro film with Collin"><track kind="captions" src="/media/v3/film/intro-captions-v1.vtt" srclang="en" label="English" default></video>
       <button type="button" class="film-play" data-film-play aria-label="Play intro film"><svg aria-hidden="true"><use href="#i-play"/></svg></button>
     </div>
   </div>
@@ -357,7 +372,7 @@
       </div>
       <div class="slot slot-conn" data-slot="connections" data-react="wave" data-dir="left"></div>
     </div>
-    <ul class="conn-shots">
+    <ul class="conn-shots" aria-label="GroundApp's health and progress screens">
       <li class="phone" data-ui>
         <img src="/media/v3/clips/ch07-health-poster.webp" width="588" height="1280" loading="lazy" alt="GroundApp opens on Bodie saying &quot;Hi, I'm Bodie&quot;, then the Health and devices screen. The Apple Health access prompt appears.">
         <video data-clip src="/media/v3/clips/ch07-health.mp4" poster="/media/v3/clips/ch07-health-poster.webp" muted playsinline loop preload="none" aria-hidden="true"></video>
@@ -377,7 +392,7 @@
     </dl>
     <p class="safety">Readings inform suggestions. They are not a medical assessment.</p>
     <figure class="watches">
-      <ul class="watch-row">
+      <ul class="watch-row" aria-label="Apple Watch screens">
         <li><img src="/media/v3/watch/01-bodie-instant-calm-breathe-in-416.webp" width="416" height="496" loading="lazy" alt="Apple Watch showing Bodie on his disc with &quot;Breathe in&quot; in Instant Calm."></li>
         <li><img src="/media/v3/watch/02-box-breathing-breathe-in-416.webp" width="416" height="496" loading="lazy" alt="Apple Watch showing Bodie in Box breathing, &quot;Breathe in 1&quot;, cycle 1 of 4."></li>
         <li><img src="/media/v3/watch/03-box-breathing-hold-416.webp" width="416" height="496" loading="lazy" alt="Apple Watch showing Bodie with eyes closed, &quot;Hold 4&quot;, cycle 1 of 4."></li>
@@ -505,10 +520,10 @@
       <h3 class="h3" id="notesTitle">Breathwork notes from Collin</h3>
       <p>Breathwork tips, nervous system insights and GroundApp updates, sent to your inbox.</p>
       <form class="nlf" id="nlForm" novalidate aria-labelledby="notesTitle">
-        <label class="vh" for="nlName">First name (optional)</label>
-        <input type="text" id="nlName" name="name" placeholder="First name (optional)" autocomplete="given-name" maxlength="80">
-        <label class="vh" for="nlEmail">Email address</label>
-        <input type="email" id="nlEmail" name="email" placeholder="Email address" autocomplete="email" required aria-describedby="nlError" inputmode="email">
+        <label class="nl-label" for="nlName">First name (optional)</label>
+        <input type="text" id="nlName" name="name" autocomplete="given-name" maxlength="80">
+        <label class="nl-label" for="nlEmail">Email address</label>
+        <input type="email" id="nlEmail" name="email" autocomplete="email" required aria-describedby="nlError" inputmode="email">
         <div class="hp" aria-hidden="true"><label for="nlWebsite">Website</label><input type="text" id="nlWebsite" name="website" tabindex="-1" autocomplete="off" aria-hidden="true"></div>
         <button type="submit" class="btn" id="nlBtn">Keep me updated</button>
       </form>
@@ -549,7 +564,7 @@
   <div class="wrap foot-grid">
     <p class="foot-tag">From the mind into the body. Breathwork by Collin Chartier.</p>
     <nav class="foot-nav" aria-label="Footer">
-      <a href="/blog/">Blog</a><a href="/play">Play</a><a href="/support">Support</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="https://instagram.com/collinchartier" rel="noopener">Instagram</a><a href="mailto:collin@groundapp.live">Contact</a><a href="https://apps.apple.com/app/apple-store/id6760352779?pt=128638571&amp;ct=site-footer&amp;mt=8" data-ct="footer">App Store</a>
+      <a href="/blog/">Blog</a><a href="/play">Play</a><a href="/support">Support</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/accessibility">Accessibility</a><a href="/legal-notice">Legal notice</a><a href="https://instagram.com/collinchartier" rel="noopener">Instagram</a><a href="mailto:collin@groundapp.live">Contact</a><a href="https://apps.apple.com/app/apple-store/id6760352779?pt=128638571&amp;ct=site-footer&amp;mt=8" data-ct="footer">App Store</a>
     </nav>
     <div class="foot-fine">
       <p>GroundApp is coaching and education, not medical or mental health treatment.</p>
@@ -564,7 +579,7 @@
 </div>
 
 <script src="/js/site-menu-v1.js" defer></script>
-<script type="module" src="/js/home-v5.js"></script>
+<script type="module" src="/js/home-v6.js"></script>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "03e507bb97d74e78bc8de83dc6b261ec"}'></script>
 <script src="/js/app-links-v3.js" defer></script>
 </body>

@@ -18,7 +18,7 @@ const KEY = "bodie-run-v3";
 const DEF = () => ({
   leaves: 0, unlocked: 1, wins: 0, best: {}, bestTime: {}, last: {}, stars: {},
   up: { lungs: 0, spring: 0, magnet: 0, aura: 0, sigh: 0, charge: 0 }, owned: ["classic"], skin: "classic", acc: [],
-  sound: true, voice: true, glow: null,
+  sound: true, voice: true, glow: null, motion: null, // motion null: follow the device's reduced-motion setting
   deep: { static: { best: null, last: null, hist: [] }, dash: { best: null, last: null, hist: [] } },
   surf: {}, daily: { date: "", best: 0 },
 });

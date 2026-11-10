@@ -81,7 +81,7 @@ def read_minutes(text):
 
 E = html.escape
 
-# Kit v5 fonts, colours, header and footer come from ground-tokens-v1.css and site-v3.css (loaded in head()).
+# Kit v5 fonts, colours, header and footer come from ground-tokens-v1.css and site-v4.css (loaded in head()).
 # The header and footer markup below is copied from site/index.html; keep them in step.
 SPRITE = """<svg width="0" height="0" class="vh" aria-hidden="true" focusable="false">
   <symbol id="i-apple" viewBox="0 0 24 24"><path fill="currentColor" d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></symbol>
@@ -127,9 +127,10 @@ CSS = r"""
 .box p + p{margin-top:10px}
 .box .btn{margin-top:20px}
 .signup-form{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.signup-form .nl-label{flex:1 0 100%;margin-bottom:-2px;font-size:15px;line-height:1.4;color:var(--text-2)}
 .signup-form input[type=email]{flex:1 1 220px;min-height:52px;padding:14px 16px;background:var(--bg);border:1px solid rgba(196,147,90,.3);border-radius:var(--radius-button);color:var(--text);font:400 16px/1.3 var(--font-text)}
 .signup-form input[type=email]::placeholder{color:var(--text-2);opacity:.85}
-.signup-form input[type=email]:focus{border-color:var(--gold);outline:none}
+.signup-form input[type=email]:focus{border-color:var(--gold)}
 .signup-form .btn{margin:0;flex:0 0 auto}
 .signup-form .btn:disabled{opacity:.6;cursor:progress}
 .nl-err{margin-top:12px !important;color:var(--danger)}
@@ -260,7 +261,7 @@ def head(title, desc, url, og_type, jsonld, extra=""):
 <link rel="preload" href="/assets/fonts/source-serif-4-latin-v1.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/ground-font-type-v1.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/css/ground-tokens-v1.css">
-<link rel="stylesheet" href="/assets/css/site-v3.css">
+<link rel="stylesheet" href="/assets/css/site-v4.css">
 <style>{CSS}</style>
 </head>
 """
@@ -306,7 +307,7 @@ def signup_box():
   <h2 id="nlTitle">Get notes on breathing from Collin</h2>
   <p>Practical emails on breathwork and your nervous system. No spam. Unsubscribe anytime.</p>
   <form class="signup-form" id="nlForm" novalidate>
-    <label class="sr-only" for="nlEmail">Email</label>
+    <label class="nl-label" for="nlEmail">Email address</label>
     <input type="email" id="nlEmail" name="email" placeholder="you@email.com" autocomplete="email" inputmode="email" required aria-describedby="nlErr">
     <div class="hp" aria-hidden="true"><label for="nlWebsite">Leave this empty</label><input type="text" id="nlWebsite" name="website" tabindex="-1" autocomplete="off"></div>
     <button type="submit" class="btn btn-gold" id="nlBtn">Join</button>
@@ -323,7 +324,7 @@ def footer():
   <div class="wrap foot-grid">
     <p class="foot-tag">From the mind into the body. Breathwork by Collin Chartier.</p>
     <nav class="foot-nav" aria-label="Footer">
-      <a href="/blog/">Blog</a><a href="/play">Play</a><a href="/support">Support</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="https://instagram.com/collinchartier" rel="noopener">Instagram</a><a href="mailto:collin@groundapp.live">Contact</a><a href="{APP_BASE}blog-footer" data-ct="blog-footer">App Store</a>
+      <a href="/blog/">Blog</a><a href="/play">Play</a><a href="/support">Support</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/accessibility">Accessibility</a><a href="/legal-notice">Legal notice</a><a href="https://instagram.com/collinchartier" rel="noopener">Instagram</a><a href="mailto:collin@groundapp.live">Contact</a><a href="{APP_BASE}blog-footer" data-ct="blog-footer">App Store</a>
     </nav>
     <div class="foot-fine">
       <p>GroundApp is coaching and education, not medical or mental health treatment.</p>

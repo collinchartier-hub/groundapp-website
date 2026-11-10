@@ -2,7 +2,7 @@
 
 A free 3D breathwork game with Bodie, the figure from the home page. One source builds two copies:
 
-- `site/play.html`, `site/js/bodie-run-v1.js`, `site/assets/css/bodie-run-v1.css`: the page on groundapp.live.
+- `site/play.html`, `site/js/bodie-run-v2.js`, `site/assets/css/bodie-run-v2.css`: the page on groundapp.live.
 - `game/out/bodie-breath-run.html`: the single-file Claude artifact version (gitignored).
 
 Edit `game/src/`, never the built files in `site/`. Then:

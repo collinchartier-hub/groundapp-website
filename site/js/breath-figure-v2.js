@@ -2,8 +2,9 @@
    The hero pacer (pacer-v3.js) stays the source of truth: its fill (the idle loop, or the pattern the visitor
    started) sets the belly, and its phase closes the eyes on a hold, so figure, words, count and track share one
    timeline. Head and eyes follow the pointer; a tap on the figure starts the pacer. Colours from CSS tokens.
-   Reduced motion: one still frame (mid-inhale), the pacer's words and count still run. No WebGL: the canvas gets
-   data-webgl="off" and the poster underneath stays. Bump the filename (v2, v3) when editing. */
+   Reduced motion: one still frame (mid-inhale), the pacer's words and count still run. The pacer's Pause button
+   (pacer-v9.js sets data-paused) holds the same still frame. No WebGL: the canvas gets data-webgl="off" and the
+   poster underneath stays. Bump the filename (v3, v4) when editing. */
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { buildBreather } from './figure-v1.js';
@@ -56,7 +57,8 @@ function start() {
   let raf = 0, visible = true, live = false, dirty = true, last = performance.now();
   function tick() {
     raf = 0;
-    const now = performance.now(), dt = Math.min((now - last) / 1000, 0.05), still = reduce.matches || capture;
+    const now = performance.now(), dt = Math.min((now - last) / 1000, 0.05);
+    const still = reduce.matches || capture || (pacerRoot && pacerRoot.hasAttribute('data-paused'));
     last = now;
     const glowOnly = still && !capture && st.phase !== null; // reduced motion while running: only the light breathes
     if (!still || dirty || glowOnly) {
@@ -85,8 +87,9 @@ function start() {
     p.onFill((fill, still, phase) => {
       phase = phase || null; // onFill's first call passes no phase (site-critic r2: undefined kept the reduced-motion loop alive)
       if (st.phase !== null && phase === null) dirty = true; // stopped: draw the resting light once more
+      if (pacerRoot.hasAttribute('data-paused')) dirty = true; // paused: draw the still frame once
       st.fill = fill; st.phase = phase;
-      if (reduce.matches) request(); // the reduced-motion loop sleeps between runs
+      request(); // wakes the loop after a pause; a no-op while it runs (the reduced-motion loop sleeps between runs)
     });
     const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
     canvas.parentElement.addEventListener('pointerdown', (e) => { // a tap on the figure itself starts the breath

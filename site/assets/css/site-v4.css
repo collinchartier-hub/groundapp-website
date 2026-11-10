@@ -1,6 +1,6 @@
 /* GroundApp site v3 chrome: base, type scale, buttons, header, phone menu, action pill, footer.
    Shared by every page from site v3 on. Needs ground-tokens-v1.css (kit v5 colours, fonts) loaded first.
-   Motion values: the studio motion tokens (motion.md), copied below. Bump the filename (v4) when editing. */
+   Motion values: the studio motion tokens (motion.md), copied below. Bump the filename (v5) when editing. */
 :root {
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -75,10 +75,15 @@ a { color: var(--gold-text); text-underline-offset: 3px; text-decoration-thickne
   .head-nav, .site-head .btn-gold { display: none; }
   .menu-btn { display: inline-flex; align-items: center; justify-content: center; }
 }
+/* 320px (WCAG 1.4.10 reflow): the wordmark, Play and Menu fit side by side without overlapping. */
+@media (max-width: 359px) {
+  .brand { gap: 8px; font-size: 17px; }
+  .play-link { padding: 0 12px 0 8px; }
+}
 @media (min-width: 861px) { .menu { display: none; } }
 
 /* Phone dock (copy.md "Sticky phone bar"): full width and opaque at the bottom edge, so copy scrolls under an edge
-   instead of under a floating button. home-v5.js slides it away over Bodie, safety lines, the technique list, the
+   instead of under a floating button. home-v6.js slides it away over Bodie, safety lines, the technique list, the
    plans, headlines and quotes, and over the hero, Download and the footer. */
 .dock { display: none; }
 @media (max-width: 860px) {

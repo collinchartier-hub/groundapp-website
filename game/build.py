@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build Bodie's Breath Run two ways from one source (run: python3 game/build.py):
    1. bodie-breath-run.html: the Claude artifact (one file, lung logo inlined, Google Fonts).
-   2. groundapp.live/play: site/play.html + site/js/bodie-run-v1.js + site/assets/css/bodie-run-v1.css
+   2. groundapp.live/play: site/play.html + site/js/bodie-run-v2.js + site/assets/css/bodie-run-v2.css
       (self-hosted fonts, /lung-logo.svg, site head, bar and footer)."""
 import base64, os, re, subprocess, sys
 
@@ -9,7 +9,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.join(HERE, "..", "site")
 OUT = os.path.join(HERE, "out")  # artifact build and syntax-check files, gitignored
 os.makedirs(OUT, exist_ok=True)
-VER = "v1"
+VER = "v2"
+OG_VER = "v1"  # the share image (site/img/play/bodie-run-og-v1.jpg) has its own number
 src = lambda n: open(os.path.join(HERE, "src", n)).read()
 page = src("1-page.html")
 js = "".join(src(n) for n in ["2-core.js", "3-models.js", "4-race.js", "5-modes.js", "6-app.js"])
@@ -34,22 +35,8 @@ FONTS = """@font-face { font-family: "Source Serif 4"; src: url("../fonts/source
 body { margin: 0; }
 img { max-width: 100%; }
 """
-SITE_CSS = """
-/* groundapp.live only: the site bar above the game and the footer under it. */
-.site-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.site-bar .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--bone); text-decoration: none; font: 600 17px/1 var(--serif); }
-.site-cta { font: 600 15px/1 var(--serif); color: var(--amber); text-decoration: none; border: 1px solid rgba(196,147,90,.55); border-radius: 999px; padding: 9px 15px; }
-.site-cta:hover { border-color: var(--amber); }
-.site-foot { display: grid; gap: 10px; padding-top: 24px; border-top: 1px solid rgba(168,149,133,.2); color: var(--driftwood); font-size: 15px; }
-.site-foot p { margin: 0; }
-.site-foot nav { display: flex; flex-wrap: wrap; gap: 8px 18px; }
-.site-foot a { color: var(--bone); text-decoration: none; }
-.site-foot a:hover { color: var(--amber); }
-.site-foot .copy { font-size: 13px; }
-a:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
-"""
 web_css = ("/* Bodie's Breath Run (groundapp.live/play). Built from one source with the Claude artifact version.\n"
-           "   Bump the filename (v2, v3) when editing: /assets is cached for 7 days. */\n") + FONTS + css + SITE_CSS
+           "   Bump the filename (v3, v4) when editing: /assets is cached for 7 days. */\n") + FONTS + css
 store = lambda ct: f"https://apps.apple.com/app/apple-store/id6760352779?pt=128638571&amp;ct=site-{ct}&amp;mt=8"
 # Site v3 header (copied from site/index.html). It is position: fixed, so it sits at the top of .wrap in the markup.
 BAR = f"""  <a class="skip" href="#stage">Skip to the game</a>
@@ -81,7 +68,7 @@ FOOT = f"""<footer class="site-foot" id="foot">
   <div class="wrap foot-grid">
     <p class="foot-tag">From the mind into the body. Breathwork by Collin Chartier.</p>
     <nav class="foot-nav" aria-label="Footer">
-      <a href="/blog/">Blog</a><a href="/play">Play</a><a href="/support">Support</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="https://instagram.com/collinchartier" rel="noopener">Instagram</a><a href="mailto:collin@groundapp.live">Contact</a><a href="{store('play-footer')}" data-ct="play-footer">App Store</a>
+      <a href="/blog/">Blog</a><a href="/play">Play</a><a href="/support">Support</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/accessibility">Accessibility</a><a href="/legal-notice">Legal notice</a><a href="https://instagram.com/collinchartier" rel="noopener">Instagram</a><a href="mailto:collin@groundapp.live">Contact</a><a href="{store('play-footer')}" data-ct="play-footer">App Store</a>
     </nav>
     <div class="foot-fine">
       <p>GroundApp is coaching and education, not medical or mental health treatment.</p>
@@ -91,11 +78,16 @@ FOOT = f"""<footer class="site-foot" id="foot">
 </footer>
 """
 assert body.count('<div class="wrap">') == 1 and body.count("</section>\n</div>\n\n<script>") == 1
-web_body = body.replace('<div class="wrap">\n', '<div class="wrap">\n' + BAR, 1).replace("</section>\n</div>\n\n<script>", "</section>\n</div>\n\n" + FOOT + "\n<script>", 1)
+assert body.count('  <header class="top">') == 1
+# On the site the title, the game and the notes under it sit in <main>, so the page has one banner (the site header)
+# and a main landmark that screen readers can jump to.
+web_body = (body.replace('<div class="wrap">\n', '<div class="wrap">\n' + BAR, 1)
+            .replace('  <header class="top">', '  <main class="game-main" id="main">\n  <header class="top">', 1)
+            .replace("</section>\n</div>\n\n<script>", "</section>\n  </main>\n</div>\n\n" + FOOT + "\n<script>", 1))
 TITLE = "Bodie's Breath Run | A breathwork game by GroundApp"
 DESC = ("A free breathwork game from GroundApp. Race Kip the Caffeine Crow with one button, hold your breath through "
         "Worry Clouds, and try The Big Hold to beat your own breath-hold record. Plays in your browser.")
-OG_IMG = f"https://groundapp.live/img/play/bodie-run-og-{VER}.jpg"
+OG_IMG = f"https://groundapp.live/img/play/bodie-run-og-{OG_VER}.jpg"
 head = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -128,25 +120,25 @@ head = f"""<!DOCTYPE html>
 <link rel="preload" href="/assets/fonts/source-serif-4-latin-v1.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/ground-font-type-v1.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/css/ground-tokens-v1.css">
-<link rel="stylesheet" href="/assets/css/site-v3.css">
+<link rel="stylesheet" href="/assets/css/site-v4.css">
 <link rel="stylesheet" href="/assets/css/bodie-run-{VER}.css">
 <style>
-/* Site v3 header and footer on /play. site-v3.css loads before the game stylesheet, so the game's rules win where both
-   style the same thing; these lines undo the few site rules the game does not set itself, override the old bar and
-   footer rules still inside bodie-run-{VER}.css (SITE_CSS, kept until the next filename bump), and set the page around
-   the game (title, cast, courses) in kit v5 type. The game screen keeps its own type. */
+/* Site v3 header and footer on /play. site-v4.css loads before the game stylesheet, so the game's rules win where both
+   style the same thing; these lines undo the few site rules the game does not set itself and set the page around
+   the game (title, cast, courses) and the footer in kit v5 type. The game screen keeps its own type. */
 body > .wrap {{ padding-top: calc(var(--head-h) + 24px); }}
 .btn:where(:not(.btn-gold)) {{ display: inline-block; min-height: 0; }}
 .site-head .btn-gold, .menu .btn-gold {{ padding: 10px 18px; border: 0; border-radius: var(--radius-button); font: 600 15px/1.2 var(--font-text); letter-spacing: 0; }}
 .menu .btn-gold {{ padding: 14px 26px; font-size: 16px; }}
 .wrap .lede {{ font-size: inherit; line-height: inherit; color: inherit; }}
 .wrap .quote {{ font: inherit; color: inherit; }}
-.stage img, .stage svg, body > .wrap > section img {{ display: revert; }}
-body > .wrap > header.top h1 {{ font: 400 clamp(30px, 1.4rem + 1.6vw, 44px)/1.1 var(--font-display); font-variation-settings: "opsz" 60; letter-spacing: -.01em; text-transform: none; }}
-body > .wrap > header.top p {{ font: 400 16px/1.5 var(--font-text); }}
-body > .wrap > section {{ font-family: var(--font-text); }}
-body > .wrap > section h3 {{ font: 400 clamp(26px, 1.2rem + .8vw, 32px)/1.2 var(--font-display); font-variation-settings: "opsz" 60; letter-spacing: 0; text-transform: none; }}
-body > .wrap > section h4, body > .wrap > section .nm, body > .wrap > section .rl, body > .wrap > section .btn {{ font-family: var(--font-text); }}
+body > .wrap > main {{ display: grid; gap: 36px; min-width: 0; }}
+.stage img, .stage svg, body > .wrap > main > section img {{ display: revert; }}
+body > .wrap > main > header.top h1 {{ font: 400 clamp(30px, 1.4rem + 1.6vw, 44px)/1.1 var(--font-display); font-variation-settings: "opsz" 60; letter-spacing: -.01em; text-transform: none; }}
+body > .wrap > main > header.top p {{ font: 400 16px/1.5 var(--font-text); }}
+body > .wrap > main > section {{ font-family: var(--font-text); }}
+body > .wrap > main > section h3 {{ font: 400 clamp(26px, 1.2rem + .8vw, 32px)/1.2 var(--font-display); font-variation-settings: "opsz" 60; letter-spacing: 0; text-transform: none; }}
+body > .wrap > main > section h4, body > .wrap > main > section .nm, body > .wrap > main > section .rl, body > .wrap > main > section .btn {{ font-family: var(--font-text); }}
 body > .site-foot {{ display: block; padding: 72px 0 calc(env(safe-area-inset-bottom) + 96px); border-top: 0; color: var(--text-2); font: 400 16px/1.6 var(--font-text); }}
 body > .site-foot .foot-nav {{ gap: 0 4px; }}
 body > .site-foot a {{ color: var(--text-2); }}

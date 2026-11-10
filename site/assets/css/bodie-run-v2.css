@@ -1,5 +1,5 @@
 /* Bodie's Breath Run (groundapp.live/play). Built from one source with the Claude artifact version.
-   Bump the filename (v2, v3) when editing: /assets is cached for 7 days. */
+   Bump the filename (v3, v4) when editing: /assets is cached for 7 days. */
 @font-face { font-family: "Source Serif 4"; src: url("../fonts/source-serif-4-v1.woff2") format("woff2"); font-weight: 200 900; font-style: normal; font-display: swap; }
 @font-face { font-family: "Source Code Pro"; src: url("../fonts/source-code-pro-v1.woff2") format("woff2"); font-weight: 200 900; font-style: normal; font-display: swap; }
 *, *::before, *::after { box-sizing: border-box; }
@@ -154,6 +154,8 @@ button:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
 @media (max-width: 700px) {
   #btn-full, #btn-glow { display: none; }
   .overlay.side { align-items: flex-end; padding: 10px 10px 54px; background: linear-gradient(0deg, rgba(26,17,14,.97) 0%, rgba(26,17,14,.94) 62%, rgba(26,17,14,0) 80%); }
+  /* The panel carries its own scrim: on short phones it rises over Bodie's glow, past the gradient (WCAG 1.4.3). */
+  .overlay.side .panel { background: rgba(26,17,14,.94); border-radius: 14px; box-shadow: 0 -12px 24px 6px rgba(26,17,14,.94); }
   .panel { padding: 4px; margin-block: 0; gap: 10px; }
   #ov-title .lede, #ov-title .hint { display: none; }
   .menu-grid .btn { padding: 11px 12px; }
@@ -281,15 +283,3 @@ section h3 { margin: 0 0 14px; font-weight: 300; font-size: 22px; letter-spacing
 .help-sec p { font-size: 14px; }
 kbd { font: 700 12px/1 var(--mono); padding: 2px 6px; border: 1px solid rgba(232,221,208,.3); border-radius: 4px; color: var(--bone); }
 @media (prefers-reduced-motion: reduce) { .callout.pulse b, .callout.in b, .float, .countdown b { animation-duration: .01s !important; } }
-/* groundapp.live only: the site bar above the game and the footer under it. */
-.site-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.site-bar .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--bone); text-decoration: none; font: 600 17px/1 var(--serif); }
-.site-cta { font: 600 15px/1 var(--serif); color: var(--amber); text-decoration: none; border: 1px solid rgba(196,147,90,.55); border-radius: 999px; padding: 9px 15px; }
-.site-cta:hover { border-color: var(--amber); }
-.site-foot { display: grid; gap: 10px; padding-top: 24px; border-top: 1px solid rgba(168,149,133,.2); color: var(--driftwood); font-size: 15px; }
-.site-foot p { margin: 0; }
-.site-foot nav { display: flex; flex-wrap: wrap; gap: 8px 18px; }
-.site-foot a { color: var(--bone); text-decoration: none; }
-.site-foot a:hover { color: var(--amber); }
-.site-foot .copy { font-size: 13px; }
-a:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }

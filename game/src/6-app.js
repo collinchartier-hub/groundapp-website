@@ -194,9 +194,13 @@ async function loadBloom() {
   syncButtons();
 }
 function setGlow(on, auto) { glowOn = on; if (!auto) { profile.glow = on; save(); } if (on && !composer) loadBloom(); syncButtons(); }
+// Motion off (WCAG 2.2.2) stills the menu and result scenes: the idle breathing, the cast's bobbing, the camera's sway,
+// fireflies and particles. A run itself always moves; it starts on the player's tap and has its own Pause.
+const motionOn = () => (profile.motion === null || profile.motion === undefined ? !reduceMotion : profile.motion);
 function syncButtons() {
   $("btn-sound").textContent = profile.sound ? "Sound on" : "Sound off";
   $("btn-voice").textContent = profile.voice ? "Voice on" : "Voice off";
+  $("btn-motion").textContent = motionOn() ? "Motion on" : "Motion off";
   $("btn-glow").textContent = glowOn && composer ? "Glow on" : "Glow off";
 }
 
@@ -319,6 +323,7 @@ $("btn-resume").addEventListener("click", resume);
 $("btn-quit").addEventListener("click", () => toMenu("title"));
 $("btn-sound").addEventListener("click", () => { profile.sound = !profile.sound; save(); Sound.unlock(); Sound.setEnabled(profile.sound); if (!profile.sound) try { speechSynthesis.cancel(); } catch (e) {} syncButtons(); });
 $("btn-voice").addEventListener("click", () => { profile.voice = !profile.voice; save(); syncButtons(); if (profile.voice) Voice.say("Hold your breath!", true); });
+$("btn-motion").addEventListener("click", () => { profile.motion = !motionOn(); save(); syncButtons(); });
 $("btn-glow").addEventListener("click", () => setGlow(!(glowOn && composer)));
 $("btn-full").addEventListener("click", async () => { try { if (document.fullscreenElement) await document.exitFullscreen(); else await stage.requestFullscreen(); } catch (e) { $("btn-full").hidden = true; } });
 
@@ -349,39 +354,41 @@ function menuCamera(dt, t) {
   fireflies.material.uniforms.uCam.value = 0;
 }
 let last = performance.now(), clock = 0;
-function updateMenu(dt) {
+function updateMenu(dt, mdt) {
   menuIdleT += dt;
   const cast = menuView === "ov-cast", focus = cast ? CAST_ORDER[castI] : null;
   if (cast) castT += dt;
   let target;
   if (focus === "bodie") target = castT < 3.4 ? 1 : .35;
   else if (menuHold) target = 1;
-  else if (menuIdleT > 2.5) { const c = clock % 12; target = c < 4 ? c / 4 : c < 6 ? 1 : c < 10 ? 1 - (c - 6) / 4 : 0; }
+  else if (menuIdleT > 2.5 && mdt) { const c = clock % 12; target = c < 4 ? c / 4 : c < 6 ? 1 : c < 10 ? 1 - (c - 6) / 4 : 0; }
   else target = Math.max(0, menuFill - dt * .5);
   menuFill += (target - menuFill) * Math.min(1, dt * (menuHold ? 1.6 : 3));
-  const holdPhase = menuFill > .96 || (menuIdleT > 2.5 && (clock % 12) >= 4 && (clock % 12) < 6);
-  if (menuBodie) { menuBodie.update(dt, menuFill, reduceMotion, holdPhase ? "hold" : null, menuFill, menuHold && menuFill > .9 ? .5 : 0); menuBodie.root.rotation.y = .15; menuBodie.head.rotation.y = -.2 + Math.sin(clock * .5) * .1; }
+  const holdPhase = menuFill > .96 || (menuIdleT > 2.5 && mdt && (clock % 12) >= 4 && (clock % 12) < 6);
+  if (menuBodie) { menuBodie.update(dt, menuFill, reduceMotion || !mdt, holdPhase ? "hold" : null, menuFill, menuHold && menuFill > .9 ? .5 : 0); menuBodie.root.rotation.y = .15; menuBodie.head.rotation.y = -.2 + Math.sin(clock * .5) * .1; }
   // In Meet the cast everyone is on stage at once; elsewhere each one turns up where they belong.
   menuBodie.root.visible = !cast || focus === "bodie";
   menuKip.root.visible = cast ? focus === "kip" : ["title", "ov-courses", "ov-help", "ov-brief"].includes(menuView);
-  menuKip.update(dt, clock, focus === "kip" && castT < 3 ? "sprint" : "cruise");
+  menuKip.update(mdt, clock, focus === "kip" && castT < 3 ? "sprint" : "cruise");
   menuKip.root.position.set(cast ? 1.7 : 2.3, (cast ? 2.5 : 2.1) + Math.sin(clock * 2.6) * .25 + (focus === "kip" ? Math.sin(clock * 9) * .08 : 0), cast ? -1.5 : -1.2);
   menuSage.root.visible = cast ? focus === "sage" : menuView === "ov-hall" || menuView === "ov-surf" || menuView === "ov-deep";
-  menuSage.root.position.set(cast ? -2.4 : 2.1, 0, cast ? -.9 : -.6); menuSage.root.rotation.y = cast ? .5 : -.5; menuSage.update(dt, clock);
+  menuSage.root.position.set(cast ? -2.4 : 2.1, 0, cast ? -.9 : -.6); menuSage.root.rotation.y = cast ? .5 : -.5; menuSage.update(mdt, clock);
   menuEmber.root.visible = cast ? focus === "ember" : menuView === "ov-shop";
-  menuEmber.root.position.set(cast ? 2.5 : 2.0, 0, cast ? .5 : .3); menuEmber.update(dt, focus === "ember" ? clock * 2.5 : clock);
+  menuEmber.root.position.set(cast ? 2.5 : 2.0, 0, cast ? .5 : .3); menuEmber.update(mdt, focus === "ember" ? clock * 2.5 : clock);
   menuCamera(dt, clock);
 }
 function frame(now) {
   requestAnimationFrame(frame);
-  const dt = Math.min(.05, (now - last) / 1000); last = now; clock += dt;
+  const dt = Math.min(.05, (now - last) / 1000); last = now;
+  const mdt = state === "play" || motionOn() ? dt : 0; // scenery time: frozen while Motion is off, outside a run
+  clock += mdt;
   if (state === "play") { if (mode === "race" && G) updateRace(dt); else if (mode === "deep" && D) updateDeep(dt); else if (mode === "surf" && S) updateSurf(dt); }
   else if (state === "result") {
-    if (mode === "race" && G) { G.endT += dt; G.players.forEach((P) => figPose(P, false, dt)); if (G.kip) updateKip(dt); raceCamera(dt); }
-    else if (mode === "deep" && D) deepIdle(dt);
-    else if (mode === "surf" && S) surfIdle(dt);
-  } else if (state === "menu") updateMenu(dt);
-  updateParticles(dt); updateConfetti(dt); updateSky(clock);
+    if (mode === "race" && G) { G.endT += mdt; G.players.forEach((P) => figPose(P, false, mdt)); if (G.kip) updateKip(mdt); raceCamera(mdt); }
+    else if (mode === "deep" && D) deepIdle(mdt);
+    else if (mode === "surf" && S) surfIdle(mdt);
+  } else if (state === "menu") updateMenu(dt, mdt);
+  updateParticles(mdt); updateConfetti(mdt); updateSky(clock);
   fireflies.material.uniforms.uTime.value = clock;
   if (glowOn && composer) composer.render(); else renderer.render(scene, camera);
 }

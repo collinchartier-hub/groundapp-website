@@ -5,7 +5,8 @@
    Bodie is ONE canvas (#bodie). He sits in a [data-slot] box in the layout; when another slot comes into view he moves
    there and reacts (data-react). On desktop he flies when his path stays clear of copy, else he fades out and back in.
    Clips play muted while in view; a refused play() means Low Power Mode, so Bodie goes still and clips keep their still.
-   Bump the filename (v6) when editing after a deploy: Cloudflare caches .js at the edge for 7 days. */
+   "Pause motion" in the hero (WCAG 2.2.2) holds Bodie and the clips still the same way and is remembered in localStorage.
+   Bump the filename (v7) when editing after a deploy: Cloudflare caches .js at the edge for 7 days. */
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const root = document.documentElement;
@@ -23,7 +24,8 @@ let lowPower = false;
 // Read the setting once and then only from its change event: reading mqReduce.matches every frame (onPhase) makes
 // Chrome refresh the cached value before it compares, so the change event never fires.
 let reduced = mqReduce.matches;
-const still = () => reduced || lowPower;
+let paused = (() => { try { return localStorage.getItem('ga-motion') === 'paused'; } catch { return false; } })();
+const still = () => reduced || lowPower || paused;
 let bodie = null, readout = null, readKey = '', libPattern = 'resonance';
 const canvas = $('#bodie');
 
@@ -73,6 +75,7 @@ function goStill() {
   stopClips();
   if (bodie) bodie.setStill(true);
   showReadout();
+  syncMotionBtn();
 }
 function playClip(v) {
   if (still()) return;
@@ -85,18 +88,44 @@ const clipIO = new IntersectionObserver((es) => es.forEach((e) => {
 }), { threshold: 0.3 });
 clips.forEach((v) => clipIO.observe(v));
 // The visitor can switch reduced motion while the page is open: going still swaps the live count for the pattern;
-// coming back restores the live count and restarts the clips in view (unless Low Power Mode holds them).
+// coming back restores the live count and restarts the clips in view (unless Low Power Mode or Pause motion holds them).
+// bodie-v3.js also follows the setting, so the final state is applied after its own listener has run.
 mqReduce.addEventListener('change', (e) => {
   reduced = e.matches;
-  if (e.matches) {
+  setTimeout(applyMotion, 0);
+});
+
+/* ---------- Pause motion: Bodie and the clips hold still until the visitor plays them again ---------- */
+const motionBtn = $('#motionBtn');
+function syncMotionBtn() {
+  if (!motionBtn) return;
+  motionBtn.hidden = reduced || lowPower;
+  motionBtn.setAttribute('aria-label', paused ? 'Play motion' : 'Pause motion');
+  motionBtn.querySelector('use').setAttribute('href', paused ? '#i-play' : '#i-pause');
+}
+function applyMotion() {
+  if (still()) {
     stopClips();
-    if (bodie) bodie.setStill(true, { glow: false });
-  } else if (!lowPower) {
+    if (bodie) bodie.setStill(true, { glow: !(reduced || paused) });
+  } else {
     if (bodie) bodie.setStill(false);
     inView.forEach(playClip);
   }
   showReadout();
+  syncMotionBtn();
+}
+if (motionBtn) motionBtn.addEventListener('click', () => {
+  paused = !paused;
+  try { localStorage.setItem('ga-motion', paused ? 'paused' : 'on'); } catch { /* private mode */ }
+  applyMotion();
 });
+syncMotionBtn();
+
+/* ---------- Swipe rails (phone): focusable while they scroll, so a keyboard can scroll them too ---------- */
+const rails = $$('.conn-shots, .watch-row');
+function syncRails() { rails.forEach((r) => { if (r.scrollWidth > r.clientWidth + 1) r.tabIndex = 0; else r.removeAttribute('tabindex'); }); }
+syncRails();
+addEventListener('resize', () => { clearTimeout(syncRails.t); syncRails.t = setTimeout(syncRails, 200); });
 
 /* ---------- Library: tap a technique, Bodie breathes it (the list works without Bodie too) ---------- */
 const libSlot = $('[data-slot="library"]');
@@ -244,7 +273,7 @@ function moveTo(slot) {
     const react = slot.dataset.react;
     if (react && !still()) setTimeout(() => { if (canvas.parentElement === slot) bodie.react(react, { dir: slot.dataset.dir }); }, delay);
   };
-  if (reduced) { land(0); return; }
+  if (reduced || paused) { land(0); return; }
   const onScreen = from.width && from.bottom > 0 && from.top < innerHeight;
   if (mqDesk.matches && onScreen && to.width && !crossesCopy(from, to)) {
     land(850);
@@ -268,9 +297,9 @@ function noBodie() {
   staticReadout($('#read-lib'), PATTERNS[libPattern]);
 }
 import('/js/bodie-v3.js').then(({ mountBodie }) => {
-  bodie = mountBodie(canvas, { pattern: PATTERNS.resonance, interactive: true, asleep: !reduced, onPhase });
+  bodie = mountBodie(canvas, { pattern: PATTERNS.resonance, interactive: true, asleep: !still(), onPhase });
   if (canvas.dataset.webgl === 'off') { bodie.destroy(); noBodie(); return; }
-  if (reduced) bodie.setStill(true, { glow: false });
+  if (reduced || paused) bodie.setStill(true, { glow: false });
   else if (lowPower) bodie.setStill(true);
   const live = () => {
     root.classList.add('bodie-live');

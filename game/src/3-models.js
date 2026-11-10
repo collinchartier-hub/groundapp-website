@@ -142,7 +142,7 @@ function buildBodie(o = {}) {
       head.position.y = 1.62 + .035 * fill;
       s.gx += (s.tx - s.gx) * Math.min(1, dt * 12); s.gy += (s.ty - s.gy) * Math.min(1, dt * 12);
       eyeRig.rotation.set(still ? 0 : s.gy * .16, still ? 0 : s.gx * .22, 0);
-      if (s.blinking < 0 && (s.nextBlink -= dt) <= 0) s.blinking = 0;
+      if (s.blinking < 0 && !still && (s.nextBlink -= dt) <= 0) s.blinking = 0; // still: no idle blinks
       if (s.blinking >= 0) { const p = (s.blinking += dt) / .16; s.blink = p < .5 ? p * 2 : Math.max(0, 2 - p * 2); if (p >= 1) { s.blinking = -1; s.blink = 0; s.nextBlink = 2 + Math.random() * 3.5; } }
       s.lid += ((phase === "hold" ? 1 : 0) - s.lid) * Math.min(1, dt * 5);
       let open = (1 - s.blink) * (1 - .18 * (1 - fill)) * (1 - .88 * s.lid);
@@ -151,7 +151,7 @@ function buildBodie(o = {}) {
       for (const eye of eyes) eye.scale.set(.85, 1.3 * Math.max(.08, open), .7);
       body.scale.set(1 + squash, 1 - squash, 1 + squash);
       mouth.visible = phase !== "o"; O.visible = phase === "o";
-      if (haloRings) haloRings.rotation.y += dt * .8;
+      if (haloRings && !still) haloRings.rotation.y += dt * .8;
     },
     // Running pose, layered on top of update(): legs, bob, lean, raised arms, smog balloon, tint.
     pose(dt, p) {
@@ -212,11 +212,11 @@ function buildKip() {
   return {
     root, body,
     update(dt, t, mood) {
-      const fast = mood === "sprint" ? 40 : 24, crashed = mood === "crash";
+      const fast = mood === "sprint" ? 40 : 24, crashed = mood === "crash", jit = dt ? .03 : 0; // dt 0 (Motion off): no caffeine jitter
       for (const w of wings) w.pv.rotation.x = w.side * (crashed ? -.3 : Math.sin(t * fast) * .9);
-      body.position.set(crashed ? 0 : (Math.random() - .5) * .03, crashed ? 0 : (Math.random() - .5) * .03, 0);
+      body.position.set(crashed ? 0 : (Math.random() - .5) * jit, crashed ? 0 : (Math.random() - .5) * jit, 0);
       body.rotation.z = crashed ? Math.sin(t * 14) * .45 : (mood === "sprint" ? -.18 : -.05);
-      for (const p of pupils) { if (crashed) { p.position.y = .1 + Math.sin(t * 20) * .04; p.position.x = .24 + Math.cos(t * 20) * .02; } else { p.position.y = .1 + (Math.random() - .5) * .03; p.position.x = .25; } }
+      for (const p of pupils) { if (crashed) { p.position.y = .1 + Math.sin(t * 20) * .04; p.position.x = .24 + Math.cos(t * 20) * .02; } else { p.position.y = .1 + (Math.random() - .5) * jit; p.position.x = .25; } }
     },
   };
 }
