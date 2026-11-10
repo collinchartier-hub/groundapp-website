@@ -270,7 +270,7 @@
     }
 
     go.addEventListener('click', function () {
-      if (loopOnly) { if (!running) { auto = true; start(); } return; }
+      if (loopOnly) { if (!running) { start(); auto = true; } return; } // start() clears auto; the loop is still automatic
       auto = false; if (running) stop(false); else start();
     });
     // Pause: stops the run and the idle breath so nothing on the page moves, until Resume.
@@ -280,7 +280,7 @@
       if (pauseBtn) pauseBtn.textContent = on ? 'Resume' : 'Pause';
     }
     if (pauseBtn) pauseBtn.addEventListener('click', function () {
-      if (paused) { setPaused(false); auto = true; start(); return; }
+      if (paused) { setPaused(false); start(); auto = true; return; } // after start(), which clears auto: a hidden tab stops and resumes it
       setPaused(true); resumeAuto = false; auto = false; idleOn = false;
       if (running) stop(false); else { rest(); kick(); }
     });
