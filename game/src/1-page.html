@@ -153,6 +153,8 @@ button:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
 @media (max-width: 700px) {
   #btn-full, #btn-glow { display: none; }
   .overlay.side { align-items: flex-end; padding: 10px 10px 54px; background: linear-gradient(0deg, rgba(26,17,14,.97) 0%, rgba(26,17,14,.94) 62%, rgba(26,17,14,0) 80%); }
+  /* The panel carries its own scrim: on short phones it rises over Bodie's glow, past the gradient (WCAG 1.4.3). */
+  .overlay.side .panel { background: rgba(26,17,14,.94); border-radius: 14px; box-shadow: 0 -12px 24px 6px rgba(26,17,14,.94); }
   .panel { padding: 4px; margin-block: 0; gap: 10px; }
   #ov-title .lede, #ov-title .hint { display: none; }
   .menu-grid .btn { padding: 11px 12px; }
@@ -297,6 +299,7 @@ kbd { font: 700 12px/1 var(--mono); padding: 2px 6px; border: 1px solid rgba(232
     <div class="hud-btns" id="hud-btns">
       <button class="icon-btn" id="btn-sound" type="button">Sound on</button>
       <button class="icon-btn" id="btn-voice" type="button">Voice on</button>
+      <button class="icon-btn" id="btn-motion" type="button">Motion on</button>
       <button class="icon-btn" id="btn-glow" type="button">Glow on</button>
       <button class="icon-btn" id="btn-full" type="button">Full screen</button>
       <button class="icon-btn" id="btn-pause" type="button" hidden>Pause</button>

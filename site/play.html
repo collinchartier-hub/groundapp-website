@@ -30,25 +30,25 @@
 <link rel="preload" href="/assets/fonts/source-serif-4-latin-v1.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/ground-font-type-v1.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/css/ground-tokens-v1.css">
-<link rel="stylesheet" href="/assets/css/site-v3.css">
-<link rel="stylesheet" href="/assets/css/bodie-run-v1.css">
+<link rel="stylesheet" href="/assets/css/site-v4.css">
+<link rel="stylesheet" href="/assets/css/bodie-run-v2.css">
 <style>
-/* Site v3 header and footer on /play. site-v3.css loads before the game stylesheet, so the game's rules win where both
-   style the same thing; these lines undo the few site rules the game does not set itself, override the old bar and
-   footer rules still inside bodie-run-v1.css (SITE_CSS, kept until the next filename bump), and set the page around
-   the game (title, cast, courses) in kit v5 type. The game screen keeps its own type. */
+/* Site v3 header and footer on /play. site-v4.css loads before the game stylesheet, so the game's rules win where both
+   style the same thing; these lines undo the few site rules the game does not set itself and set the page around
+   the game (title, cast, courses) and the footer in kit v5 type. The game screen keeps its own type. */
 body > .wrap { padding-top: calc(var(--head-h) + 24px); }
 .btn:where(:not(.btn-gold)) { display: inline-block; min-height: 0; }
 .site-head .btn-gold, .menu .btn-gold { padding: 10px 18px; border: 0; border-radius: var(--radius-button); font: 600 15px/1.2 var(--font-text); letter-spacing: 0; }
 .menu .btn-gold { padding: 14px 26px; font-size: 16px; }
 .wrap .lede { font-size: inherit; line-height: inherit; color: inherit; }
 .wrap .quote { font: inherit; color: inherit; }
-.stage img, .stage svg, body > .wrap > section img { display: revert; }
-body > .wrap > header.top h1 { font: 400 clamp(30px, 1.4rem + 1.6vw, 44px)/1.1 var(--font-display); font-variation-settings: "opsz" 60; letter-spacing: -.01em; text-transform: none; }
-body > .wrap > header.top p { font: 400 16px/1.5 var(--font-text); }
-body > .wrap > section { font-family: var(--font-text); }
-body > .wrap > section h3 { font: 400 clamp(26px, 1.2rem + .8vw, 32px)/1.2 var(--font-display); font-variation-settings: "opsz" 60; letter-spacing: 0; text-transform: none; }
-body > .wrap > section h4, body > .wrap > section .nm, body > .wrap > section .rl, body > .wrap > section .btn { font-family: var(--font-text); }
+body > .wrap > main { display: grid; gap: 36px; min-width: 0; }
+.stage img, .stage svg, body > .wrap > main > section img { display: revert; }
+body > .wrap > main > header.top h1 { font: 400 clamp(30px, 1.4rem + 1.6vw, 44px)/1.1 var(--font-display); font-variation-settings: "opsz" 60; letter-spacing: -.01em; text-transform: none; }
+body > .wrap > main > header.top p { font: 400 16px/1.5 var(--font-text); }
+body > .wrap > main > section { font-family: var(--font-text); }
+body > .wrap > main > section h3 { font: 400 clamp(26px, 1.2rem + .8vw, 32px)/1.2 var(--font-display); font-variation-settings: "opsz" 60; letter-spacing: 0; text-transform: none; }
+body > .wrap > main > section h4, body > .wrap > main > section .nm, body > .wrap > main > section .rl, body > .wrap > main > section .btn { font-family: var(--font-text); }
 body > .site-foot { display: block; padding: 72px 0 calc(env(safe-area-inset-bottom) + 96px); border-top: 0; color: var(--text-2); font: 400 16px/1.6 var(--font-text); }
 body > .site-foot .foot-nav { gap: 0 4px; }
 body > .site-foot a { color: var(--text-2); }
@@ -86,6 +86,7 @@ body > .site-foot a { color: var(--text-2); }
     <a href="/play" aria-current="page">Play</a>
     <a class="btn btn-gold" href="https://apps.apple.com/app/apple-store/id6760352779?pt=128638571&amp;ct=site-play-menu&amp;mt=8" data-ct="play-menu"><svg aria-hidden="true"><use href="#i-apple"/></svg>Download on the App Store</a>
   </nav>
+  <main class="game-main" id="main">
   <header class="top">
     <h1>Bodie's Breath Run</h1>
     <p>A GroundApp game. One button. Hold your breath to win.</p>
@@ -100,6 +101,7 @@ body > .site-foot a { color: var(--text-2); }
     <div class="hud-btns" id="hud-btns">
       <button class="icon-btn" id="btn-sound" type="button">Sound on</button>
       <button class="icon-btn" id="btn-voice" type="button">Voice on</button>
+      <button class="icon-btn" id="btn-motion" type="button">Motion on</button>
       <button class="icon-btn" id="btn-glow" type="button">Glow on</button>
       <button class="icon-btn" id="btn-full" type="button">Full screen</button>
       <button class="icon-btn" id="btn-pause" type="button" hidden>Pause</button>
@@ -271,13 +273,14 @@ body > .site-foot a { color: var(--text-2); }
       <div><h4>Starfall Temple and The Big Hold</h4><p>Updrafts and rhythm rings test your glide control. Then push your real max hold in the deep, and beat your own flags on the sea floor.</p></div>
     </div>
   </section>
+  </main>
 </div>
 
 <footer class="site-foot" id="foot">
   <div class="wrap foot-grid">
     <p class="foot-tag">From the mind into the body. Breathwork by Collin Chartier.</p>
     <nav class="foot-nav" aria-label="Footer">
-      <a href="/blog/">Blog</a><a href="/play">Play</a><a href="/support">Support</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="https://instagram.com/collinchartier" rel="noopener">Instagram</a><a href="mailto:collin@groundapp.live">Contact</a><a href="https://apps.apple.com/app/apple-store/id6760352779?pt=128638571&amp;ct=site-play-footer&amp;mt=8" data-ct="play-footer">App Store</a>
+      <a href="/blog/">Blog</a><a href="/play">Play</a><a href="/support">Support</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/accessibility">Accessibility</a><a href="/legal-notice">Legal notice</a><a href="https://instagram.com/collinchartier" rel="noopener">Instagram</a><a href="mailto:collin@groundapp.live">Contact</a><a href="https://apps.apple.com/app/apple-store/id6760352779?pt=128638571&amp;ct=site-play-footer&amp;mt=8" data-ct="play-footer">App Store</a>
     </nav>
     <div class="foot-fine">
       <p>GroundApp is coaching and education, not medical or mental health treatment.</p>
@@ -296,7 +299,7 @@ setTimeout(function () {
   o.hidden = false;
 }, 12000);
 </script>
-<script type="module" src="/js/bodie-run-v1.js"></script>
+<script type="module" src="/js/bodie-run-v2.js"></script>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "03e507bb97d74e78bc8de83dc6b261ec"}'></script>
 <script src="/js/app-links-v3.js" defer></script>
 <script src="/js/site-menu-v1.js" defer></script>

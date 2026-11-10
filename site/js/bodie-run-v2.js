@@ -19,7 +19,7 @@ const KEY = "bodie-run-v3";
 const DEF = () => ({
   leaves: 0, unlocked: 1, wins: 0, best: {}, bestTime: {}, last: {}, stars: {},
   up: { lungs: 0, spring: 0, magnet: 0, aura: 0, sigh: 0, charge: 0 }, owned: ["classic"], skin: "classic", acc: [],
-  sound: true, voice: true, glow: null,
+  sound: true, voice: true, glow: null, motion: null, // motion null: follow the device's reduced-motion setting
   deep: { static: { best: null, last: null, hist: [] }, dash: { best: null, last: null, hist: [] } },
   surf: {}, daily: { date: "", best: 0 },
 });
@@ -508,7 +508,7 @@ function buildBodie(o = {}) {
       head.position.y = 1.62 + .035 * fill;
       s.gx += (s.tx - s.gx) * Math.min(1, dt * 12); s.gy += (s.ty - s.gy) * Math.min(1, dt * 12);
       eyeRig.rotation.set(still ? 0 : s.gy * .16, still ? 0 : s.gx * .22, 0);
-      if (s.blinking < 0 && (s.nextBlink -= dt) <= 0) s.blinking = 0;
+      if (s.blinking < 0 && !still && (s.nextBlink -= dt) <= 0) s.blinking = 0; // still: no idle blinks
       if (s.blinking >= 0) { const p = (s.blinking += dt) / .16; s.blink = p < .5 ? p * 2 : Math.max(0, 2 - p * 2); if (p >= 1) { s.blinking = -1; s.blink = 0; s.nextBlink = 2 + Math.random() * 3.5; } }
       s.lid += ((phase === "hold" ? 1 : 0) - s.lid) * Math.min(1, dt * 5);
       let open = (1 - s.blink) * (1 - .18 * (1 - fill)) * (1 - .88 * s.lid);
@@ -517,7 +517,7 @@ function buildBodie(o = {}) {
       for (const eye of eyes) eye.scale.set(.85, 1.3 * Math.max(.08, open), .7);
       body.scale.set(1 + squash, 1 - squash, 1 + squash);
       mouth.visible = phase !== "o"; O.visible = phase === "o";
-      if (haloRings) haloRings.rotation.y += dt * .8;
+      if (haloRings && !still) haloRings.rotation.y += dt * .8;
     },
     // Running pose, layered on top of update(): legs, bob, lean, raised arms, smog balloon, tint.
     pose(dt, p) {
@@ -578,11 +578,11 @@ function buildKip() {
   return {
     root, body,
     update(dt, t, mood) {
-      const fast = mood === "sprint" ? 40 : 24, crashed = mood === "crash";
+      const fast = mood === "sprint" ? 40 : 24, crashed = mood === "crash", jit = dt ? .03 : 0; // dt 0 (Motion off): no caffeine jitter
       for (const w of wings) w.pv.rotation.x = w.side * (crashed ? -.3 : Math.sin(t * fast) * .9);
-      body.position.set(crashed ? 0 : (Math.random() - .5) * .03, crashed ? 0 : (Math.random() - .5) * .03, 0);
+      body.position.set(crashed ? 0 : (Math.random() - .5) * jit, crashed ? 0 : (Math.random() - .5) * jit, 0);
       body.rotation.z = crashed ? Math.sin(t * 14) * .45 : (mood === "sprint" ? -.18 : -.05);
-      for (const p of pupils) { if (crashed) { p.position.y = .1 + Math.sin(t * 20) * .04; p.position.x = .24 + Math.cos(t * 20) * .02; } else { p.position.y = .1 + (Math.random() - .5) * .03; p.position.x = .25; } }
+      for (const p of pupils) { if (crashed) { p.position.y = .1 + Math.sin(t * 20) * .04; p.position.x = .24 + Math.cos(t * 20) * .02; } else { p.position.y = .1 + (Math.random() - .5) * jit; p.position.x = .25; } }
     },
   };
 }
@@ -2166,9 +2166,13 @@ async function loadBloom() {
   syncButtons();
 }
 function setGlow(on, auto) { glowOn = on; if (!auto) { profile.glow = on; save(); } if (on && !composer) loadBloom(); syncButtons(); }
+// Motion off (WCAG 2.2.2) stills the menu and result scenes: the idle breathing, the cast's bobbing, the camera's sway,
+// fireflies and particles. A run itself always moves; it starts on the player's tap and has its own Pause.
+const motionOn = () => (profile.motion === null || profile.motion === undefined ? !reduceMotion : profile.motion);
 function syncButtons() {
   $("btn-sound").textContent = profile.sound ? "Sound on" : "Sound off";
   $("btn-voice").textContent = profile.voice ? "Voice on" : "Voice off";
+  $("btn-motion").textContent = motionOn() ? "Motion on" : "Motion off";
   $("btn-glow").textContent = glowOn && composer ? "Glow on" : "Glow off";
 }
 
@@ -2291,6 +2295,7 @@ $("btn-resume").addEventListener("click", resume);
 $("btn-quit").addEventListener("click", () => toMenu("title"));
 $("btn-sound").addEventListener("click", () => { profile.sound = !profile.sound; save(); Sound.unlock(); Sound.setEnabled(profile.sound); if (!profile.sound) try { speechSynthesis.cancel(); } catch (e) {} syncButtons(); });
 $("btn-voice").addEventListener("click", () => { profile.voice = !profile.voice; save(); syncButtons(); if (profile.voice) Voice.say("Hold your breath!", true); });
+$("btn-motion").addEventListener("click", () => { profile.motion = !motionOn(); save(); syncButtons(); });
 $("btn-glow").addEventListener("click", () => setGlow(!(glowOn && composer)));
 $("btn-full").addEventListener("click", async () => { try { if (document.fullscreenElement) await document.exitFullscreen(); else await stage.requestFullscreen(); } catch (e) { $("btn-full").hidden = true; } });
 
@@ -2321,39 +2326,41 @@ function menuCamera(dt, t) {
   fireflies.material.uniforms.uCam.value = 0;
 }
 let last = performance.now(), clock = 0;
-function updateMenu(dt) {
+function updateMenu(dt, mdt) {
   menuIdleT += dt;
   const cast = menuView === "ov-cast", focus = cast ? CAST_ORDER[castI] : null;
   if (cast) castT += dt;
   let target;
   if (focus === "bodie") target = castT < 3.4 ? 1 : .35;
   else if (menuHold) target = 1;
-  else if (menuIdleT > 2.5) { const c = clock % 12; target = c < 4 ? c / 4 : c < 6 ? 1 : c < 10 ? 1 - (c - 6) / 4 : 0; }
+  else if (menuIdleT > 2.5 && mdt) { const c = clock % 12; target = c < 4 ? c / 4 : c < 6 ? 1 : c < 10 ? 1 - (c - 6) / 4 : 0; }
   else target = Math.max(0, menuFill - dt * .5);
   menuFill += (target - menuFill) * Math.min(1, dt * (menuHold ? 1.6 : 3));
-  const holdPhase = menuFill > .96 || (menuIdleT > 2.5 && (clock % 12) >= 4 && (clock % 12) < 6);
-  if (menuBodie) { menuBodie.update(dt, menuFill, reduceMotion, holdPhase ? "hold" : null, menuFill, menuHold && menuFill > .9 ? .5 : 0); menuBodie.root.rotation.y = .15; menuBodie.head.rotation.y = -.2 + Math.sin(clock * .5) * .1; }
+  const holdPhase = menuFill > .96 || (menuIdleT > 2.5 && mdt && (clock % 12) >= 4 && (clock % 12) < 6);
+  if (menuBodie) { menuBodie.update(dt, menuFill, reduceMotion || !mdt, holdPhase ? "hold" : null, menuFill, menuHold && menuFill > .9 ? .5 : 0); menuBodie.root.rotation.y = .15; menuBodie.head.rotation.y = -.2 + Math.sin(clock * .5) * .1; }
   // In Meet the cast everyone is on stage at once; elsewhere each one turns up where they belong.
   menuBodie.root.visible = !cast || focus === "bodie";
   menuKip.root.visible = cast ? focus === "kip" : ["title", "ov-courses", "ov-help", "ov-brief"].includes(menuView);
-  menuKip.update(dt, clock, focus === "kip" && castT < 3 ? "sprint" : "cruise");
+  menuKip.update(mdt, clock, focus === "kip" && castT < 3 ? "sprint" : "cruise");
   menuKip.root.position.set(cast ? 1.7 : 2.3, (cast ? 2.5 : 2.1) + Math.sin(clock * 2.6) * .25 + (focus === "kip" ? Math.sin(clock * 9) * .08 : 0), cast ? -1.5 : -1.2);
   menuSage.root.visible = cast ? focus === "sage" : menuView === "ov-hall" || menuView === "ov-surf" || menuView === "ov-deep";
-  menuSage.root.position.set(cast ? -2.4 : 2.1, 0, cast ? -.9 : -.6); menuSage.root.rotation.y = cast ? .5 : -.5; menuSage.update(dt, clock);
+  menuSage.root.position.set(cast ? -2.4 : 2.1, 0, cast ? -.9 : -.6); menuSage.root.rotation.y = cast ? .5 : -.5; menuSage.update(mdt, clock);
   menuEmber.root.visible = cast ? focus === "ember" : menuView === "ov-shop";
-  menuEmber.root.position.set(cast ? 2.5 : 2.0, 0, cast ? .5 : .3); menuEmber.update(dt, focus === "ember" ? clock * 2.5 : clock);
+  menuEmber.root.position.set(cast ? 2.5 : 2.0, 0, cast ? .5 : .3); menuEmber.update(mdt, focus === "ember" ? clock * 2.5 : clock);
   menuCamera(dt, clock);
 }
 function frame(now) {
   requestAnimationFrame(frame);
-  const dt = Math.min(.05, (now - last) / 1000); last = now; clock += dt;
+  const dt = Math.min(.05, (now - last) / 1000); last = now;
+  const mdt = state === "play" || motionOn() ? dt : 0; // scenery time: frozen while Motion is off, outside a run
+  clock += mdt;
   if (state === "play") { if (mode === "race" && G) updateRace(dt); else if (mode === "deep" && D) updateDeep(dt); else if (mode === "surf" && S) updateSurf(dt); }
   else if (state === "result") {
-    if (mode === "race" && G) { G.endT += dt; G.players.forEach((P) => figPose(P, false, dt)); if (G.kip) updateKip(dt); raceCamera(dt); }
-    else if (mode === "deep" && D) deepIdle(dt);
-    else if (mode === "surf" && S) surfIdle(dt);
-  } else if (state === "menu") updateMenu(dt);
-  updateParticles(dt); updateConfetti(dt); updateSky(clock);
+    if (mode === "race" && G) { G.endT += mdt; G.players.forEach((P) => figPose(P, false, mdt)); if (G.kip) updateKip(mdt); raceCamera(mdt); }
+    else if (mode === "deep" && D) deepIdle(mdt);
+    else if (mode === "surf" && S) surfIdle(mdt);
+  } else if (state === "menu") updateMenu(dt, mdt);
+  updateParticles(mdt); updateConfetti(mdt); updateSky(clock);
   fireflies.material.uniforms.uTime.value = clock;
   if (glowOn && composer) composer.render(); else renderer.render(scene, camera);
 }

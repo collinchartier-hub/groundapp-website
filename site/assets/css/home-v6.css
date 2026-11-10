@@ -1,6 +1,6 @@
-/* GroundApp landing page (site v3): sections in page order. Chrome, type and buttons: site-v3.css.
-   Bodie is one canvas (#bodie) that home-v5.js moves between [data-slot] boxes, so he never sits on text.
-   Bump the filename (v6) when editing: Cloudflare caches .css at the edge for 7 days. */
+/* GroundApp landing page (site v3): sections in page order. Chrome, type and buttons: site-v4.css.
+   Bodie is one canvas (#bodie) that home-v6.js moves between [data-slot] boxes, so he never sits on text.
+   Bump the filename (v7) when editing: Cloudflare caches .css at the edge for 7 days. */
 
 /* ---------- shared section parts ---------- */
 .sec { padding: var(--sec) 0; position: relative; }
@@ -40,7 +40,7 @@ html.bodie-live .bodie-still { visibility: hidden; transition: visibility 0s lin
 .hero { position: relative; min-height: 100vh; min-height: 100svh; display: flex; padding: calc(var(--head-h) + clamp(12px, 3vh, 40px)) 0 clamp(28px, 5vh, 56px); }
 .hero-in { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); grid-template-rows: auto 1fr auto auto; grid-template-areas: "h h h" "lede bodie act" "lede hint act" "lede note act"; column-gap: clamp(24px, 3vw, 48px); align-items: end; }
 .hero-h { grid-area: h; text-align: center; }
-.hero-bodie { grid-area: bodie; margin: clamp(4px, 1.5vh, 16px) 0 0; justify-self: center; }
+.hero-bodie { grid-area: bodie; position: relative; margin: clamp(4px, 1.5vh, 16px) 0 0; justify-self: center; }
 .slot-hero { height: clamp(300px, calc(100svh - 330px), 660px); width: auto; }
 .hint { grid-area: hint; margin: 4px 0 0; text-align: center; font-size: 16px; color: var(--text-2); }
 .hint-touch { display: none; }
@@ -48,6 +48,13 @@ html.bodie-live .bodie-still { visibility: hidden; transition: visibility 0s lin
 .still-note { display: none; grid-area: note; text-align: center; margin: 6px 0 0; max-width: 34ch; justify-self: center; }
 html.low-power .still-note { display: block; }
 @media (prefers-reduced-motion: reduce) { .still-note { display: block; } }
+/* Pause motion (WCAG 2.2.2): a round button beside Bodie's top right stops his breathing and the app recordings, so
+   it costs the first screen no height. home-v6.js shows it when something moves (not under reduced motion or Low
+   Power Mode), swaps pause and play, and remembers the choice. */
+.motion-btn { position: absolute; top: 0; left: calc(100% + 8px); display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 50%; background-color: var(--card); color: var(--text); cursor: pointer; touch-action: manipulation; }
+.motion-btn svg { width: 18px; height: 18px; }
+.motion-btn[hidden] { display: none; }
+@media (hover: hover) and (pointer: fine) { .motion-btn:hover { background-color: #3a2820; } }
 .hero-lede { grid-area: lede; max-width: 22rem; padding-bottom: 6px; }
 .hero-act { grid-area: act; justify-self: end; display: grid; gap: 14px; justify-items: end; max-width: 25rem; }
 .hero-act .actions { flex-direction: column; align-items: stretch; width: 100%; }
@@ -105,6 +112,14 @@ html.low-power .still-note { display: block; }
 .film-play { position: absolute; left: 50%; bottom: 20px; translate: -50% 0; display: grid; place-items: center; width: 72px; height: 72px; border: 0; border-radius: 50%; background-color: var(--gold); color: var(--on-gold); cursor: pointer; }
 .film-play svg { width: 28px; height: 28px; margin-left: 4px; }
 .film.is-on .film-play { display: none; }
+/* The film's transcript, under the film line: the whole film in words, for anyone who can't hear or watch it */
+.transcript { border-radius: var(--radius-card); background-color: var(--card); }
+.transcript summary { display: flex; justify-content: space-between; align-items: center; gap: 16px; min-height: 52px; padding: 12px 18px; color: var(--text); font-weight: 600; font-size: 16px; cursor: pointer; list-style: none; }
+.transcript summary::-webkit-details-marker { display: none; }
+.transcript summary::after { content: "+"; flex: none; color: var(--gold); font: 300 24px/1 var(--font-data); }
+.transcript[open] summary::after { content: "\2212"; }
+.transcript p { margin: 0; padding: 0 18px 14px; font-size: 16px; line-height: 1.6; max-width: 62ch; }
+.transcript p:last-child { padding-bottom: 18px; }
 @media (max-width: 860px) {
   .collin-grid { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); row-gap: 28px; column-gap: 16px; grid-template-areas: "win win" "copy copy" "film slot" "side side"; }
   .ph-win { grid-area: win; margin: 0 calc(-1 * var(--gutter)); }
@@ -347,8 +362,8 @@ html.low-power .still-note { display: block; }
 .connect { grid-column: 7 / 12; }
 .notes p { margin: 8px 0 0; }
 .nlf { display: grid; gap: 10px; margin-top: 18px; }
+.nl-label { margin: 6px 0 -4px; font-size: 15px; line-height: 1.4; color: var(--text-2); }
 .nlf input { min-height: 52px; padding: 12px 16px; border: 0; border-radius: var(--radius-button); background-color: var(--card); color: var(--text); font: 400 17px/1.3 var(--font-text); }
-.nlf input::placeholder { color: var(--text-2); }
 .nlf .btn { justify-self: start; }
 .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 .nls:empty, .nle:empty { display: none; }

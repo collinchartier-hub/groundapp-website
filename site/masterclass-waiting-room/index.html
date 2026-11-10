@@ -28,6 +28,7 @@
   .wr-note{font-size:var(--t-small);color:var(--text-2);max-width:40rem}
   .wr-brand{position:absolute;left:var(--m);bottom:24px;display:flex;align-items:center;gap:.6rem;font-size:var(--t-small);color:var(--text-2)}
   .wr-brand img{width:28px;height:28px}
+  .wr-brand a{color:var(--text-2);text-decoration:underline;text-underline-offset:3px;margin-left:.4rem}
   .stage .controls{justify-content:center}
   @media (max-width: 700px){.wr-brand{position:static;justify-content:center;margin-top:12px}}
   /* Endless loop: no stop square on the running pill (a tap never stops it here). */
@@ -61,6 +62,7 @@
         <svg class="on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.8 5.2a9.5 9.5 0 0 1 0 13.6"/></svg>
         <span class="pc-sound-label">Sound on</span>
       </button>
+      <button type="button" class="snd" data-pause>Pause</button>
     </div>
     <p class="pc-desc">Box Breathing: <span class="data">6 in, 6 hold, 6 out, 6 hold</span>.</p>
     <p class="vh" aria-live="polite" aria-atomic="true"><span class="pc-live"></span></p>
@@ -70,7 +72,7 @@
       <p class="wr-note">Breathe through your nose and follow Bodie. If a hold feels like too much, just breathe normally and rejoin on the next round. Mics are muted; camera is up to you.</p>
     </div>
   </div>
-  <p class="wr-brand"><img src="/lung-logo.svg" alt=""> GroundApp: free on the App Store</p>
+  <p class="wr-brand"><img src="/lung-logo.svg" alt=""> GroundApp: free on the App Store <a href="/accessibility">Accessibility</a> <a href="/legal-notice">Legal notice</a></p>
 </section>
 </main>
 <script>
@@ -90,7 +92,7 @@
   tick(); setInterval(tick, 15000);
 })();
 </script>
-<script src="/js/pacer-v8.js" defer></script>
-<script type="module" src="/js/breath-figure-v1.js"></script>
+<script src="/js/pacer-v9.js" defer></script>
+<script type="module" src="/js/breath-figure-v2.js"></script>
 </body>
 </html>

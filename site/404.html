@@ -21,8 +21,8 @@
 <link rel="preload" href="/assets/fonts/source-serif-4-latin-v1.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/ground-font-type-v1.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/css/ground-tokens-v1.css">
-<link rel="stylesheet" href="/assets/css/site-v3.css">
-<link rel="stylesheet" href="/assets/css/page-v1.css">
+<link rel="stylesheet" href="/assets/css/site-v4.css">
+<link rel="stylesheet" href="/assets/css/page-v2.css">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -61,7 +61,7 @@
       <div class="circle"></div>
       <div class="cue"><span class="in">Breathe in</span><span class="out">Breathe out</span><span class="rest">Nice.</span><span class="still">One slow breath</span></div>
     </div>
-    <p class="breath-help">In through your nose for four. Out slowly for six.</p>
+    <p class="breath-help">In through your nose for four. Out slowly for six.<button type="button" class="breath-btn" id="breathBtn" hidden>Pause the circle</button></p>
 
     <div class="actions">
       <a class="btn btn-gold" href="/">Back to GroundApp</a>
@@ -75,7 +75,7 @@
   <div class="wrap foot-grid">
     <p class="foot-tag">From the mind into the body. Breathwork by Collin Chartier.</p>
     <nav class="foot-nav" aria-label="Footer">
-      <a href="/blog/">Blog</a><a href="/play">Play</a><a href="/support">Support</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="https://instagram.com/collinchartier" rel="noopener">Instagram</a><a href="mailto:collin@groundapp.live">Contact</a><a href="https://apps.apple.com/app/apple-store/id6760352779?pt=128638571&amp;ct=site-footer&amp;mt=8" data-ct="footer">App Store</a>
+      <a href="/blog/">Blog</a><a href="/play">Play</a><a href="/support">Support</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/accessibility">Accessibility</a><a href="/legal-notice">Legal notice</a><a href="https://instagram.com/collinchartier" rel="noopener">Instagram</a><a href="mailto:collin@groundapp.live">Contact</a><a href="https://apps.apple.com/app/apple-store/id6760352779?pt=128638571&amp;ct=site-footer&amp;mt=8" data-ct="footer">App Store</a>
     </nav>
     <div class="foot-fine">
       <p>GroundApp is coaching and education, not medical or mental health treatment.</p>
@@ -84,6 +84,21 @@
   </div>
 </footer>
 
+<script>
+/* Pause (WCAG 2.2.2): the circle breathes for a minute, and this button stops and restarts it. It stays hidden under
+   reduced motion, where the circle holds still, and goes away when the minute is up. */
+(function () {
+  var btn = document.getElementById('breathBtn'), breath = document.querySelector('.breath');
+  if (!btn || !breath || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  btn.hidden = false;
+  btn.addEventListener('click', function () {
+    btn.textContent = breath.classList.toggle('is-paused') ? 'Play the circle' : 'Pause the circle';
+  });
+  breath.querySelector('.circle').addEventListener('animationend', function () {
+    if (document.activeElement !== btn) btn.hidden = true;
+  });
+})();
+</script>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "03e507bb97d74e78bc8de83dc6b261ec"}'></script>
 <script src="/js/app-links-v3.js" defer></script>
 <script src="/js/site-menu-v1.js" defer></script>

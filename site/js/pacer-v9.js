@@ -8,7 +8,7 @@
    Only one pacer runs at a time. Fires `pacer:cycle` and `pacer:stop` on document.
    v3: an optional `.pc-track` lists the pattern's steps (In 4, Hold 4, Out 4, Hold 4) and fills the one you are on,
    so you can see what comes next; listeners get the phase ('in' / 'out' / 'hold', or null when idle) as a third
-   argument (breath-figure-v1.js closes the figure's eyes on a hold); `data-begin-word` and `data-stop-hint` set the
+   argument (breath-figure-v2.js closes the figure's eyes on a hold); `data-begin-word` and `data-stop-hint` set the
    idle word and the running hint. `data-autostart="<ms>"` starts the pattern on its own after that delay (not under
    reduced motion, not in a hidden tab). An auto run is quiet: it fills no live region until the visitor touches the
    pacer, so a screen reader is not read breath cues from page load. It resumes when the tab comes back.
@@ -30,8 +30,11 @@
    beat) and a little more level. (4) Sound is one page-wide setting (Collin): the hero's toggle sets it and the
    feelings pacer plays the tone too. With no pacer sounding, the context is suspended so the audio hardware can sleep.
    v8 (2026-10-27): adds `box6`, box breathing on a 6 count (6 in, 6 hold, 6 out, 6 hold), for the masterclass
-   waiting room (/masterclass-waiting-room), which runs it on an endless loop. Nothing else changed from v7.
-   Bump the filename (v9, v10) when editing: Cloudflare caches .js at the edge for 7 days. */
+   waiting room (/masterclass-waiting-room), which runs it on an endless loop.
+   v9 (2026-11-10, WCAG 2.2.2): a `[data-pause]` button inside the pacer stops the endless loop and the idle breath,
+   sets `data-paused` on the pacer (breath-figure-v2.js then holds the figure still) and reads "Resume" until pressed
+   again. On the endless loop the center button's name says the pattern is running, since a tap there never stops it.
+   Bump the filename (v10, v11) when editing: Cloudflare caches .js at the edge for 7 days. */
 (function () {
   'use strict';
   var PATTERNS = {
@@ -123,6 +126,7 @@
     // data-loop: the waiting room's endless run. A tap on the center never stops it (it only unlocks sound), and it
     // resumes on its own after the tab was hidden.
     var loopOnly = root.hasAttribute('data-loop');
+    var pauseBtn = root.querySelector('[data-pause]'), paused = false;
     if (!go) return null;
     var cur = root.getAttribute('data-start') || 'box', running = false, t0 = 0, cycles = 0, lastPhase = -1, lastCount = -1;
     var raf = 0, visible = true, idleOn = false, idleT0 = 0, shown = 0.25, blendFrom = null, blendT0 = 0, listeners = [], startLevel = 0;
@@ -209,12 +213,13 @@
       if (running) { stop(true); start(); } else describe();
     }
     function start(silent) {
+      if (paused) setPaused(false); // Begin, a tap on the figure or Resume all lift a pause
       for (var i = 0; i < all.length; i++) if (all[i] !== api && all[i].isRunning()) all[i].stop(true);
       quiet = !!silent; if (!silent) auto = false;
       running = true; cycles = 0; lastPhase = -1; lastCount = -1;
       t0 = performance.now(); startLevel = Math.min(shown, 0.7); blendFrom = null; blendT0 = t0;
       root.classList.add('is-running');
-      go.setAttribute('aria-pressed', 'true'); go.setAttribute('aria-label', 'Stop the breath pacer');
+      go.setAttribute('aria-pressed', 'true'); go.setAttribute('aria-label', loopOnly ? PATTERNS[cur].name + ' is running' : 'Stop the breath pacer');
       if (soundOn) soundStart(!silent);
       labels();
       kick();
@@ -265,8 +270,19 @@
     }
 
     go.addEventListener('click', function () {
-      if (loopOnly) { if (!running) { auto = true; start(); } return; }
+      if (loopOnly) { if (!running) { start(); auto = true; } return; } // start() clears auto; the loop is still automatic
       auto = false; if (running) stop(false); else start();
+    });
+    // Pause: stops the run and the idle breath so nothing on the page moves, until Resume.
+    function setPaused(on) {
+      paused = on;
+      root.toggleAttribute('data-paused', on);
+      if (pauseBtn) pauseBtn.textContent = on ? 'Resume' : 'Pause';
+    }
+    if (pauseBtn) pauseBtn.addEventListener('click', function () {
+      if (paused) { setPaused(false); start(); auto = true; return; } // after start(), which clears auto: a hidden tab stops and resumes it
+      setPaused(true); resumeAuto = false; auto = false; idleOn = false;
+      if (running) stop(false); else { rest(); kick(); }
     });
     for (var i = 0; i < patBtns.length; i++) patBtns[i].addEventListener('click', function (e) { auto = false; quiet = false; setPattern(e.currentTarget.getAttribute('data-pattern')); });
     // The toggle: "Sound off", "Sound on", or "Tap for sound" while a pacer runs with sound on but the audio isn't
@@ -301,13 +317,13 @@
       describe: function () { return PATTERNS[cur].name + ': ' + PATTERNS[cur].desc; }
     };
     rest(); describe(); buildTrack();
-    function beginIdle() { if (RM() || running) return; idleOn = true; idleT0 = performance.now(); kick(); }
+    function beginIdle() { if (RM() || running || paused) return; idleOn = true; idleT0 = performance.now(); kick(); }
     var idleAttr = root.getAttribute('data-idle-delay') || '0', wait = parseInt(idleAttr, 10);
     if (idleAttr !== 'manual') { if (wait > 0) setTimeout(beginIdle, wait); else beginIdle(); }
     api.idle = function (on) { if (on) beginIdle(); else { idleOn = false; rest(); } };
     var autoAttr = root.getAttribute('data-autostart');
     if (autoAttr !== null) setTimeout(function () {
-      if (running || RM()) return;
+      if (running || RM() || paused) return;
       if (document.hidden) { resumeAuto = true; return; }
       auto = true; start(true);
     }, parseInt(autoAttr, 10) || 0);

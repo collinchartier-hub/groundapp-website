@@ -63,4 +63,6 @@
 - [Privacy Policy](https://groundapp.live/privacy): How GroundApp handles app and website data
 - [Terms of Service](https://groundapp.live/terms): Terms for using GroundApp
 - [Support](https://groundapp.live/support): Contact and quick answers on Premium, purchases, account deletion and wearables
+- [Accessibility](https://groundapp.live/accessibility): The accessibility standard the site aims for (WCAG 2.0 AA), what was checked, known limits and how to report a problem
+- [Legal notice](https://groundapp.live/legal-notice): Legal notice (Impressum): who runs GroundApp, postal address, email and phone
 - Contact: collin@groundapp.live
