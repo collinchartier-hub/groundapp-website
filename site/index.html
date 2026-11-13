@@ -108,7 +108,7 @@
 <link rel="preload" href="/assets/fonts/ground-font-type-v1.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/css/ground-tokens-v1.css">
 <link rel="stylesheet" href="/assets/css/site-v4.css">
-<link rel="stylesheet" href="/assets/css/home-v6.css">
+<link rel="stylesheet" href="/assets/css/home-v7.css">
 <script type="importmap">{ "imports": {
   "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/+esm",
   "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/" } }</script>
@@ -234,9 +234,11 @@
       <a class="btn btn-gold checkin-cta" href="https://apps.apple.com/app/apple-store/id6760352779?pt=128638571&amp;ct=site-checkin&amp;mt=8" data-ct="checkin"><svg aria-hidden="true"><use href="#i-apple"/></svg>Download and check in</a>
     </div>
     <div class="slot slot-lean" data-slot="check-in" data-react="lean" data-dir="right"></div>
-    <div class="phone checkin-phone" data-ui>
-      <img src="/media/v3/clips/ch06-check-in-poster.webp" width="588" height="1280" loading="lazy" alt="The check-in in GroundApp. Bodie asks how you're feeling. You pick Anxious, narrow it to Worried, then Nervous, rate it 6 with medium energy, save the check-in, tap Build my guided session and get a 4-minute session.">
-      <video data-clip src="/media/v3/clips/ch06-check-in.mp4" poster="/media/v3/clips/ch06-check-in-poster.webp" muted playsinline loop preload="none" aria-hidden="true"></video>
+    <div class="app-demo checkin-phone" data-app-demo="check-in">
+      <div class="phone" data-ui>
+        <img src="/media/v3/clips/ch06-check-in-poster.webp" width="588" height="1280" loading="lazy" alt="The check-in in GroundApp, played as a short loop. On Home, Bodie asks how you're feeling and you tap Check in. You pick Anxious, narrow it to Worried, then Nervous, rate it 6 with medium energy and tap Continue. Bodie comes up with your plan, and it shows a 4-minute session: Physiological sigh, 4-7-8 breathing and Resonance breathing, each with a line on why. You tap Begin session and Bodie breathes the first one with you.">
+      </div>
+      <div class="app-demo-stage" data-app-demo-stage aria-hidden="true"></div>
     </div>
     <div class="plan-step" id="session">
       <h3 class="h3 plan-step-h">Your session, built from your answers.</h3>
@@ -579,7 +581,7 @@
 </div>
 
 <script src="/js/site-menu-v1.js" defer></script>
-<script type="module" src="/js/home-v6.js"></script>
+<script type="module" src="/js/home-v7.js"></script>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "03e507bb97d74e78bc8de83dc6b261ec"}'></script>
 <script src="/js/app-links-v3.js" defer></script>
 </body>

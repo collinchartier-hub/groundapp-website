@@ -76,6 +76,7 @@ function goStill() {
   if (bodie) bodie.setStill(true);
   showReadout();
   syncMotionBtn();
+  publishMotion();
 }
 function playClip(v) {
   if (still()) return;
@@ -113,6 +114,14 @@ function applyMotion() {
   }
   showReadout();
   syncMotionBtn();
+  publishMotion();
+}
+// The same answer for scripts that load later (the check-in demo): data-motion on <html>, "ga:motion" when it changes.
+function publishMotion() {
+  const motion = still() ? 'still' : 'on';
+  if (root.dataset.motion === motion) return;
+  root.dataset.motion = motion;
+  document.dispatchEvent(new Event('ga:motion'));
 }
 if (motionBtn) motionBtn.addEventListener('click', () => {
   paused = !paused;
@@ -120,6 +129,23 @@ if (motionBtn) motionBtn.addEventListener('click', () => {
   applyMotion();
 });
 syncMotionBtn();
+publishMotion();
+
+/* ---------- Check-in demo: a React island built from demo/, fetched once the section is a screen away.
+   Until it runs, and whenever it cannot, the still of the check-in stays in its place. ---------- */
+const appDemo = $('[data-app-demo]');
+if (appDemo) {
+  const demoIO = new IntersectionObserver((es) => {
+    if (!es.some((e) => e.isIntersecting)) return;
+    demoIO.disconnect();
+    const css = document.createElement('link');
+    css.rel = 'stylesheet';
+    css.href = '/assets/css/app-demo-v1.min.css';
+    css.onload = () => { import('/js/app-demo-v1.min.js').catch(() => { /* the still stays */ }); };
+    document.head.append(css);
+  }, { rootMargin: '100% 0px' });
+  demoIO.observe(appDemo);
+}
 
 /* ---------- Swipe rails (phone): focusable while they scroll, so a keyboard can scroll them too ---------- */
 const rails = $$('.conn-shots, .watch-row');
@@ -173,7 +199,7 @@ const zoneIO = new IntersectionObserver((es) => {
   syncDock();
 });
 ['hero', 'download', 'foot'].forEach((id) => { const el = document.getElementById(id); if (el) zoneIO.observe(el); });
-const KEEP_CLEAR = '[data-slot], .readout, .lib-name, .safety, .mode-safe, .techs, .plan, main h2, main .h3, main .quote, main .film-line';
+const KEEP_CLEAR = '[data-slot], .readout, .lib-name, .safety, .mode-safe, .techs, .plan, .app-demo, main h2, main .h3, main .quote, main .film-line';
 let bandIO = null;
 function watchBand() {
   if (bandIO) bandIO.disconnect();

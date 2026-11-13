@@ -1,0 +1,262 @@
+/* GroundApp check-in demo. Every rule sits under .gad. Lengths inside the phone are iOS points:
+   the kit's Phone lays its screen out at 393 x 852 and scales it. */
+@import "./checkin-steps.css";
+@import "./session.css";
+
+.gad {
+  /* The look: Ground Brand Kit v5 night theme (site/assets/css/ground-tokens-v1.css) on the kit's tokens. */
+  & .ss-stage {
+    --ss-canvas: #1a110e;
+    --ss-surface: #2d1e17;
+    --ss-raised: #2d1e17;
+    --ss-accent: #c4935a;
+    --ss-accent-2: #d4a574;
+    --ss-accent-soft: rgba(196, 147, 90, 0.14);
+    --ss-text-strong: #e8ddd0;
+    --ss-text: #e8ddd0;
+    --ss-text-faint: #a89585;
+    --ss-line: rgba(168, 149, 133, 0.15);
+    --ss-font: "Ground Font Type", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --gad-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+    --gad-on-gold: #1a110e;
+    --gad-edge: rgba(232, 221, 208, 0.08);
+    /* In-app responses, as quick as UIKit */
+    --gad-ui: cubic-bezier(0.3, 0.75, 0.1, 1);
+    /* Bodie's trips between his places */
+    --gad-travel: cubic-bezier(0.45, 0, 0.1, 1);
+    background: transparent;
+  }
+
+  /* The page's resets (border-box on everything, block svgs) stop at the stage, so the kit's parts
+     keep the kit's own geometry. The app's screen, which is ours, is border-box throughout. */
+  & .ss-stage,
+  & .ss-stage *,
+  & .ss-stage *::before,
+  & .ss-stage *::after {
+    box-sizing: revert-layer;
+  }
+
+  & .ss-stage :where(svg, img, canvas) {
+    display: revert-layer;
+    max-width: revert-layer;
+  }
+
+  .gad-phone {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+  }
+
+  .gad-app {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, #1a110e 0%, #1e1410 46%, #33211a 100%);
+    color: var(--ss-text-strong);
+    font-family: var(--ss-font);
+    font-size: 17px;
+    line-height: 22px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  & .gad-app,
+  & .gad-app *,
+  & .gad-app *::before,
+  & .gad-app *::after {
+    box-sizing: border-box;
+  }
+
+  & .gad-app svg {
+    display: block;
+    flex: none;
+  }
+
+  /* One screen at a time: the app crossfades them (easeInOut 0.3), nothing slides. */
+  .gad-screen {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .gad-screen[data-on] {
+    opacity: 1;
+    transition: opacity 0.32s ease 0.12s;
+  }
+
+  /* Coming from Home, the check-in arrives as Bodie reaches his corner, so he never crosses its words */
+  .gad-checkin[data-on] {
+    transition-delay: 0.3s;
+  }
+
+  .gad-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+    border-radius: 24px;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 22px;
+    transition: opacity 0.2s ease, transform 0.12s ease;
+  }
+
+  .gad-btn--gold {
+    background: var(--ss-accent);
+    color: var(--gad-on-gold);
+  }
+
+  .gad-btn--card {
+    background: var(--ss-surface);
+    color: var(--ss-text-strong);
+  }
+
+  .gad-btn[data-pressed],
+  .gad-opt[data-pressed],
+  .gad-num[data-pressed],
+  .gad-en[data-pressed] {
+    transform: scale(0.97);
+  }
+
+  .gad-card {
+    border: 1px solid var(--gad-edge);
+    border-radius: 20px;
+    background: rgba(45, 30, 23, 0.72);
+  }
+
+  .gad-grabber {
+    display: block;
+    width: 36px;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(168, 149, 133, 0.38);
+  }
+
+  .gad-puff {
+    position: absolute;
+    border: 1px solid var(--gad-edge);
+    border-radius: 50%;
+    background: var(--ss-surface);
+  }
+
+  /* ---- Home ---- */
+
+  .gad-cloud {
+    position: absolute;
+    top: 64px;
+    right: 22px;
+    left: 22px;
+    display: grid;
+    justify-items: start;
+    padding: 30px 23px 20px;
+    border: 1px solid var(--gad-edge);
+    border-radius: 46px;
+    background: var(--ss-surface);
+  }
+
+  .gad-cloud .gad-grabber {
+    justify-self: center;
+    margin-bottom: 22px;
+  }
+
+  .gad-cloud__hi {
+    font-size: 19px;
+    font-weight: 600;
+    line-height: 24px;
+  }
+
+  .gad-cloud__ask {
+    margin-top: 2px;
+  }
+
+  .gad-cloud .gad-btn {
+    justify-self: stretch;
+    margin-top: 12px;
+  }
+
+  .gad-cloud .gad-puff--1 {
+    bottom: -26px;
+    left: 158px;
+    width: 18px;
+    height: 18px;
+  }
+
+  .gad-cloud .gad-puff--2 {
+    bottom: -38px;
+    left: 148px;
+    width: 10px;
+    height: 10px;
+  }
+
+  /* His breath, read out under him: written by bodie.tsx from the figure's own clock */
+  .gad-home__phase {
+    position: absolute;
+    top: 522px;
+    right: 22px;
+    left: 22px;
+    height: 22px;
+    color: var(--ss-text-faint);
+    text-align: center;
+  }
+
+  .gad-wheel {
+    position: absolute;
+    top: 610px;
+    right: 22px;
+    left: 22px;
+    text-align: center;
+  }
+
+  .gad-wheel__row--on {
+    padding: 10px 0;
+    border-block: 1px solid var(--ss-line);
+    color: var(--ss-accent);
+  }
+
+  .gad-wheel__row--next {
+    padding-top: 10px;
+    opacity: 0.28;
+  }
+
+  .gad-home__actions {
+    position: absolute;
+    top: 714px;
+    right: 22px;
+    left: 22px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+  }
+
+  .gad-home__actions .gad-btn--card {
+    padding: 0 20px;
+  }
+
+  .gad-tabs {
+    position: absolute;
+    top: 774px;
+    right: 22px;
+    left: 22px;
+    display: grid;
+    grid-template: 1fr / repeat(4, minmax(0, 1fr));
+    height: 54px;
+    padding: 2px;
+    border-radius: 27px;
+    background: var(--ss-surface);
+  }
+
+  .gad-tab {
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    gap: 2px;
+    border-radius: 25px;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 12px;
+  }
+
+  .gad-tab[data-on] {
+    background: rgba(232, 221, 208, 0.09);
+    color: var(--ss-accent-2);
+  }
+}

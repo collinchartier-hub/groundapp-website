@@ -133,7 +133,7 @@ html.low-power .still-note { display: block; }
   .film-act { flex-direction: column; align-items: stretch; }
 }
 
-/* ---------- check-in: the recording, Bodie leaning in, then the session built from your answers ---------- */
+/* ---------- check-in: the live demo of the check-in, Bodie leaning in, then the session built from your answers ---------- */
 .checkin-grid { row-gap: clamp(56px, 7vw, 96px); align-items: center; }
 .checkin-copy { grid-column: 1 / 7; grid-row: 1; }
 .checkin-copy .lede { margin: 16px 0 24px; }
@@ -141,8 +141,13 @@ html.low-power .still-note { display: block; }
 .steps li { counter-increment: st; display: grid; grid-template-columns: 40px 1fr; align-items: baseline; color: var(--text); font-size: 19px; }
 .steps li::before { content: counter(st); font: 300 30px/1 var(--font-data); font-variant-numeric: tabular-nums; color: var(--gold); }
 .checkin-cta { margin-top: 32px; }
-.slot-lean { grid-column: 7 / 10; grid-row: 1; max-width: 240px; justify-self: center; align-self: end; }
-.checkin-phone { grid-column: 10 / 13; grid-row: 1; }
+.slot-lean { grid-column: 7 / 9; grid-row: 1; max-width: 200px; justify-self: center; align-self: end; }
+.checkin-phone { grid-column: 9 / 13; grid-row: 1; justify-self: end; }
+/* The demo keeps one footprint from first paint: the still sits in it until the live stage covers it (demo/, app-demo-v1.min). */
+.app-demo { position: relative; width: min(100%, 392px); aspect-ratio: 392 / 791; }
+.app-demo > .phone { position: absolute; inset: 2.03% 4.08%; width: auto; aspect-ratio: auto; }
+.app-demo-stage { position: absolute; inset: 0; }
+.app-demo[data-live] > .phone { visibility: hidden; }
 .plan-step { grid-column: 1 / 7; grid-row: 2; }
 .h2-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; }
 .plan-step-h { font: 400 clamp(26px, 1.1rem + 1vw, 32px)/1.2 var(--font-display); font-variation-settings: "opsz" 60; }
@@ -150,11 +155,12 @@ html.low-power .still-note { display: block; }
 .plan-step .small { margin: 0; }
 .plan-shot { grid-column: 7 / 10; grid-row: 2; margin: 0; }
 @media (max-width: 860px) {
-  .checkin-grid { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); row-gap: 32px; column-gap: 12px; grid-template-areas: "copy copy" "phone slot" "step step" "plan plan"; }
+  .checkin-grid { grid-template-columns: minmax(0, 1fr); row-gap: 32px; grid-template-areas: "copy" "phone" "step" "plan"; }
   .checkin-copy { grid-area: copy; }
   .checkin-cta { width: 100%; }
-  .checkin-phone { grid-area: phone; width: min(100%, 320px); justify-self: end; }
-  .slot-lean { grid-area: slot; justify-self: start; align-self: center; width: 100%; }
+  .checkin-phone { grid-area: phone; width: min(100%, 358px); justify-self: center; }
+  /* Bodie is inside the demo here, so he does not also sit beside it on a phone. */
+  .slot-lean { display: none; }
   .plan-step { grid-area: step; margin-top: 24px; }
   .plan-shot { grid-area: plan; width: min(280px, 72%); justify-self: center; }
 }

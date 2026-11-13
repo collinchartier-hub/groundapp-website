@@ -1,0 +1,257 @@
+.gad {
+  /* ---- Bodie: one figure, five places. Drawn at 300 x 372 and scaled, so he is sharp at his largest. ---- */
+
+  .gad-bodie {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 300px;
+    height: 372px;
+    transform: translate(var(--x), var(--y)) scale(var(--k));
+    transform-origin: 0 0;
+    transition: transform 0.75s var(--gad-travel), opacity 0.3s ease;
+    will-change: transform;
+  }
+
+  .gad-bodie[data-place="home"] { --x: 97px; --y: 272px; --k: 0.66; }
+  /* A shorter trip to the corner, so he is nearly there when the answers arrive */
+  .gad-bodie[data-place="corner"] { --x: 36px; --y: 112px; --k: 0.31; transition-duration: 0.55s, 0.3s; }
+  .gad-bodie[data-place="wait"] { --x: 80px; --y: 316px; --k: 0.78; }
+  /* He steps out for the plan: a quick dissolve where he stood, so the words have the screen */
+  .gad-bodie[data-place="away"] { --x: 92px; --y: 331px; --k: 0.7; opacity: 0; transition: transform 0.3s var(--gad-travel), opacity 0.2s ease; }
+  .gad-bodie[data-place="play"] { --x: 46px; --y: 262px; --k: 1; }
+
+  .gad-bodie__still,
+  .gad-bodie__canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .gad-bodie__still { object-fit: contain; }
+  .gad-bodie:has(.is-live) .gad-bodie__still { visibility: hidden; }
+
+  /* ---- Waiting ---- */
+
+  .gad-wait__line {
+    position: absolute;
+    top: 276px;
+    right: 24px;
+    left: 24px;
+    color: var(--ss-text-faint);
+    font-size: 15px;
+    line-height: 20px;
+    text-align: center;
+  }
+
+  /* The line waits for him to reach the middle */
+  .gad-wait[data-on] { transition-delay: 0.5s; }
+
+  /* ---- The plan ---- */
+
+  .gad-part {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    will-change: transform;
+  }
+
+  .gad-part[data-in] {
+    opacity: 1;
+    transform: none;
+  }
+
+  .gad-plan__head {
+    position: absolute;
+    top: 118px;
+    right: 20px;
+    left: 20px;
+    text-align: center;
+  }
+
+  .gad-plan__title {
+    font-family: var(--gad-serif);
+    font-size: 28px;
+    font-variation-settings: "opsz" 60;
+    line-height: 34px;
+  }
+
+  .gad-plan__mins {
+    margin-top: 8px;
+    color: var(--ss-text-faint);
+    font-size: 13px;
+    line-height: 18px;
+  }
+
+  .gad-plan__note {
+    position: absolute;
+    top: 198px;
+    right: 20px;
+    left: 20px;
+    padding: 18px 22px;
+    line-height: 24px;
+    text-align: center;
+  }
+
+  .gad-steps {
+    position: absolute;
+    top: 322px;
+    right: 20px;
+    left: 20px;
+    display: grid;
+    gap: 14px;
+  }
+
+  .gad-tech {
+    position: relative;
+    padding: 12px 16px 14px;
+  }
+
+  /* The line that joins one technique to the next */
+  .gad-tech + .gad-tech::before {
+    position: absolute;
+    top: -15px;
+    left: 30px;
+    width: 2px;
+    height: 14px;
+    background: rgba(196, 147, 90, 0.3);
+    content: "";
+  }
+
+  .gad-tech__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .gad-tag {
+    padding: 2px 9px;
+    border-radius: 10px;
+    background: var(--ss-accent);
+    color: var(--gad-on-gold);
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 16px;
+  }
+
+  .gad-tech__time {
+    color: var(--ss-text-faint);
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  .gad-tech__name {
+    margin-top: 10px;
+    font-weight: 600;
+  }
+
+  .gad-tech__why {
+    margin-top: 4px;
+    color: var(--ss-text-faint);
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .gad-plan .gad-foot {
+    right: 20px;
+    left: 20px;
+  }
+
+  /* ---- The player ---- */
+
+  .gad-close {
+    position: absolute;
+    top: 58px;
+    left: 16px;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    transition: transform 0.12s ease;
+  }
+
+  .gad-close[data-pressed] { transform: scale(0.92); }
+
+  .gad-play__phase {
+    position: absolute;
+    top: 190px;
+    right: 20px;
+    left: 20px;
+    font-family: var(--gad-serif);
+    font-size: 32px;
+    font-variation-settings: "opsz" 60;
+    line-height: 40px;
+    text-align: center;
+  }
+
+  .gad-play__count {
+    position: absolute;
+    top: 500px;
+    left: 18px;
+    width: 48px;
+    color: var(--ss-accent);
+    font-family: var(--gad-serif);
+    font-size: 68px;
+    font-variation-settings: "opsz" 60;
+    line-height: 72px;
+    text-align: center;
+  }
+
+  /* Which part of the plan this is */
+  .gad-play__line {
+    position: absolute;
+    top: 672px;
+    right: 24px;
+    left: 24px;
+    color: var(--ss-text-faint);
+    font-size: 15px;
+    line-height: 22px;
+    text-align: center;
+  }
+
+  .gad-play__clock {
+    position: absolute;
+    bottom: 40px;
+    left: 22px;
+    color: var(--ss-text-faint);
+    font-size: 30px;
+    line-height: 36px;
+  }
+
+  .gad-play__cycle {
+    margin-top: 2px;
+    font-size: 13px;
+    line-height: 18px;
+  }
+
+  .gad-play__ctl {
+    position: absolute;
+    right: 22px;
+    bottom: 44px;
+    display: flex;
+    gap: 14px;
+  }
+
+  .gad-round {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: rgba(232, 221, 208, 0.08);
+  }
+
+  /* ---- The phone column (358 wide): the app's smallest labels go up a step so they stay readable.
+     Everything else is the same screen, smaller. ---- */
+
+  & .ss-stage[data-layout="compact"] {
+    .gad-tab { font-size: 13px; line-height: 14px; }
+    .gad-tag { font-size: 13px; line-height: 18px; }
+    .gad-tech__time,
+    .gad-scale { font-size: 13px; line-height: 18px; }
+    .gad-plan__mins,
+    .gad-play__cycle { font-size: 14px; line-height: 18px; }
+  }
+}

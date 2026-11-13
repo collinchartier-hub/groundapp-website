@@ -9,7 +9,9 @@ Studio defaults to question: `DESIGN-BANS.md`.
 middle of the app's Home screen, is the guide: the visitor meets him breathing on his terracotta disc, presses and
 holds him to breathe, and he walks them through the app section by section. Every picture is the shipped app
 (GroundApp v2, App Store 1.2.1): real screen recordings in a phone, real Apple Watch screens, Collin's own two photos
-and his intro film. One scrolling page; `/play` stays the game's own page.
+and his intro film. The one drawn picture is the check-in demo (2026-11-13, preview, not approved yet): the 1.4.2
+check-in rebuilt screen by screen from the app's own code and recordings, with the site's live Bodie inside it
+(`demo/`, built with the `stageshow` skill). One scrolling page; `/play` stays the game's own page.
 
 World (stage 1 nouns): the disc, the belly that fills and glows, the breath marks (inhale, hold, exhale), the wheel of
 techniques, the check-in feelings, a CO2 table's rounds and rests, a heart-rate strap, the watch on a wrist, a finish
@@ -72,14 +74,16 @@ Tokens: studio `motion-tokens.css` (copied into `site/assets/css/site-v4.css`). 
 | Library pattern | tap Box, 4-7-8, Physiological sigh, Resonance | Bodie's breath, readout with breath marks | the real pattern | readout shows the pattern, no live count |
 | CO2 rounds fill (scroll moment) | table scrolls through view | 6 holds, 5 rests, recovery | scroll-linked, linear | filled |
 | Cast peeks in (scroll moment) | play band enters view, once | Kip, Sage, Ember rise into their tiles (stagger 90ms) | --t-reveal, --ease-expo | in place |
-| App recordings (moving picture) | 30% in view; pause off screen | check-in, advanced, health clips | loop, muted | poster still, never plays |
+| App recordings (moving picture) | 30% in view; pause off screen | advanced, health clips | loop, muted | poster still, never plays |
+| Check-in demo (moving picture, in the check-in recording's place, so the count of moving pictures is unchanged) | in view; stops and resets off screen | a phone playing the 1.4.2 check-in as a 21 s loop: Check in on Home, Anxious, Worried, Nervous, 6 and Medium, Continue, "Bodie is coming up with your plan", the 4-minute plan, Begin session, Bodie breathing one Physiological sigh (2 in, 1 more in, 3 out), then the player's X back to Home. Bodie is one figure throughout: he glides between Home's middle, the check-in's corner and the player (0.75 s, cubic-bezier(0.45, 0, 0.1, 1)); screens crossfade (0.2 s out, 0.32 s in, as the app does); plan parts rise 12px (0.5 s ease-out, 130 ms apart); taps are the kit's touch dot | script on the kit's clock; Bodie's breath on his own clock (`bodie-v3.js`) | the still of the player: "Breathe in", Bodie holding still, no touch dot |
 | Phone dock | after the hero, away at Download, the footer and over anything that must stay readable | dock slides up from the bottom edge | --t-ui, --ease-out | opacity only |
 Sound is off everywhere. The intro film plays with sound only on tap. Low Power Mode (a clip's `play()` is refused):
 Bodie goes still, clips stay on their poster stills.
 
 Pause (WCAG 2.2.2, Norway launch 2026-11-10): anything that moves on its own for more than 5 seconds has a control to
-stop it. Landing page: a round pause button beside Bodie's top right in the hero holds Bodie and the clips still like
-reduced motion does and is remembered (`localStorage` `ga-motion`); hidden under reduced motion and Low Power Mode,
+reduced motion. Landing page: a round pause button beside Bodie's top right in the hero holds Bodie, the clips and the
+check-in demo still like reduced motion does and is remembered (`localStorage` `ga-motion`; `home-v7.js` publishes it as
+`data-motion` on `<html>` with a `ga:motion` event); hidden under reduced motion and Low Power Mode,
 where nothing moves. 404: "Pause the circle" in the help line. /play: a "Motion on/off" button with Sound and Voice
 stills the menu and result scenes (a run itself always moves; it has its own Pause). Waiting room: a "Pause" button
 next to the sound toggle stops the loop. The intro film has a caption track (`media/v3/film/intro-captions-v1.vtt`)
@@ -93,7 +97,7 @@ Phone cut: one 9:16 story. Bodie moves into each of his sections as its own beat
 |---|---|---|---|---|---|---|
 | Hero | h1 over a large centred Bodie, lede left, actions right | h1 in two lines, Bodie sized to what 100svh leaves (190-380px), hint, App Store and Play buttons and the meta line all inside the first screen above Safari's toolbar; the lede follows | live canvas | above and below Bodie, never on him | touch and hold Bodie; entrance as desktop | Bodie still (canvas still frame) |
 | Collin | IRONMAN photo left, bio, accolades and press right; then the film line and buttons, Bodie waving, the intro film | IRONMAN photo full bleed, bio, then film card and Bodie side by side, film line and buttons | IRONMAN photo, film poster, tap to play with sound | own beats | Bodie waves as the slot arrives; film button 72px | poster; film still plays on tap |
-| Check-in | copy, steps and button left, Bodie leaning in, the check-in recording right; then "Your session, built from your answers." as text left and the session screen (05) right. Aura was removed from the app (Collin 2026-10-30) | copy, then the recording and Bodie side by side (Bodie leans toward it), the session step, the session screen | ch06-check-in, 05-check-in-plan | above the phone | lean toward the phone | poster still |
+| Check-in | copy, steps and button left, Bodie leaning in (columns 7 to 8), the check-in demo right (columns 9 to 12, the phone about 348px wide); then "Your session, built from your answers." as text left and the session screen (05) right. Aura was removed from the app (Collin 2026-10-30) | copy, then the demo on its own row at the column's width (its compact design: phone 326 in a 358 stage, about 311px at a 390 screen). Bodie's own slot is hidden here: he is inside the phone, and two live figures on one phone screen cost a second WebGL canvas for nothing. Then the session step and the session screen | the demo (drawn, not footage), 05-check-in-plan | above the phone | the demo plays by itself; nothing to tap | the demo's still (the player), Bodie still |
 | Library | the page's second live stage, centred across 12 columns: h2 and lede, Bodie (up to 400px, sized so the stage fits one screen) with his readout, the four tappable techniques as a 2x2 grid right under him; below, practice notes and "Also in the list" on column 1, "More in the Library" and the safety line on column 7 | the same stage in one column: Bodie 190px, readout, the four techniques (60px rows) so a tap and his breath share one screen, then the notes and tabs | live canvas | readout under Bodie | tap a row, Bodie breathes it | Bodie still, readout shows the pattern |
 | Advanced | recording left, copy, safety line and CO2 table right (unboxed, on column 7) | copy, recording, then the table on its own band | ch05-advanced | own beat | rounds fill on scroll | poster still, table filled |
 | Play | band: pitch and modes left, sticky cast tiles with Bodie right | the four cast tiles first (2 by 2, Bodie in his own), then pitch, modes, Play button | live canvas, three cast stills | own beat | cast peeks in; Play 52px | Bodie still |
@@ -120,10 +124,21 @@ Defaults used on purpose, one line why each (check-tells reads the `- <rule-id>:
 - size-count: inspect counts 17 sizes because the kit's scale (102/52 display, 46 story quote, 32 session step heading, 30 the large review quote, 22-26 serif lines, 22/19/18/17/16/15 text) meets the price numerals (48) and breath readout (18-22); every size is a kit token or its clamp. The large review quote stops at 30px: past that a 300-character quote reads as a headline.
 - phone-100vh: only `.stage:fullscreen` in the game's `bodie-run-v2.css` (from `game/src/1-page.html`), where there is no browser toolbar. (check-tells cannot excuse this rule id from Choices because its id contains digits, so it stays a WARN.)
 - dock: the phone's "Get the app" is the full-width opaque bottom dock copy.md calls the sticky phone bar, so copy scrolls under an edge instead of under a floating button; it slides away whenever a Bodie slot or readout, a safety line, the technique list, a plan, a headline or a quote is in the bottom 120px, and over the hero, Download and the footer.
+- product-demo: the check-in is shown as a drawn demo, not footage, because the 1.2.1 recording no longer matches the app (1.4.2 shows the plan before the session, and Aura became Bodie). Every string and screen comes from the app's code (`demo/src/checkin/data.ts` lists the sources); nothing is invented. The rules for it are the `stageshow` skill's, under the studio skill.
+- demo-whole-phone: the demo shows the whole phone (the kit's `unframed`), not a cropped one, because this site's pictures of the app are whole screens in a bezel and the story needs the top of the screen (Bodie's line) and the bottom (Save, Begin session) at once.
+- demo-two-bodies: on desktop Bodie still leans toward the phone while a second, live Bodie runs inside it (the recording had him in it too). On phones his slot is hidden for this section.
+- demo-icons: the app's SF Symbols are Apple's and not licensed for the web, so the demo uses Lucide (ISC) for the six feelings, the batteries, the tab bar and the player's controls. One set, one stroke.
+- demo-length: the loop runs about 21 s, past the stageshow guide of 10 to 16, because it plays the whole check-in in the app's real order. A shorter cut is a choice for Collin.
+- demo-next-to-old-copy: the demo follows 1.4.2 (Continue, then the plan). The words beside it ("Save your check-in, tap Build my guided session") and the session screenshot under it (05, "1m 12s") are still 1.2.1. Not changed in this round: they need Collin's go, with `docs/site-v3/copy.md`.
+- demo-weight: React and the kit add one lazy script (`js/app-demo-v1.min.js`, 208 KB, 70 KB gzipped) and one stylesheet (`assets/css/app-demo-v1.min.css`, 8 KB gzipped), fetched only when the Check-in section is a screen away. Nothing is added to the first paint.
+- demo-min-files: the two built files are named `.min.` because they are minified bundles with React inside. check-tells skips `.min.` files (React's own attribute list contains a word its stock-copy rule looks for); the source it would otherwise read is `demo/src/`, which is not under `site/`.
+- demo-phone-type: in the phone column the demo is the same screen at about three quarters of its size, so its five smallest labels (tab names, the plan's tags and times, the scale's ends, the minutes and the cycle line) are set one step larger there to stay near 10px.
 
 ## Checker notes
 Run before every review round: `python3 ~/.claude/skills/studio-site-design/check-tells.py site --design-md DESIGN.md`
 (0 FAIL), `inspect.mjs` at 1440/768/390, `motion-frames.mjs`, `phone-parity.mjs` (0 FAIL), `./scripts/check-site.sh`.
+After any change in `demo/`: `npm run build` there, then film it with the stageshow skill's `film.mjs --gate` at the shown
+width and at 390 (how, and the lines left on purpose, are in `demo/src/checkin/REHEARSAL.md`).
 
 ## /play: Bodie's Breath Run (game page, Collin's request 2026-10-30)
 A free browser game, built from `game/src/` by `python3 game/build.py` into `site/play.html`, `js/bodie-run-v2.js`
