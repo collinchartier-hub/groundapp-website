@@ -179,7 +179,7 @@ function endHold() {
   if (better) rec.best = entry;
   const leaves = Math.floor(entry.t / 3) + (D.sub === "dash" ? Math.floor(entry.d / 10) : 0); profile.leaves += leaves;
   D.result = { entry, prevBest, prevLast, better, leaves };
-  save(); postScore();
+  D.today = logPlay({ kind: "deep", hold: entry.t, swim: D.sub === "dash" ? entry.d : 0 }); postScore();
   Voice.say(better ? "New record! Breathe in." : "Breathe in. Nice and slow.", true, true);
 }
 function updateDeep(dt) {
@@ -259,12 +259,14 @@ function showDeepResult() {
   const diff = r.prevBest ? (dash ? `${e.d - r.prevBest.d >= 0 ? "+" : ""}${e.d - r.prevBest.d}m vs your best` : `${e.t - r.prevBest.t >= 0 ? "+" : ""}${(e.t - r.prevBest.t).toFixed(1)}s vs your best`) : "Your first recorded dive. Now there's a flag to beat.";
   $("res-line").textContent = r.better && r.prevBest ? `You beat your old best of ${dash ? r.prevBest.d + "m" : fmtT(r.prevBest.t)}. ${diff}.` : diff;
   const ch = deepChart(D.sub);
-  $("res-body").innerHTML = quote("sage", r.better ? "A new record. Breathe easy, you earned it." : "Well held. Rest a couple of minutes before you dive again.") + `<div class="big-num">${dash ? e.d + " m" : fmtT(e.t)}</div>
-    <div class="bench"><span>Held <b>${fmtT(e.t)}</b></span><span>Swum <b>${e.d} m</b></span>${dash ? `<span>Bonks <b>${e.bonks}</b></span>` : ""}${r.prevLast ? `<span>Last <b>${dash ? r.prevLast.d + "m" : fmtT(r.prevLast.t)}</b></span>` : ""}<span>Gold Leaves <b>+${r.leaves}</b></span>${r.better ? `<span class="badge">New ${dash ? "distance" : "hold"} record</span>` : ""}</div>
+  const bench = `${dash ? `<span>Bonks <b>${e.bonks}</b></span>` : ""}${r.prevLast ? `<span>Last dive <b>${dash ? r.prevLast.d + "m" : fmtT(r.prevLast.t)}</b></span>` : ""}`;
+  $("res-body").innerHTML = tilesHTML([["Held", fmtT(e.t), r.better && !dash ? "New record" : ""], ["Swum", e.d + " m", r.better && dash ? "New record" : ""], ["Leaves", "+" + r.leaves, ""]])
+    + quote("sage", r.better ? "A new record. Breathe easy, you earned it." : "Well held. Rest a couple of minutes before you dive again.") + `${bench ? `<div class="bench">${bench}</div>` : ""}
     <svg class="chart" viewBox="0 0 560 120" role="img" aria-label="Your last ${Math.min(10, ch.n)} dives">${ch.svg}</svg>
     <p class="muted">Next dive, a flag on the sea floor marks your best and your last one. Rest a couple of minutes between max holds.</p>`;
   const next = $("btn-next"); next.hidden = false; next.textContent = dash ? "Try Static" : "Try Dash"; next.onclick = () => openDeep(dash ? "static" : "dash");
   $("btn-again").textContent = "Dive again"; $("btn-again").onclick = () => deepStart(D.sub);
+  renderResToday(D.today);
   state = "result"; refreshWallets(); show("ov-result"); hudEl.hidden = true; showCallout(null);
 }
 
@@ -378,14 +380,16 @@ function showSurfResult() {
   const prev = profile.surf[S.p.key], better = !prev || acc > prev.best;
   const leaves = Math.floor(S.got / 2) + stars * 5; profile.leaves += leaves;
   profile.surf[S.p.key] = { best: Math.max(acc, prev ? prev.best : 0), last: acc, stars: Math.max(stars, prev ? prev.stars : 0) };
-  save();
+  const today = logPlay({ kind: "surf", acc });
   $("res-eyebrow").textContent = `Breath Surf, ${S.p.goal.toLowerCase()}`;
   const t = $("res-title"); t.textContent = S.p.name; t.className = "win";
   $("res-line").textContent = acc >= 88 ? "Locked in. Your breath and Bodie moved as one." : acc >= 75 ? "Smooth. A little more patience on the long phases." : acc >= 60 ? "Good start. Follow the ribbon a beat earlier." : "Keep practicing: press as you start breathing in, let go as you start breathing out.";
-  $("res-body").innerHTML = quote("sage", stars >= 2 ? "Lovely rhythm. Come back tomorrow and do it again." : "Good practice. Let the ribbon lead you a little more.") + `<div class="big-num">${acc}%</div><div class="stars" aria-label="${stars} of 3 stars">${"★".repeat(stars)}<i>${"★".repeat(3 - stars)}</i></div>
-    <div class="bench"><span>Orbs <b>${S.got}/${S.total}</b></span>${prev ? `<span>Best ${better ? "was " : ""}<b>${prev.best}%</b></span><span>Last <b>${prev.last}%</b></span>` : ""}<span>Gold Leaves <b>+${leaves}</b></span>${better && prev ? `<span class="badge">New best</span>` : ""}</div>
+  $("res-body").innerHTML = tilesHTML([["In sync", acc + "%", better && prev ? "New best" : ""], ["Orbs", `${S.got}/${S.total}`, ""], ["Leaves", "+" + leaves, ""]])
+    + quote("sage", stars >= 2 ? "Lovely rhythm. Come back tomorrow and do it again." : "Good practice. Let the ribbon lead you a little more.") + `<div class="stars" aria-label="${stars} of 3 stars">${"★".repeat(stars)}<i>${"★".repeat(3 - stars)}</i></div>
+    ${prev ? `<div class="bench"><span>Best ${better ? "was " : ""}<b>${prev.best}%</b></span><span>Last time <b>${prev.last}%</b></span></div>` : ""}
     <p class="muted">${S.p.desc}</p>`;
   const next = $("btn-next"), ni = (S.pi + 1) % PATTERNS.length; next.hidden = false; next.textContent = "Next: " + PATTERNS[ni].name; next.onclick = () => surfStart(ni);
   $("btn-again").textContent = "Again"; $("btn-again").onclick = () => surfStart(S.pi);
+  renderResToday(today);
   state = "result"; refreshWallets(); show("ov-result"); hudEl.hidden = true; showCallout(null);
 }

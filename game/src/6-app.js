@@ -1,6 +1,6 @@
 
 // ---------------------------------------------------------------- menus
-const OVERLAYS = ["ov-title", "ov-courses", "ov-brief", "ov-deep", "ov-surf", "ov-result", "ov-shop", "ov-hall", "ov-help", "ov-pause", "ov-cast"];
+const OVERLAYS = ["ov-title", "ov-courses", "ov-brief", "ov-deep", "ov-surf", "ov-result", "ov-shop", "ov-hall", "ov-help", "ov-pause", "ov-cast", "ov-today", "ov-badges"];
 const SAGE_SAY = { hollow: "When the cloud comes, hold your breath.", lake: "Hold your breath to dive under the logs.", swamp: "Double tap to sigh the storms away.", peaks: "Tap fast on the pads, then hold through the thin air.", temple: "Ride the updraft, then glide through the rings." };
 const pickOne = (a) => a[Math.floor(Math.random() * a.length)];
 function show(id) {
@@ -9,7 +9,7 @@ function show(id) {
   $("hud-btns").hidden = !!id && $(id).classList.contains("center"); // cards get the whole stage
 }
 function walletHTML() { return `<span>Gold Leaves <b>${profile.leaves}</b></span><span>Wins <b>${profile.wins}</b></span><span>Stars <b>${totalStars()}/15</b></span>`; }
-function refreshWallets() { ["wallet-title", "wallet-res", "wallet-shop"].forEach((id) => ($(id).innerHTML = walletHTML())); }
+function refreshWallets() { ["wallet-title", "wallet-res", "wallet-shop"].forEach((id) => ($(id).innerHTML = walletHTML())); renderToday(); }
 function toMenu(view) {
   clearWorld(); D = null; S = null; mode = "race";
   hudEl.hidden = true; showCallout(null); $("countdown").hidden = true;
@@ -72,6 +72,74 @@ function renderSurfList() {
   $("surf-list").innerHTML = PATTERNS.map((p, i) => { const r = profile.surf[p.key]; return `<button class="pick" type="button" data-i="${i}"><span class="n"><span>${p.goal}</span>${r ? starStr([r.stars > 0, r.stars > 1, r.stars > 2]) : ""}</span><span class="t">${p.name}</span><span class="b">${p.desc}${r ? ` Best ${r.best}%, last ${r.last}%.` : ""}</span></button>`; }).join("");
   $("surf-list").querySelectorAll(".pick").forEach((b) => b.addEventListener("click", () => { Sound.play("click"); surfStart(+b.dataset.i); }));
 }
+// ---------------------------------------------------------------- today: streak strip, daily quests, badges
+const FLAME = glyph("day");
+const dotsHTML = (big) => `<span class="dots${big ? " big" : ""}" aria-hidden="true">${weekDots().map((d) => `<i class="${d.on ? "on" : ""}${d.today ? " now" : ""}">${big ? d.l : ""}</i>`).join("")}</span>`;
+const medalHTML = (b, sm) => `<span class="m-ic got${sm ? " sm" : ""}">${glyph(b.g)}</span>`;
+function renderToday() {
+  const n = streakNow(), played = profile.streak.last === dayKey(), done = todayQuests().filter((q) => q.done).length, b = $("btn-today");
+  b.innerHTML = `<span class="td-streak${played ? "" : " cold"}">${FLAME}<span>${n ? `<b>${n}</b> day streak` : "Start a streak"}</span></span>${dotsHTML()}<span class="td-q">Quests <b>${done}/3</b></span>`;
+  b.setAttribute("aria-label", `${n ? n + " day streak" : "No streak yet"}. ${done} of 3 daily quests done. Open today's quests.`);
+  $("btn-badges").textContent = `Badges ${BADGES.filter((x) => profile.badges[x.id]).length}/${BADGES.length}`;
+}
+// note replaces the reward text, e.g. on the result card when the quest was just finished.
+function questHTML(q, tag, note) {
+  const d = QUESTS[q.id], p = Math.floor(q.p), btn = tag === "button";
+  return `<${tag} class="quest${btn ? " pick" : ""}${q.done ? " done" : ""}"${btn ? ` type="button" data-q="${q.id}"` : ""}><span class="qt">${d.text}</span><span class="qr">${note || (q.done ? "Done" : `+${QUEST_LEAVES} leaves`)}</span><span class="bar"><i style="width:${Math.round(p / d.n * 100)}%"></i></span><span class="qn">${p}/${d.n}${d.unit || ""}</span></${tag}>`;
+}
+function questGo(id) {
+  Sound.play("click");
+  if (id === "hold" || id === "swim") { openDeep(id === "swim" ? "dash" : "static"); return; }
+  if (id === "surf" || id === "sync") { menuView = "ov-surf"; renderSurfList(); show("ov-surf"); return; }
+  raceMode = "kip";
+  if (id === "dash") { openBrief(dailyCourse()); return; }
+  menuView = "ov-courses"; renderCourses(); show("ov-courses");
+}
+let toastT = 0;
+function announce(fresh) { // badges earned away from a result card (the shop, the pouch)
+  if (!fresh || !fresh.length) return;
+  $("toast").innerHTML = `${medalHTML(fresh[0], true)}<span>New badge: ${fresh.map((b) => b.name).join(", ")}</span>`;
+  Sound.play("gold"); clearTimeout(toastT); toastT = setTimeout(() => ($("toast").innerHTML = ""), 3600);
+}
+function claimPouch() {
+  const fresh = openPouch(); if (!fresh) return null;
+  Sound.play("buy"); Voice.say("A pouch for a busy Bodie. Spend it wisely!", true, "ember"); refreshWallets();
+  return fresh;
+}
+function renderTodayPanel() {
+  const s = profile.streak, n = streakNow(), played = s.last === dayKey(), list = todayQuests(), pouch = profile.quests.pouch;
+  $("today-date").textContent = new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
+  $("today-streak").innerHTML = `<span class="num${played ? "" : " cold"}">${FLAME}${n}</span><span class="st"><b>day streak</b><span class="muted">${played ? "Today's breath is in." : n ? "Finish any run today to keep it going." : "Finish any run to start one."}${s.best > n ? ` Longest: ${s.best} days.` : ""}</span></span>${dotsHTML(true)}`;
+  $("today-quests").innerHTML = list.map((q) => questHTML(q, "button")).join("");
+  $("today-quests").querySelectorAll(".quest").forEach((b) => b.addEventListener("click", () => questGo(b.dataset.q)));
+  $("today-pouch").className = "item" + (pouch === 1 ? " on" : "");
+  $("today-pouch").innerHTML = `<span class="nm">Ember's seed pouch</span><span class="ds">${pouch === 2 ? "Opened. Three new quests tomorrow." : `${pouch === 1 ? "All three done." : "Finish all three quests."} ${POUCH_LEAVES} Gold Leaves inside.`}</span><button class="btn" type="button" id="btn-pouch" ${pouch === 1 ? "" : "disabled"}>${pouch === 2 ? "Opened" : "Open"}</button>`;
+  $("btn-pouch").addEventListener("click", () => { const fresh = claimPouch(); if (!fresh) return; renderTodayPanel(); announce(fresh); $("btn-today-back").focus(); });
+}
+function renderBadges() {
+  const h = bestHold(profile), sb = profile.streak.best;
+  $("badges-count").textContent = `${BADGES.filter((b) => profile.badges[b.id]).length} of ${BADGES.length} earned`;
+  $("badges-recs").innerHTML = tilesHTML([["Longest hold", h ? fmtT(h) : "None yet", ""], ["Longest streak", sb + (sb === 1 ? " day" : " days"), ""], ["Stars", totalStars() + "/15", ""]]);
+  $("badges-list").innerHTML = BADGES.map((b) => { const on = !!profile.badges[b.id]; return `<li class="medal${on ? " got" : ""}"><span class="m-ic${on ? " got" : ""}">${glyph(b.g)}</span><span class="m-nm">${b.name}</span><span class="m-how"><span class="sr">${on ? "Earned. " : "Not earned yet. "}</span>${b.how}</span></li>`; }).join("");
+}
+// The Today block on a result card: what this run did for the streak, the quests, the pouch and the badges.
+let resToday = null;
+function renderResToday(t) {
+  if (t !== undefined) resToday = t;
+  t = resToday; const el = $("res-today");
+  if (!t) { el.innerHTML = ""; return; }
+  const n = profile.streak.n, pouch = profile.quests.pouch;
+  let h = "";
+  if (t.streakUp) h += `<div class="tr">${FLAME}<b>${n === 1 ? "Streak started" : n + " day streak"}</b>${dotsHTML()}<span class="plus">+${t.streakLeaves} leaves</span></div>`;
+  h += todayQuests().filter((q) => t.moved.includes(q.id)).map((q) => questHTML(q, "div", t.done.includes(q.id) ? `Done, +${QUEST_LEAVES} leaves` : "")).join("");
+  if (t.pouchReady && pouch === 1) h += `<div class="tr"><span>All three quests done. Ember left you a seed pouch.</span><button class="btn" type="button" id="btn-res-pouch">Open it</button></div>`;
+  else if (t.pouchReady && pouch === 2) h += `<div class="tr"><span>Ember's seed pouch</span><span class="plus">+${POUCH_LEAVES} leaves</span></div>`;
+  h += t.badges.map((b) => `<div class="tr">${medalHTML(b, true)}<span><b>New badge: ${b.name}.</b> <span class="muted">${b.how}</span></span></div>`).join("");
+  el.innerHTML = h;
+  const pb = $("btn-res-pouch");
+  if (pb) pb.addEventListener("click", () => { const fresh = claimPouch(); if (!fresh) return; t.badges = t.badges.concat(fresh); renderResToday(); el.focus(); });
+}
+
 let shopTab = "up";
 const UPS = [
   { id: "lungs", name: "Bigger Lungs", desc: (lv) => `+1 second of breath to hold in races. Level ${lv}/3.`, cost: (lv) => [40, 90, 160][lv], max: 3 },
@@ -97,7 +165,7 @@ function renderShop() {
     if ((b.dataset.skin || b.dataset.acc) && !b.disabled) Voice.say(pickOne(["Looking sharp, Bodie!", "Oh, that suits you.", "Very dashing!"]), true, "ember");
     if (b.dataset.skin) { const k = b.dataset.skin, s = SKINS[k]; if (!profile.owned.includes(k)) { if (profile.leaves < s.cost || (s.stars && stars < s.stars)) return; profile.leaves -= s.cost; profile.owned.push(k); Sound.play("buy"); } else Sound.play("click"); profile.skin = k; rebuildMenuBodie(); }
     if (b.dataset.acc) { const k = b.dataset.acc, a = ACCS[k]; if (!profile.owned.includes(k)) { if (profile.leaves < a.cost || (a.stars && stars < a.stars)) return; profile.leaves -= a.cost; profile.owned.push(k); profile.acc.push(k); Sound.play("buy"); } else { profile.acc = profile.acc.includes(k) ? profile.acc.filter((x) => x !== k) : profile.acc.concat(k); Sound.play("click"); } rebuildMenuBodie(); }
-    save(); renderShop(); refreshWallets();
+    announce(syncBadges()); save(); renderShop(); refreshWallets();
   }));
 }
 
@@ -118,7 +186,7 @@ async function initDB() {
         const hold = Number(d.hold) || 0; if (hold && (!profile.deep.static.best || profile.deep.static.best.t < hold)) profile.deep.static.best = { t: hold, d: Math.round(hold * STATIC_SPEED), at: 0, bonks: 0 };
         const hd = Number(d.hdash) || 0; if (hd && (!profile.deep.dash.best || profile.deep.dash.best.d < hd)) profile.deep.dash.best = { t: 0, d: hd, at: 0, bonks: 0 };
         if (d.dd === dayKey() && (profile.daily.date !== dayKey() || Number(d.ds) > profile.daily.best)) profile.daily = { date: dayKey(), best: Number(d.ds) || 0 };
-        save(); refreshWallets();
+        syncBadges(); save(); refreshWallets();
       }
     }
     if (DB) DB.collection("scores").orderBy("total", "desc").limit(300).onSnapshot((s) => { hallDocs = s.docs.map((d) => ({ id: d.id, ...d.data() })); renderHall(); }, (e) => { hallErr = e.code || "unavailable"; renderHall(); });
@@ -279,6 +347,10 @@ $("btn-deep").addEventListener("click", () => { Sound.play("click"); openDeep();
 $("btn-surf").addEventListener("click", () => { Sound.play("click"); menuView = "ov-surf"; renderSurfList(); show("ov-surf"); });
 $("btn-courses-back").addEventListener("click", () => { Sound.play("click"); menuView = "title"; show("ov-title"); });
 $("btn-shop").addEventListener("click", () => { Sound.play("click"); menuView = "ov-shop"; renderShop(); refreshWallets(); show("ov-shop"); Voice.say("Welcome to the Root Market! Have a look around.", true, "ember"); });
+$("btn-today").addEventListener("click", () => { Sound.play("click"); menuView = "ov-today"; renderTodayPanel(); show("ov-today"); });
+$("btn-today-back").addEventListener("click", () => { Sound.play("click"); menuView = "title"; show("ov-title"); });
+$("btn-badges").addEventListener("click", () => { Sound.play("click"); menuView = "ov-badges"; renderBadges(); show("ov-badges"); });
+$("btn-badges-back").addEventListener("click", () => { Sound.play("click"); menuView = "title"; show("ov-title"); });
 // Meet the cast: the camera visits each character while they say hello.
 const CAST_ORDER = ["bodie", "kip", "sage", "ember"];
 let castI = 0, castT = 0;
@@ -371,9 +443,9 @@ function updateMenu(dt, mdt) {
   menuKip.root.visible = cast ? focus === "kip" : ["title", "ov-courses", "ov-help", "ov-brief"].includes(menuView);
   menuKip.update(mdt, clock, focus === "kip" && castT < 3 ? "sprint" : "cruise");
   menuKip.root.position.set(cast ? 1.7 : 2.3, (cast ? 2.5 : 2.1) + Math.sin(clock * 2.6) * .25 + (focus === "kip" ? Math.sin(clock * 9) * .08 : 0), cast ? -1.5 : -1.2);
-  menuSage.root.visible = cast ? focus === "sage" : menuView === "ov-hall" || menuView === "ov-surf" || menuView === "ov-deep";
+  menuSage.root.visible = cast ? focus === "sage" : ["ov-hall", "ov-surf", "ov-deep", "ov-badges"].includes(menuView);
   menuSage.root.position.set(cast ? -2.4 : 2.1, 0, cast ? -.9 : -.6); menuSage.root.rotation.y = cast ? .5 : -.5; menuSage.update(mdt, clock);
-  menuEmber.root.visible = cast ? focus === "ember" : menuView === "ov-shop";
+  menuEmber.root.visible = cast ? focus === "ember" : menuView === "ov-shop" || menuView === "ov-today";
   menuEmber.root.position.set(cast ? 2.5 : 2.0, 0, cast ? .5 : .3); menuEmber.update(mdt, focus === "ember" ? clock * 2.5 : clock);
   menuCamera(dt, clock);
 }
@@ -395,7 +467,7 @@ function frame(now) {
 
 // ---------------------------------------------------------------- boot
 async function boot() {
-  if (!HAS_HALL) $("btn-hall").remove(); else $("btn-help").style.gridColumn = "1 / -1"; // keep the menu grid even
+  if (!HAS_HALL) $("btn-hall").remove();
   resize(); new ResizeObserver(resize).observe(stage);
   try { ({ mergeVertices } = await import(JSM + "utils/BufferGeometryUtils.js/+esm")); } catch (e) { mergeVertices = null; }
   try {
@@ -404,6 +476,7 @@ async function boot() {
   } catch (e) {}
   setBackdrop(COURSES[0], 200); buildMenu();
   renderPortraits();
+  if (syncBadges().length) save(); // records made before badges existed earn theirs quietly
   syncButtons(); refreshWallets(); renderHall();
   Sound.music(0, 128, 0);
   if (glowOn) loadBloom();

@@ -152,11 +152,12 @@ button:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
 .card { width: min(600px, 100%); display: grid; gap: 14px; background: rgba(42,27,20,.95); border: 1px solid rgba(196,147,90,.35); border-radius: 18px; padding: 22px 24px; margin: auto; }
 @media (max-width: 700px) {
   #btn-full, #btn-glow { display: none; }
-  .overlay.side { align-items: flex-end; padding: 10px 10px 54px; background: linear-gradient(0deg, rgba(26,17,14,.97) 0%, rgba(26,17,14,.94) 62%, rgba(26,17,14,0) 80%); }
+  .overlay.side { align-items: flex-start; padding: 10px 10px 54px; background: linear-gradient(0deg, rgba(26,17,14,.97) 0%, rgba(26,17,14,.94) 62%, rgba(26,17,14,0) 80%); }
   /* The panel carries its own scrim: on short phones it rises over Bodie's glow, past the gradient (WCAG 1.4.3). */
   .overlay.side .panel { background: rgba(26,17,14,.94); border-radius: 14px; box-shadow: 0 -12px 24px 6px rgba(26,17,14,.94); }
-  .panel { padding: 4px; margin-block: 0; gap: 10px; }
-  #ov-title .lede, #ov-title .hint { display: none; }
+  /* The auto top margin sits a short panel at the bottom of the stage. A long one (badges, the shop) starts at the top and scrolls. */
+  .panel { padding: 4px; margin-block: auto 0; gap: 10px; }
+  #ov-title .lede, #ov-title .hint, #ov-title .wallet { display: none; }
   .menu-grid .btn { padding: 11px 12px; }
   .menu-grid .btn.big { padding: 10px 14px; }
   .card { padding: 18px; }
@@ -247,6 +248,81 @@ button:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
 .hrow .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .hrow .sc { font: 700 14px/1 var(--mono); color: var(--amber); }
 
+/* Today: the day streak, three daily quests and the badges. */
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.today {
+  display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 8px 14px; width: 100%; cursor: pointer; text-align: left;
+  padding: 11px 14px; border-radius: 14px; background: rgba(26,17,14,.6); border: 1px solid rgba(196,147,90,.45); color: var(--bone); font: 400 15px/1.2 var(--serif);
+}
+.today:hover { border-color: var(--amber); }
+.today b { font: 600 15px/1 var(--mono); color: var(--amber); font-variant-numeric: tabular-nums; }
+.td-streak { display: flex; align-items: center; gap: 7px; white-space: nowrap; }
+.td-streak svg { flex: none; width: 20px; height: 20px; color: var(--amber); }
+.td-streak.cold svg { color: var(--driftwood); }
+.td-q { color: var(--driftwood); white-space: nowrap; }
+.dots { display: flex; gap: 6px; justify-content: center; align-items: center; }
+.dots i { width: 12px; height: 12px; border-radius: 50%; background: rgba(232,221,208,.16); font-style: normal; }
+.dots i.on { background: var(--amber); }
+.dots i.now { box-shadow: 0 0 0 2px var(--obsidian), 0 0 0 3px var(--bone); }
+.dots.big { gap: 8px; justify-content: flex-start; }
+.dots.big i { width: 30px; height: 30px; display: grid; place-items: center; font: 600 12px/1 var(--serif); color: var(--driftwood); }
+.dots.big i.on { color: var(--obsidian); }
+.links { display: flex; gap: 6px; flex-wrap: wrap; }
+.links .icon-btn { font-size: 13px; padding: 10px 13px; }
+.streak-card { display: grid; grid-template-columns: auto 1fr; gap: 12px 14px; align-items: center; padding: 14px; border-radius: 14px; background: rgba(26,17,14,.6); border: 1px solid rgba(232,221,208,.16); }
+.streak-card .num { display: flex; align-items: center; gap: 6px; font: 600 clamp(34px, 6vw, 46px)/1 var(--mono); color: #F3D7A8; font-variant-numeric: tabular-nums; }
+.streak-card .num svg { flex: none; width: 34px; height: 34px; color: var(--amber); }
+.streak-card .num.cold svg { color: var(--driftwood); }
+.streak-card .st { display: grid; gap: 2px; }
+.streak-card .st b { font: 600 16px/1.2 var(--serif); }
+.streak-card .dots { grid-column: 1 / -1; }
+.quest { display: grid; grid-template-columns: 1fr auto; gap: 8px 12px; align-items: center; text-align: left; font-family: var(--serif); color: var(--bone); }
+.quest .qt { font-size: 15px; line-height: 1.3; }
+.quest .qr { font: 600 13px/1 var(--mono); color: var(--amber); white-space: nowrap; }
+.quest .qn { font: 600 12px/1 var(--mono); color: var(--driftwood); font-variant-numeric: tabular-nums; }
+.bar { display: block; height: 8px; border-radius: 8px; background: rgba(232,221,208,.16); overflow: hidden; }
+.bar i { display: block; height: 100%; border-radius: 8px; background: var(--amber); }
+.quest.done .bar i { background: var(--leaf); }
+.quest.done .qr { color: var(--leaf); }
+.pick.quest.done { border-color: rgba(154,160,106,.6); }
+.tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.tile { display: grid; gap: 5px; align-content: start; justify-items: start; min-width: 0; padding: 11px 12px; border-radius: 12px; background: rgba(26,17,14,.6); border: 1px solid rgba(232,221,208,.16); }
+.tile.rec { border-color: var(--amber); }
+.tile .k { font: 400 13px/1.2 var(--serif); color: var(--driftwood); }
+.tile .v { font: 600 clamp(17px, 2.6vw, 24px)/1.1 var(--mono); color: #F3D7A8; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.tile .badge { font-size: 11px; padding: 4px 8px; white-space: nowrap; }
+#res-body { display: grid; gap: 12px; }
+#res-body > .stars { font-size: 24px; }
+details.more summary { cursor: pointer; font: 600 14px/1.3 var(--serif); color: var(--driftwood); }
+details.more summary:hover { color: var(--amber); }
+details.more > div { display: grid; gap: 12px; margin-top: 10px; }
+.today-res { display: grid; gap: 10px; padding: 12px 14px; border-radius: 12px; background: rgba(26,17,14,.5); border: 1px solid rgba(196,147,90,.4); }
+.today-res:empty { display: none; }
+.today-res:focus { outline: none; }
+.tr { display: flex; align-items: center; gap: 8px 10px; flex-wrap: wrap; font-size: 15px; line-height: 1.35; }
+.tr > svg { flex: none; width: 20px; height: 20px; color: var(--amber); }
+.tr .plus { margin-left: auto; font: 600 13px/1 var(--mono); color: var(--amber); white-space: nowrap; }
+.tr .btn { margin-left: auto; padding: 9px 14px; font-size: 14px; }
+.medals { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px 8px; margin: 0; padding: 0; list-style: none; }
+.medal { display: grid; justify-items: center; align-content: start; gap: 4px; text-align: center; min-width: 0; }
+.m-ic { flex: none; display: grid; place-items: center; width: 54px; height: 54px; border-radius: 50%; color: rgba(232,221,208,.3); background: rgba(26,17,14,.6); border: 2px solid rgba(232,221,208,.18); }
+.m-ic svg { width: 26px; height: 26px; }
+.m-ic.got { color: var(--obsidian); background: radial-gradient(circle at 35% 30%, #F3D7A8, var(--golden)); border-color: var(--amber); box-shadow: 0 0 0 3px rgba(196,147,90,.22); }
+.m-ic.sm { width: 30px; height: 30px; border-width: 1px; box-shadow: none; }
+.m-ic.sm svg { width: 16px; height: 16px; }
+.m-nm { font: 600 13px/1.2 var(--serif); margin-top: 2px; }
+.m-how { font: 400 12px/1.3 var(--serif); color: var(--driftwood); }
+.medal:not(.got) .m-nm { color: var(--driftwood); }
+.toast { position: absolute; left: 50%; top: 14px; translate: -50% 0; z-index: 7; max-width: calc(100% - 32px); display: flex; align-items: center; gap: 8px; padding: 7px 14px 7px 8px; border-radius: 999px; background: var(--bone); color: var(--obsidian); font: 600 14px/1.2 var(--serif); box-shadow: 0 8px 24px rgba(0,0,0,.45); pointer-events: none; }
+.toast:empty { display: none; }
+@media (max-width: 700px) {
+  /* Phones: the strip is one line (the week row lives in the quests panel), so the menu leaves Bodie his room. */
+  .today { grid-template-columns: 1fr auto; padding: 8px 12px; }
+  .today .dots { display: none; }
+  .links .icon-btn { font-size: 12px; padding: 8px 11px; }
+  .medals { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
 section h3 { margin: 0 0 14px; font-weight: 300; font-size: 22px; letter-spacing: .08em; text-transform: uppercase; }
 .cast { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
 @media (max-width: 860px) { .cast { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
@@ -293,6 +369,7 @@ kbd { font: 700 12px/1 var(--mono); padding: 2px 6px; border: 1px solid rgba(232
   <div class="stage" id="stage">
     <canvas id="gl" aria-label="Game screen"></canvas>
     <div class="fx" id="fx"></div>
+    <div class="toast" id="toast" role="status"></div>
     <div class="hud" id="hud" hidden></div>
     <div class="cue-zone callout" id="callout" hidden aria-live="polite"><b id="callout-t"></b><span id="callout-s"></span></div>
     <div class="cue-zone countdown" id="countdown" hidden><b id="countdown-t"></b></div>
@@ -310,6 +387,7 @@ kbd { font: 700 12px/1 var(--mono); padding: 2px 6px; border: 1px solid rgba(232
         <div class="eyebrow">A GroundApp game</div>
         <h2>Bodie's Breath Run</h2>
         <p class="lede">Race Kip the Caffeine Crow, push your longest breath hold, and learn real breathwork along the way.</p>
+        <button class="today" id="btn-today" type="button"></button>
         <div class="menu-grid">
           <button class="btn big" id="btn-race" type="button">Race Kip<small>5 courses, 5 breathing techniques</small></button>
           <button class="btn big sea" id="btn-deep" type="button">The Big Hold<small>Max breath hold. Beat your record</small></button>
@@ -317,9 +395,12 @@ kbd { font: 700 12px/1 var(--mono); padding: 2px 6px; border: 1px solid rgba(232
           <button class="btn ghost" id="btn-daily" type="button">Daily Dash</button>
           <button class="btn ghost" id="btn-duel" type="button">2 Player Duel</button>
           <button class="btn ghost" id="btn-shop" type="button">Root Market</button>
-          <button class="btn ghost" id="btn-hall" type="button">Hall of Breath</button>
-          <button class="btn ghost" id="btn-cast" type="button">Meet the cast</button>
-          <button class="btn ghost" id="btn-help" type="button">How to play</button>
+        </div>
+        <div class="links">
+          <button class="icon-btn" id="btn-badges" type="button">Badges</button>
+          <button class="icon-btn" id="btn-cast" type="button">Meet the cast</button>
+          <button class="icon-btn" id="btn-help" type="button">How to play</button>
+          <button class="icon-btn" id="btn-hall" type="button">Hall of Breath</button>
         </div>
         <div class="wallet" id="wallet-title"></div>
         <div class="hint">Press and hold anywhere to breathe with Bodie</div>
@@ -378,6 +459,7 @@ kbd { font: 700 12px/1 var(--mono); padding: 2px 6px; border: 1px solid rgba(232
         <h2 id="res-title">Bodie wins</h2>
         <p id="res-line"></p>
         <div id="res-body"></div>
+        <div class="today-res" id="res-today" tabindex="-1"></div>
         <div class="row">
           <button class="btn" id="btn-next" type="button">Next course</button>
           <button class="btn ghost" id="btn-again" type="button">Again</button>
@@ -398,6 +480,28 @@ kbd { font: 700 12px/1 var(--mono); padding: 2px 6px; border: 1px solid rgba(232
         <div class="shop" id="shop-list"></div>
         <div class="wallet" id="wallet-shop"></div>
         <div class="row"><button class="btn ghost" id="btn-shop-back" type="button">Done</button></div>
+      </div>
+    </div>
+
+    <div class="overlay side" id="ov-today" hidden>
+      <div class="panel">
+        <div class="eyebrow" id="today-date">Today</div>
+        <h2>Daily quests</h2>
+        <div class="streak-card" id="today-streak"></div>
+        <div class="list" id="today-quests"></div>
+        <div class="item" id="today-pouch"></div>
+        <p class="muted">Three new quests every day at midnight. Finishing any run counts the day for your streak.</p>
+        <div class="row"><button class="btn ghost" id="btn-today-back" type="button">Back</button></div>
+      </div>
+    </div>
+
+    <div class="overlay side" id="ov-badges" hidden>
+      <div class="panel">
+        <div class="eyebrow" id="badges-count">0 of 24 earned</div>
+        <h2>Badges</h2>
+        <div class="row"><button class="btn ghost" id="btn-badges-back" type="button">Back</button></div>
+        <div id="badges-recs"></div>
+        <ul class="medals" id="badges-list"></ul>
       </div>
     </div>
 
@@ -430,6 +534,7 @@ kbd { font: 700 12px/1 var(--mono); padding: 2px 6px; border: 1px solid rgba(232
         <div class="help-sec"><h4>Course techniques</h4><p><b>Sigh Swamp:</b> double tap to do a physiological sigh and blow storms away. <b>Power Peaks:</b> on a power pad, tap tap tap for power breaths, then hold through the thin air. <b>Starfall Temple:</b> ride an updraft, then hold to glide through the rhythm rings.</p></div>
         <div class="help-sec"><h4>The Big Hold</h4><p>Thumb down, breath held, Bodie dives. Let go when you need air. In Dash, tap with a second finger (or <kbd>↑</kbd>) to swim up past jellyfish and coral while your first finger keeps holding. On a keyboard, hold <kbd>Space</kbd> or the mouse button.</p></div>
         <div class="help-sec"><h4>Breath Surf</h4><p>Five techniques: resonance breathing, box breathing, 4-7-8, the physiological sigh and power breaths. Press as you breathe in, let go as you breathe out, and stay on the ribbon.</p></div>
+        <div class="help-sec"><h4>Every day</h4><p>Finish any run and the day counts for your <b>streak</b>. Three <b>daily quests</b> pay Gold Leaves, and finishing all three earns Ember's seed pouch. <b>Badges</b> mark the big moments. It's all saved in this browser.</p></div>
         <p class="muted"><kbd>Space</kbd> <kbd>↑</kbd> <kbd>W</kbd>, click or tap. Duel: Player 1 is <kbd>W</kbd>/<kbd>Space</kbd> or the left half of the screen, Player 2 is <kbd>↑</kbd>/<kbd>L</kbd> or the right half. <kbd>P</kbd> pauses.</p>
         <div class="row"><button class="btn" id="btn-help-back" type="button">Got it</button></div>
       </div>
