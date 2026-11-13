@@ -85,9 +85,9 @@ Steps:
 2. Verify the Turnstile token with Cloudflare (`TURNSTILE_SECRET`).
 3. Validate: names 1 to 60 characters with `<>"` and control characters stripped; email by the existing regex, max 254; `location` must be one of the partner's locations; `member` true.
 4. Build `email_key`: lower case, plus-tag removed, dots removed from the local part for gmail.com and googlemail.com.
-5. Network limit: at most 30 claims per hour per hashed IP (a gym's shared wifi must fit under it). Over the limit returns 429.
-6. Call the database function `partner_claim` (below). It returns the claim and what happened: `assigned`, `existing`, `waitlist` or `android_waitlist`.
-7. Send the email that matches the claim's status through Resend (`lib/partner-email.js`). For `existing`, resend that same email (code, waitlist or Android) at most once per 15 minutes; inside that window the response is still `existing` and nothing is sent. Store `emailed_at` or `email_error`.
+5. Call the database function `partner_claim` (below). It returns the claim and what happened: `assigned`, `existing`, `waitlist`, `android_waitlist`, or a refusal: `rate_limited` (429), `bad_location` or `unknown_partner` (400).
+6. Network limit, enforced inside `partner_claim`: at most 30 new claims per hour per hashed IP (a gym's shared wifi must fit under it).
+7. Send the email that matches the claim's status through Resend (`lib/partner-delivery.js`, templates in `lib/partner-email.js`). For `existing`, resend that same email (code, waitlist or Android) at most once per 15 minutes; inside that window nothing is sent. Store `emailed_at` or `email_error`. The response status for a repeat is `existing` when they hold a code, otherwise their waitlist status.
 8. For a new `assigned` claim, schedule the reminder with Resend `scheduled_at` = now + 3 days and store its id in `nudge_email_id`.
 9. If `newsletter` is true, add the person to `newsletter_subscribers` with source `groundapp_site:arsenal` using the shared list code (`lib/list.js`, extracted from `subscribe.js` so both endpoints use one implementation). No separate welcome email: the code email is the welcome, so `last_emailed_at` is set.
 10. If the bank just crossed 75, 25 or 0 codes left, or a send failed, email Collin (`ADMIN_EMAILS`).
@@ -105,21 +105,21 @@ Looks up the claim by `token` (16 random bytes, base64url).
 
 ### Admin (`/admin`, already behind Cloudflare Access)
 
-`GET /api/admin/partner?slug=arsenal` returns: codes left, claims total, by location, by device, by `src`, tapped count, waitlist counts, failed sends, and the claim rows. `POST /api/admin/partner` with an action: `resend` (one claim), `pause` / `resume` (the partner), `release_waitlist` (assign codes to waiting iPhone claims in order and email them). The admin page gets a "Partners" panel showing these, with CSV export built in the browser from the rows.
+`GET /api/admin/partner?slug=arsenal` returns: codes left, claims total, by location, by `src`, tapped count, waitlist counts, failed sends, and the claim rows. `POST /api/admin/partner` with an action: `resend` (one claim), `pause` / `resume` (the partner), `release_waitlist` (assign codes to up to 10 waiting iPhone claims per press, oldest first, and email them; 10 keeps one request inside Cloudflare's outgoing-request limit). The admin page gets a "Partners" panel showing these, with CSV export built in the browser from the rows.
 
 ## Database (Supabase project used by the site; SQL recorded in `db/2026-11-13_partner_codes.sql`)
 
 All tables: RLS on, no policies, service role only, like the existing `groundapp_*` tables.
 
-`partner_programs`: `slug` text primary key, `name`, `status` ('live' | 'paused'), `locations` text[], `apple_offer_name`, `created_at`.
+`partner_programs`: `slug` text primary key, `name`, `status` ('live' | 'paused'), `locations` text[], `created_at`.
 
 `partner_codes`: `id` bigint identity, `partner` references `partner_programs`, `seq` int, `code` text unique, `redeem_url` text, `batch` text, `expires_on` date, `claim_id` uuid unique null, `created_at`.
 
-`partner_claims`: `id` uuid primary key, `partner`, `first_name`, `last_name`, `email`, `email_key`, `device`, `location`, `src`, `newsletter_opt_in` bool, `status` ('assigned' | 'waitlist' | 'android_waitlist'), `code_id` bigint null, `token` text unique, `ip_hash` text, `created_at`, `emailed_at`, `email_error`, `nudge_email_id`, `redeem_tapped_at`, `tap_count` int default 0. Unique on (`partner`, `email_key`).
+`partner_claims`: `id` uuid primary key, `partner`, `first_name`, `last_name`, `email`, `email_key`, `device`, `location`, `src`, `newsletter_opt_in` bool, `status` ('assigned' | 'waitlist' | 'android_waitlist'), `token` text unique, `ip_hash` text, `created_at`, `emailed_at`, `email_error`, `nudge_email_id`, `redeem_tapped_at`, `tap_count` int default 0. Unique on (`partner`, `email_key`). A claim's code is the `partner_codes` row whose `claim_id` points at it.
 
 `partner_claim(p_partner, p_first, p_last, p_email, p_email_key, p_device, p_location, p_src, p_newsletter, p_token, p_ip_hash)` returns jsonb, one transaction:
 
-1. If a claim exists for (`partner`, `email_key`): return it with outcome `existing` (or its waitlist status).
+1. Unknown partner or a location the partner doesn't have: refuse. If a claim exists for (`partner`, `email_key`): return it with outcome `existing`. Over the network limit: refuse with `rate_limited`.
 2. If `device` is android: insert with `android_waitlist`, return.
 3. If the partner is paused: insert with `waitlist`, return.
 4. `select ... from partner_codes where partner = p_partner and claim_id is null and expires_on > current_date order by seq for update skip locked limit 1`. None: insert with `waitlist`. One: insert the claim with `assigned` and set the code's `claim_id`.
@@ -127,7 +127,7 @@ All tables: RLS on, no policies, service role only, like the existing `groundapp
 
 `for update skip locked` plus the two unique constraints mean two simultaneous submissions can never receive the same code, and one email can never hold two.
 
-`partner_admin_summary(p_partner)` returns the admin JSON in one call.
+`partner_tap(p_token, p_ios)` records an iPhone tap on a member's link and returns their code and redeem URL. `partner_release_waitlist(p_partner, p_limit)` gives waiting iPhone claims a code, oldest first. `partner_admin_summary(p_partner)` returns the admin JSON in one call. All five functions are executable by the service role only.
 
 Loading codes: `scripts/load-partner-codes.mjs <csv> --partner arsenal --batch <id> --expires 2027-05-03`, run on Collin's Mac with `.dev.vars`. It reads the CSV from outside the repo and upserts by `code`. Supabase changes, Pages secrets and code loading are laptop steps per `AGENTS.md`.
 
