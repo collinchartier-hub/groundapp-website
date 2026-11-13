@@ -610,19 +610,23 @@ import { SITE, escapeHtml as esc } from './util.js';
 const FROM = 'Collin Chartier <collin@groundapp.live>';
 const REPLY_TO = 'collin@groundapp.live';
 
-const C = { page: '#000000', card: '#2d1e17', text: '#e8ddd0', text2: '#a89585', gold: '#c4935a', onGold: '#1a110e', line: '#3d2e26', frameText: '#9ca3af' };
+const C = { page: '#000000', card: '#2d1e17', text: '#e8ddd0', text2: '#a89585', gold: '#c4935a', onGold: '#1a110e', line: '#3d2e26', frameText: '#9ca3af', lockup: '#fafafa', cyan: '#1fcaf4' };
 const SERIF = "'Source Serif 4',Georgia,'Times New Roman',serif";
 const SANS = "-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif";
 
 const RENEWAL = 'Free for 12 months, then $39.99 a year unless you cancel. Cancel any time in Settings > your name > Subscriptions. iPhone only.';
 
-function shell({ title, preheader, inner, footer }) {
+// partnerName sets the lockup above the card ("ARSENAL HEALTH × GroundApp"), as text so it shows with images off.
+function shell({ title, preheader, inner, footer, partnerName }) {
+  const lockup = partnerName
+    ? `<tr><td align="center" style="padding:0 8px 20px;font:700 13px/1.4 ${SANS};letter-spacing:2px;color:${C.lockup};"><span style="text-transform:uppercase;">${esc(partnerName)}</span> <span style="color:${C.cyan};">&times;</span> GroundApp</td></tr>`
+    : '';
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark"><title>${esc(title)}</title></head>
 <body style="margin:0;padding:0;background:${C.page};">
 <div style="display:none;max-height:0;overflow:hidden;">${esc(preheader)}</div>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${C.page};"><tr><td align="center" style="padding:32px 16px;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
-<tr><td style="background:${C.card};border-radius:16px;padding:32px 28px;">${inner}</td></tr>
+${lockup}<tr><td style="background:${C.card};border-radius:16px;padding:32px 28px;">${inner}</td></tr>
 <tr><td style="padding:20px 8px 0;font:400 12px/1.6 ${SANS};color:${C.frameText};">${footer}</td></tr>
 </table></td></tr></table></body></html>`;
 }
@@ -661,7 +665,7 @@ export function renderClaimEmail({ partnerName, firstName, code, link, mailingAd
     small(esc(RENEWAL)),
     p('Breathe easy,<br>Collin'),
   ].join('\n');
-  const html = shell({ title: subject, preheader: 'Your own code and link are inside. Tap it on your iPhone.', inner, footer: footerFor(reason, mailingAddress) });
+  const html = shell({ partnerName, title: subject, preheader: 'Your own code and link are inside. Tap it on your iPhone.', inner, footer: footerFor(reason, mailingAddress) });
   const text = `Hey ${firstName}, your year is ready.
 
 ${body.join('\n\n')}
@@ -691,7 +695,7 @@ export function renderNudgeEmail({ partnerName, firstName, link, unsubUrl, maili
   const cta = 'Get my free year';
   const reason = `You're getting this one reminder because you asked for your ${partnerName} member code at groundapp.live.`;
   const inner = [h1(`Hey ${esc(firstName)}, one tap left.`), ...body.map((s) => p(esc(s))), button(cta, link), small(esc(RENEWAL)), p('Collin')].join('\n');
-  const html = shell({ title: subject, preheader: 'One tap on your iPhone starts it.', inner, footer: footerFor(reason, mailingAddress, unsubUrl) });
+  const html = shell({ partnerName, title: subject, preheader: 'One tap on your iPhone starts it.', inner, footer: footerFor(reason, mailingAddress, unsubUrl) });
   const text = `Hey ${firstName}, one tap left.\n\n${body.join('\n\n')}\n\n${cta}: ${link}\n\n${RENEWAL}\n\nCollin\n\n${footerText(reason, mailingAddress, unsubUrl)}`;
   return { subject, html, text };
 }
@@ -704,7 +708,7 @@ export function renderAndroidEmail({ partnerName, firstName, mailingAddress }) {
   ];
   const reason = `You're getting this because you signed up as a ${partnerName} member at groundapp.live.`;
   const inner = [h1(`Hey ${esc(firstName)}, thanks for raising your hand.`), ...body.map((s) => p(esc(s))), p('Collin')].join('\n');
-  const html = shell({ title: subject, preheader: "I'll email you when Android is ready.", inner, footer: footerFor(reason, mailingAddress) });
+  const html = shell({ partnerName, title: subject, preheader: "I'll email you when Android is ready.", inner, footer: footerFor(reason, mailingAddress) });
   const text = `Hey ${firstName}, thanks for raising your hand.\n\n${body.join('\n\n')}\n\nCollin\n\n${footerText(reason, mailingAddress)}`;
   return { subject, html, text };
 }
@@ -717,7 +721,7 @@ export function renderWaitlistEmail({ partnerName, firstName, mailingAddress }) 
   ];
   const reason = `You're getting this because you asked for your ${partnerName} member code at groundapp.live.`;
   const inner = [h1(`Hey ${esc(firstName)}, your spot is saved.`), ...body.map((s) => p(esc(s))), p('Collin')].join('\n');
-  const html = shell({ title: subject, preheader: 'Your code is coming as soon as the next batch is in.', inner, footer: footerFor(reason, mailingAddress) });
+  const html = shell({ partnerName, title: subject, preheader: 'Your code is coming as soon as the next batch is in.', inner, footer: footerFor(reason, mailingAddress) });
   const text = `Hey ${firstName}, your spot is saved.\n\n${body.join('\n\n')}\n\nCollin\n\n${footerText(reason, mailingAddress)}`;
   return { subject, html, text };
 }
