@@ -444,16 +444,17 @@ body.ax, body.ax-redeem {
 .ax-ticker { overflow: hidden; background: var(--ai-black); color: var(--ai-white); }
 .ax-ticker-track {
   display: flex;
-  width: max-content;
+  justify-content: center;
+  overflow: hidden;
+  width: 100%;
+  margin: 0;
   padding: 14px 0;
   font: 800 15px/1.2 var(--ai-head);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   white-space: nowrap;
-  animation: ax-ticker 48s linear infinite;
 }
-.ax-ticker-track span::after { content: "/"; padding: 0 0.9em; }
-@keyframes ax-ticker { to { transform: translateX(-50%); } }
+.ax-ticker-track span { flex-shrink: 0; }
 
 /* ---------- 5. what you get (GroundApp ground) ---------- */
 .ax-get-grid {
@@ -726,5 +727,4 @@ body.ax-redeem {
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition: none !important; }
-  .ax-ticker-track { animation: none; }
 }

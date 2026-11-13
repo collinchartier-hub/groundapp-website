@@ -454,7 +454,7 @@
   // Partners panel (GET/POST /api/admin/partner). Not tied to the date range.
   var PARTNER = null;
   var selectedPartner = null;
-  var partnerData = null;
+  var partnerLoadGeneration = 0;
   var STATUS_NAMES = { assigned: 'Code sent', waitlist: 'Waiting for a code', android_waitlist: 'Android list' };
   function when(iso) { return iso ? new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : ''; }
   function objRows(o) { return Object.keys(o || {}).map(function (k) { return { label: k, value: o[k] }; }).sort(function (a, b) { return b.value - a.value; }); }
@@ -463,22 +463,21 @@
     b.addEventListener('click', fn);
     return b;
   }
-  function partnerPost(body, done) {
-    body.slug = PARTNER;
+  function partnerPost(slug, body, done) {
+    body.slug = slug;
     fetch('/api/admin/partner', { method: 'POST', credentials: 'same-origin', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) })
       .then(function (r) { return r.json(); })
-      .then(function (j) { done(j); loadPartner(); })
-      .catch(function () { done({ ok: false }); });
+      .then(function (j) { if (slug !== PARTNER) return; done(j); loadPartner(); })
+      .catch(function () { if (slug === PARTNER) done({ ok: false }); });
   }
   function csvCell(v) { v = v == null ? '' : String(v); if (/^[=+\-@\t\r]/.test(v)) v = "'" + v; return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
-  function downloadCsv(rows) {
+  function downloadCsv(slug, rows) {
     var head = ['first_name', 'last_name', 'email', 'device', 'location', 'src', 'status', 'newsletter_opt_in', 'created_at', 'emailed_at', 'redeem_tapped_at', 'tap_count', 'code_seq'];
     var text = [head.join(',')].concat(rows.map(function (r) { return head.map(function (h) { return csvCell(r[h]); }).join(','); })).join('\n');
-    var a = el('a', { href: URL.createObjectURL(new Blob([text], { type: 'text/csv' })), download: PARTNER + '-claims-' + new Date().toISOString().slice(0, 10) + '.csv' });
+    var a = el('a', { href: URL.createObjectURL(new Blob([text], { type: 'text/csv' })), download: slug + '-claims-' + new Date().toISOString().slice(0, 10) + '.csv' });
     document.body.appendChild(a); a.click(); a.remove();
   }
-  function renderPartner(d) {
-    partnerData = d;
+  function renderPartner(d, slug, name) {
     var c = d.claims || {}, codes = d.codes || {}, paused = d.program && d.program.status === 'paused';
     var k = clear(slot('partner-kpis'));
     k.appendChild(tile('Codes left', fmt(codes.left), 'of ' + fmt(codes.total) + (codes.expires_on ? ', expire ' + shortDate(codes.expires_on) : '')));
@@ -490,15 +489,15 @@
     var acts = clear(slot('partner-actions'));
     acts.appendChild(el('span', { class: 'cap' }, paused ? 'Paused: the form is taking a waitlist.' : 'Live: the form is handing out codes.'));
     acts.appendChild(actionButton(paused ? 'Resume' : 'Pause', function () {
-      if (!paused && !confirm('Pause ' + selectedPartner.name + '? New claims go on a waitlist until you resume.')) return;
-      partnerPost({ action: paused ? 'resume' : 'pause' }, function () {});
+      if (!paused && !confirm('Pause ' + name + '? New claims go on a waitlist until you resume.')) return;
+      partnerPost(slug, { action: paused ? 'resume' : 'pause' }, function () {});
     }));
     if (c.waitlist > 0 && codes.left > 0) {
       acts.appendChild(actionButton('Send codes to the next 10 waiting', function () {
-        partnerPost({ action: 'release_waitlist' }, function (j) { alert(j.ok ? j.sent + ' sent, ' + j.failed + ' failed.' : 'That didn\'t work. Try again in a minute.'); });
+        partnerPost(slug, { action: 'release_waitlist' }, function (j) { alert(j.ok ? j.sent + ' sent, ' + j.failed + ' failed.' : 'That didn\'t work. Try again in a minute.'); });
       }));
     }
-    acts.appendChild(actionButton('Download CSV', function () { downloadCsv(d.rows || []); }));
+    acts.appendChild(actionButton('Download CSV', function () { downloadCsv(slug, d.rows || []); }));
 
     barList(slot('partner-location'), objRows(d.by_location), { empty: 'No claims yet.' });
     barList(slot('partner-src'), objRows(d.by_src), { empty: 'No claims yet.' });
@@ -514,7 +513,7 @@
     Array.prototype.forEach.call(tv.querySelectorAll('tbody tr'), function (tr, i) {
       var b = actionButton('Resend', function () {
         b.disabled = true;
-        partnerPost({ action: 'resend', claim_id: rows[i].id }, function (j) { b.textContent = j.ok ? 'Sent' : 'Failed'; });
+        partnerPost(slug, { action: 'resend', claim_id: rows[i].id }, function (j) { b.textContent = j.ok ? 'Sent' : 'Failed'; });
       });
       tr.lastChild.appendChild(b);
     });
@@ -524,15 +523,18 @@
     ['partner-location', 'partner-src', 'partner-rows'].forEach(function (s) { empty(slot(s), 'Couldn\'t load partner claims. Try again in a minute.'); });
   }
   function loadPartner() {
-    var slug = PARTNER;
+    var slug = PARTNER, name = selectedPartner.name, generation = ++partnerLoadGeneration;
+    clear(slot('partner-kpis'));
+    clear(slot('partner-actions'));
+    ['partner-location', 'partner-src', 'partner-rows'].forEach(function (s) { empty(slot(s), 'No claims yet.'); });
     fetch('/api/admin/partner?slug=' + encodeURIComponent(slug), { credentials: 'same-origin' })
       .then(function (r) { return r.json(); })
       .then(function (j) {
-        if (slug !== PARTNER) return;
-        if (j.ok) renderPartner(j);
+        if (generation !== partnerLoadGeneration) return;
+        if (j.ok) renderPartner(j, slug, name);
         else partnerLoadFailed();
       })
-      .catch(partnerLoadFailed);
+      .catch(function () { if (generation === partnerLoadGeneration) partnerLoadFailed(); });
   }
   function loadPartnerPrograms() {
     fetch('/api/admin/partner', { credentials: 'same-origin' })
