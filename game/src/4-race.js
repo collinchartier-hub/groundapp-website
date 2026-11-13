@@ -663,7 +663,8 @@ function endRace(winner) {
     profile.last[k] = { won: r.won, time: r.time, pct: r.pct, score: r.score };
   }
   const P0 = G.players[0];
-  G.today = logPlay(duel ? { kind: "duel" } : { kind: "race", clouds: P0.calm, boxes: P0.boxes, seeds: P0.seeds + P0.gold * 5, storms: P0.storms, rings: P0.rings, won: res.players[0].won, daily: !!co.daily });
+  // A Daily Dash left open overnight is yesterday's course: it still counts as a race, not as today's dash.
+  G.today = logPlay(duel ? { kind: "duel" } : { kind: "race", clouds: P0.calm, boxes: P0.boxes, seeds: P0.seeds + P0.gold * 5, storms: P0.storms, rings: P0.rings, won: res.players[0].won, daily: !!co.daily && co.key === "daily-" + dayKey() });
   G.result = res;
   showCallout(null);
   const W = winner >= 0 ? G.players[winner] : null;

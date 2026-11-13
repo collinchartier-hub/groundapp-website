@@ -23,7 +23,7 @@ const DEF = () => ({
   deep: { static: { best: null, last: null, hist: [] }, dash: { best: null, last: null, hist: [] } },
   surf: {}, daily: { date: "", best: 0 },
   streak: { n: 0, best: 0, last: "", days: [] }, quests: { date: "", list: [], pouch: 0 }, badges: {},
-  stats: { clouds: 0, boxes: 0, seeds: 0, storms: 0, rings: 0, quests: 0, pouches: 0 },
+  stats: { clouds: 0, boxes: 0, seeds: 0, storms: 0, rings: 0, quests: 0, pouches: 0, hold: 0 },
 });
 function loadProfile() {
   try {
@@ -34,7 +34,10 @@ function loadProfile() {
       return { ...d, ...p, up: { ...d.up, ...p.up }, best: { ...(p.best || {}) }, bestTime: { ...(p.bestTime || {}) }, last: { ...(p.last || {}) }, stars: { ...(p.stars || {}) },
         owned: p.owned || d.owned, acc: p.acc || [], surf: { ...(p.surf || {}) }, daily: { ...d.daily, ...(p.daily || {}) },
         deep: { static: { ...d.deep.static, ...(pd.static || {}) }, dash: { ...d.deep.dash, ...(pd.dash || {}) } },
-        streak: { ...d.streak, ...(p.streak || {}) }, quests: { ...d.quests, ...(p.quests || {}) }, badges: { ...(p.badges || {}) }, stats: { ...d.stats, ...(p.stats || {}) } };
+        // The arrays are rebuilt entry by entry: the menu reads them at boot, so a damaged save must not stop the game.
+        streak: { ...d.streak, ...(p.streak || {}), days: Array.isArray((p.streak || {}).days) ? p.streak.days : [] },
+        quests: { ...d.quests, ...(p.quests || {}), list: (Array.isArray((p.quests || {}).list) ? p.quests.list : []).filter((x) => x && typeof x.id === "string").map((x) => ({ id: x.id, p: +x.p || 0, done: !!x.done })) },
+        badges: { ...(p.badges || {}) }, stats: { ...d.stats, ...(p.stats || {}) } };
     }
   } catch (e) {}
   return DEF();
@@ -123,10 +126,11 @@ const QUESTS = {
 function todayQuests() {
   const k = dayKey(), q = profile.quests;
   if (q.date !== k || q.list.length !== 3 || q.list.some((x) => !QUESTS[x.id])) {
-    if (q.pouch === 1) { profile.leaves += POUCH_LEAVES; profile.stats.pouches++; } // a pouch left unopened yesterday still pays
+    const owed = q.pouch === 1; // a pouch left unopened yesterday still pays
+    if (owed) { profile.leaves += POUCH_LEAVES; profile.stats.pouches++; }
     const r = mulberry(hashStr("quests-" + k)), ids = Object.keys(QUESTS), list = [];
     for (const pool of ["race", "calm", null]) { const c = ids.filter((id) => (!pool || QUESTS[id].pool === pool) && !list.some((x) => x.id === id || QUESTS[x.id].alt === id)); list.push({ id: c[Math.floor(r() * c.length)], p: 0, done: false }); }
-    profile.quests = { date: k, list, pouch: 0 };
+    profile.quests = { date: k, list, pouch: 0 }; if (owed) save();
   }
   return profile.quests.list;
 }
@@ -138,7 +142,8 @@ const GLYPHS = {
   shop: '<path fill="currentColor" d="M4.5 19.5c.4-8.6 5.4-13.6 15-15-.6 9.8-5.6 14.8-15 15z"/>',
 };
 const glyph = (g) => `<svg viewBox="0 0 24 24" aria-hidden="true">${GLYPHS[g]}</svg>`;
-const bestHold = (p) => Math.max(p.deep.static.best ? p.deep.static.best.t : 0, p.deep.dash.best ? p.deep.dash.best.t : 0);
+// The longest hold in either dive mode. A Dash best is ranked by distance, so its time is not always the longest one.
+const bestHold = (p) => Math.max(p.stats.hold, ...[p.deep.static.best, p.deep.dash.best, ...p.deep.dash.hist].map((e) => (e ? e.t || 0 : 0)));
 // Every badge is worked out from the saved profile, so records made before badges existed count too.
 const BADGES = [
   { id: "win1", g: "race", name: "First Wingbeat", how: "Beat Kip once", test: (p) => p.wins >= 1 },
@@ -177,7 +182,7 @@ function logPlay(ev) {
     out.streakUp = true; out.streakLeaves = Math.min(s.n, 7) * 3; profile.leaves += out.streakLeaves;
   }
   if (ev.kind !== "duel") {
-    st.clouds += ev.clouds || 0; st.boxes += ev.boxes || 0; st.seeds += ev.seeds || 0; st.storms += ev.storms || 0; st.rings += ev.rings || 0;
+    st.clouds += ev.clouds || 0; st.boxes += ev.boxes || 0; st.seeds += ev.seeds || 0; st.storms += ev.storms || 0; st.rings += ev.rings || 0; st.hold = Math.max(st.hold, ev.hold || 0);
     const gain = { clouds: ev.clouds, boxes: ev.boxes, seeds: ev.seeds, win: ev.won ? 1 : 0, dash: ev.daily ? 1 : 0, hold: ev.hold, swim: ev.swim, surf: ev.kind === "surf" ? 1 : 0, sync: ev.acc >= 75 ? 1 : 0 };
     for (const q of todayQuests()) {
       const g = gain[q.id] || 0; if (q.done || g <= 0) continue;
@@ -1637,7 +1642,8 @@ function endRace(winner) {
     profile.last[k] = { won: r.won, time: r.time, pct: r.pct, score: r.score };
   }
   const P0 = G.players[0];
-  G.today = logPlay(duel ? { kind: "duel" } : { kind: "race", clouds: P0.calm, boxes: P0.boxes, seeds: P0.seeds + P0.gold * 5, storms: P0.storms, rings: P0.rings, won: res.players[0].won, daily: !!co.daily });
+  // A Daily Dash left open overnight is yesterday's course: it still counts as a race, not as today's dash.
+  G.today = logPlay(duel ? { kind: "duel" } : { kind: "race", clouds: P0.calm, boxes: P0.boxes, seeds: P0.seeds + P0.gold * 5, storms: P0.storms, rings: P0.rings, won: res.players[0].won, daily: !!co.daily && co.key === "daily-" + dayKey() });
   G.result = res;
   showCallout(null);
   const W = winner >= 0 ? G.players[winner] : null;
@@ -2089,7 +2095,7 @@ function show(id) {
   $("hud-btns").hidden = !!id && $(id).classList.contains("center"); // cards get the whole stage
 }
 function walletHTML() { return `<span>Gold Leaves <b>${profile.leaves}</b></span><span>Wins <b>${profile.wins}</b></span><span>Stars <b>${totalStars()}/15</b></span>`; }
-function refreshWallets() { ["wallet-title", "wallet-res", "wallet-shop"].forEach((id) => ($(id).innerHTML = walletHTML())); renderToday(); }
+function refreshWallets() { renderToday(); ["wallet-title", "wallet-res", "wallet-shop"].forEach((id) => ($(id).innerHTML = walletHTML())); } // the strip first: a new day can pay out an unopened pouch
 function toMenu(view) {
   clearWorld(); D = null; S = null; mode = "race";
   hudEl.hidden = true; showCallout(null); $("countdown").hidden = true;
@@ -2165,7 +2171,7 @@ function renderToday() {
 // note replaces the reward text, e.g. on the result card when the quest was just finished.
 function questHTML(q, tag, note) {
   const d = QUESTS[q.id], p = Math.floor(q.p), btn = tag === "button";
-  return `<${tag} class="quest${btn ? " pick" : ""}${q.done ? " done" : ""}"${btn ? ` type="button" data-q="${q.id}"` : ""}><span class="qt">${d.text}</span><span class="qr">${note || (q.done ? "Done" : `+${QUEST_LEAVES} leaves`)}</span><span class="bar"><i style="width:${Math.round(p / d.n * 100)}%"></i></span><span class="qn">${p}/${d.n}${d.unit || ""}</span></${tag}>`;
+  return `<${tag} class="quest${btn ? " pick" : ""}${q.done ? " done" : ""}"${btn ? ` type="button" data-q="${q.id}"` : ""}><span class="qt">${d.text}</span><span class="qr">${note || (q.done ? "Done" : `+${QUEST_LEAVES} leaves`)}</span><span class="qbar"><i style="width:${Math.round(p / d.n * 100)}%"></i></span><span class="qn">${p}/${d.n}${d.unit || ""}</span></${tag}>`;
 }
 function questGo(id) {
   Sound.play("click");
@@ -2194,7 +2200,8 @@ function renderTodayPanel() {
   $("today-quests").querySelectorAll(".quest").forEach((b) => b.addEventListener("click", () => questGo(b.dataset.q)));
   $("today-pouch").className = "item" + (pouch === 1 ? " on" : "");
   $("today-pouch").innerHTML = `<span class="nm">Ember's seed pouch</span><span class="ds">${pouch === 2 ? "Opened. Three new quests tomorrow." : `${pouch === 1 ? "All three done." : "Finish all three quests."} ${POUCH_LEAVES} Gold Leaves inside.`}</span><button class="btn" type="button" id="btn-pouch" ${pouch === 1 ? "" : "disabled"}>${pouch === 2 ? "Opened" : "Open"}</button>`;
-  $("btn-pouch").addEventListener("click", () => { const fresh = claimPouch(); if (!fresh) return; renderTodayPanel(); announce(fresh); $("btn-today-back").focus(); });
+  // No pouch to open means the day rolled over while the panel was open: show the new day.
+  $("btn-pouch").addEventListener("click", () => { const fresh = claimPouch(); renderTodayPanel(); if (!fresh) { refreshWallets(); return; } announce(fresh); $("btn-today-back").focus(); });
 }
 function renderBadges() {
   const h = bestHold(profile), sb = profile.streak.best;
@@ -2414,6 +2421,7 @@ window.addEventListener("blur", () => {
 function pause() {
   if (state !== "play" || mode === "deep") return;
   if (mode === "race" && (!G || G.over)) return;
+  if (mode === "surf" && S && S.done) return; // the surf is finished: its result card is a moment away
   state = "paused"; if (G) G.players.forEach((P) => (P.held = false)); if (S) S.pressed = 0; keysDown.clear();
   Sound.hold(false); Sound.danger(0); Sound.music(-1); try { speechSynthesis.cancel(); } catch (e) {} show("ov-pause");
 }
@@ -2556,7 +2564,7 @@ async function boot() {
   } catch (e) {}
   setBackdrop(COURSES[0], 200); buildMenu();
   renderPortraits();
-  if (syncBadges().length) save(); // records made before badges existed earn theirs quietly
+  todayQuests(); if (syncBadges().length) save(); // records made before badges existed earn theirs quietly
   syncButtons(); refreshWallets(); renderHall();
   Sound.music(0, 128, 0);
   if (glowOn) loadBloom();

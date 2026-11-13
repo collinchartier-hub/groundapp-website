@@ -9,7 +9,7 @@ function show(id) {
   $("hud-btns").hidden = !!id && $(id).classList.contains("center"); // cards get the whole stage
 }
 function walletHTML() { return `<span>Gold Leaves <b>${profile.leaves}</b></span><span>Wins <b>${profile.wins}</b></span><span>Stars <b>${totalStars()}/15</b></span>`; }
-function refreshWallets() { ["wallet-title", "wallet-res", "wallet-shop"].forEach((id) => ($(id).innerHTML = walletHTML())); renderToday(); }
+function refreshWallets() { renderToday(); ["wallet-title", "wallet-res", "wallet-shop"].forEach((id) => ($(id).innerHTML = walletHTML())); } // the strip first: a new day can pay out an unopened pouch
 function toMenu(view) {
   clearWorld(); D = null; S = null; mode = "race";
   hudEl.hidden = true; showCallout(null); $("countdown").hidden = true;
@@ -85,7 +85,7 @@ function renderToday() {
 // note replaces the reward text, e.g. on the result card when the quest was just finished.
 function questHTML(q, tag, note) {
   const d = QUESTS[q.id], p = Math.floor(q.p), btn = tag === "button";
-  return `<${tag} class="quest${btn ? " pick" : ""}${q.done ? " done" : ""}"${btn ? ` type="button" data-q="${q.id}"` : ""}><span class="qt">${d.text}</span><span class="qr">${note || (q.done ? "Done" : `+${QUEST_LEAVES} leaves`)}</span><span class="bar"><i style="width:${Math.round(p / d.n * 100)}%"></i></span><span class="qn">${p}/${d.n}${d.unit || ""}</span></${tag}>`;
+  return `<${tag} class="quest${btn ? " pick" : ""}${q.done ? " done" : ""}"${btn ? ` type="button" data-q="${q.id}"` : ""}><span class="qt">${d.text}</span><span class="qr">${note || (q.done ? "Done" : `+${QUEST_LEAVES} leaves`)}</span><span class="qbar"><i style="width:${Math.round(p / d.n * 100)}%"></i></span><span class="qn">${p}/${d.n}${d.unit || ""}</span></${tag}>`;
 }
 function questGo(id) {
   Sound.play("click");
@@ -114,7 +114,8 @@ function renderTodayPanel() {
   $("today-quests").querySelectorAll(".quest").forEach((b) => b.addEventListener("click", () => questGo(b.dataset.q)));
   $("today-pouch").className = "item" + (pouch === 1 ? " on" : "");
   $("today-pouch").innerHTML = `<span class="nm">Ember's seed pouch</span><span class="ds">${pouch === 2 ? "Opened. Three new quests tomorrow." : `${pouch === 1 ? "All three done." : "Finish all three quests."} ${POUCH_LEAVES} Gold Leaves inside.`}</span><button class="btn" type="button" id="btn-pouch" ${pouch === 1 ? "" : "disabled"}>${pouch === 2 ? "Opened" : "Open"}</button>`;
-  $("btn-pouch").addEventListener("click", () => { const fresh = claimPouch(); if (!fresh) return; renderTodayPanel(); announce(fresh); $("btn-today-back").focus(); });
+  // No pouch to open means the day rolled over while the panel was open: show the new day.
+  $("btn-pouch").addEventListener("click", () => { const fresh = claimPouch(); renderTodayPanel(); if (!fresh) { refreshWallets(); return; } announce(fresh); $("btn-today-back").focus(); });
 }
 function renderBadges() {
   const h = bestHold(profile), sb = profile.streak.best;
@@ -334,6 +335,7 @@ window.addEventListener("blur", () => {
 function pause() {
   if (state !== "play" || mode === "deep") return;
   if (mode === "race" && (!G || G.over)) return;
+  if (mode === "surf" && S && S.done) return; // the surf is finished: its result card is a moment away
   state = "paused"; if (G) G.players.forEach((P) => (P.held = false)); if (S) S.pressed = 0; keysDown.clear();
   Sound.hold(false); Sound.danger(0); Sound.music(-1); try { speechSynthesis.cancel(); } catch (e) {} show("ov-pause");
 }
@@ -476,7 +478,7 @@ async function boot() {
   } catch (e) {}
   setBackdrop(COURSES[0], 200); buildMenu();
   renderPortraits();
-  if (syncBadges().length) save(); // records made before badges existed earn theirs quietly
+  todayQuests(); if (syncBadges().length) save(); // records made before badges existed earn theirs quietly
   syncButtons(); refreshWallets(); renderHall();
   Sound.music(0, 128, 0);
   if (glowOn) loadBloom();

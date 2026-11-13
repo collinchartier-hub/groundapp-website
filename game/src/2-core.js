@@ -22,7 +22,7 @@ const DEF = () => ({
   deep: { static: { best: null, last: null, hist: [] }, dash: { best: null, last: null, hist: [] } },
   surf: {}, daily: { date: "", best: 0 },
   streak: { n: 0, best: 0, last: "", days: [] }, quests: { date: "", list: [], pouch: 0 }, badges: {},
-  stats: { clouds: 0, boxes: 0, seeds: 0, storms: 0, rings: 0, quests: 0, pouches: 0 },
+  stats: { clouds: 0, boxes: 0, seeds: 0, storms: 0, rings: 0, quests: 0, pouches: 0, hold: 0 },
 });
 function loadProfile() {
   try {
@@ -33,7 +33,10 @@ function loadProfile() {
       return { ...d, ...p, up: { ...d.up, ...p.up }, best: { ...(p.best || {}) }, bestTime: { ...(p.bestTime || {}) }, last: { ...(p.last || {}) }, stars: { ...(p.stars || {}) },
         owned: p.owned || d.owned, acc: p.acc || [], surf: { ...(p.surf || {}) }, daily: { ...d.daily, ...(p.daily || {}) },
         deep: { static: { ...d.deep.static, ...(pd.static || {}) }, dash: { ...d.deep.dash, ...(pd.dash || {}) } },
-        streak: { ...d.streak, ...(p.streak || {}) }, quests: { ...d.quests, ...(p.quests || {}) }, badges: { ...(p.badges || {}) }, stats: { ...d.stats, ...(p.stats || {}) } };
+        // The arrays are rebuilt entry by entry: the menu reads them at boot, so a damaged save must not stop the game.
+        streak: { ...d.streak, ...(p.streak || {}), days: Array.isArray((p.streak || {}).days) ? p.streak.days : [] },
+        quests: { ...d.quests, ...(p.quests || {}), list: (Array.isArray((p.quests || {}).list) ? p.quests.list : []).filter((x) => x && typeof x.id === "string").map((x) => ({ id: x.id, p: +x.p || 0, done: !!x.done })) },
+        badges: { ...(p.badges || {}) }, stats: { ...d.stats, ...(p.stats || {}) } };
     }
   } catch (e) {}
   return DEF();
@@ -122,10 +125,11 @@ const QUESTS = {
 function todayQuests() {
   const k = dayKey(), q = profile.quests;
   if (q.date !== k || q.list.length !== 3 || q.list.some((x) => !QUESTS[x.id])) {
-    if (q.pouch === 1) { profile.leaves += POUCH_LEAVES; profile.stats.pouches++; } // a pouch left unopened yesterday still pays
+    const owed = q.pouch === 1; // a pouch left unopened yesterday still pays
+    if (owed) { profile.leaves += POUCH_LEAVES; profile.stats.pouches++; }
     const r = mulberry(hashStr("quests-" + k)), ids = Object.keys(QUESTS), list = [];
     for (const pool of ["race", "calm", null]) { const c = ids.filter((id) => (!pool || QUESTS[id].pool === pool) && !list.some((x) => x.id === id || QUESTS[x.id].alt === id)); list.push({ id: c[Math.floor(r() * c.length)], p: 0, done: false }); }
-    profile.quests = { date: k, list, pouch: 0 };
+    profile.quests = { date: k, list, pouch: 0 }; if (owed) save();
   }
   return profile.quests.list;
 }
@@ -137,7 +141,8 @@ const GLYPHS = {
   shop: '<path fill="currentColor" d="M4.5 19.5c.4-8.6 5.4-13.6 15-15-.6 9.8-5.6 14.8-15 15z"/>',
 };
 const glyph = (g) => `<svg viewBox="0 0 24 24" aria-hidden="true">${GLYPHS[g]}</svg>`;
-const bestHold = (p) => Math.max(p.deep.static.best ? p.deep.static.best.t : 0, p.deep.dash.best ? p.deep.dash.best.t : 0);
+// The longest hold in either dive mode. A Dash best is ranked by distance, so its time is not always the longest one.
+const bestHold = (p) => Math.max(p.stats.hold, ...[p.deep.static.best, p.deep.dash.best, ...p.deep.dash.hist].map((e) => (e ? e.t || 0 : 0)));
 // Every badge is worked out from the saved profile, so records made before badges existed count too.
 const BADGES = [
   { id: "win1", g: "race", name: "First Wingbeat", how: "Beat Kip once", test: (p) => p.wins >= 1 },
@@ -176,7 +181,7 @@ function logPlay(ev) {
     out.streakUp = true; out.streakLeaves = Math.min(s.n, 7) * 3; profile.leaves += out.streakLeaves;
   }
   if (ev.kind !== "duel") {
-    st.clouds += ev.clouds || 0; st.boxes += ev.boxes || 0; st.seeds += ev.seeds || 0; st.storms += ev.storms || 0; st.rings += ev.rings || 0;
+    st.clouds += ev.clouds || 0; st.boxes += ev.boxes || 0; st.seeds += ev.seeds || 0; st.storms += ev.storms || 0; st.rings += ev.rings || 0; st.hold = Math.max(st.hold, ev.hold || 0);
     const gain = { clouds: ev.clouds, boxes: ev.boxes, seeds: ev.seeds, win: ev.won ? 1 : 0, dash: ev.daily ? 1 : 0, hold: ev.hold, swim: ev.swim, surf: ev.kind === "surf" ? 1 : 0, sync: ev.acc >= 75 ? 1 : 0 };
     for (const q of todayQuests()) {
       const g = gain[q.id] || 0; if (q.done || g <= 0) continue;

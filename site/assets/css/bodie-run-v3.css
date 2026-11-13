@@ -281,9 +281,9 @@ button:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
 .quest .qt { font-size: 15px; line-height: 1.3; }
 .quest .qr { font: 600 13px/1 var(--mono); color: var(--amber); white-space: nowrap; }
 .quest .qn { font: 600 12px/1 var(--mono); color: var(--driftwood); font-variant-numeric: tabular-nums; }
-.bar { display: block; height: 8px; border-radius: 8px; background: rgba(232,221,208,.16); overflow: hidden; }
-.bar i { display: block; height: 100%; border-radius: 8px; background: var(--amber); }
-.quest.done .bar i { background: var(--leaf); }
+.qbar { display: block; height: 8px; border-radius: 8px; background: rgba(232,221,208,.16); overflow: hidden; }
+.qbar i { display: block; height: 100%; border-radius: 8px; background: var(--amber); }
+.quest.done .qbar i { background: var(--leaf); }
 .quest.done .qr { color: var(--leaf); }
 .pick.quest.done { border-color: rgba(154,160,106,.6); }
 .tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
