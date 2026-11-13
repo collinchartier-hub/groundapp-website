@@ -155,12 +155,13 @@ body.ax, body.ax-redeem {
 .ax-hero-note { color: #d5c7b8; font: 400 16px/1.5 var(--font-text); }
 
 .ax-hero-3 .ax-hero-bg {
-  -webkit-mask-image: linear-gradient(90deg, transparent 22%, #000 70%), linear-gradient(180deg, #000 52%, transparent 97%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 30%, #000 76%), linear-gradient(180deg, #000 52%, transparent 97%);
   -webkit-mask-composite: source-in;
-  mask-image: linear-gradient(90deg, transparent 22%, #000 70%), linear-gradient(180deg, #000 52%, transparent 97%);
+  mask-image: linear-gradient(90deg, transparent 30%, #000 76%), linear-gradient(180deg, #000 52%, transparent 97%);
   mask-composite: intersect;
 }
-.ax-hero-3 .ax-hero-photo { object-position: 60% 62%; }
+/* AION's built gym: the coaches stand left of Bodie, the plate wall to his right; the wider fade keeps them off the headline */
+.ax-hero-3 .ax-hero-photo { object-position: 60% 66%; }
 /* the lockup sits on the ceiling light: keep it dark up there */
 .ax-hero-3 .ax-hero-bg::after {
   content: "";
@@ -677,7 +678,7 @@ body.ax-redeem {
 
   /* Bodie on the floor first, the serif line under him on Obsidian */
   .ax-hero-3 { padding-top: calc(var(--ax-top-h) + 4px); }
-  .ax-hero-3 .ax-hero-photo { object-position: 60% 70%; }
+  .ax-hero-3 .ax-hero-photo { object-position: 100% 70%; }
   .ax-h3-grid { display: flex; flex-direction: column; gap: 0; }
   .ax-h3-floor { order: -1; width: 150px; margin: 0 0 20px auto; margin-right: 12%; }
   .ax-h1-serif { font-size: 42px; line-height: 1.06; }

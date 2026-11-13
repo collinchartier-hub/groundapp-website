@@ -39,7 +39,8 @@ The page looks and feels like arsenalhealth.com and presents the partnership as 
 - Apple, "Set up subscription offer codes" (read 2026-11-13): one-time codes expire at most six months after creation; a customer can redeem one code per offer; an offer's customer eligibility (new, active, expired subscribers) cannot be edited after the offer is created; up to 1,000,000 codes per app per quarter.
 - After the free year, Premium renews at $39.99 a year unless the member cancels.
 - GroundApp is iPhone only today.
-- Not yet verified: the eligibility setting of this offer (see Launch checklist), and whether Apple exposes redemption per code. This design assumes Apple reports redemptions per offer only.
+- The offer's eligibility was read from App Store Connect on 2026-11-13: new, existing and expired subscribers, replacing the introductory offer. So members who already tried Premium can redeem.
+- Not yet verified: whether Apple exposes redemption per code. This design assumes Apple reports redemptions per offer only.
 
 ## The page
 
