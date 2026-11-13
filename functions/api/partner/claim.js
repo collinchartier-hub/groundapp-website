@@ -2,9 +2,10 @@
 // A partner's member asks for their free-year code. The database locks one unique code to them (db/2026-11-13_partner_codes.sql,
 // partner_claim) and the code goes out by email only: the response never carries it, so every code needs a working inbox.
 import { json, supabase, sha256Hex } from '../../../lib/util.js';
-import { validateClaim, newToken, LOW_STOCK, RESEND_WINDOW_MS } from '../../../lib/partner.js';
-import { sendForClaim, alertAdmin } from '../../../lib/partner-delivery.js';
+import { validateClaim, newToken, RESEND_WINDOW_MS } from '../../../lib/partner.js';
+import { sendForClaim, alertAdmin, maybeAlertLowStock } from '../../../lib/partner-delivery.js';
 import { upsertSubscriber, stampEmailed } from '../../../lib/list.js';
+import { cancelEmail } from '../../../lib/partner-email.js';
 
 const ALLOWED_ORIGIN = /^https:\/\/((www\.)?groundapp\.live|([a-z0-9-]+\.)?groundapp\.pages\.dev)$|^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/;
 
@@ -44,24 +45,27 @@ export async function onRequestPost({ request, env }) {
     const claim = r.claim;
     const isNew = r.outcome !== 'existing';
     const status = claim.status === 'android_waitlist' ? 'android' : claim.status === 'waitlist' ? 'waitlist' : isNew ? 'assigned' : 'existing';
+    if (c.newsletter) await joinList(env, c);
+    if (r.outcome === 'assigned') await maybeAlertLowStock(env, c.partner, r.codes_left);
 
     const emailedRecently = claim.emailed_at && Date.now() - Date.parse(claim.emailed_at) < RESEND_WINDOW_MS;
     if (!emailedRecently) {
-      const sent = await sendForClaim(env, c.partner, r, { withNudge: isNew });
+      const sent = await sendForClaim(env, c.partner, r, { withNudge: claim.status === 'assigned' && !claim.emailed_at });
       const patch = sent.ok
-        ? { emailed_at: new Date().toISOString(), email_error: null, ...(sent.nudgeId ? { nudge_email_id: sent.nudgeId } : {}) }
+        ? { emailed_at: new Date().toISOString(), email_error: null }
         : { email_error: sent.error };
-      await supabase(env, `partner_claims?id=eq.${claim.id}`, { method: 'PATCH', prefer: 'return=minimal', body: patch });
+      const stamped = await supabase(env, `partner_claims?id=eq.${claim.id}`, { method: 'PATCH', prefer: 'return=minimal', body: patch });
+      if (!stamped.ok) console.error('partner claim bookkeeping failed', claim.id, stamped.status);
+      if (sent.nudgeId) {
+        const attached = await supabase(env, `partner_claims?id=eq.${claim.id}&redeem_tapped_at=is.null`, {
+          method: 'PATCH', prefer: 'return=representation', body: { nudge_email_id: sent.nudgeId },
+        });
+        if (!attached.ok) console.error('partner reminder bookkeeping failed', claim.id, attached.status);
+        else if (!attached.data?.length) await cancelEmail(env, sent.nudgeId);
+      }
       if (!sent.ok) {
         await alertAdmin(env, c.partner, 'email_failed', `${claim.email}: ${sent.error}`);
         return json({ ok: false, error: 'email' }, 502);
-      }
-    }
-
-    if (isNew) {
-      if (c.newsletter) await joinList(env, c);
-      if (r.outcome === 'assigned' && LOW_STOCK.includes(r.codes_left)) {
-        await alertAdmin(env, c.partner, 'low_stock', `${r.codes_left} codes left`);
       }
     }
     return json({ ok: true, status });

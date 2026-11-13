@@ -466,7 +466,7 @@
       .then(function (j) { done(j); loadPartner(); })
       .catch(function () { done({ ok: false }); });
   }
-  function csvCell(v) { v = v == null ? '' : String(v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
+  function csvCell(v) { v = v == null ? '' : String(v); if (/^[=+\-@\t\r]/.test(v)) v = "'" + v; return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
   function downloadCsv(rows) {
     var head = ['first_name', 'last_name', 'email', 'device', 'location', 'src', 'status', 'newsletter_opt_in', 'created_at', 'emailed_at', 'redeem_tapped_at', 'tap_count', 'code_seq'];
     var text = [head.join(',')].concat(rows.map(function (r) { return head.map(function (h) { return csvCell(r[h]); }).join(','); })).join('\n');

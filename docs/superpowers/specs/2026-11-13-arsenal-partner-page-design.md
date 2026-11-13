@@ -140,6 +140,16 @@ All tables: RLS on, no policies, service role only, like the existing `groundapp
 
 Loading codes: `scripts/load-partner-codes.mjs <csv> --partner arsenal --batch <id> --expires 2027-05-03`, run on Collin's Mac with `.dev.vars`. It reads the CSV from outside the repo and upserts by `code`. Supabase changes, Pages secrets and code loading are laptop steps per `AGENTS.md`.
 
+Changes from the pre-launch code review (2026-11-13), recorded in `db/2026-11-13b_partner_codes_fixes.sql` and the code:
+
+- Member links (`/<partner>/r/<token>`) never get the Meta pixel, so a member's link is not sent to Meta.
+- The per-network limit takes a transaction lock per network, so it holds when many requests arrive at once.
+- Low-stock alerts are claimed in the database (`partner_programs.low_stock_alerted`), so each threshold (75, 25, 0) emails Collin exactly once even under concurrency, and the code loader resets them.
+- The reminder is scheduled on the first successful code email (also when the first attempt failed), is cancelled if the member tapped before it was attached, and its id is cleared only after Resend confirms the cancellation.
+- An admin Resend always sends, even right after the original email.
+- The newsletter tick is honoured on every submit, not only the first.
+- CSV export neutralises cells that start with `=`, `+`, `-` or `@`.
+
 ## Emails (`lib/partner-email.js`; sender "Collin Chartier <collin@groundapp.live>", reply-to the same)
 
 1. Code email. Subject: "Your free year of GroundApp, from Arsenal and Collin". A short form of the letter, one button "Get my free year" pointing at the member's `/arsenal/r/<token>` link, the code in text, the three steps, and the renewal line. Framed like the page: Arsenal's black and cyan around a warm letter card. Plain-text part included. Resend idempotency key per claim and send count.

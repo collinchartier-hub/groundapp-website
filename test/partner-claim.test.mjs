@@ -20,7 +20,7 @@ let realConsoleError;
 
 beforeEach(() => {
   calls = [];
-  state = { rpc: rpcResult(), turnstile: true, resendStatus: 200 };
+  state = { rpc: rpcResult(), turnstile: true, resendStatus: 200, alertRow: false, nudgeAttached: true };
   realFetch = globalThis.fetch;
   realConsoleError = console.error;
   console.error = () => {};
@@ -36,6 +36,13 @@ beforeEach(() => {
       return new Response(JSON.stringify({ id: `email_${calls.filter((c) => c.url === u).length}` }), { status: state.resendStatus });
     }
     if (method === 'GET') return new Response('[]', { status: 200 });
+    if (u.includes('partner_claims?') && method === 'PATCH' && u.includes('redeem_tapped_at=is.null')) {
+      return new Response(JSON.stringify(state.nudgeAttached ? [{ id: 'c1' }] : []), { status: 200 });
+    }
+    if (u.includes('partner_programs?') && method === 'PATCH') {
+      return new Response(JSON.stringify(state.alertRow ? [{ slug: 'arsenal' }] : []), { status: 200 });
+    }
+    if (u.endsWith('/cancel') && method === 'POST') return new Response('{}', { status: 200 });
     return new Response(null, { status: method === 'POST' ? 201 : 204 });
   };
 });
@@ -70,10 +77,12 @@ test('new iPhone claim: code emailed, reminder scheduled, claim stamped', async 
   assert.ok(due > 2.9 * 86400e3 && due < 3.1 * 86400e3);
   assert.ok(nudge.body.headers['List-Unsubscribe']);
 
-  assert.equal(patches().length, 1);
+  assert.equal(patches().length, 2);
   assert.ok(patches()[0].url.includes('id=eq.c1'));
   assert.ok(patches()[0].body.emailed_at);
-  assert.equal(patches()[0].body.nudge_email_id, 'email_2');
+  assert.equal(patches()[0].body.nudge_email_id, undefined);
+  assert.ok(patches()[1].url.includes('redeem_tapped_at=is.null'));
+  assert.equal(patches()[1].body.nudge_email_id, 'email_2');
 });
 
 test('the database gets clean values, a 22 character token and a hashed ip', async () => {
@@ -110,6 +119,22 @@ test('repeat after 15 minutes: the same code is sent again, no second reminder',
   assert.equal(patches()[0].body.nudge_email_id, undefined);
 });
 
+test('a repeat after a failed first send gets its code and reminder', async () => {
+  state.rpc = rpcResult({ outcome: 'existing', claim: claimRow({ emailed_at: null }) });
+  assert.deepEqual(await (await post()).json(), { ok: true, status: 'existing' });
+  assert.equal(sends().length, 2);
+  assert.ok(sends()[0].body.html.includes(CODE));
+  assert.ok(sends()[1].body.scheduled_at);
+  assert.equal(patches()[1].body.nudge_email_id, 'email_2');
+});
+
+test('a reminder is cancelled when the member tapped before it was attached', async () => {
+  state.nudgeAttached = false;
+  assert.deepEqual(await (await post()).json(), { ok: true, status: 'assigned' });
+  assert.ok(patches()[1].url.includes('redeem_tapped_at=is.null'));
+  assert.ok(calls.some((c) => c.url === 'https://api.resend.com/emails/email_2/cancel' && c.method === 'POST'));
+});
+
 test('android: on the list, one email without a code', async () => {
   state.rpc = rpcResult({ outcome: 'android_waitlist', claim: claimRow({ status: 'android_waitlist' }), code: null, redeem_url: null });
   assert.deepEqual(await (await post({ device: 'android' })).json(), { ok: true, status: 'android' });
@@ -132,6 +157,7 @@ test('a repeat from someone on the waitlist stays waitlist', async () => {
 
 test('crossing 75 codes left emails Collin', async () => {
   state.rpc = rpcResult({ codes_left: 75 });
+  state.alertRow = true;
   await post();
   const alert = sends().find((c) => c.body.to[0] === 'collin@example.com');
   assert.ok(alert);
@@ -142,6 +168,7 @@ test('74 codes left does not alert', async () => {
   state.rpc = rpcResult({ codes_left: 74 });
   await post();
   assert.equal(sends().filter((c) => c.body.to[0] === 'collin@example.com').length, 0);
+  assert.ok(calls.some((c) => c.url.includes('partner_programs?slug=eq.arsenal') && c.body.low_stock_alerted === 75));
 });
 
 test('email refused: 502, the error is stored on the claim', async () => {
@@ -151,6 +178,19 @@ test('email refused: 502, the error is stored on the claim', async () => {
   assert.deepEqual(await res.json(), { ok: false, error: 'email' });
   assert.ok(patches()[0].body.email_error);
   assert.equal(patches()[0].body.emailed_at, undefined);
+});
+
+test('newsletter opt-in still joins the list when delivery fails', async () => {
+  state.resendStatus = 500;
+  await post({ newsletter: true });
+  assert.ok(calls.some((c) => c.method === 'POST' && c.url.endsWith('/newsletter_subscribers')));
+});
+
+test('newsletter opt-in on a repeat still joins the list', async () => {
+  state.rpc = rpcResult({ outcome: 'existing', claim: claimRow({ emailed_at: new Date().toISOString() }) });
+  assert.deepEqual(await (await post({ newsletter: true })).json(), { ok: true, status: 'existing' });
+  assert.ok(calls.some((c) => c.method === 'POST' && c.url.endsWith('/newsletter_subscribers')));
+  assert.equal(sends().length, 0);
 });
 
 test('newsletter box ticked: added to the list as arsenal', async () => {

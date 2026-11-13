@@ -63,6 +63,13 @@ async function main() {
     body: JSON.stringify(rows),
   });
   if (!res.ok) { console.error(`error: insert failed ${res.status} ${await res.text()}`); process.exit(1); }
+  const reset = await fetch(`${SUPABASE_URL}/rest/v1/partner_programs?slug=eq.${encodeURIComponent(partner)}`, {
+    method: 'PATCH',
+    headers,
+    body: JSON.stringify({ low_stock_alerted: null }),
+  });
+  if (!reset.ok) { console.error(`error: low-stock reset failed ${reset.status}`); process.exit(1); }
+  console.log('Low-stock alerts reset.');
 
   const count = await fetch(`${SUPABASE_URL}/rest/v1/partner_codes?partner=eq.${partner}&select=id`, { headers: { ...headers, prefer: 'count=exact', range: '0-0' } });
   console.log(`partner_codes now holds ${count.headers.get('content-range')?.split('/')[1]} codes for ${partner}.`);

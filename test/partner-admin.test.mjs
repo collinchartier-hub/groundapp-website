@@ -15,12 +15,14 @@ let state;
 let realFetch;
 beforeEach(() => {
   calls = [];
-  state = { claimRows: [{ id: 'c1', partner: 'arsenal', status: 'assigned', first_name: 'Sam', email: 'c1@example.com', token: 'abcdefghijklmnopqrstuv', emailed_at: null }], codeRows: [{ code: 'CODEc1', redeem_url: 'https://apps.apple.com/redeem?code=CODEc1' }], released: [result('w1'), result('w2')] };
+  state = { claimRows: [{ id: 'c1', partner: 'arsenal', status: 'assigned', first_name: 'Sam', email: 'c1@example.com', token: 'abcdefghijklmnopqrstuv', emailed_at: null }], codeRows: [{ code: 'CODEc1', redeem_url: 'https://apps.apple.com/redeem?code=CODEc1' }], released: [result('w1'), result('w2')], throwOnPatchFor: null };
   realFetch = globalThis.fetch;
   globalThis.fetch = async (url, init = {}) => {
     const u = String(url);
     const method = init.method || 'GET';
-    calls.push({ url: u, method, body: init.body ? JSON.parse(init.body) : null });
+    calls.push({ url: u, method, headers: init.headers, body: init.body ? JSON.parse(init.body) : null });
+    if (state.throwOnPatchFor && method === 'PATCH' && u.includes(`partner_claims?id=eq.${state.throwOnPatchFor}`)) throw new Error('connection lost');
+    if (method === 'PATCH' && u.includes('partner_programs?') && u.includes('low_stock_alerted')) return new Response('[]', { status: 200 });
     if (u.endsWith('/rpc/partner_admin_summary')) return new Response(JSON.stringify({ program: { slug: 'arsenal', status: 'live' }, codes: { left: 440 }, rows: [] }), { status: 200 });
     if (u.endsWith('/rpc/partner_release_waitlist')) return new Response(JSON.stringify(state.released), { status: 200 });
     if (method === 'GET' && u.includes('partner_claims')) return new Response(JSON.stringify(state.claimRows), { status: 200 });
@@ -68,6 +70,7 @@ test('resend sends the claim its code again and stamps it', async () => {
   assert.equal(sends().length, 1);
   assert.ok(sends()[0].body.html.includes('CODEc1'));
   assert.ok(calls.some((c) => c.method === 'PATCH' && c.url.includes('partner_claims?id=eq.c1') && c.body.emailed_at));
+  assert.match(sends()[0].headers['idempotency-key'], /^partner-claim\/c1\/\d+\/\d+$/);
 });
 
 test('resend for an unknown claim: 404', async () => {
@@ -81,6 +84,20 @@ test('release_waitlist emails each released claim with a reminder', async () => 
   assert.deepEqual(calls[0].body, { p_partner: 'arsenal', p_limit: 10 });
   assert.equal(sends().filter((c) => !c.body.scheduled_at).length, 2);
   assert.equal(sends().filter((c) => c.body.scheduled_at).length, 2);
+  assert.ok(calls.some((c) => c.url.includes('partner_programs?slug=eq.arsenal') && c.body.low_stock_alerted === 25));
+});
+
+test('release_waitlist keeps delivering after one claim throws', async () => {
+  state.throwOnPatchFor = 'w1';
+  const realError = console.error;
+  console.error = () => {};
+  try {
+    const res = await post({ action: 'release_waitlist', slug: 'arsenal' });
+    assert.deepEqual(await res.json(), { ok: true, sent: 1, failed: 1 });
+    assert.ok(sends().some((c) => c.body.to[0] === 'w2@example.com'));
+  } finally {
+    console.error = realError;
+  }
 });
 
 test('unknown action: 400', async () => {

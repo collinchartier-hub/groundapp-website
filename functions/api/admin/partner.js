@@ -5,7 +5,7 @@
 // POST { action: 'release_waitlist', slug }   give up to 10 waiting iPhone claims a code and email them
 import { json, supabase } from '../../../lib/util.js';
 import { requireAdmin } from '../../../lib/access.js';
-import { sendForClaim } from '../../../lib/partner-delivery.js';
+import { sendForClaim, maybeAlertLowStock } from '../../../lib/partner-delivery.js';
 
 const SLUG_RE = /^[a-z0-9-]{2,40}$/;
 const UUID_RE = /^[0-9a-f-]{2,36}$/i;
@@ -45,7 +45,7 @@ export async function onRequestPost({ request, env }) {
       if (!claims.ok || !codes.ok) throw new Error(`lookup ${claims.status}/${codes.status}`);
       const claim = claims.data[0];
       if (!claim) return json({ ok: false, error: 'not_found' }, 404);
-      const sent = await deliver(env, slug, { claim, code: codes.data[0]?.code || null, redeem_url: codes.data[0]?.redeem_url || null }, false);
+      const sent = await deliver(env, slug, { claim, code: codes.data[0]?.code || null, redeem_url: codes.data[0]?.redeem_url || null }, false, true);
       return sent ? json({ ok: true, sent: 1 }) : json({ ok: false, error: 'email' }, 502);
     }
 
@@ -54,7 +54,15 @@ export async function onRequestPost({ request, env }) {
       if (!rpc.ok) throw new Error(`release ${rpc.status}`);
       let sent = 0;
       let failed = 0;
-      for (const r of rpc.data) (await deliver(env, slug, r, true)) ? sent++ : failed++;
+      for (const r of rpc.data) {
+        try {
+          (await deliver(env, slug, r, true)) ? sent++ : failed++;
+        } catch (err) {
+          console.error('partner release delivery failed', r.claim.id, err?.message || err);
+          failed++;
+        }
+      }
+      if (rpc.data.length) await maybeAlertLowStock(env, slug, Math.min(...rpc.data.map((r) => r.codes_left)));
       return json({ ok: true, sent, failed });
     }
 
@@ -65,11 +73,12 @@ export async function onRequestPost({ request, env }) {
   }
 }
 
-async function deliver(env, slug, r, withNudge) {
-  const sent = await sendForClaim(env, slug, r, { withNudge });
+async function deliver(env, slug, r, withNudge, fresh = false) {
+  const sent = await sendForClaim(env, slug, r, { withNudge, fresh });
   const patch = sent.ok
     ? { emailed_at: new Date().toISOString(), email_error: null, ...(sent.nudgeId ? { nudge_email_id: sent.nudgeId } : {}) }
     : { email_error: sent.error };
-  await supabase(env, `partner_claims?id=eq.${r.claim.id}`, { method: 'PATCH', prefer: 'return=minimal', body: patch });
+  const stamped = await supabase(env, `partner_claims?id=eq.${r.claim.id}`, { method: 'PATCH', prefer: 'return=minimal', body: patch });
+  if (!stamped.ok) console.error('partner admin bookkeeping failed', r.claim.id, stamped.status);
   return sent.ok;
 }

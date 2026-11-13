@@ -46,7 +46,14 @@ export async function onRequestGet({ params, request, env, waitUntil }) {
   }
 
   if (ios) {
-    if (t.first_tap && t.nudge_email_id) waitUntil(cancelEmail(env, t.nudge_email_id));
+    if (t.nudge_email_id) waitUntil((async () => {
+      if (await cancelEmail(env, t.nudge_email_id)) {
+        const cleared = await supabase(env, `partner_claims?id=eq.${t.claim_id}`, {
+          method: 'PATCH', prefer: 'return=minimal', body: { nudge_email_id: null },
+        });
+        if (!cleared.ok) console.error('partner reminder clear failed', t.claim_id, cleared.status);
+      }
+    })());
     return new Response(null, { status: 302, headers: { location: t.redeem_url, 'cache-control': 'no-store', 'x-robots-tag': 'noindex' } });
   }
 

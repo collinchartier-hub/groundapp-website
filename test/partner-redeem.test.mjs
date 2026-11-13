@@ -17,11 +17,12 @@ let waited;
 beforeEach(() => {
   calls = [];
   waited = [];
-  state = { tap: { found: true, partner: 'arsenal', status: 'assigned', first_tap: true, nudge_email_id: 'email_2', code: 'ABC123XYZ', redeem_url: APPLE } };
+  state = { tap: { found: true, partner: 'arsenal', status: 'assigned', claim_id: 'c1', first_tap: true, nudge_email_id: 'email_2', code: 'ABC123XYZ', redeem_url: APPLE }, cancelStatus: 200 };
   realFetch = globalThis.fetch;
   globalThis.fetch = async (url, init = {}) => {
     calls.push({ url: String(url), method: init.method || 'GET', body: init.body ? JSON.parse(init.body) : null });
     if (String(url).endsWith('/rpc/partner_tap')) return new Response(JSON.stringify(state.tap), { status: 200 });
+    if (String(url).endsWith('/cancel')) return new Response('{}', { status: state.cancelStatus });
     return new Response('{}', { status: 200 });
   };
 });
@@ -43,6 +44,7 @@ test('iPhone: counted, reminder cancelled, redirected to Apple', async () => {
   assert.deepEqual(calls[0].body, { p_token: TOKEN, p_ios: true });
   await Promise.all(waited);
   assert.ok(calls.some((c) => c.url === 'https://api.resend.com/emails/email_2/cancel' && c.method === 'POST'));
+  assert.ok(calls.some((c) => c.method === 'PATCH' && c.url.includes('partner_claims?id=eq.c1') && c.body.nudge_email_id === null));
 });
 
 test('iPhone, second tap: redirected, nothing to cancel', async () => {
@@ -51,6 +53,30 @@ test('iPhone, second tap: redirected, nothing to cancel', async () => {
   assert.equal(res.status, 302);
   await Promise.all(waited);
   assert.equal(calls.filter((c) => c.url.includes('resend.com')).length, 0);
+});
+
+test('failed cancellation leaves the reminder id to retry later', async () => {
+  state.cancelStatus = 500;
+  const realError = console.error;
+  console.error = () => {};
+  try {
+    const res = await get(TOKEN, IPHONE);
+    assert.equal(res.status, 302);
+    await Promise.all(waited);
+    assert.ok(calls.some((c) => c.url.endsWith('/cancel')));
+    assert.equal(calls.filter((c) => c.method === 'PATCH').length, 0);
+  } finally {
+    console.error = realError;
+  }
+});
+
+test('a second tap retries a reminder that still has an id', async () => {
+  state.tap = { ...state.tap, first_tap: false };
+  const res = await get(TOKEN, IPHONE);
+  assert.equal(res.status, 302);
+  await Promise.all(waited);
+  assert.ok(calls.some((c) => c.url.endsWith('/cancel')));
+  assert.ok(calls.some((c) => c.method === 'PATCH' && c.body.nudge_email_id === null));
 });
 
 test('laptop: a page with the code and the link, not counted', async () => {

@@ -34,6 +34,8 @@ test('shouldInjectPixel: only real HTML pages on groundapp.live', () => {
   assert.equal(go('/admin'), false);
   assert.equal(go('/admin/'), false);
   assert.equal(go('/api/tap'), false);
+  assert.equal(go('/arsenal/r/abcdefghijklmnopqrstuv'), false);
+  assert.equal(go('/arsenal/'), true);
   assert.equal(go('/', { host: 'abc123.groundapp.pages.dev' }), false);
   assert.equal(go('/og-image.jpg', { response: html('image/jpeg') }), false);
   assert.equal(go('/', { request: req({ country: 'DE' }) }), false);

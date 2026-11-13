@@ -1,7 +1,7 @@
 // test/partner-email.test.mjs: what the partner emails contain and how they are sent.
 import { test, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
-import { renderClaimEmail, renderNudgeEmail, renderAndroidEmail, renderWaitlistEmail, renderAlertEmail, sendEmail } from '../lib/partner-email.js';
+import { renderClaimEmail, renderNudgeEmail, renderAndroidEmail, renderWaitlistEmail, renderAlertEmail, sendEmail, cancelEmail } from '../lib/partner-email.js';
 
 const base = { partnerName: 'Arsenal Health', firstName: 'Sam', mailingAddress: '123 Test St, Denver, CO 80202' };
 const link = 'https://groundapp.live/arsenal/r/abcdefghijklmnopqrstuv';
@@ -89,4 +89,27 @@ test('sendEmail reports a failed send without throwing', async () => {
   assert.equal(out.ok, false);
   assert.equal(out.id, null);
   assert.ok(out.error.startsWith('422'));
+});
+
+test('sendEmail returns a failure when the network throws', async () => {
+  globalThis.fetch = async () => { throw new Error('connection lost'); };
+  const realError = console.error;
+  console.error = () => {};
+  try {
+    assert.deepEqual(await sendEmail({ RESEND_API_KEY: 're_test' }, { to: 'a@b.co', subject: 'S', html: 'h', text: 't', tag: 'x' }),
+      { ok: false, id: null, error: 'network connection lost' });
+  } finally {
+    console.error = realError;
+  }
+});
+
+test('cancelEmail returns false when the network throws', async () => {
+  globalThis.fetch = async () => { throw new Error('connection lost'); };
+  const realError = console.error;
+  console.error = () => {};
+  try {
+    assert.equal(await cancelEmail({ RESEND_API_KEY: 're_test' }, 'email_9'), false);
+  } finally {
+    console.error = realError;
+  }
 });
