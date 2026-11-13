@@ -12,6 +12,8 @@
 
 **A note on this plan's shape.** Tasks 3, 4 and 5 are design and writing. Their output cannot be written in advance, so those tasks are briefs with acceptance criteria and fixed file formats. Every task that is code (6 to 9) carries its code in full.
 
+**Status, 2026-11-13.** Collin asked for a preview before the build, so parts of Tasks 2, 4 and 5 already exist on this branch: the measured tokens (`docs/arsenal/arsenal-tokens.md`), and a static first build of `site/arsenal/index.html` and `site/assets/css/arsenal-v1.css` with draft copy, Arsenal's photos in `site/img/arsenal/` (sources in `docs/arsenal/photo-sources.md`) and a preview-only inline script in place of `arsenal-v1.js`. His feedback on it is in the spec's Decisions table (the fade, Arsenal's photos, GroundApp's own site design on its side). Tasks 4 and 5 now mean: finish that build against the approved copy, write `docs/arsenal/DESIGN.md` from it, and make `og.jpg`. Task 6 replaces the preview-only script.
+
 **Rules for every task (from `AGENTS.md`):** worktree `~/dev/groundapp-website-arsenal`, branch `arsenal`; no push and no deploy by subagents; nothing private in `site/`; copy has no em dashes, is casual and direct, spells it GroundApp, makes no free-trial claim, and says Premium is $39.99 a year. `DESIGN-BANS.md` applies to GroundApp-styled parts.
 
 **Who does what** (per Collin's routing rules; `jev_choice` confirms each before dispatch):

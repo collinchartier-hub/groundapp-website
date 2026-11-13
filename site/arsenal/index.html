@@ -19,8 +19,12 @@
 </head>
 <body class="ax">
 <a class="ax-skip" href="#claim">Skip to the form</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="ax-i-play" viewBox="0 0 24 24"><path fill="currentColor" d="M8 5.5v13a1 1 0 0 0 1.52.85l10.4-6.5a1 1 0 0 0 0-1.7L9.52 4.65A1 1 0 0 0 8 5.5z"/></symbol>
+  <symbol id="ax-i-star" viewBox="0 0 16 16"><path fill="currentColor" d="M8 .8l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5L.8 6.1l5-.7z"/></symbol>
+</svg>
 
-<!-- 1. Lockup: Arsenal on its black, GroundApp on Obsidian, the × on the seam -->
+<!-- 1. Lockup: sits in the blend, the × on the middle -->
 <header class="ax-top">
   <div class="ax-top-a">
     <img class="ax-wordmark" src="/img/arsenal/arsenal-health-wordmark-white.png" alt="Arsenal Health" width="400" height="45">
@@ -32,12 +36,16 @@
 </header>
 
 <main>
-  <!-- 2. Split hero: one sentence across the seam -->
+  <!-- 2. Hero: Arsenal's floor dissolves into GroundApp's Obsidian; one sentence crosses -->
   <section class="ax-hero" aria-labelledby="ax-h1">
-    <div class="ax-hero-a" aria-hidden="true"></div>
-    <div class="ax-hero-g" aria-hidden="true"></div>
+    <div class="ax-hero-bg" aria-hidden="true">
+      <img class="ax-hero-photo" src="/img/arsenal/arsenal-hero-dtc-floor-1200.webp"
+           srcset="/img/arsenal/arsenal-hero-dtc-floor-1200.webp 1200w, /img/arsenal/arsenal-hero-dtc-floor-1920.webp 1920w"
+           sizes="(min-width: 720px) 67vw, 100vw" width="1920" height="1280" alt="" fetchpriority="high">
+    </div>
     <h1 class="ax-h1" id="ax-h1">
       <span class="ax-h1-a"><span class="ax-h1-a1">Arsenal <span class="ax-cy">members</span></span> <span class="ax-h1-a2">get</span></span>
+      <span class="ax-h1-bodie" aria-hidden="true"><img src="/media/v3/bodie/bodie-still-600.webp" alt="" width="600" height="744"></span>
       <span class="ax-h1-g">a free year of GroundApp Premium.</span>
     </h1>
     <div class="ax-hero-act">
@@ -46,21 +54,29 @@
     </div>
   </section>
 
-  <!-- 3. Letter from Collin -->
+  <!-- 3. Letter from Collin (Arsenal ground, GroundApp card) -->
   <section class="ax-sec ax-letter" aria-labelledby="ax-letter-h">
     <div class="ax-wrap ax-letter-grid">
       <figure class="ax-photo">
-        <div class="ax-photo-frame">
-          <img src="/media/v3/photos/collin-ironman-win-800.webp"
-               srcset="/media/v3/photos/collin-ironman-win-800.webp 800w, /media/v3/photos/collin-ironman-win-1600.webp 1600w"
-               sizes="(min-width: 900px) 920px, 100vw"
-               alt="Collin Chartier breaking the finish tape at IRONMAN Mont-Tremblant, arms raised" width="800" height="534" loading="lazy" decoding="async">
-        </div>
-        <figcaption>Stand-in photo. The Arsenal training still goes here.</figcaption>
+        <img src="/media/v3/photos/collin-ironman-win-800.webp"
+             srcset="/media/v3/photos/collin-ironman-win-800.webp 800w, /media/v3/photos/collin-ironman-win-1600.webp 1600w"
+             sizes="(min-width: 900px) 40vw, 100vw" width="1600" height="1067" loading="lazy" decoding="async"
+             alt="Collin breaking the finish tape at IRONMAN Mont-Tremblant in 2022, arms raised, mouth open mid-yell.">
+        <figcaption>2022, IRONMAN Mont-Tremblant</figcaption>
       </figure>
       <article class="ax-card-letter">
-        <h2 id="ax-letter-h">Hey, I'm Collin.</h2>
-        <p>I coach breathwork for performance. I'm an IRONMAN champion, I won the PTO US Open and I raced for Team USA.</p>
+        <h2 id="ax-letter-h">Hi, I'm Collin.</h2>
+        <p>I created and developed GroundApp. I'm a performance breathwork coach.</p>
+        <div class="ax-facts">
+          <p class="ax-facts-lead">I spent my twenties as a pro triathlete.</p>
+          <ul class="ax-ticks">
+            <li>IRONMAN champion</li>
+            <li>PTO US Open winner</li>
+            <li>Raced for Team USA</li>
+            <li>Ran 2,000 miles from Boulder to the Lincoln Memorial for the Herren Project, summer 2026</li>
+          </ul>
+          <p class="ax-press"><span class="ax-press-label">As seen on</span> NBC Washington, FOX 5 DC, ABC7, The Washington Times, Colorado's CW2, Triathlete, The New York Times</p>
+        </div>
         <p>Racing taught me that fitness is only half of it. The other half is your nervous system: whether you can stay calm when it counts, and whether you can come back down after.</p>
         <p>Your breath is the one part of that system you can steer on purpose. I built GroundApp to make that simple. You check in, say how you feel, and it gives you the breathwork that fits.</p>
         <p>Arsenal already gives you the cold plunge, the sauna and coaches who know your numbers. This is the tool you carry out the door. Your first year of Premium is on me.</p>
@@ -75,34 +91,73 @@
     </div>
   </section>
 
-  <!-- 4. What you get -->
-  <section class="ax-sec ax-get" aria-labelledby="ax-get-h">
+  <!-- At Arsenal (Arsenal ground, their photos) -->
+  <section class="ax-sec ax-at" aria-labelledby="ax-at-h">
+    <div class="ax-wrap">
+      <p class="ax-eyebrow">At Arsenal</p>
+      <h2 class="ax-h2" id="ax-at-h">Cold plunge. Sauna. Now your <span class="ax-cy">breath</span>.</h2>
+      <ul class="ax-at-cards">
+        <li>
+          <figure class="ax-at-card">
+            <img src="/img/arsenal/arsenal-cold-plunge-480.webp" srcset="/img/arsenal/arsenal-cold-plunge-480.webp 480w, /img/arsenal/arsenal-cold-plunge-800.webp 800w"
+                 sizes="(min-width: 900px) 390px, (min-width: 720px) 30vw, 100vw" width="800" height="1000" loading="lazy" decoding="async"
+                 alt="A man sits in an outdoor cold plunge tub at Arsenal with his eyes closed and his hands clasped.">
+            <figcaption>In the cold: long, slow exhales.</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure class="ax-at-card">
+            <img src="/img/arsenal/arsenal-sauna-480.webp" srcset="/img/arsenal/arsenal-sauna-480.webp 480w, /img/arsenal/arsenal-sauna-800.webp 800w"
+                 sizes="(min-width: 900px) 390px, (min-width: 720px) 30vw, 100vw" width="800" height="1000" loading="lazy" decoding="async"
+                 alt="A woman sits smiling on the bench inside Arsenal's wooden barrel sauna.">
+            <figcaption>In the heat: breathe low and easy.</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure class="ax-at-card">
+            <img src="/img/arsenal/arsenal-group-training-480.webp" srcset="/img/arsenal/arsenal-group-training-480.webp 480w, /img/arsenal/arsenal-group-training-800.webp 800w"
+                 sizes="(min-width: 900px) 390px, (min-width: 720px) 30vw, 100vw" width="800" height="1000" loading="lazy" decoding="async"
+                 alt="Members stand around a coach at the whiteboard on the Arsenal training floor before a class.">
+            <figcaption>Between sets: bring your heart rate down.</figcaption>
+          </figure>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 4. What you get (GroundApp ground) -->
+  <section class="ax-sec ax-ga-ground ax-get" aria-labelledby="ax-get-h">
     <div class="ax-wrap ax-get-grid">
       <div class="ax-get-copy">
-        <p class="ax-eyebrow">What you get</p>
-        <h2 class="ax-h2" id="ax-get-h">A year of GroundApp <span class="ax-cy">Premium</span></h2>
-        <ul class="ax-list">
+        <h2 class="ax-gh2" id="ax-get-h">A year of GroundApp Premium</h2>
+        <ul class="ax-ticks ax-get-list">
           <li>40+ breathing techniques, each with a practice guide</li>
           <li>Guided sessions in Collin's voice</li>
           <li>Advanced O2 and CO2 tables for breath-hold training (dry land only)</li>
           <li>Live heart rate and HRV from your strap, Whoop or Garmin</li>
           <li>Apple Watch app and Apple Health</li>
         </ul>
+        <ul class="ax-techs" aria-label="Four techniques from the Library">
+          <li class="ax-tech"><span class="ax-tech-go" aria-hidden="true"><svg><use href="#ax-i-play"/></svg></span><span class="ax-tech-name">Box breathing</span><span class="ax-tech-line">4-4-4-4, a 16-second breath.</span><span class="ax-free">Free</span></li>
+          <li class="ax-tech"><span class="ax-tech-go" aria-hidden="true"><svg><use href="#ax-i-play"/></svg></span><span class="ax-tech-name">4-7-8 breathing</span><span class="ax-tech-line">4-7-8, a 19-second breath.</span></li>
+          <li class="ax-tech"><span class="ax-tech-go" aria-hidden="true"><svg><use href="#ax-i-play"/></svg></span><span class="ax-tech-name">Physiological sigh</span><span class="ax-tech-line">Two short inhales, one long exhale.</span></li>
+          <li class="ax-tech is-on"><span class="ax-tech-go" aria-hidden="true"><svg><use href="#ax-i-play"/></svg></span><span class="ax-tech-name">Resonance breathing</span><span class="ax-tech-line">Even in, even out.</span></li>
+        </ul>
       </div>
       <div class="ax-shots">
-        <div class="ax-phone ax-phone-back">
-          <img src="/media/v3/shots/06-library-480.webp" srcset="/media/v3/shots/06-library-480.webp 480w, /media/v3/shots/06-library-960.webp 960w" sizes="220px"
-               alt="GroundApp Library screen listing Box breathing, 4-7-8 breathing, Energizing breath and more" width="480" height="1043" loading="lazy" decoding="async">
+        <div class="ax-phone">
+          <img src="/media/v3/shots/02-home-480.webp" srcset="/media/v3/shots/02-home-480.webp 480w, /media/v3/shots/02-home-960.webp 960w" sizes="(min-width: 1024px) 250px, 42vw"
+               alt="GroundApp Home: Bodie on his disc under a Good evening check-in card, with Resonance picked and a Start button." width="480" height="1043" loading="lazy" decoding="async">
         </div>
-        <div class="ax-phone ax-phone-front">
-          <img src="/media/v3/shots/03-player-480.webp" srcset="/media/v3/shots/03-player-480.webp 480w, /media/v3/shots/03-player-960.webp 960w" sizes="260px"
-               alt="GroundApp session player: Bodie on his disc with the cue Breathe in, Resonance at a 6 second pace" width="480" height="1043" loading="lazy" decoding="async">
+        <div class="ax-phone">
+          <img src="/media/v3/shots/03-player-480.webp" srcset="/media/v3/shots/03-player-480.webp 480w, /media/v3/shots/03-player-960.webp 960w" sizes="(min-width: 1024px) 250px, 42vw"
+               alt="GroundApp session player: Bodie on his disc with the cue Breathe in, Resonance at a 6 second pace." width="480" height="1043" loading="lazy" decoding="async">
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 5. How it works -->
+  <!-- 5. How it works (Arsenal ground) -->
   <section class="ax-sec ax-how" aria-labelledby="ax-how-h">
     <div class="ax-wrap">
       <h2 class="ax-h2 ax-center" id="ax-how-h">How it <span class="ax-cy">works</span></h2>
@@ -114,7 +169,35 @@
     </div>
   </section>
 
-  <!-- 6. Claim form -->
+  <!-- Reviews (GroundApp ground), word for word from the App Store -->
+  <section class="ax-sec ax-ga-ground ax-reviews" aria-labelledby="ax-rev-h">
+    <div class="ax-wrap">
+      <div class="ax-rev-head">
+        <h2 class="ax-gh2" id="ax-rev-h">Rated 5.0 on the App&nbsp;Store, from 11 ratings.</h2>
+        <p class="ax-stars" role="img" aria-label="5 out of 5 stars"><svg aria-hidden="true"><use href="#ax-i-star"/></svg><svg aria-hidden="true"><use href="#ax-i-star"/></svg><svg aria-hidden="true"><use href="#ax-i-star"/></svg><svg aria-hidden="true"><use href="#ax-i-star"/></svg><svg aria-hidden="true"><use href="#ax-i-star"/></svg></p>
+        <p class="ax-rev-sub">Three reviews, word for word.</p>
+      </div>
+      <div class="ax-rev-grid">
+        <figure class="ax-rev ax-rev-big">
+          <p class="ax-rev-title">Perfect for those stressful moments</p>
+          <blockquote class="ax-quote">&ldquo;I've tried a lot of meditation and breathing apps, but GroundApp stands out because of how simple and intentional it feels. The design is calming, the guided breathing exercises are easy to follow, and it's become a tool I actually use when I'm feeling stressed, overwhelmed, or need to reset during the day.&rdquo;</blockquote>
+          <figcaption><b>Fr&aelig;nkie</b>, App Store review</figcaption>
+        </figure>
+        <figure class="ax-rev">
+          <p class="ax-rev-title">Breath work</p>
+          <blockquote class="ax-quote">&ldquo;I run it in my vehicle between appointments, and it's been a game&nbsp;changer for staying focused, grounded, and mentally sharp throughout the day. The guided breathwork is simple but extremely effective, whether I need to reset, boost energy, or calm down.&rdquo;</blockquote>
+          <figcaption><b>okh78</b>, App Store review</figcaption>
+        </figure>
+        <figure class="ax-rev">
+          <p class="ax-rev-title">Box breathing at your convenience</p>
+          <blockquote class="ax-quote">&ldquo;Designed by a master in the practice! Really helped me down regulate before bed&rdquo;</blockquote>
+          <figcaption><b>Jshehebd</b>, App Store review</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Claim form (Arsenal ground) -->
   <section class="ax-sec ax-claim" id="claim" aria-labelledby="ax-claim-h">
     <div class="ax-wrap">
       <div class="ax-form-card">

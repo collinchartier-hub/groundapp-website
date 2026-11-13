@@ -17,8 +17,11 @@ The page looks and feels like arsenalhealth.com and presents the partnership as 
 | Who can claim | Honor system: a required "I'm an Arsenal member" tick box plus location |
 | One person, one code | Collin, 2026-11-13: "Only one person, one email, can get one code." One email address holds one code, for good. A second submit with the same address never draws a new code; it resends the one they have |
 | Codes | Use the existing reserve of 450 one-time App Store offer codes (numbers 51 to 500 of the batch made 2026-11-04, expiring 2027-05-03). No new batch now |
-| Layout | Option A, "split down the middle", with the letter card from option C. Mockups: `docs/arsenal/layout-options-2026-11-13.html` |
-| Intro photo | A training still pulled from Collin's Arsenal video footage. Collin names the clips that show him |
+| Layout | Option A, "split down the middle", with the letter card from option C. Mockups: `docs/arsenal/layout-options-2026-11-13.html`. Revised by Collin after the first preview (below) |
+| The blend | Collin, 2026-11-13: "I want the blend between Arsenal and GroundApp to be more of a nice fade instead of just a hard, solid line." The hero and every change of ground fade into each other. This waives GroundApp's no-gradients rule for these blends only |
+| Arsenal photos | Collin, 2026-11-13: "I have permission. You can pull photos from Arsenal's website and their Instagram." Arsenal's own published photos populate their side. Sources are listed in `docs/arsenal/photo-sources.md`. No staff headshots, clinic or injection photos, or member review photos |
+| GroundApp's side | Collin, 2026-11-13: "Use our website design previews to start to upgrade this website design a little." GroundApp's parts use its own v3 site design (`~/Desktop/GroundApp Site v3 Screens`, `site/index.html`): Bodie, the phone frames, the technique rows, the reviews, the "Hi, I'm Collin" facts |
+| Intro photo | For now the IRONMAN photo the live site uses in "Hi, I'm Collin". A training still from Collin's Arsenal footage replaces it if he names the clips that show him |
 | Newsletter | Opt-in tick box, unticked by default. Everyone else gets the code email and one reminder only |
 | What Arsenal sees | Nothing automatic. Collin shares numbers himself |
 | Android members | The form asks iPhone or Android. Android gets no code and joins an "email me when Android is ready" list |
@@ -41,20 +44,23 @@ Files: `site/arsenal/index.html`, `site/assets/css/arsenal-v1.css`, `site/assets
 
 Sections, top to bottom:
 
-1. Lockup: ARSENAL HEALTH × GroundApp.
-2. Split hero. One sentence crossing the seam: "Arsenal members get" on Arsenal's half (black, Manrope, the word "members" in cyan), "a free year of GroundApp Premium." on GroundApp's half (Obsidian, Source Serif 4, gold button "Claim your free year" that scrolls to the form). The two marks and the × sit on the seam. Under 720px wide the halves stack as two bands, Arsenal on top.
-3. Letter from Collin on a warm card (`--card` #2D1E17, Source Serif 4), beside the training still. First person: who he is, what he stands for, why he built the app for performance and nervous system regulation.
-4. What you get: a year of Premium, five lines of what that includes, one real app screen recording or screenshot in a phone bezel.
-5. How it works: fill in the form, open the email, tap your link on your iPhone.
-6. The form (below).
-7. Fine print: "iPhone only. Free for 12 months, then $39.99 a year unless you cancel. Cancel any time in Settings > your name > Subscriptions." Link to `/privacy`.
-8. Footer with both names.
+1. Lockup: ARSENAL HEALTH × GroundApp, sitting in the blend.
+2. Hero blend. One sentence crossing from one brand into the other: "Arsenal members get" on Arsenal's side (an Arsenal gym photo, darkened, Manrope, the word "members" in cyan), "a free year of GroundApp Premium." on GroundApp's side (Obsidian, Source Serif 4, Bodie on his disc, gold button "Claim your free year" that scrolls to the form). The photo and the black dissolve into the Obsidian across the middle; there is no seam. Under 720px wide the fade runs top to bottom, Arsenal on top, and the offer and button stay in the first screen.
+3. Letter from Collin on a warm card (`--card` #2D1E17, Source Serif 4), beside his photo, following the live site's "Hi, I'm Collin": the fact list and the "As seen on" line exactly as on the site, then why he built the app for performance and nervous system regulation and why Arsenal.
+4. At Arsenal (Arsenal's ground): three of Arsenal's photos, cold plunge, sauna, training floor, each with one line on how to breathe there.
+5. What you get (GroundApp's ground): a year of Premium, five lines of what that includes, real app screens in the site's phone frames, four technique rows from the site's Library.
+6. How it works (Arsenal's ground): fill in the form, open the email, tap your link on your iPhone.
+7. Reviews (GroundApp's ground): "Rated 5.0 on the App Store, from 11 ratings." and the three reviews, word for word from the live site. Update the count when the site's changes.
+8. The form (below), on Arsenal's ground.
+9. Fine print: "iPhone only. Free for 12 months, then $39.99 a year unless you cancel. Cancel any time in Settings > your name > Subscriptions." Link to `/privacy`.
+10. Footer with both names.
 
 Look:
 
-- Arsenal's side and everything below the hero: black page, white text, cyan accent `#1FCAF4`, Manrope 400 to 800, pill buttons, small cyan letter-spaced caps eyebrows, 24px rounded cards with a 1px `#262626` border. Values were measured from the rendered arsenalhealth.com on 2026-11-13 (`docs/arsenal/arsenal-tokens.md`); nothing is hotlinked from their site.
-- GroundApp's side and the letter card: Ground Brand Kit v5 night theme from `site/assets/css/ground-tokens-v1.css`. Flat fills, no italic, no coloured word in a serif headline, no caps labels. Gold only on the hero button.
-- Cyan is the action colour at the form, since that part of the page is Arsenal's.
+- Arsenal's ground (the hero's left, At Arsenal, How it works, the form, the footer): black page, white text, cyan accent `#1FCAF4`, Manrope 400 to 800, pill buttons, small cyan letter-spaced caps eyebrows, 24px rounded cards with a 1px `#262626` border. Values were measured from the rendered arsenalhealth.com on 2026-11-13 (`docs/arsenal/arsenal-tokens.md`); nothing is hotlinked from their site.
+- GroundApp's ground (the hero's right, the letter card, What you get, Reviews): Ground Brand Kit v5 night theme from `site/assets/css/ground-tokens-v1.css` and the patterns of the v3 site. No italic, no coloured word in a serif headline, no caps labels, no glows. Gold only on the hero button and small data marks.
+- Each change of ground is a fade. Gradients appear only in those blends.
+- Cyan is the action colour at the form, with dark text `#00131A` on it: white on that cyan is about 1.9:1 and cannot be read.
 - `DESIGN-BANS.md` applies to the GroundApp parts.
 
 The page is not indexed: `X-Robots-Tag: noindex` for `/arsenal/*` in `site/_headers`, and it is left out of `sitemap.xml` and `llms.txt`. The site-wide Meta pixel page view loads here as on every page. No claim data is sent to Meta.
@@ -177,7 +183,7 @@ Collin's letter, the page lines, the emails and the kit are drafted from the Gro
 ## Launch checklist
 
 1. Collin names the clips that show him; the still is cut and graded.
-2. Arsenal agrees in writing to its name, logo and look being used on groundapp.live, and sends logo files.
+2. Arsenal's permission. Collin confirmed on 2026-11-13 that he has it for their photos (website and Instagram). The wordmark in use is the 400x45 white PNG from their site; a larger file from Arsenal would be better.
 3. The offer's eligibility is read in App Store Connect. If it is new subscribers only, Collin decides whether that is acceptable or a new offer is created for the unclaimed remainder.
 4. Turnstile widget created; `TURNSTILE_SECRET` set as a Pages secret, site key in the page.
 5. Migration applied; codes 51 to 500 loaded; count checked (450).

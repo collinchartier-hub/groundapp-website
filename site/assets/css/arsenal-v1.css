@@ -72,16 +72,16 @@ body.ax, body.ax-redeem {
   text-wrap: balance;
 }
 
-/* ---------- 1. lockup ---------- */
+/* ---------- 1. lockup: floats over the hero blend ---------- */
 .ax-top {
-  position: relative;
+  position: absolute; top: 0; left: 0; right: 0; z-index: 2;
   display: grid;
   grid-template-columns: 1fr 1fr;
   height: var(--ax-top-h);
 }
 .ax-top-a, .ax-top-g { display: flex; align-items: center; }
-.ax-top-a { justify-content: flex-end; padding-right: var(--ax-seam); background: var(--ax-bg); }
-.ax-top-g { padding-left: var(--ax-seam); background: var(--bg); }
+.ax-top-a { justify-content: flex-end; padding-right: var(--ax-seam); }
+.ax-top-g { padding-left: var(--ax-seam); }
 .ax-wordmark { display: block; height: auto; }
 .ax-top .ax-wordmark { width: 200px; }
 .ax-x {
@@ -100,16 +100,38 @@ body.ax, body.ax-redeem {
 }
 .ax-ga img { width: 32px; height: 32px; flex: none; }
 
-/* ---------- 2. split hero ---------- */
+/* ---------- 2. hero: Arsenal's floor dissolves into Obsidian across the middle third ----------
+   Layers, back to front: black-to-Obsidian ground, the photo (masked out to the right), a fade to black at the
+   bottom, then the type. The photo file is tone-mapped so no pixel is brighter than 0.066 relative luminance:
+   the cyan word keeps 4.6:1 and white keeps 10:1 wherever the type lands. */
 .ax-hero {
+  --ax-fade-a: 33%;
+  --ax-fade-b: 67%;
   position: relative;
+  isolation: isolate;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: minmax(40px, 0.85fr) auto auto minmax(64px, 1.15fr);
-  min-height: clamp(560px, min(calc(100svh - var(--ax-top-h)), 72vw), 860px);
+  grid-template-rows: minmax(24px, 0.8fr) auto auto minmax(72px, 1.2fr);
+  min-height: clamp(660px, min(100svh, calc(72vw + 96px)), 940px);
+  padding-top: var(--ax-top-h);
+  background: linear-gradient(90deg, var(--ax-bg) var(--ax-fade-a), var(--bg) var(--ax-fade-b));
 }
-.ax-hero-a { grid-column: 1; grid-row: 1 / -1; background: var(--ax-bg); }
-.ax-hero-g { grid-column: 2; grid-row: 1 / -1; background: var(--bg); }
+.ax-hero-bg {
+  position: absolute; top: 0; bottom: 0; left: 0;
+  width: var(--ax-fade-b);
+  z-index: -2;
+  -webkit-mask-image: linear-gradient(90deg, #000 50%, transparent 100%);
+  mask-image: linear-gradient(90deg, #000 50%, transparent 100%);
+}
+.ax-hero-photo { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 58% 50%; }
+/* the hero lets go into the black page below, no edge */
+.ax-hero::after {
+  content: "";
+  position: absolute; left: 0; right: 0; bottom: 0;
+  height: clamp(96px, 16vh, 168px);
+  z-index: -1;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0), var(--ax-bg));
+}
 
 .ax-h1 {
   grid-column: 1 / -1;
@@ -127,9 +149,19 @@ body.ax, body.ax-redeem {
   letter-spacing: -0.03em;
   text-align: right;
 }
-.ax-h1-a1 { grid-row: 1; }
+.ax-h1-a1 { grid-row: 1; align-self: end; }
 .ax-h1-a2 { grid-row: 2; align-self: baseline; }
-/* The sentence turns the corner here: "get" and "a free year of" share one baseline across the seam. */
+/* Bodie sits on his disc above GroundApp's half of the sentence, level with "Arsenal members" */
+.ax-h1-bodie {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: end;
+  justify-self: start;
+  width: clamp(132px, 14vw, 216px);
+  margin: 0 0 clamp(14px, 1.6vw, 26px) var(--ax-seam);
+}
+.ax-h1-bodie img { display: block; width: 100%; height: auto; }
+/* The sentence turns the corner here: "get" and "a free year of" share one baseline across the blend. */
 .ax-h1-g {
   grid-column: 2;
   grid-row: 2;
@@ -147,7 +179,7 @@ body.ax, body.ax-redeem {
   grid-column: 2;
   grid-row: 3;
   display: flex; flex-direction: column; align-items: flex-start; gap: 16px;
-  padding: clamp(36px, 3.6vw, 52px) var(--ax-seam) 0;
+  padding: clamp(32px, 3.2vw, 48px) var(--ax-seam) 0;
 }
 .ax-btn-gold {
   display: inline-flex; align-items: center; justify-content: center;
@@ -161,9 +193,33 @@ body.ax, body.ax-redeem {
 .ax-btn-gold:focus-visible { outline-color: var(--gold); }
 .ax-hero-note { color: var(--text-2); font: 400 16px/1.5 var(--font-text); }
 
-/* ---------- sections on Arsenal's ground ---------- */
+/* ---------- sections: Arsenal ground is black; GroundApp ground is Obsidian, faded in and out ---------- */
 .ax-sec > .ax-wrap { padding-block: var(--ax-sec-pad); }
-.ax-sec + .ax-sec > .ax-wrap { border-top: 1px solid var(--ax-border); }
+.ax-sec:not(.ax-ga-ground) + .ax-sec:not(.ax-ga-ground) > .ax-wrap { border-top: 1px solid var(--ax-border); }
+.ax-ga-ground {
+  --ax-band-fade: clamp(96px, 11vw, 176px);
+  color: var(--text-2);
+  font-family: var(--font-text);
+  background: linear-gradient(180deg,
+    var(--ax-bg) 0, var(--bg) var(--ax-band-fade),
+    var(--bg) calc(100% - var(--ax-band-fade)), var(--ax-bg) 100%);
+}
+.ax-gh2 {
+  color: var(--text);
+  font: 400 clamp(2.25rem, 1.4rem + 2.6vw, 3.5rem)/1.08 var(--font-display);
+  font-variation-settings: "opsz" 60;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+/* GroundApp's list mark: a small gold dot (site .ticks) */
+.ax-ticks li { position: relative; padding-left: 22px; }
+.ax-ticks li + li { margin-top: 10px; }
+.ax-ticks li::before {
+  content: "";
+  position: absolute; left: 0; top: 0.66em;
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--gold);
+}
 
 /* ---------- 3. letter ---------- */
 .ax-letter-grid {
@@ -172,25 +228,16 @@ body.ax, body.ax-redeem {
   gap: 32px;
   align-items: start;
 }
-.ax-photo { display: flex; flex-direction: column; gap: 14px; position: sticky; top: 32px; }
-.ax-photo-frame {
-  aspect-ratio: 4 / 5;
-  overflow: hidden;
+.ax-photo { position: sticky; top: 32px; }
+.ax-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
   border: 1px solid var(--ax-border);
   border-radius: var(--ax-radius);
   background: var(--ax-surface);
 }
-/* Stand-in crop: lose the race clock, keep Collin and the tape. */
-.ax-photo-frame img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 44% 50%;
-  transform: scale(1.28);
-  transform-origin: 44% 88%;
-}
-.ax-photo figcaption { color: var(--ax-text-2); font: 400 14px/1.5 var(--ax-font); }
+.ax-photo figcaption { margin-top: 12px; color: var(--ax-text-2); font: 400 15px/1.5 var(--ax-font); }
 
 .ax-card-letter {
   padding: clamp(32px, 4.6vw, 72px);
@@ -199,7 +246,7 @@ body.ax, body.ax-redeem {
   color: var(--text);
 }
 .ax-card-letter h2 {
-  margin-bottom: 32px;
+  margin-bottom: 24px;
   color: var(--text);
   font: 400 clamp(2.5rem, 1.6rem + 2.4vw, 3.5rem)/1.05 var(--font-display);
   font-variation-settings: "opsz" 60;
@@ -211,6 +258,16 @@ body.ax, body.ax-redeem {
   font-variation-settings: "opsz" 20;
 }
 .ax-card-letter > p + p { margin-top: 1em; }
+.ax-facts {
+  margin: 28px 0 32px;
+  padding: 24px 0;
+  border-block: 1px solid rgba(168, 149, 133, 0.2);
+  font: 400 17px/1.55 var(--font-text);
+}
+.ax-facts-lead { margin-bottom: 12px; color: var(--text-2); }
+.ax-facts .ax-ticks li { color: var(--text); }
+.ax-press { margin-top: 18px; color: var(--text-2); font-size: 15px; line-height: 1.6; }
+.ax-press-label { margin-right: 6px; color: var(--text); font-weight: 600; }
 .ax-sign {
   display: flex; align-items: center; gap: 18px;
   margin-top: 40px; padding-top: 32px;
@@ -224,46 +281,103 @@ body.ax, body.ax-redeem {
 }
 .ax-sign-who { margin-top: 8px; color: var(--text-2); font: 400 15px/1.4 var(--font-text); }
 
-/* ---------- 4. what you get ---------- */
+/* ---------- at Arsenal: their photos, their cards ---------- */
+.ax-at .ax-h2 { max-width: 13em; margin-bottom: clamp(36px, 4.5vw, 56px); }
+.ax-at-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.ax-at-card {
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid var(--ax-border);
+  border-radius: var(--ax-radius);
+  background: var(--ax-surface);
+}
+.ax-at-card img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; }
+.ax-at-card figcaption {
+  padding: 22px 26px 26px;
+  color: var(--ax-white);
+  font: 700 19px/1.35 var(--ax-font);
+  letter-spacing: -0.01em;
+}
+
+/* ---------- 4. what you get (GroundApp ground) ---------- */
 .ax-get-grid {
   display: grid;
   grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
   gap: clamp(40px, 6vw, 96px);
   align-items: center;
 }
-.ax-list { margin-top: 44px; border-top: 1px solid var(--ax-border); }
-.ax-list li {
-  display: grid;
-  grid-template-columns: 24px 1fr;
-  gap: 16px;
-  padding: 18px 0;
-  border-bottom: 1px solid var(--ax-border);
-  color: var(--ax-text);
-  font: 600 19px/1.45 var(--ax-font);
-}
-.ax-list li::before {
-  content: "";
-  width: 24px; height: 24px; margin-top: 2px;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231FCAF4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9.5'/%3E%3Cpath d='m8 12.3 2.7 2.7L16 9.6'/%3E%3C/svg%3E") center / 24px no-repeat;
-}
+.ax-get-list { margin-top: 32px; color: var(--text); font: 400 19px/1.5 var(--font-text); }
 
-.ax-shots {
-  display: flex; justify-content: center; align-items: flex-start; gap: clamp(16px, 2vw, 28px);
-  padding: clamp(32px, 4vw, 56px) clamp(20px, 3vw, 40px);
-  border: 1px solid var(--ax-border);
-  border-radius: var(--ax-radius);
-  background: var(--ax-surface);
+/* the Library's technique rows (site .tech), shown still */
+.ax-techs { display: grid; gap: 10px; margin-top: 40px; }
+.ax-tech {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) auto;
+  grid-template-areas: "go name free" "go line free";
+  align-items: center;
+  gap: 0 16px;
+  min-height: 64px;
+  padding: 12px 18px 12px 14px;
+  border-radius: var(--radius-card);
+  background: var(--card);
+  color: var(--text-2);
+  font: 400 16px/1.4 var(--font-text);
 }
+.ax-tech.is-on { background: #3d2a1d; }
+.ax-tech-go {
+  grid-area: go;
+  display: grid; place-items: center;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.5px var(--gold);
+  color: var(--gold);
+}
+.ax-tech.is-on .ax-tech-go { background: var(--gold); color: var(--on-gold); }
+.ax-tech-go svg { width: 14px; height: 14px; margin-left: 2px; }
+.ax-tech-name { grid-area: name; color: var(--text); font-size: 18px; font-weight: 500; }
+.ax-tech-line { grid-area: line; }
+.ax-free { grid-area: free; display: inline-flex; align-items: center; gap: 6px; color: #a9b99d; font: 600 14px/1 var(--font-text); }
+.ax-free::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--sage); }
+
+/* phones as the site draws them (site .phone[data-ui]) */
+.ax-shots { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(16px, 2vw, 28px); align-items: start; }
 .ax-phone {
-  flex: 0 1 220px;
-  min-width: 0;
-  padding: 7px;
-  border: 1px solid #333333;
-  border-radius: 38px;
-  background: #050505;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 588 / 1280;
+  overflow: hidden;
+  border: 7px solid #0b0705;
+  border-radius: clamp(30px, 3.4vw, 46px);
+  background: #120b09;
 }
-.ax-phone img { display: block; width: 100%; height: auto; border-radius: 31px; }
-.ax-phone-back { margin-top: 64px; }
+.ax-phone img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.ax-phone + .ax-phone { margin-top: 56px; }
+
+/* ---------- reviews (GroundApp ground, site .rev) ---------- */
+.ax-rev-head { margin-bottom: clamp(32px, 4vw, 48px); }
+.ax-rev-head .ax-gh2 { max-width: 14em; }
+.ax-stars { display: flex; gap: 4px; margin: 16px 0 6px; color: var(--gold); }
+.ax-stars svg { width: 22px; height: 22px; }
+.ax-rev-sub { font-size: 17px; }
+.ax-rev-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  gap: 24px 32px;
+  align-items: start;
+}
+.ax-rev {
+  display: flex; flex-direction: column; gap: 14px;
+  padding: clamp(24px, 3vw, 40px);
+  border-radius: var(--radius-card);
+  background: var(--card);
+}
+.ax-rev-big { grid-row: 1 / 3; }
+.ax-rev-title { color: var(--text); font-weight: 600; font-size: 17px; }
+.ax-quote { margin: 0; color: var(--text); font: 400 20px/1.4 var(--font-display); }
+.ax-rev-big .ax-quote { font-size: clamp(24px, 1rem + 1.1vw, 30px); line-height: 1.3; }
+.ax-rev figcaption { font-size: 16px; }
+.ax-rev figcaption b { color: var(--text); font-weight: 600; }
 
 /* ---------- 5. how it works ---------- */
 .ax-how .ax-h2 { margin-bottom: clamp(40px, 5vw, 64px); }
@@ -485,6 +599,7 @@ body.ax-redeem {
 @media (max-width: 1023px) {
   .ax-get-grid { grid-template-columns: 1fr; }
   .ax-shots { max-width: 560px; width: 100%; margin-inline: auto; }
+  .ax-get-copy { max-width: 680px; }
   .ax-steps { grid-template-columns: 1fr; gap: 16px; }
   .ax-steps li { display: grid; grid-template-columns: 64px 1fr; column-gap: 16px; padding: 28px; }
   .ax-step-n { grid-row: 1 / 3; font-size: 40px; }
@@ -493,11 +608,12 @@ body.ax-redeem {
 @media (max-width: 899px) {
   .ax-letter-grid { grid-template-columns: 1fr; gap: 40px; }
   .ax-photo { position: static; }
-  .ax-photo-frame { aspect-ratio: 4 / 3; }
-  .ax-photo-frame img { transform: scale(1.3); transform-origin: 44% 96%; }
+  .ax-rev-grid { grid-template-columns: minmax(0, 1fr); }
+  .ax-rev-big { grid-row: auto; }
+  .ax-rev-big .ax-quote { font-size: 21px; }
 }
 
-/* ---------- phone: the hero stacks as two bands, Arsenal on top ---------- */
+/* ---------- phone: the blend runs top to bottom, Arsenal's floor above, Obsidian below ---------- */
 @media (max-width: 719px) {
   :root { --ax-pad: 16px; --ax-top-h: 64px; --ax-seam: 18px; }
   body.ax { font-size: 16px; }
@@ -507,41 +623,58 @@ body.ax-redeem {
   .ax-top .ax-ga { gap: 7px; font-size: 17px; }
   .ax-top .ax-ga img { width: 24px; height: 24px; }
 
-  .ax-hero { display: block; min-height: 0; }
-  .ax-hero-a, .ax-hero-g { display: none; }
+  .ax-hero {
+    display: block;
+    min-height: 0;
+    background: linear-gradient(180deg, var(--ax-bg) 150px, var(--bg) 330px);
+  }
+  .ax-hero-bg {
+    width: 100%;
+    bottom: auto;
+    height: 340px;
+    -webkit-mask-image: linear-gradient(180deg, #000 42%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 42%, transparent 100%);
+  }
+  .ax-hero-photo { object-position: 46% 50%; }
+  .ax-hero::after { height: 88px; }
   .ax-h1 { display: block; }
   .ax-h1-a {
     display: block;
-    padding: 36px 20px 34px;
-    background: var(--ax-bg);
+    padding: 36px 20px 26px;
     color: var(--ax-white);
     font: 800 48px/1.08 var(--ax-font);
     letter-spacing: -0.03em;
   }
   .ax-h1-a1, .ax-h1-a2 { display: inline; padding: 0; font: inherit; letter-spacing: inherit; text-align: left; }
+  /* Bodie stands beside "a free year of GroundApp Premium." */
+  .ax-h1-bodie { display: block; float: right; width: 100px; margin: 24px 20px 0 12px; }
   .ax-h1-g {
     display: block;
     max-width: none;
-    padding: 32px 20px 0;
-    background: var(--bg);
+    padding: 24px 20px 0;
     font-size: 44px;
     line-height: 1.08;
   }
-  .ax-hero-act { gap: 14px; padding: 28px 20px 44px; background: var(--bg); align-items: stretch; }
+  .ax-hero-act { clear: both; gap: 14px; padding: 28px 20px 52px; align-items: stretch; }
   .ax-btn-gold { width: 100%; }
   .ax-hero-note { text-align: center; font-size: 15px; }
 
   .ax-card-letter { padding: 32px 22px 28px; }
+  .ax-facts { font-size: 16px; }
   .ax-sign { gap: 14px; }
   .ax-sign img { width: 40px; height: 40px; }
-  .ax-card-letter h2 { margin-bottom: 24px; }
   .ax-sign-off { font-size: 24px; }
-  .ax-list { margin-top: 32px; }
-  .ax-list li { font-size: 17px; padding: 16px 0; gap: 14px; }
-  .ax-shots { padding: 28px 16px; }
-  .ax-phone { border-radius: 30px; padding: 5px; }
-  .ax-phone img { border-radius: 25px; }
-  .ax-phone-back { margin-top: 40px; }
+  .ax-at-cards { grid-template-columns: 1fr; gap: 16px; }
+  .ax-at-card img { aspect-ratio: 3 / 2; }
+  .ax-at-cards li:nth-child(1) img { object-position: 50% 30%; }
+  .ax-at-cards li:nth-child(2) img { object-position: 50% 12%; }
+  .ax-at-card figcaption { padding: 18px 20px 20px; font-size: 18px; }
+  .ax-get-list { font-size: 17px; }
+  .ax-tech { min-height: 60px; padding: 10px 14px 10px 12px; gap: 0 12px; }
+  .ax-tech-name { font-size: 17px; }
+  .ax-tech-line { font-size: 15px; }
+  .ax-phone + .ax-phone { margin-top: 40px; }
+  .ax-quote { font-size: 19px; }
   .ax-steps li { grid-template-columns: 52px 1fr; padding: 24px 20px; }
   .ax-step-n { font-size: 34px; }
   .ax-steps h3 { font-size: 19px; }
