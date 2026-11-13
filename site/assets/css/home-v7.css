@@ -142,12 +142,12 @@ html.low-power .still-note { display: block; }
 .steps li::before { content: counter(st); font: 300 30px/1 var(--font-data); font-variant-numeric: tabular-nums; color: var(--gold); }
 .checkin-cta { margin-top: 32px; }
 .slot-lean { grid-column: 7 / 9; grid-row: 1; max-width: 200px; justify-self: center; align-self: end; }
-.checkin-phone { grid-column: 9 / 13; grid-row: 1; justify-self: end; }
-/* The demo keeps one footprint from first paint: the still sits in it until the live stage covers it (demo/, app-demo-v1.min). */
-.app-demo { position: relative; width: min(100%, 392px); aspect-ratio: 392 / 791; }
+.checkin-phone { grid-column: 9 / 13; grid-row: 1; justify-self: end; width: min(100%, 392px); aspect-ratio: 392 / 791; }
+/* A demo keeps one footprint from first paint: the still sits in it until the live stage covers it (demo/, app-demo-v1.min). */
+.app-demo { position: relative; }
 .app-demo > .phone { position: absolute; inset: 2.03% 4.08%; width: auto; aspect-ratio: auto; }
 .app-demo-stage { position: absolute; inset: 0; }
-.app-demo[data-live] > .phone { visibility: hidden; }
+.app-demo[data-live] > .phone, .app-demo[data-live] > img { visibility: hidden; }
 .plan-step { grid-column: 1 / 7; grid-row: 2; }
 .h2-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; }
 .plan-step-h { font: 400 clamp(26px, 1.1rem + 1vw, 32px)/1.2 var(--font-display); font-variation-settings: "opsz" 60; }
@@ -293,21 +293,24 @@ html.low-power .still-note { display: block; }
 .conn-blocks dt { color: var(--text); font-weight: 500; font-size: 19px; }
 .conn-blocks dd { margin: 6px 0 0; font-size: 16px; }
 .connections .safety { margin-top: 40px; }
-.watches { margin: clamp(56px, 7vw, 96px) 0 0; }
-.watch-row { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(12px, 2vw, 24px); }
-.watch-row img { width: 100%; height: auto; border: 6px solid #2b2420; border-radius: 26%/22%; background-color: #000; }
-.watches figcaption { margin-top: 16px; font-size: 16px; }
-.watches figcaption b { color: var(--text); font-weight: 500; }
+/* One watch, running a session (demo/src/watch), with its line beside it on the page's second edge */
+.watches { margin: clamp(40px, 5vw, 72px) 0 0; align-items: center; }
+.watch-demo { grid-column: 1 / 7; justify-self: center; width: min(100%, 360px); aspect-ratio: 360 / 500; }
+/* Before the live watch arrives: the app's own screenshot where its screen will be, in a plain bezel */
+.watch-demo > img { position: absolute; left: 12.5%; top: 17.8%; width: 75%; height: auto; border-radius: 26% / 22%; box-shadow: 0 0 0 10px #000, 0 0 0 14px #2b2420; }
+.watches figcaption { grid-column: 7 / 13; max-width: 34rem; font-size: 16px; }
+.watches figcaption b { display: block; margin-bottom: 6px; color: var(--text); font-weight: 500; font-size: 19px; }
 @media (max-width: 860px) {
   .conn-head { grid-template-columns: minmax(0, 1fr); row-gap: 24px; }
   .conn-head .sec-head, .slot-conn { grid-column: 1; }
   .slot-conn { width: 190px; }
-  .conn-shots, .watch-row { grid-template-columns: none; grid-auto-flow: column; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; margin-left: calc(-1 * var(--gutter)); margin-right: calc(-1 * var(--gutter)); padding: 0 var(--gutter) 8px; scroll-padding: 0 var(--gutter); scrollbar-width: none; }
+  .conn-shots { grid-template-columns: none; grid-auto-flow: column; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; margin-left: calc(-1 * var(--gutter)); margin-right: calc(-1 * var(--gutter)); padding: 0 var(--gutter) 8px; scroll-padding: 0 var(--gutter); scrollbar-width: none; }
   .conn-shots { grid-auto-columns: 62%; column-gap: 16px; }
   .conn-shots .phone { width: 100%; scroll-snap-align: start; }
   .conn-shots .phone:nth-child(2) { margin-top: 0; }
-  .watch-row { grid-auto-columns: 46%; }
-  .watch-row li { scroll-snap-align: start; }
+  .watches { grid-template-columns: minmax(0, 1fr); row-gap: 20px; }
+  .watch-demo, .watches figcaption { grid-column: 1; }
+  .watch-demo { width: min(100%, 300px); }
   .conn-blocks { grid-template-columns: minmax(0, 1fr); gap: 22px; }
 }
 

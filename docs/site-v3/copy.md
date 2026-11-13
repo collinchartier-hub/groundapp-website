@@ -339,11 +339,7 @@ Source: [S1] (Aura paragraph, trial, price) [S9: screenshot 05]. The lede uses "
 
 **Alt, clip ch07-health:** GroundApp opens on Bodie saying "Hi, I'm Bodie", then the Health and devices screen. The Apple Health access prompt appears.
 
-**Alt, watch 01-bodie-instant-calm-breathe-in:** Apple Watch showing Bodie on his disc with "Breathe in" in Instant Calm.
-**Alt, watch 02-box-breathing-breathe-in:** Apple Watch showing Bodie in Box breathing, "Breathe in 1", cycle 1 of 4.
-**Alt, watch 03-box-breathing-hold:** Apple Watch showing Bodie with eyes closed, "Hold 4", cycle 1 of 4.
-**Alt, watch 04-box-breathing-breathe-out:** Apple Watch showing Bodie in Box breathing, "Breathe out 4", cycle 1 of 4.
-**Alt, watch 05-physiological-sigh-breathe-out:** Apple Watch showing Bodie in the physiological sigh, "Breathe out 6", cycle 1 of 5.
+**Alt, the watch (one live watch since 2026-11-13; its still is screenshot 02-box-breathing-breathe-in):** GroundApp on an Apple Watch, running Box breathing. Bodie sits on his disc inside a thin ring and breathes with the count: "Breathe in 4", "Hold 4" with his eyes closed, "Breathe out 4", "Hold 4". Under the count it says "Cycle 1 of 4", with a pause button and a button to end the session.
 
 **Watch caption:** Bodie on your wrist.
 

@@ -1,6 +1,9 @@
-# Check-in demo: rehearsal record (round 1, 2026-11-13)
+# The demos: rehearsal record (2026-11-13)
 
 Built with the `stageshow` skill (v1.1.1) under `studio-site-design`. Status: preview, not approved.
+Two demos share one build: the check-in phone (`src/checkin`) and the Apple Watch (`src/watch`).
+
+# 1. The check-in phone
 
 ## What it is
 A phone playing GroundApp 1.4.2's check-in as one loop of about 21 seconds: Check in on Home, Anxious, Worried,
@@ -55,3 +58,39 @@ The gate does not end "rehearsal passed". What it still prints:
 - Playback watched live by a person. Judged from stills and the film's motion report only.
 - The guided player's exact look in 1.4.2 (read from code, not seen on a device).
 - A fresh-eye review (the skill's `references/review.md`).
+
+# 2. The Apple Watch
+
+## What it is
+One Apple Watch in place of the row of five watch screenshots. It runs a whole Box breathing session as the watch
+app does: Bodie, live, breathes 4 in, 4 hold with his eyes closed, 4 out, 4 hold; the word and the count change
+with him; "Cycle 1 of 4" counts up; the ring fills. After cycle 4 the screen dips and a new session starts. 64 seconds.
+
+## Gold copied
+`examples/payout-flow` for a story the system tells by itself: no cursor, nothing pressed. The kit has no watch, so the
+case, crown, button and band are drawn here (DESIGN.md `watch-case`).
+
+## Where the words come from
+The head of `src/watch/index.tsx` lists the watch app's source files (`release/1.4.2`). Sizes, positions and colours
+of the screen were measured on the app's own screenshot (`site/media/v3/watch/02-...-416.webp`), which is also the
+still shown before the live watch arrives.
+
+Left out on purpose: the screen the app shows before a session (Start) and after it (Complete, with Done). Neither
+could be checked against a screenshot, so the loop joins one session to the next with a dip of the screen instead.
+
+## How it was checked
+The same way as the phone (a bare page, `film.mjs --gate` with `--every 3300 --count 20` to cover the 64 seconds),
+plus the real page on the GPU: stills through a cycle, reduced motion, the hero's pause button, and the join between
+one session and the next.
+
+## Gate lines left, and why
+| Line | Why it stays |
+|---|---|
+| `kit override` (6, all on `.ss-phone...`) | The same false alarm as on the phone: the kit's own phone rules sit in the shared built file. The watch uses no kit phone. |
+| `shrunk, not laid out for the phone` (at 390) | On a phone the watch is drawn at 300 wide, the same watch at 0.83. Its smallest words are still 13px. A second layout would be the same picture. |
+| `film: inconclusive` | Sampling gaps in headless Chrome, as on the phone. |
+
+## Not checked
+- On a real iPhone or in Safari. A third live Bodie on one page (hero, phone, watch) was only run on this laptop.
+- Against a real watch. The session screen matches the app's screenshot; the case is a plain drawing, not a product photo.
+- Playback watched live by a person.

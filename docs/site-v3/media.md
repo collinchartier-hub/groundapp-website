@@ -46,11 +46,9 @@ Measured output inventory. Dimensions and durations are from ffprobe; bytes are 
 | `site/media/v3/shots/09-progress-960.webp` | 960×2086 | — | 47,414 |
 | `site/media/v3/shots/10-health-480.webp` | 480×1043 | — | 35,258 |
 | `site/media/v3/shots/10-health-960.webp` | 960×2086 | — | 79,490 |
-| `site/media/v3/watch/01-bodie-instant-calm-breathe-in-416.webp` | 416×496 | — | 6,498 |
 | `site/media/v3/watch/02-box-breathing-breathe-in-416.webp` | 416×496 | — | 6,992 |
-| `site/media/v3/watch/03-box-breathing-hold-416.webp` | 416×496 | — | 6,360 |
-| `site/media/v3/watch/04-box-breathing-breathe-out-416.webp` | 416×496 | — | 7,342 |
-| `site/media/v3/watch/05-physiological-sigh-breathe-out-416.webp` | 416×496 | — | 7,446 |
+
+The other four watch screenshots (01, 03, 04, 05) were removed on 2026-11-13, when one live watch replaced the row of five.
 
 Added by the landing page build (Task 6): Bodie's still frame (rendered from `site/js/bodie-v3.js`, asleep pose, transparent, shown until the canvas draws and kept as the no-WebGL fallback) and the game's own cast portraits (rendered by `/play`, `game/src/6-app.js` `renderPortraits`; Kip re-rendered with the camera pulled back to 5.0 so his wing and eye stay in the tile).
 

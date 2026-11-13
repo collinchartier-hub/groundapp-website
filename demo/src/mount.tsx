@@ -1,25 +1,30 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type ComponentType } from 'react'
 import { createRoot } from 'react-dom/client'
 import CheckInDemo from './checkin'
+import WatchDemo from './watch'
 
 // The page's own motion switch (site/js/home-v7.js): the pause button, Low Power Mode and
 // reduced motion all end up as data-motion="still" on <html>, with a "ga:motion" event on change.
 const root = document.documentElement
 const isStill = () => root.dataset.motion === 'still'
 
-function Host() {
+/** Each demo by the name in its slot's `data-app-demo`. */
+const DEMOS: Record<string, ComponentType<{ paused?: boolean }>> = { 'check-in': CheckInDemo, watch: WatchDemo }
+
+function Host({ Demo }: { Demo: ComponentType<{ paused?: boolean }> }) {
   const [paused, setPaused] = useState(isStill)
   useEffect(() => {
     const sync = () => setPaused(isStill())
     document.addEventListener('ga:motion', sync)
     return () => document.removeEventListener('ga:motion', sync)
   }, [])
-  return <CheckInDemo paused={paused} />
+  return <Demo paused={paused} />
 }
 
-for (const el of document.querySelectorAll<HTMLElement>('[data-app-demo="check-in"]')) {
+for (const el of document.querySelectorAll<HTMLElement>('[data-app-demo]')) {
+  const Demo = DEMOS[el.dataset.appDemo ?? '']
   const stage = el.querySelector<HTMLElement>('[data-app-demo-stage]')
-  if (!stage) continue
-  createRoot(stage).render(<Host />)
+  if (!Demo || !stage) continue
+  createRoot(stage).render(<Host Demo={Demo} />)
   el.dataset.live = ''
 }

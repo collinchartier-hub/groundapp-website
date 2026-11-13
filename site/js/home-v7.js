@@ -131,24 +131,24 @@ if (motionBtn) motionBtn.addEventListener('click', () => {
 syncMotionBtn();
 publishMotion();
 
-/* ---------- Check-in demo: a React island built from demo/, fetched once the section is a screen away.
-   Until it runs, and whenever it cannot, the still of the check-in stays in its place. ---------- */
-const appDemo = $('[data-app-demo]');
-if (appDemo) {
+/* ---------- App demos (the check-in phone, the watch): React islands built from demo/, fetched once the first
+   of them is a screen away. Until they run, and whenever they cannot, the still of each stays in its place. ---------- */
+const appDemos = $$('[data-app-demo]');
+if (appDemos.length) {
   const demoIO = new IntersectionObserver((es) => {
     if (!es.some((e) => e.isIntersecting)) return;
     demoIO.disconnect();
     const css = document.createElement('link');
     css.rel = 'stylesheet';
     css.href = '/assets/css/app-demo-v1.min.css';
-    css.onload = () => { import('/js/app-demo-v1.min.js').catch(() => { /* the still stays */ }); };
+    css.onload = () => { import('/js/app-demo-v1.min.js').catch(() => { /* the stills stay */ }); };
     document.head.append(css);
   }, { rootMargin: '100% 0px' });
-  demoIO.observe(appDemo);
+  appDemos.forEach((el) => demoIO.observe(el));
 }
 
 /* ---------- Swipe rails (phone): focusable while they scroll, so a keyboard can scroll them too ---------- */
-const rails = $$('.conn-shots, .watch-row');
+const rails = $$('.conn-shots');
 function syncRails() { rails.forEach((r) => { if (r.scrollWidth > r.clientWidth + 1) r.tabIndex = 0; else r.removeAttribute('tabindex'); }); }
 syncRails();
 addEventListener('resize', () => { clearTimeout(syncRails.t); syncRails.t = setTimeout(syncRails, 200); });
