@@ -2,6 +2,7 @@
 import { test, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { onRequestGet } from '../functions/arsenal/r/[token].js';
+import { onRequestGet as onAionRequestGet } from '../functions/aion/r/[token].js';
 
 const env = { SUPABASE_URL: 'https://sb.example.co', SUPABASE_SERVICE_ROLE_KEY: 'sb_service', RESEND_API_KEY: 're_test' };
 const TOKEN = 'abcdefghijklmnopqrstuv';
@@ -35,6 +36,41 @@ const get = (token, ua) =>
     env,
     waitUntil: (p) => waited.push(p),
   });
+const getAion = (token, ua) =>
+  onAionRequestGet({
+    params: { token },
+    request: new Request(`https://groundapp.live/aion/r/${token}`, { headers: { 'user-agent': ua } }),
+    env,
+    waitUntil: (p) => waited.push(p),
+  });
+
+test('AION iPhone link redirects to Apple and counts its tap', async () => {
+  state.tap.partner = 'aion';
+  const res = await getAion(TOKEN, IPHONE);
+  assert.equal(res.status, 302);
+  assert.equal(res.headers.get('location'), APPLE);
+  assert.deepEqual(calls[0].body, { p_token: TOKEN, p_ios: true });
+  await Promise.all(waited);
+  assert.ok(calls.some((c) => c.url.endsWith('/cancel')));
+});
+
+test('AION desktop page uses AION lockup, stylesheet, back link and QR link', async () => {
+  state.tap.partner = 'aion';
+  const res = await getAion(TOKEN, MAC);
+  assert.equal(res.status, 200);
+  const markup = await res.text();
+  assert.ok(markup.includes('AION × GroundApp'));
+  assert.ok(markup.includes('/assets/css/aion-v1.css'));
+  assert.ok(markup.includes('data-qr="https://groundapp.live/aion/r/abcdefghijklmnopqrstuv"'));
+  assert.ok(markup.includes('href="/aion"'));
+  assert.ok(markup.includes('/assets/js/partner-qr-v1.js'));
+});
+
+test('an Arsenal token cannot redeem on AION and an AION token cannot redeem on Arsenal', async () => {
+  assert.equal((await getAion(TOKEN, IPHONE)).status, 404);
+  state.tap.partner = 'aion';
+  assert.equal((await get(TOKEN, IPHONE)).status, 404);
+});
 
 test('iPhone: counted, reminder cancelled, redirected to Apple', async () => {
   const res = await get(TOKEN, IPHONE);

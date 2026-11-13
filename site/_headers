@@ -35,3 +35,9 @@ https://:project.groundapp.pages.dev/*
 
 /arsenal/*
   X-Robots-Tag: noindex
+
+/aion
+  X-Robots-Tag: noindex
+
+/aion/*
+  X-Robots-Tag: noindex

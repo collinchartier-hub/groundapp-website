@@ -38,6 +38,8 @@
   #partners button { appearance: none; border: 1px solid var(--line); background: var(--card); color: var(--text-2); font: 600 13px var(--sans); padding: 8px 14px; min-height: 36px; border-radius: 999px; cursor: pointer; }
   #partners button:disabled { opacity: .6; cursor: default; }
   #partners button:focus-visible { outline: 2px solid var(--accent-hi); outline-offset: 2px; }
+  #partners .seg button { border: 0; background: none; }
+  #partners .seg button[aria-pressed="true"] { background: var(--accent); color: var(--bg); }
   .updated { color: var(--muted); font-size: 13px; }
   main { transition: opacity .2s; }
   main.loading { opacity: .45; }
@@ -163,8 +165,9 @@
     </section>
 
     <section id="partners">
-      <h2>Partners: Arsenal Health</h2>
-      <p class="note">Free-year codes for Arsenal members from groundapp.live/arsenal. "Tapped" means they opened their link on an iPhone. Apple reports redemptions per offer, not per person.</p>
+      <h2>Partners</h2>
+      <div class="seg" id="partner-switch" role="group" aria-label="Partner" style="margin:10px 0 14px"></div>
+      <p class="note" id="partner-note"></p>
       <div class="kpis" data-slot="partner-kpis"></div>
       <div data-slot="partner-actions" style="margin:12px 0;display:flex;gap:8px;flex-wrap:wrap"></div>
       <div class="grid two">
@@ -449,7 +452,8 @@
   }
 
   // Partners panel (GET/POST /api/admin/partner). Not tied to the date range.
-  var PARTNER = 'arsenal';
+  var PARTNER = null;
+  var selectedPartner = null;
   var partnerData = null;
   var STATUS_NAMES = { assigned: 'Code sent', waitlist: 'Waiting for a code', android_waitlist: 'Android list' };
   function when(iso) { return iso ? new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : ''; }
@@ -486,7 +490,7 @@
     var acts = clear(slot('partner-actions'));
     acts.appendChild(el('span', { class: 'cap' }, paused ? 'Paused: the form is taking a waitlist.' : 'Live: the form is handing out codes.'));
     acts.appendChild(actionButton(paused ? 'Resume' : 'Pause', function () {
-      if (!paused && !confirm('Pause Arsenal? New claims go on a waitlist until you resume.')) return;
+      if (!paused && !confirm('Pause ' + selectedPartner.name + '? New claims go on a waitlist until you resume.')) return;
       partnerPost({ action: paused ? 'resume' : 'pause' }, function () {});
     }));
     if (c.waitlist > 0 && codes.left > 0) {
@@ -516,14 +520,46 @@
     });
     box.appendChild(tv);
   }
+  function partnerLoadFailed() {
+    ['partner-location', 'partner-src', 'partner-rows'].forEach(function (s) { empty(slot(s), 'Couldn\'t load partner claims. Try again in a minute.'); });
+  }
   function loadPartner() {
-    fetch('/api/admin/partner?slug=' + PARTNER, { credentials: 'same-origin' })
+    var slug = PARTNER;
+    fetch('/api/admin/partner?slug=' + encodeURIComponent(slug), { credentials: 'same-origin' })
       .then(function (r) { return r.json(); })
       .then(function (j) {
+        if (slug !== PARTNER) return;
         if (j.ok) renderPartner(j);
-        else ['partner-location', 'partner-src', 'partner-rows'].forEach(function (s) { empty(slot(s), 'Couldn\'t load partner claims. Try again in a minute.'); });
+        else partnerLoadFailed();
       })
-      .catch(function () {});
+      .catch(partnerLoadFailed);
+  }
+  function loadPartnerPrograms() {
+    fetch('/api/admin/partner', { credentials: 'same-origin' })
+      .then(function (r) { return r.json(); })
+      .then(function (j) {
+        if (!j.ok || !Array.isArray(j.programs) || !j.programs.length) { partnerLoadFailed(); return; }
+        PARTNER = j.programs[0].slug;
+        selectedPartner = j.programs[0];
+        var choices = clear($('#partner-switch'));
+        j.programs.forEach(function (program) {
+          var button = el('button', { type: 'button', 'aria-pressed': String(program.slug === PARTNER) }, program.name);
+          button.addEventListener('click', function () {
+            if (PARTNER === program.slug) return;
+            PARTNER = program.slug;
+            selectedPartner = program;
+            Array.prototype.forEach.call(choices.querySelectorAll('button'), function (b) {
+              b.setAttribute('aria-pressed', String(b === button));
+            });
+            $('#partner-note').textContent = 'Free-year codes for ' + selectedPartner.name + ' members from groundapp.live/' + PARTNER + '. \"Tapped\" means they opened their link on an iPhone. Apple reports redemptions per offer, not per person.';
+            loadPartner();
+          });
+          choices.appendChild(button);
+        });
+        $('#partner-note').textContent = 'Free-year codes for ' + selectedPartner.name + ' members from groundapp.live/' + PARTNER + '. \"Tapped\" means they opened their link on an iPhone. Apple reports redemptions per offer, not per person.';
+        loadPartner();
+      })
+      .catch(partnerLoadFailed);
   }
 
   var last = null, ctrl = null;
@@ -558,7 +594,7 @@
   var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { if (last) render(last); }, 150); });
   window.addEventListener('scroll', hideTip, { passive: true });
   load();
-  loadPartner();
+  loadPartnerPrograms();
 })();
 </script>
 </body>

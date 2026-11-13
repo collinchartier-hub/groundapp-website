@@ -1,9 +1,12 @@
-// groundapp.live/arsenal: sends the claim form to POST /api/partner/claim and shows what happened.
+// Shared partner form: sends a claim to POST /api/partner/claim and shows what happened.
 // The code itself only ever arrives by email.
 (function () {
   'use strict';
   var form = document.getElementById('claim-form');
   if (!form) return;
+  var partner = form.dataset.partner;
+  if (!partner) return;
+  var name = form.dataset.partnerName || partner;
   var status = document.getElementById('claim-status');
   var button = form.querySelector('button[type="submit"]');
   var started = Date.now();
@@ -37,8 +40,8 @@
     last_name: 'Add your last name.',
     email: "That email doesn't look right.",
     device: 'Pick iPhone or Android.',
-    location: 'Pick your Arsenal location.',
-    member: 'This one is for Arsenal members. Tick the box if that is you.',
+    location: 'Pick your ' + name + ' location.',
+    member: 'This one is for ' + name + ' members. Tick the box if that is you.',
     bot_check: 'One more step: tick "Verify you are human" above the button, then tap it again.',
     rate_limited: 'A lot of people on this network just signed up. Try again in an hour.',
     email_failed: 'Something went wrong on our side. Your spot is saved. Try again in a minute.',
@@ -69,7 +72,7 @@
     var data = new FormData(form);
     var email = String(data.get('email') || '').trim();
     var payload = {
-      partner: 'arsenal',
+      partner: partner,
       first_name: String(data.get('first_name') || ''),
       last_name: String(data.get('last_name') || ''),
       email: email,
