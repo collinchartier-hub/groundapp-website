@@ -52,7 +52,7 @@ Sections, top to bottom:
 
 Look:
 
-- Arsenal's side and everything below the hero: black page, white text, cyan accent `#16B8EA` (from Arsenal's own logo mark), Manrope 400 to 800, pill buttons, small cyan letter-spaced caps eyebrows, 24px rounded cards. Exact values are read from the rendered arsenalhealth.com during the build; nothing is hotlinked from their site.
+- Arsenal's side and everything below the hero: black page, white text, cyan accent `#1FCAF4`, Manrope 400 to 800, pill buttons, small cyan letter-spaced caps eyebrows, 24px rounded cards with a 1px `#262626` border. Values were measured from the rendered arsenalhealth.com on 2026-11-13 (`docs/arsenal/arsenal-tokens.md`); nothing is hotlinked from their site.
 - GroundApp's side and the letter card: Ground Brand Kit v5 night theme from `site/assets/css/ground-tokens-v1.css`. Flat fills, no italic, no coloured word in a serif headline, no caps labels. Gold only on the hero button.
 - Cyan is the action colour at the form, since that part of the page is Arsenal's.
 - `DESIGN-BANS.md` applies to the GroundApp parts.

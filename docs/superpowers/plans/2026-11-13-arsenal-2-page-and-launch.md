@@ -72,20 +72,20 @@ App Store Connect > GroundApp > Subscriptions > GroundApp Premium > Offer Codes 
 
 ---
 
-### Task 2: Measure Arsenal's look (orchestrator)
+### Task 2: Measure Arsenal's look (orchestrator). Done 2026-11-13: `docs/arsenal/arsenal-tokens.md`, cyan is `#1FCAF4`
 
 **Files:**
 - Create: `docs/arsenal/arsenal-tokens.md`
 
-- [ ] **Step 1: Read computed styles from the live site**
+- [x] **Step 1: Read computed styles from the live site**
 
 Open `https://www.arsenalhealth.com/` in the built-in browser at 1440 wide and at 390 wide and read `getComputedStyle` for: `body` (background, color, font-family), the hero `h1` (font-size, weight, line-height, letter-spacing), the accent word inside it (color), the primary button (background, color, border-radius, padding, font-weight, font-size), the outlined button (border), a section eyebrow (font-size, letter-spacing, color, text-transform), a photo card (border-radius), the stat numbers (font-size, weight, color), the container width and the vertical padding of two sections.
 
-- [ ] **Step 2: Write them down**
+- [x] **Step 2: Write them down**
 
 Create `docs/arsenal/arsenal-tokens.md` with one table: token name, value at 1440, value at 390, where it was read. Use these names so the CSS can adopt them directly: `--ax-bg`, `--ax-text`, `--ax-text-2`, `--ax-cyan`, `--ax-border`, `--ax-font`, `--ax-h1-size`, `--ax-h1-weight`, `--ax-h1-leading`, `--ax-h1-tracking`, `--ax-btn-radius`, `--ax-btn-pad`, `--ax-eyebrow-size`, `--ax-eyebrow-tracking`, `--ax-card-radius`, `--ax-container`, `--ax-section-pad`. Confirm or correct `--ax-cyan` against `#16B8EA` (taken from Arsenal's logo mark).
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add docs/arsenal/arsenal-tokens.md
@@ -292,7 +292,7 @@ Start with the measured tokens, then the layout from `DESIGN.md`:
 .ax {
   --ax-bg: #000;
   --ax-text: #fff;
-  --ax-cyan: #16B8EA;
+  --ax-cyan: #1FCAF4;
   --ax-font: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
   margin: 0;
   background: var(--ax-bg);
