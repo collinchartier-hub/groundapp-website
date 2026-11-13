@@ -41,3 +41,9 @@ https://:project.groundapp.pages.dev/*
 
 /aion/*
   X-Robots-Tag: noindex
+
+/traverse
+  X-Robots-Tag: noindex
+
+/traverse/*
+  X-Robots-Tag: noindex
