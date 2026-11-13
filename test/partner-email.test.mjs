@@ -45,6 +45,25 @@ test('all AION member emails use only AION branding', () => {
   }
 });
 
+test('Traverse member emails use its own lockup and never name other gyms', () => {
+  const traverse = { ...base, partner: partnerConfig('traverse') };
+  const traverseLink = link.replace('/arsenal/', '/traverse/');
+  const messages = [
+    renderClaimEmail({ ...traverse, code: 'ABC123XYZ', link: traverseLink }),
+    renderNudgeEmail({ ...traverse, link: traverseLink, unsubUrl: 'https://groundapp.live/api/unsubscribe?e=x&t=y' }),
+    renderAndroidEmail(traverse),
+    renderWaitlistEmail(traverse),
+  ];
+  assert.equal(messages[0].subject, 'Your free year of GroundApp, from Traverse and Collin');
+  assert.match(messages[0].html, /TRAVERSE<\/span> <span[^>]*>&times;<\/span> GroundApp/);
+  assert.ok(messages[0].html.includes('Traverse already puts breathwork into the sauna and the cold plunge.'));
+  for (const message of messages) {
+    for (const part of [message.subject, message.html, message.text]) {
+      assert.ok(!part.includes('Arsenal') && !part.includes('AION'), 'Traverse mail never names another gym');
+    }
+  }
+});
+
 test('member emails follow the copy rules', () => {
   const all = [
     renderClaimEmail({ ...base, code: 'ABC', link }),
