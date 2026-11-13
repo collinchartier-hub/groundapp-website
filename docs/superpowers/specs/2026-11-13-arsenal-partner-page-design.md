@@ -21,6 +21,8 @@ The page looks and feels like arsenalhealth.com and presents the partnership as 
 | The blend | Collin, 2026-11-13: "I want the blend between Arsenal and GroundApp to be more of a nice fade instead of just a hard, solid line." The hero and every change of ground fade into each other. This waives GroundApp's no-gradients rule for these blends only |
 | Arsenal photos | Collin, 2026-11-13: "I have permission. You can pull photos from Arsenal's website and their Instagram." Arsenal's own published photos populate their side. Sources are listed in `docs/arsenal/photo-sources.md`. No staff headshots, clinic or injection photos, or member review photos |
 | GroundApp's side | Collin, 2026-11-13: "Use our website design previews to start to upgrade this website design a little." GroundApp's parts use its own v3 site design (`~/Desktop/GroundApp Site v3 Screens`, `site/index.html`): Bodie, the phone frames, the technique rows, the reviews, the "Hi, I'm Collin" facts |
+| Form second | Collin, 2026-11-13: "Let's move the fill-in form right below the hero section because if somebody gets that email or any page, they just want to get it right away. Below it, we can talk about myself and the partnership." |
+| Hero and Bodie | Collin, 2026-11-13: Bodie has his eyes open and sits upright, not bowed. The headline is one sentence in one typeface, set as one block; the first build's sentence split across two typefaces "is a little weird". He chooses between hero directions in the preview |
 | Intro photo | For now the IRONMAN photo the live site uses in "Hi, I'm Collin". A training still from Collin's Arsenal footage replaces it if he names the clips that show him |
 | Newsletter | Opt-in tick box, unticked by default. Everyone else gets the code email and one reminder only |
 | What Arsenal sees | Nothing automatic. Collin shares numbers himself |
@@ -45,15 +47,14 @@ Files: `site/arsenal/index.html`, `site/assets/css/arsenal-v1.css`, `site/assets
 Sections, top to bottom:
 
 1. Lockup: ARSENAL HEALTH × GroundApp, sitting in the blend.
-2. Hero blend. One sentence crossing from one brand into the other: "Arsenal members get" on Arsenal's side (an Arsenal gym photo, darkened, Manrope, the word "members" in cyan), "a free year of GroundApp Premium." on GroundApp's side (Obsidian, Source Serif 4, Bodie on his disc, gold button "Claim your free year" that scrolls to the form). The photo and the black dissolve into the Obsidian across the middle; there is no seam. Under 720px wide the fade runs top to bottom, Arsenal on top, and the offer and button stay in the first screen.
-3. Letter from Collin on a warm card (`--card` #2D1E17, Source Serif 4), beside his photo, following the live site's "Hi, I'm Collin": the fact list and the "As seen on" line exactly as on the site, then why he built the app for performance and nervous system regulation and why Arsenal.
-4. At Arsenal (Arsenal's ground): three of Arsenal's photos, cold plunge, sauna, training floor, each with one line on how to breathe there.
-5. What you get (GroundApp's ground): a year of Premium, five lines of what that includes, real app screens in the site's phone frames, four technique rows from the site's Library.
-6. How it works (Arsenal's ground): fill in the form, open the email, tap your link on your iPhone.
+2. Hero blend. An Arsenal gym photo on Arsenal's side dissolves into GroundApp's Obsidian with no seam. The offer is one headline in one typeface, set as one block. Bodie sits on GroundApp's ground, upright, eyes open: the live site's 3D Bodie (`/js/bodie-v3.js`, awake, breathing) with an awake still (`site/img/arsenal/bodie-awake-750.webp`) for first paint, reduced motion and no WebGL. One gold button "Claim your free year" jumps to the form. The hero is short enough that the form's heading shows under it on a laptop, and on a phone the offer and button are in the first screen. Under 720px the fade runs top to bottom.
+3. The form (below), directly under the hero, on Arsenal's ground, with the three steps beside it (fill in the form, open the email, tap your link on your iPhone) and the fine print under it: "iPhone only. Free for 12 months, then $39.99 a year unless you cancel. Cancel any time in Settings > your name > Subscriptions." Link to `/privacy`.
+4. Letter from Collin on a warm card (`--card` #2D1E17, Source Serif 4), beside his photo, following the live site's "Hi, I'm Collin": the fact list and the "As seen on" line exactly as on the site, then why he built the app for performance and nervous system regulation and why Arsenal.
+5. At Arsenal, the partnership (Arsenal's ground): three of Arsenal's photos, cold plunge, sauna, training floor, each with one line on how to breathe there.
+6. What you get (GroundApp's ground): a year of Premium, five lines of what that includes, real app screens in the site's phone frames, four technique rows from the site's Library.
 7. Reviews (GroundApp's ground): "Rated 5.0 on the App Store, from 11 ratings." and the three reviews, word for word from the live site. Update the count when the site's changes.
-8. The form (below), on Arsenal's ground.
-9. Fine print: "iPhone only. Free for 12 months, then $39.99 a year unless you cancel. Cancel any time in Settings > your name > Subscriptions." Link to `/privacy`.
-10. Footer with both names.
+8. Closing band (Arsenal's ground): "Claim your free year" and one button back to the form.
+9. Footer with both names.
 
 Look:
 
