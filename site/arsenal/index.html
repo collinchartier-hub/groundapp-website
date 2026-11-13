@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Arsenal Health × GroundApp: a free year of Premium for members</title>
+<meta name="description" content="Arsenal Health members get a free year of GroundApp Premium. Claim your own code.">
+<meta property="og:title" content="Arsenal Health × GroundApp">
+<meta property="og:description" content="Arsenal members get a free year of GroundApp Premium.">
+<meta property="og:image" content="https://groundapp.live/img/arsenal/og.jpg">
+<meta property="og:url" content="https://groundapp.live/arsenal">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#000000">
+<link rel="icon" type="image/svg+xml" href="/lung-logo.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..800&display=swap">
+<link rel="preload" href="/assets/fonts/source-serif-4-latin-v1.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/ground-font-type-v1.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/ground-tokens-v1.css">
+<link rel="stylesheet" href="/assets/css/arsenal-v1.css">
+<script type="importmap">{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/+esm",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/" } }</script>
+<link rel="modulepreload" href="/js/bodie-v3.js">
+<script type="module" src="/assets/js/arsenal-bodie-v1.js"></script>
+</head>
+<body class="ax">
+<a class="ax-skip" href="#claim">Skip to the form</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="ax-i-play" viewBox="0 0 24 24"><path fill="currentColor" d="M8 5.5v13a1 1 0 0 0 1.52.85l10.4-6.5a1 1 0 0 0 0-1.7L9.52 4.65A1 1 0 0 0 8 5.5z"/></symbol>
+  <symbol id="ax-i-star" viewBox="0 0 16 16"><path fill="currentColor" d="M8 .8l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5L.8 6.1l5-.7z"/></symbol>
+</svg>
+
+<!-- 1. Lockup over the hero -->
+<header class="ax-top">
+  <div class="ax-top-a">
+    <img class="ax-wordmark" src="/img/arsenal/arsenal-health-wordmark-white.png" alt="Arsenal Health" width="400" height="45">
+  </div>
+  <span class="ax-x" aria-hidden="true">×</span>
+  <div class="ax-top-g">
+    <span class="ax-ga"><img src="/lung-logo.svg" alt="" width="32" height="32"><span>GroundApp</span></span>
+  </div>
+</header>
+
+<main>
+  <!-- Hero, "Bodie in the gym": Arsenal's floor wide and brighter, Bodie turned up on it -->
+  <section class="ax-hero ax-hero-3" aria-labelledby="ax-h1-3">
+    <div class="ax-hero-bg" aria-hidden="true">
+      <img class="ax-hero-photo" src="/img/arsenal/arsenal-hero-dtc-floor-bright-1200.webp"
+           srcset="/img/arsenal/arsenal-hero-dtc-floor-bright-1200.webp 1200w, /img/arsenal/arsenal-hero-dtc-floor-bright-1920.webp 1920w"
+           sizes="100vw" width="1920" height="1280" alt="" fetchpriority="high">
+    </div>
+    <div class="ax-wrap ax-h3-grid">
+      <div class="ax-h3-copy">
+        <h1 class="ax-h1-serif" id="ax-h1-3">Your free year of GroundApp Premium.</h1>
+        <p class="ax-hero-sub ax-sans">Breathwork for performance and nervous system regulation, from Collin Chartier. On us for 12 months.</p>
+        <div class="ax-hero-cta">
+          <a class="ax-btn-gold" href="#claim">Claim your free year</a>
+          <p class="ax-hero-note">Free for 12 months. iPhone only.</p>
+        </div>
+      </div>
+      <div class="ax-h3-floor">
+        <div class="ax-slot ax-slot-3">
+          <!-- The one Bodie: awake still for first paint, live canvas on top once WebGL draws -->
+          <div class="ax-bodie" id="ax-bodie">
+            <img class="ax-bodie-still" src="/img/arsenal/bodie-awake-750.webp" alt="" width="750" height="930" fetchpriority="high">
+            <canvas id="ax-bodie-canvas" tabindex="0" role="button" hidden aria-label="Bodie, GroundApp's breathing companion, sitting on his cushion. Press and hold to breathe in, let go to breathe out."></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Claim form, with the steps beside it and the terms under it -->
+  <section class="ax-sec ax-claim" id="claim" aria-labelledby="ax-claim-h">
+    <div class="ax-wrap ax-claim-grid">
+      <div class="ax-form-card">
+        <h2 class="ax-h2 ax-form-h" id="ax-claim-h">Claim your <span class="ax-cy">free</span> year</h2>
+        <form id="claim-form" novalidate>
+          <div class="ax-row2">
+            <div class="ax-field">
+              <label for="cf-first">First name</label>
+              <input id="cf-first" name="first_name" type="text" autocomplete="given-name" maxlength="60" required>
+            </div>
+            <div class="ax-field">
+              <label for="cf-last">Last name</label>
+              <input id="cf-last" name="last_name" type="text" autocomplete="family-name" maxlength="60" required>
+            </div>
+          </div>
+          <div class="ax-field">
+            <label for="cf-email">Email</label>
+            <input id="cf-email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" required>
+          </div>
+          <fieldset class="ax-seg">
+            <legend>Your phone</legend>
+            <div class="ax-seg-row">
+              <label><input type="radio" name="device" value="iphone" checked> iPhone</label>
+              <label><input type="radio" name="device" value="android"> Android</label>
+            </div>
+          </fieldset>
+          <div class="ax-field">
+            <label for="cf-location">Your Arsenal location</label>
+            <select id="cf-location" name="location" required>
+              <option value="Arvada">Arvada</option>
+              <option value="DTC">DTC (Englewood)</option>
+            </select>
+          </div>
+          <div class="ax-checks">
+            <label class="ax-check"><input type="checkbox" name="member" required> I'm an Arsenal member</label>
+            <label class="ax-check"><input type="checkbox" name="newsletter"> Send me Collin's breathwork emails</label>
+          </div>
+          <div aria-hidden="true" style="position:absolute;left:-9999px"><label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAAGAEDKjpS4Wucji0" data-theme="dark"></div>
+          <button type="submit" class="ax-btn-cyan">Email me my code</button>
+          <noscript><p>Turn on JavaScript to claim your code, or email collin@groundapp.live.</p></noscript>
+          <p class="ax-under">One code per person. It's tied to your email and works once.</p>
+          <p id="claim-status" role="status" aria-live="polite"></p>
+        </form>
+        <div class="ax-terms">
+          <p>iPhone only. Free for 12 months, then $39.99 a year unless you cancel. Cancel any time in Settings &gt; your name &gt; Subscriptions.</p>
+          <p><a href="/privacy">Privacy</a></p>
+        </div>
+      </div>
+      <aside class="ax-how" aria-labelledby="ax-how-h">
+        <h2 class="ax-eyebrow" id="ax-how-h">How it works</h2>
+        <ol class="ax-steps">
+          <li><span class="ax-step-n" aria-hidden="true">01</span><h3>Fill in the form</h3><p>Name, email, your location.</p></li>
+          <li><span class="ax-step-n" aria-hidden="true">02</span><h3>Open the email</h3><p>Your own code and link arrive in seconds.</p></li>
+          <li><span class="ax-step-n" aria-hidden="true">03</span><h3>Tap your link on your iPhone</h3><p>The App Store opens with your code filled in.</p></li>
+        </ol>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 3. Letter from Collin (Arsenal ground, GroundApp card) -->
+  <section class="ax-sec ax-letter" aria-labelledby="ax-letter-h">
+    <div class="ax-wrap ax-letter-grid">
+      <figure class="ax-photo">
+        <img src="/media/v3/photos/collin-ironman-win-800.webp"
+             srcset="/media/v3/photos/collin-ironman-win-800.webp 800w, /media/v3/photos/collin-ironman-win-1600.webp 1600w"
+             sizes="(min-width: 900px) 40vw, 100vw" width="1600" height="1067" loading="lazy" decoding="async"
+             alt="Collin breaking the finish tape at IRONMAN Mont-Tremblant in 2022, arms raised, mouth open mid-yell.">
+        <figcaption>2022, IRONMAN Mont-Tremblant</figcaption>
+      </figure>
+      <article class="ax-card-letter">
+        <h2 id="ax-letter-h">Hi, I'm Collin.</h2>
+        <p>I created and developed GroundApp. I'm a performance breathwork coach.</p>
+        <div class="ax-facts">
+          <p class="ax-facts-lead">I spent my twenties as a pro triathlete.</p>
+          <ul class="ax-ticks">
+            <li>IRONMAN champion</li>
+            <li>PTO US Open winner</li>
+            <li>Raced for Team USA</li>
+            <li>Ran 2,000 miles from Boulder to the Lincoln Memorial for the Herren Project, summer 2026</li>
+          </ul>
+          <p class="ax-press"><span class="ax-press-label">As seen on</span> NBC Washington, FOX 5 DC, ABC7, The Washington Times, Colorado's CW2, Triathlete, The New York Times</p>
+        </div>
+        <p>Racing taught me that fitness is only half of it. The other half is your nervous system: whether you can stay calm when it counts, and whether you can come back down after.</p>
+        <p>Your breath is the one part of that system you can steer on purpose. I built GroundApp to make that simple. You check in, say how you feel, and it gives you the breathwork that fits.</p>
+        <p>Arsenal already gives you the cold plunge, the sauna and coaches who know your numbers. This is the tool you carry out the door. Your first year of Premium is on me.</p>
+        <div class="ax-sign">
+          <img src="/lung-logo.svg" alt="" width="48" height="48">
+          <div>
+            <p class="ax-sign-off">Breathe easy,<br>Collin</p>
+            <p class="ax-sign-who">Collin Chartier, founder of GroundApp</p>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- 4. At Arsenal (Arsenal ground, their photos) -->
+  <section class="ax-sec ax-at" aria-labelledby="ax-at-h">
+    <div class="ax-wrap">
+      <p class="ax-eyebrow">At Arsenal</p>
+      <h2 class="ax-h2" id="ax-at-h">Cold plunge. Sauna. Now your <span class="ax-cy">breath</span>.</h2>
+      <ul class="ax-at-cards">
+        <li>
+          <figure class="ax-at-card">
+            <img src="/img/arsenal/arsenal-cold-plunge-480.webp" srcset="/img/arsenal/arsenal-cold-plunge-480.webp 480w, /img/arsenal/arsenal-cold-plunge-800.webp 800w"
+                 sizes="(min-width: 900px) 390px, (min-width: 720px) 30vw, 100vw" width="800" height="1000" loading="lazy" decoding="async"
+                 alt="A man sits in an outdoor cold plunge tub at Arsenal with his eyes closed and his hands clasped.">
+            <figcaption>In the cold: long, slow exhales.</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure class="ax-at-card">
+            <img src="/img/arsenal/arsenal-sauna-480.webp" srcset="/img/arsenal/arsenal-sauna-480.webp 480w, /img/arsenal/arsenal-sauna-800.webp 800w"
+                 sizes="(min-width: 900px) 390px, (min-width: 720px) 30vw, 100vw" width="800" height="1000" loading="lazy" decoding="async"
+                 alt="A woman sits smiling on the bench inside Arsenal's wooden barrel sauna.">
+            <figcaption>In the heat: breathe low and easy.</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure class="ax-at-card">
+            <img src="/img/arsenal/arsenal-group-training-480.webp" srcset="/img/arsenal/arsenal-group-training-480.webp 480w, /img/arsenal/arsenal-group-training-800.webp 800w"
+                 sizes="(min-width: 900px) 390px, (min-width: 720px) 30vw, 100vw" width="800" height="1000" loading="lazy" decoding="async"
+                 alt="Members stand around a coach at the whiteboard on the Arsenal training floor before a class.">
+            <figcaption>Between sets: bring your heart rate down.</figcaption>
+          </figure>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 5. What you get (GroundApp ground) -->
+  <section class="ax-sec ax-ga-ground ax-get" aria-labelledby="ax-get-h">
+    <div class="ax-wrap ax-get-grid">
+      <div class="ax-get-copy">
+        <h2 class="ax-gh2" id="ax-get-h">A year of GroundApp Premium</h2>
+        <ul class="ax-ticks ax-get-list">
+          <li>40+ breathing techniques, each with a practice guide</li>
+          <li>Guided sessions in Collin's voice</li>
+          <li>Advanced O2 and CO2 tables for breath-hold training (dry land only)</li>
+          <li>Live heart rate and HRV from your strap, Whoop or Garmin</li>
+          <li>Apple Watch app and Apple Health</li>
+        </ul>
+        <ul class="ax-techs" aria-label="Four techniques from the Library">
+          <li class="ax-tech"><span class="ax-tech-go" aria-hidden="true"><svg><use href="#ax-i-play"/></svg></span><span class="ax-tech-name">Box breathing</span><span class="ax-tech-line">4-4-4-4, a 16-second breath.</span><span class="ax-free">Free</span></li>
+          <li class="ax-tech"><span class="ax-tech-go" aria-hidden="true"><svg><use href="#ax-i-play"/></svg></span><span class="ax-tech-name">4-7-8 breathing</span><span class="ax-tech-line">4-7-8, a 19-second breath.</span></li>
+          <li class="ax-tech"><span class="ax-tech-go" aria-hidden="true"><svg><use href="#ax-i-play"/></svg></span><span class="ax-tech-name">Physiological sigh</span><span class="ax-tech-line">Two short inhales, one long exhale.</span></li>
+          <li class="ax-tech is-on"><span class="ax-tech-go" aria-hidden="true"><svg><use href="#ax-i-play"/></svg></span><span class="ax-tech-name">Resonance breathing</span><span class="ax-tech-line">Even in, even out.</span></li>
+        </ul>
+      </div>
+      <div class="ax-shots">
+        <div class="ax-phone">
+          <img src="/media/v3/shots/02-home-480.webp" srcset="/media/v3/shots/02-home-480.webp 480w, /media/v3/shots/02-home-960.webp 960w" sizes="(min-width: 1024px) 250px, 42vw"
+               alt="GroundApp Home: Bodie on his disc under a Good evening check-in card, with Resonance picked and a Start button." width="480" height="1043" loading="lazy" decoding="async">
+        </div>
+        <div class="ax-phone">
+          <img src="/media/v3/shots/03-player-480.webp" srcset="/media/v3/shots/03-player-480.webp 480w, /media/v3/shots/03-player-960.webp 960w" sizes="(min-width: 1024px) 250px, 42vw"
+               alt="GroundApp session player: Bodie on his disc with the cue Breathe in, Resonance at a 6 second pace." width="480" height="1043" loading="lazy" decoding="async">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Reviews (GroundApp ground), word for word from the App Store -->
+  <section class="ax-sec ax-ga-ground ax-reviews" aria-labelledby="ax-rev-h">
+    <div class="ax-wrap">
+      <div class="ax-rev-head">
+        <h2 class="ax-gh2" id="ax-rev-h">Rated 5.0 on the App&nbsp;Store, from 11 ratings.</h2>
+        <p class="ax-stars" role="img" aria-label="5 out of 5 stars"><svg aria-hidden="true"><use href="#ax-i-star"/></svg><svg aria-hidden="true"><use href="#ax-i-star"/></svg><svg aria-hidden="true"><use href="#ax-i-star"/></svg><svg aria-hidden="true"><use href="#ax-i-star"/></svg><svg aria-hidden="true"><use href="#ax-i-star"/></svg></p>
+        <p class="ax-rev-sub">Three reviews, word for word.</p>
+      </div>
+      <div class="ax-rev-grid">
+        <figure class="ax-rev ax-rev-big">
+          <p class="ax-rev-title">Perfect for those stressful moments</p>
+          <blockquote class="ax-quote">&ldquo;I've tried a lot of meditation and breathing apps, but GroundApp stands out because of how simple and intentional it feels. The design is calming, the guided breathing exercises are easy to follow, and it's become a tool I actually use when I'm feeling stressed, overwhelmed, or need to reset during the day.&rdquo;</blockquote>
+          <figcaption><b>Fr&aelig;nkie</b>, App Store review</figcaption>
+        </figure>
+        <figure class="ax-rev">
+          <p class="ax-rev-title">Breath work</p>
+          <blockquote class="ax-quote">&ldquo;I run it in my vehicle between appointments, and it's been a game&nbsp;changer for staying focused, grounded, and mentally sharp throughout the day. The guided breathwork is simple but extremely effective, whether I need to reset, boost energy, or calm down.&rdquo;</blockquote>
+          <figcaption><b>okh78</b>, App Store review</figcaption>
+        </figure>
+        <figure class="ax-rev">
+          <p class="ax-rev-title">Box breathing at your convenience</p>
+          <blockquote class="ax-quote">&ldquo;Designed by a master in the practice! Really helped me down regulate before bed&rdquo;</blockquote>
+          <figcaption><b>Jshehebd</b>, App Store review</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Closing band (Arsenal ground) -->
+  <section class="ax-sec ax-close" aria-labelledby="ax-close-h">
+    <div class="ax-wrap">
+      <h2 class="ax-h2" id="ax-close-h">Claim your <span class="ax-cy">free</span> year</h2>
+      <a class="ax-btn-cyan ax-btn-pill" href="#claim">Get my code</a>
+    </div>
+  </section>
+</main>
+
+<!-- 8. Footer -->
+<footer class="ax-foot">
+  <div class="ax-wrap ax-foot-row">
+    <p class="ax-lockup">
+      <img class="ax-wordmark" src="/img/arsenal/arsenal-health-wordmark-white.png" alt="Arsenal Health" width="400" height="45">
+      <span class="ax-x" aria-hidden="true">×</span>
+      <span class="ax-ga"><img src="/lung-logo.svg" alt="" width="28" height="28"><span>GroundApp</span></span>
+    </p>
+    <p class="ax-copy">© 2026 GroundApp, by Collin Chartier. In partnership with Arsenal Health.</p>
+  </div>
+</footer>
+
+<script src="/assets/js/arsenal-v1.js" defer></script>
+</body>
+</html>

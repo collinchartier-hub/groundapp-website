@@ -28,3 +28,10 @@ https://:project.groundapp.pages.dev/*
 # Web fonts for the welcome email (mail apps load them cross-origin)
 /assets/fonts/*
   Access-Control-Allow-Origin: *
+
+# Partner page and member links: shared by link only
+/arsenal
+  X-Robots-Tag: noindex
+
+/arsenal/*
+  X-Robots-Tag: noindex

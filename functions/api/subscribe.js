@@ -2,8 +2,9 @@
 // Saves a signup to the shared Supabase list (newsletter_subscribers) and sends the
 // GroundApp welcome email through Resend the moment someone signs up. People already on the list
 // (imports, earlier signups) get it too, at most once a day so the form can't flood an inbox.
-import { json, supabase, unsubscribeUrl, sha256Hex } from '../../lib/util.js';
+import { json, unsubscribeUrl, sha256Hex } from '../../lib/util.js';
 import { renderWelcome } from '../../lib/welcome.js';
+import { upsertSubscriber, stampEmailed } from '../../lib/list.js';
 
 const SOURCES = new Set(['popup', 'inline', 'atlas-coherence', 'atlas-three-part-breath', 'atlas-alternate-nostril', 'blog', '404']);
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -32,44 +33,12 @@ export async function onRequestPost({ request, env }) {
   const source = `groundapp_site:${SOURCES.has(body.source) ? body.source : 'other'}`;
 
   try {
-    const q = encodeURIComponent(email);
-    const [existing, unsub] = await Promise.all([
-      supabase(env, `newsletter_subscribers?email=eq.${q}&select=id,status,first_name,last_emailed_at`),
-      supabase(env, `newsletter_unsubscribed?email=eq.${q}&select=email`),
-    ]);
-    if (!existing.ok || !unsub.ok) throw new Error(`lookup failed ${existing.status}/${unsub.status}`);
-
-    const row = existing.data[0];
-    const wasUnsubscribed = unsub.data.length > 0;
-    let shouldWelcome = false;
-
-    if (!row) {
-      const ins = await supabase(env, 'newsletter_subscribers', {
-        method: 'POST',
-        prefer: 'return=minimal',
-        body: { email, first_name: firstName, source, status: 'active' },
-      });
-      if (ins.status === 409) return json({ ok: true, status: 'already' }); // lost a race with a double submit
-      if (!ins.ok) throw new Error(`insert failed ${ins.status} ${JSON.stringify(ins.data)}`);
-      shouldWelcome = true;
-    } else if (row.status !== 'active' || wasUnsubscribed) {
-      // Imported, bounced or unsubscribed earlier, and now opting in on purpose.
-      const patch = { status: 'active' };
-      if (!row.first_name && firstName) patch.first_name = firstName;
-      const upd = await supabase(env, `newsletter_subscribers?id=eq.${row.id}`, { method: 'PATCH', prefer: 'return=minimal', body: patch });
-      if (!upd.ok) throw new Error(`reactivate failed ${upd.status}`);
-      shouldWelcome = true;
-    } else if (!emailedWithinADay(row.last_emailed_at)) {
-      shouldWelcome = true;
-    }
-
-    if (wasUnsubscribed) await supabase(env, `newsletter_unsubscribed?email=eq.${q}`, { method: 'DELETE' });
-    if (!shouldWelcome) return json({ ok: true, status: 'already' });
+    const { state, row } = await upsertSubscriber(env, { email, firstName, source });
+    if (state === 'race') return json({ ok: true, status: 'already' });
+    if (state === 'active' && emailedWithinADay(row.last_emailed_at)) return json({ ok: true, status: 'already' });
 
     const sent = await sendWelcome(env, email, firstName || row?.first_name || null);
-    if (sent) {
-      await supabase(env, `newsletter_subscribers?email=eq.${q}`, { method: 'PATCH', prefer: 'return=minimal', body: { last_emailed_at: new Date().toISOString() } });
-    }
+    if (sent) await stampEmailed(env, email);
     return json({ ok: true, status: 'subscribed' });
   } catch (err) {
     console.error('subscribe error', err?.message || err);
