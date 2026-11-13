@@ -47,6 +47,20 @@ test('an admin resend gets a fresh idempotency key and no reminder', async () =>
   assert.notEqual(sends()[1].headers['idempotency-key'], originalKey);
 });
 
+test('AION delivery uses its own email copy and redemption link', async () => {
+  const sent = await sendForClaim(env, 'aion', claim, { withNudge: false });
+  assert.equal(sent.ok, true);
+  assert.ok(sends()[0].body.html.includes('AION builds your strength and your engine.'));
+  assert.ok(sends()[0].body.html.includes('https://groundapp.live/aion/r/abcdefghijklmnopqrstuv'));
+  assert.ok(!sends()[0].body.html.includes('Arsenal'));
+});
+
+test('unknown partner does not send a member email', async () => {
+  assert.deepEqual(await sendForClaim(env, 'missing', claim, { withNudge: true }),
+    { ok: false, id: null, error: 'unknown partner', nudgeId: null });
+  assert.equal(calls.length, 0);
+});
+
 test('a failed reminder is logged while the member email still succeeds', async () => {
   nudgeStatus = 500;
   const sent = await sendForClaim(env, 'arsenal', claim, { withNudge: true });

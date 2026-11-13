@@ -1,0 +1,731 @@
+/* groundapp.live/aion: AION × GroundApp partner page, plus the member-link page (body.ax-redeem).
+   A sibling of arsenal-v1.css: same structure and class names, AION's ground restyled from aiontraining.co
+   (black and white, Helvetica Neue caps, Courier mono bracket labels, square outlined buttons, no accent colour).
+   GroundApp's parts (the hero's warm side and Bodie, the letter card, What you get, Reviews) use
+   ground-tokens-v1.css, the only other stylesheet the page links. */
+
+:root {
+  --ai-black: #000000;
+  --ai-white: #ffffff;
+  --ai-off: #f8f7f5;             /* AION's light sections */
+  --ai-warm: #fffaf2;            /* AION's photo-card headlines */
+  --ai-text: #ffffff;
+  --ai-text-2: #c4c4c4;          /* 12.5:1 on black */
+  --ai-muted: #a3a3a3;           /* 8.3:1 on black */
+  --ai-ink-2: #555555;           /* 7.0:1 on the off-white */
+  --ai-line: #333333;            /* rules and card edges on black */
+  --ai-field: #707070;           /* field outline, 4.1:1 on black */
+  --ai-head: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --ai-mono: "Courier New", Courier, "Nimbus Mono PS", monospace;
+  --ai-body: Inter, -apple-system, system-ui, "Segoe UI", sans-serif;
+  --ax-max: 1216px;
+  --ax-pad: 32px;
+  --ax-sec-pad: clamp(72px, 8.5vw, 128px);
+  --ax-ga-radius: 24px;          /* GroundApp's cards keep their round corners; AION's pieces are square */
+  --ax-seam: clamp(28px, 4.4vw, 72px);
+  --ax-top-h: 96px;
+  color-scheme: dark;
+}
+
+/* ---------- base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+body.ax, body.ax-redeem {
+  margin: 0;
+  background: var(--ai-black);
+  color: var(--ai-text);
+  font: 400 16px/1.5 var(--ai-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
+}
+.ax img { max-width: 100%; }
+:where(.ax) :where(h1, h2, h3, p, figure, ul, ol) { margin: 0; }
+:where(.ax) :where(ul, ol) { padding: 0; list-style: none; }
+:where(.ax) a { color: inherit; }
+:where(.ax) [hidden] { display: none !important; }
+:where(.ax, .ax-redeem) :focus-visible { outline: 2px solid var(--ai-white); outline-offset: 3px; }
+.ax-light :focus-visible { outline-color: var(--ai-black); }
+#claim { scroll-margin-top: 24px; }
+
+.ax-skip {
+  position: absolute; left: 16px; top: -100px; z-index: 10;
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px;
+  background: var(--ai-white); color: var(--ai-black);
+  font: 700 13px/1 var(--ai-mono); letter-spacing: 1px; text-transform: uppercase; text-decoration: none;
+}
+.ax-skip:focus { top: 16px; }
+
+.ax-wrap { width: min(100% - 2 * var(--ax-pad), var(--ax-max)); margin-inline: auto; }
+.ax-center { text-align: center; }
+
+/* AION type: mono bracket labels, Helvetica caps headlines */
+.ax-label {
+  margin-bottom: 18px;
+  color: var(--ai-text-2);
+  font: 400 13px/1.4 var(--ai-mono);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.ax-h2 {
+  color: var(--ai-white);
+  font: 800 clamp(2.25rem, 1rem + 4vw, 4.5rem)/0.95 var(--ai-head);
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+/* ---------- 1. lockup: floats over the hero blend ---------- */
+.ax-top {
+  position: absolute; top: 0; left: 0; right: 0; z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: var(--ax-top-h);
+}
+.ax-top-a, .ax-top-g { display: flex; align-items: center; }
+.ax-top-a { justify-content: flex-end; padding-right: var(--ax-seam); }
+.ax-top-g { padding-left: var(--ax-seam); }
+.ax-aion {
+  display: inline-flex; align-items: center; gap: 12px;
+  color: var(--ai-white);
+  font: 800 24px/1 var(--ai-head);
+  letter-spacing: 0.16em;
+  margin-right: -0.16em; /* the tracking after the last letter would push the word off the seam */
+  white-space: nowrap;
+}
+.ax-aion-mark { display: block; width: auto; height: 34px; }
+.ax-x { color: var(--ai-white); font: 300 34px/1 var(--ai-head); }
+.ax-top .ax-x { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -54%); }
+.ax-ga {
+  display: inline-flex; align-items: center; gap: 10px;
+  color: var(--text, #e8ddd0);
+  font: 600 23px/1 var(--font-text, "Ground Font Type", system-ui, sans-serif);
+  white-space: nowrap;
+}
+.ax-ga img { width: 32px; height: 32px; flex: none; }
+
+/* ---------- hero: "Bodie at AION" ----------
+   Layers, back to front: GroundApp's Obsidian ground, AION's gym photo (black and white, tone-mapped) masked so it
+   dissolves into it to the left and below, a fade to AION's black at the bottom that lands on the form, then the
+   content. The type sits where the photo has faded out. */
+.ax-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  display: flex;
+  align-items: center;
+  min-height: clamp(560px, calc(100svh - 200px), 720px);
+  padding: var(--ax-top-h) 0 clamp(64px, 7vw, 104px);
+  background: var(--bg);
+}
+.ax-hero > .ax-wrap { position: relative; }
+.ax-hero-bg { position: absolute; inset: 0; z-index: -2; }
+.ax-hero-photo { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 58% 50%; }
+.ax-hero::after {
+  content: "";
+  position: absolute; left: 0; right: 0; bottom: 0;
+  height: clamp(80px, 13vh, 140px);
+  z-index: -1;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0), var(--ai-black));
+}
+
+/* the one Bodie: a 2.5 / 3.1 box, the awake still under the live canvas */
+.ax-slot { position: relative; aspect-ratio: 2.5 / 3.1; }
+.ax-bodie { position: absolute; inset: 0; }
+.ax-bodie-still, .ax-bodie canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.ax-bodie-still { object-fit: contain; }
+.ax-bodie canvas { opacity: 0; cursor: grab; outline-offset: -4px; transition: opacity 400ms ease; }
+.ax-bodie canvas.is-live { opacity: 1; }
+.ax-bodie canvas:active { cursor: grabbing; }
+.ax-bodie.is-live .ax-bodie-still { visibility: hidden; transition: visibility 0s linear 400ms; }
+
+.ax-hero-sub { margin-top: 24px; color: var(--text); }
+.ax-hero-sub.ax-sans { max-width: 31em; font: 400 clamp(17px, 0.95rem + 0.3vw, 19px)/1.55 var(--ai-body); }
+.ax-hero-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 22px; margin-top: 32px; }
+.ax-btn-gold {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 56px; padding: 0 32px;
+  border-radius: var(--radius-button);
+  background: var(--gold); color: var(--on-gold);
+  font: 600 18px/1.2 var(--font-text);
+  text-decoration: none;
+  transition: background-color 150ms ease;
+}
+.ax-btn-gold:focus-visible { outline-color: var(--gold); }
+.ax-hero-note { color: #d5c7b8; font: 400 16px/1.5 var(--font-text); }
+
+.ax-hero-3 .ax-hero-bg {
+  -webkit-mask-image: linear-gradient(90deg, transparent 30%, #000 76%), linear-gradient(180deg, #000 52%, transparent 97%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(90deg, transparent 30%, #000 76%), linear-gradient(180deg, #000 52%, transparent 97%);
+  mask-composite: intersect;
+}
+/* AION's built gym: the coaches stand left of Bodie, the plate wall to his right; the wider fade keeps them off the headline */
+.ax-hero-3 .ax-hero-photo { object-position: 60% 66%; }
+/* the lockup sits on the ceiling light: keep it dark up there */
+.ax-hero-3 .ax-hero-bg::after {
+  content: "";
+  position: absolute; left: 0; right: 0; top: 0;
+  height: calc(var(--ax-top-h) + 80px);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0));
+}
+.ax-h3-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+  gap: clamp(24px, 4vw, 64px);
+  align-items: center;
+}
+.ax-h1-serif {
+  max-width: 9.5em;
+  color: var(--text);
+  font: 400 clamp(2.75rem, 1.4rem + 3.9vw, 5.25rem)/1.04 var(--font-display);
+  font-variation-settings: "opsz" 60;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.ax-h3-floor { position: relative; justify-self: center; width: min(100%, 284px); margin-top: clamp(24px, 4vw, 64px); }
+/* a pool of his own ground under the disc, so he reads as sitting on the floor, not pasted over it */
+.ax-h3-floor::before {
+  content: "";
+  position: absolute; left: 50%; bottom: -5%;
+  width: 175%; height: 34%;
+  translate: -50% 0;
+  z-index: -1;
+  background: radial-gradient(closest-side, rgba(104, 70, 46, 0.9), rgba(70, 48, 33, 0.72) 50%, rgba(26, 17, 14, 0));
+}
+
+/* ---------- sections: AION black, AION off-white (hard edges), GroundApp Obsidian (faded in and out) ---------- */
+.ax-sec > .ax-wrap { padding-block: var(--ax-sec-pad); }
+.ax-sec:not(.ax-ga-ground):not(.ax-light) + .ax-sec:not(.ax-ga-ground):not(.ax-light) > .ax-wrap { border-top: 1px solid var(--ai-line); }
+.ax-ga-ground {
+  --ax-band-fade: clamp(96px, 11vw, 176px);
+  color: var(--text-2);
+  font-family: var(--font-text);
+  background: linear-gradient(180deg,
+    var(--ai-black) 0, var(--bg) var(--ax-band-fade),
+    var(--bg) calc(100% - var(--ax-band-fade)), var(--ai-black) 100%);
+}
+.ax-gh2 {
+  color: var(--text);
+  font: 400 clamp(2.25rem, 1.4rem + 2.6vw, 3.5rem)/1.08 var(--font-display);
+  font-variation-settings: "opsz" 60;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+/* GroundApp's list mark: a small gold dot (site .ticks) */
+.ax-ticks li { position: relative; padding-left: 22px; }
+.ax-ticks li + li { margin-top: 10px; }
+.ax-ticks li::before {
+  content: "";
+  position: absolute; left: 0; top: 0.66em;
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--gold);
+}
+
+/* ---------- 2. claim: AION's square card, the steps beside it, the terms under the button ---------- */
+.ax-claim > .ax-wrap { padding-top: clamp(12px, 2vw, 32px); }
+.ax-claim-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+  gap: clamp(32px, 5vw, 80px);
+  align-items: start;
+}
+.ax-form-card {
+  padding: clamp(28px, 4vw, 52px);
+  border: 1px solid var(--ai-white);
+  background: var(--ai-black);
+}
+.ax-form-h { margin-bottom: 32px; font-size: clamp(2rem, 1rem + 2.2vw, 2.875rem); }
+#claim-form { display: flex; flex-direction: column; gap: 22px; }
+.ax-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.ax-field { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.ax-field > label, .ax-seg legend {
+  color: var(--ai-text-2);
+  font: 400 13px/1.4 var(--ai-mono);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.ax-field input {
+  width: 100%;
+  min-height: 52px;
+  padding: 0 16px;
+  border: 1px solid var(--ai-field);
+  border-radius: 0;
+  background: var(--ai-black);
+  color: var(--ai-white);
+  font: 400 17px/1.2 var(--ai-body);
+  transition: border-color 150ms ease;
+}
+.ax-field input:focus-visible { border-color: var(--ai-white); outline-offset: 2px; }
+.ax-field [aria-invalid="true"] { border-color: var(--ai-white); border-style: dashed; box-shadow: inset 0 0 0 1px var(--ai-white); }
+
+.ax-seg { min-width: 0; margin: 0; padding: 0; border: 0; }
+.ax-seg legend { padding: 0; margin-bottom: 8px; }
+.ax-seg-row { display: grid; grid-template-columns: 1fr 1fr; max-width: 360px; border: 1px solid var(--ai-field); }
+.ax-seg-row label {
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  min-height: 50px; padding: 0 20px;
+  color: var(--ai-text-2);
+  font: 700 13px/1 var(--ai-mono);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+.ax-seg-row label + label { border-left: 1px solid var(--ai-field); }
+.ax-seg-row input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.ax-seg-row label:has(:checked) { background: var(--ai-white); color: var(--ai-black); }
+.ax-seg-row label:has(:focus-visible) { outline: 2px solid var(--ai-white); outline-offset: 3px; z-index: 1; }
+
+.ax-checks { display: flex; flex-direction: column; gap: 4px; }
+.ax-check {
+  display: flex; align-items: center; gap: 14px;
+  min-height: 44px;
+  color: var(--ai-white);
+  font: 400 16px/1.4 var(--ai-body);
+  cursor: pointer;
+}
+.ax-check input {
+  -webkit-appearance: none; appearance: none;
+  flex: none;
+  width: 22px; height: 22px; margin: 0;
+  border: 1.5px solid var(--ai-white);
+  border-radius: 0;
+  background: var(--ai-black) center / 16px no-repeat;
+  cursor: pointer;
+}
+.ax-check input:checked {
+  background-color: var(--ai-white);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='square'%3E%3Cpath d='m3.5 8.4 2.9 2.9 6.1-6.6'/%3E%3C/svg%3E");
+}
+.ax-check input[aria-invalid="true"] { border-style: dashed; outline: 1px solid var(--ai-white); outline-offset: 2px; }
+
+.cf-turnstile { min-height: 65px; }
+
+/* the one filled button on AION's ground */
+.ax-btn-solid {
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; min-height: 56px; padding: 0 24px;
+  border: 1px solid var(--ai-white); border-radius: 0;
+  background: var(--ai-white); color: var(--ai-black);
+  font: 700 15px/1.2 var(--ai-mono);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+.ax-btn-solid:disabled { opacity: 0.6; cursor: default; }
+.ax-under { margin-top: -8px; color: var(--ai-muted); font-size: 14px; line-height: 1.5; text-align: center; }
+.ax-claim noscript p { color: var(--ai-text-2); font-size: 14px; text-align: center; }
+
+#claim-status { font: 700 16px/1.5 var(--ai-body); }
+#claim-status:empty { display: block; height: 0; margin-top: -22px; }
+#claim-status.is-ok, #claim-status.is-error { padding: 14px 18px; border: 1px solid var(--ai-white); }
+#claim-status.is-ok { color: var(--ai-white); }
+#claim-status.is-error { background: var(--ai-white); color: var(--ai-black); } /* no accent colour on AION's ground: errors invert */
+
+/* the terms, directly under the button */
+.ax-terms {
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid var(--ai-line);
+  color: var(--ai-muted);
+  font-size: 14px; line-height: 1.6;
+  text-align: center;
+}
+.ax-terms a {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 8px;
+  color: var(--ai-text-2);
+  font: 400 13px/1 var(--ai-mono);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: underline; text-underline-offset: 4px;
+}
+
+.ax-how { padding-top: clamp(28px, 4vw, 56px); }
+.ax-how .ax-label { margin-bottom: 4px; }
+.ax-steps { display: grid; }
+.ax-steps li {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  column-gap: 12px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--ai-line);
+}
+.ax-step-n {
+  grid-row: 1 / 3;
+  color: var(--ai-white);
+  font: 800 26px/1 var(--ai-head);
+  font-variant-numeric: tabular-nums;
+}
+.ax-steps h3 {
+  margin: 0 0 6px;
+  color: var(--ai-white);
+  font: 700 16px/1.25 var(--ai-head);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.ax-steps p { color: var(--ai-text-2); font-size: 15px; line-height: 1.5; }
+
+/* ---------- 3. letter (AION black, GroundApp card) ---------- */
+.ax-letter-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 32px;
+  align-items: start;
+}
+.ax-photo { position: sticky; top: 32px; }
+.ax-photo img { display: block; width: 100%; height: auto; border: 1px solid var(--ai-line); background: #111111; }
+.ax-photo figcaption { margin-top: 12px; color: var(--ai-text-2); font: 400 13px/1.5 var(--ai-mono); letter-spacing: 1px; text-transform: uppercase; }
+
+.ax-card-letter {
+  padding: clamp(32px, 4.6vw, 72px);
+  border-radius: var(--ax-ga-radius);
+  background: var(--card);
+  color: var(--text);
+}
+.ax-card-letter h2 {
+  margin-bottom: 24px;
+  color: var(--text);
+  font: 400 clamp(2.5rem, 1.6rem + 2.4vw, 3.5rem)/1.05 var(--font-display);
+  font-variation-settings: "opsz" 60;
+  letter-spacing: -0.01em;
+}
+.ax-card-letter > p {
+  max-width: 34em;
+  font: 400 clamp(1.125rem, 1rem + 0.35vw, 1.3125rem)/1.6 var(--font-display);
+  font-variation-settings: "opsz" 20;
+}
+.ax-card-letter > p + p { margin-top: 1em; }
+.ax-facts {
+  margin: 28px 0 32px;
+  padding: 24px 0;
+  border-block: 1px solid rgba(168, 149, 133, 0.2);
+  font: 400 17px/1.55 var(--font-text);
+}
+.ax-facts-lead { margin-bottom: 12px; color: var(--text-2); }
+.ax-facts .ax-ticks li { color: var(--text); }
+.ax-press { margin-top: 18px; color: var(--text-2); font-size: 15px; line-height: 1.6; }
+.ax-press-label { margin-right: 6px; color: var(--text); font-weight: 600; }
+.ax-sign {
+  display: flex; align-items: center; gap: 18px;
+  margin-top: 40px; padding-top: 32px;
+  border-top: 1px solid rgba(168, 149, 133, 0.2);
+}
+.ax-sign img { width: 48px; height: 48px; flex: none; }
+.ax-sign-off {
+  color: var(--text);
+  font: 400 28px/1.15 var(--font-display);
+  font-variation-settings: "opsz" 60;
+}
+.ax-sign-who { margin-top: 8px; color: var(--text-2); font: 400 15px/1.4 var(--font-text); }
+
+/* ---------- 4. at AION: off-white ground, square photo tiles with warm-white caps, the ticker ---------- */
+.ax-light { background: var(--ai-off); color: var(--ai-black); }
+.ax-light .ax-label { color: var(--ai-ink-2); }
+.ax-light .ax-h2 { color: var(--ai-black); }
+.ax-at > .ax-wrap { padding-bottom: clamp(56px, 6vw, 88px); }
+.ax-at .ax-h2 { max-width: 12em; margin-bottom: clamp(36px, 4.5vw, 56px); }
+.ax-at-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.ax-at-card { position: relative; height: 100%; overflow: hidden; background: #111111; }
+.ax-at-card img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; }
+.ax-at-card figcaption {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  padding: 72px 24px 24px;
+  /* the caption always sits on at least 78% black, whatever the photo does underneath */
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.78) 48%, rgba(0, 0, 0, 0.88));
+  color: var(--ai-warm);
+  font: 800 clamp(17px, 0.9rem + 0.45vw, 21px)/1.08 var(--ai-head);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.ax-ticker { overflow: hidden; background: var(--ai-black); color: var(--ai-white); }
+.ax-ticker-track {
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  width: 100%;
+  margin: 0;
+  padding: 14px 0;
+  font: 800 15px/1.2 var(--ai-head);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.ax-ticker-track span { flex-shrink: 0; }
+
+/* ---------- 5. what you get (GroundApp ground) ---------- */
+.ax-get-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: clamp(40px, 6vw, 96px);
+  align-items: center;
+}
+.ax-get-list { margin-top: 32px; color: var(--text); font: 400 19px/1.5 var(--font-text); }
+
+/* the Library's technique rows (site .tech), shown still */
+.ax-techs { display: grid; gap: 10px; margin-top: 40px; }
+.ax-tech {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) auto;
+  grid-template-areas: "go name free" "go line free";
+  align-items: center;
+  gap: 0 16px;
+  min-height: 64px;
+  padding: 12px 18px 12px 14px;
+  border-radius: var(--radius-card);
+  background: var(--card);
+  color: var(--text-2);
+  font: 400 16px/1.4 var(--font-text);
+}
+.ax-tech.is-on { background: #3d2a1d; }
+.ax-tech-go {
+  grid-area: go;
+  display: grid; place-items: center;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.5px var(--gold);
+  color: var(--gold);
+}
+.ax-tech.is-on .ax-tech-go { background: var(--gold); color: var(--on-gold); }
+.ax-tech-go svg { width: 14px; height: 14px; margin-left: 2px; }
+.ax-tech-name { grid-area: name; color: var(--text); font-size: 18px; font-weight: 500; }
+.ax-tech-line { grid-area: line; }
+.ax-free { grid-area: free; display: inline-flex; align-items: center; gap: 6px; color: #a9b99d; font: 600 14px/1 var(--font-text); }
+.ax-free::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--sage); }
+
+/* phones as the site draws them (site .phone[data-ui]) */
+.ax-shots { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(16px, 2vw, 28px); align-items: start; }
+.ax-phone {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 588 / 1280;
+  overflow: hidden;
+  border: 7px solid #0b0705;
+  border-radius: clamp(30px, 3.4vw, 46px);
+  background: #120b09;
+}
+.ax-phone img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.ax-phone + .ax-phone { margin-top: 56px; }
+
+/* ---------- 6. reviews (GroundApp ground, site .rev) ---------- */
+.ax-rev-head { margin-bottom: clamp(32px, 4vw, 48px); }
+.ax-rev-head .ax-gh2 { max-width: 14em; }
+.ax-stars { display: flex; gap: 4px; margin: 16px 0 6px; color: var(--gold); }
+.ax-stars svg { width: 22px; height: 22px; }
+.ax-rev-sub { font-size: 17px; }
+.ax-rev-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  gap: 24px 32px;
+  align-items: start;
+}
+.ax-rev {
+  display: flex; flex-direction: column; gap: 14px;
+  padding: clamp(24px, 3vw, 40px);
+  border-radius: var(--radius-card);
+  background: var(--card);
+}
+.ax-rev-big { grid-row: 1 / 3; }
+.ax-rev-title { color: var(--text); font-weight: 600; font-size: 17px; }
+.ax-quote { margin: 0; color: var(--text); font: 400 20px/1.4 var(--font-display); }
+.ax-rev-big .ax-quote { font-size: clamp(24px, 1rem + 1.1vw, 30px); line-height: 1.3; }
+.ax-rev figcaption { font-size: 16px; }
+.ax-rev figcaption b { color: var(--text); font-weight: 600; }
+
+/* ---------- 7. closing band (AION black) ---------- */
+.ax-close .ax-wrap { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.ax-close .ax-h2 { margin-bottom: 36px; }
+/* AION's button: square, transparent, 1px white, mono caps with an arrow */
+.ax-btn-line {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 240px; min-height: 52px; padding: 16px 28px;
+  border: 1px solid var(--ai-white); border-radius: 0;
+  background: transparent; color: var(--ai-white);
+  font: 700 14px/1 var(--ai-mono);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+/* ---------- 8. footer ---------- */
+.ax-foot { border-top: 1px solid var(--ai-line); }
+.ax-foot-row {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px 40px;
+  padding: 40px 0 calc(40px + env(safe-area-inset-bottom));
+}
+.ax-lockup { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px 16px; }
+.ax-lockup > img { display: block; width: auto; height: 26px; }
+.ax-lockup .ax-aion { gap: 9px; font-size: 18px; }
+.ax-lockup .ax-aion-mark { height: 26px; }
+.ax-lockup .ax-x { font-size: 22px; }
+.ax-lockup .ax-ga { gap: 8px; font-size: 18px; }
+.ax-lockup .ax-ga img { width: 26px; height: 26px; }
+.ax-copy { color: var(--ai-muted); font-size: 14px; line-height: 1.5; }
+
+/* ---------- member-link page (laptop): body.ax-redeem > main.ax-redeem-card, AION's look ---------- */
+body.ax-redeem {
+  display: grid;
+  place-items: center;
+  min-height: 100svh;
+  padding: 32px 16px;
+}
+.ax-redeem-card {
+  width: min(100%, 520px);
+  padding: clamp(28px, 6vw, 48px);
+  border: 1px solid var(--ai-white);
+  background: var(--ai-black);
+  text-align: center;
+}
+.ax-redeem-card > * { margin: 0; }
+.ax-redeem-card .ax-lockup { margin-bottom: 36px; }
+.ax-redeem-card h1 {
+  margin-bottom: 16px;
+  color: var(--ai-white);
+  font: 800 clamp(1.875rem, 1.3rem + 2.4vw, 2.625rem)/0.98 var(--ai-head);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+.ax-redeem-card p { color: var(--ai-text-2); font-size: 16px; line-height: 1.6; }
+.ax-redeem-card p + p { margin-top: 12px; }
+.ax-qr {
+  width: min(100%, 252px);
+  margin: 28px auto;
+  padding: 16px;
+  background: #ffffff;
+}
+.ax-qr svg, .ax-qr img { display: block; width: 100%; max-width: 220px; height: auto; aspect-ratio: 1; margin: 0 auto; }
+.ax-redeem-card .ax-code {
+  display: inline-block;
+  max-width: 100%;
+  margin: 4px auto 20px;
+  padding: 12px 18px;
+  border: 1px solid var(--ai-white);
+  background: var(--ai-black);
+  color: var(--ai-white);
+  font: 700 clamp(18px, 4.6vw, 24px)/1.3 var(--ai-mono);
+  letter-spacing: 0.12em;
+  overflow-wrap: anywhere;
+}
+.ax-redeem-card a {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 44px; margin-top: 8px; padding: 0 4px;
+  color: var(--ai-white);
+  font: 700 13px/1 var(--ai-mono);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: underline; text-underline-offset: 4px;
+}
+
+/* ---------- hover (pointer devices only) ---------- */
+@media (hover: hover) and (pointer: fine) {
+  .ax-btn-gold:hover { background: var(--gold-2); }
+  .ax-btn-solid:hover:not(:disabled) { background: var(--ai-black); color: var(--ai-white); }
+  .ax-btn-line:hover { background: var(--ai-white); color: var(--ai-black); }
+  .ax-field input:hover { border-color: #a3a3a3; }
+  .ax-seg-row label:not(:has(:checked)):hover { color: var(--ai-white); }
+  .ax-terms a:hover, .ax-redeem-card a:hover { text-decoration-thickness: 2px; }
+}
+
+/* ---------- tablet ---------- */
+@media (max-width: 1023px) {
+  .ax-get-grid { grid-template-columns: 1fr; }
+  .ax-shots { max-width: 560px; width: 100%; margin-inline: auto; }
+  .ax-get-copy { max-width: 680px; }
+  .ax-claim-grid { grid-template-columns: 1fr; gap: 8px; }
+  .ax-how { padding-top: 24px; }
+  .ax-steps { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 24px; }
+  .ax-steps li { grid-template-columns: 1fr; align-content: start; border-bottom: 0; border-top: 1px solid var(--ai-line); }
+  .ax-step-n { grid-row: auto; margin-bottom: 12px; }
+}
+@media (max-width: 899px) {
+  .ax-letter-grid { grid-template-columns: 1fr; gap: 40px; }
+  .ax-photo { position: static; }
+  .ax-rev-grid { grid-template-columns: minmax(0, 1fr); }
+  .ax-rev-big { grid-row: auto; }
+  .ax-rev-big .ax-quote { font-size: 21px; }
+  .ax-at-card figcaption { padding: 56px 16px 16px; font-size: 15px; }
+}
+
+/* ---------- phone: the blend runs top to bottom ---------- */
+@media (max-width: 719px) {
+  :root { --ax-pad: 16px; --ax-top-h: 64px; --ax-seam: 18px; }
+
+  .ax-top .ax-aion { gap: 8px; font-size: 17px; }
+  .ax-top .ax-aion-mark { height: 24px; }
+  .ax-top .ax-x { font-size: 22px; }
+  .ax-top .ax-ga { gap: 7px; font-size: 17px; }
+  .ax-top .ax-ga img { width: 24px; height: 24px; }
+
+  .ax-hero { display: block; min-height: 0; padding: calc(var(--ax-top-h) + 20px) 0 40px; }
+  .ax-hero-3 .ax-hero-bg {
+    right: 0; bottom: auto; width: 100%; height: 380px;
+    -webkit-mask-image: linear-gradient(180deg, #000 40%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 40%, transparent 100%);
+  }
+  .ax-hero::after { height: 72px; }
+  .ax-hero-sub { margin-top: 0; }
+  .ax-hero-sub.ax-sans { font-size: 16px; }
+  .ax-hero-cta { flex-direction: column; align-items: stretch; gap: 12px; margin-top: 24px; text-align: center; }
+  .ax-btn-gold { width: 100%; }
+  .ax-hero-note { font-size: 15px; }
+
+  /* Bodie on the floor first, the serif line under him on Obsidian */
+  .ax-hero-3 { padding-top: calc(var(--ax-top-h) + 4px); }
+  .ax-hero-3 .ax-hero-photo { object-position: 100% 70%; }
+  .ax-h3-grid { display: flex; flex-direction: column; gap: 0; }
+  .ax-h3-floor { order: -1; width: 150px; margin: 0 0 20px auto; margin-right: 12%; }
+  .ax-h1-serif { font-size: 42px; line-height: 1.06; }
+  .ax-hero-3 .ax-hero-sub { margin-top: 16px; }
+
+  .ax-claim > .ax-wrap { padding-top: 8px; }
+  .ax-form-card { padding: 28px 20px 24px; }
+  .ax-form-h { margin-bottom: 28px; }
+  .ax-seg-row { max-width: none; }
+  .ax-steps { grid-template-columns: 1fr; }
+  .ax-steps li { grid-template-columns: 44px 1fr; padding: 18px 0; border-top: 0; border-bottom: 1px solid var(--ai-line); }
+  .ax-step-n { grid-row: 1 / 3; margin: 0; font-size: 22px; }
+
+  .ax-card-letter { padding: 32px 22px 28px; }
+  .ax-facts { font-size: 16px; }
+  .ax-sign { gap: 14px; }
+  .ax-sign img { width: 40px; height: 40px; }
+  .ax-sign-off { font-size: 24px; }
+
+  .ax-at-cards { grid-template-columns: 1fr; gap: 6px; }
+  .ax-at-card img { aspect-ratio: 4 / 3; }
+  .ax-at-cards li:nth-child(1) img { object-position: 50% 30%; }
+  .ax-at-cards li:nth-child(2) img { object-position: 50% 60%; }
+  .ax-at-card figcaption { padding: 56px 18px 18px; font-size: 18px; }
+  .ax-ticker-track { font-size: 13px; padding: 12px 0; }
+
+  .ax-get-list { font-size: 17px; }
+  .ax-tech { min-height: 60px; padding: 10px 14px 10px 12px; gap: 0 12px; }
+  .ax-tech-name { font-size: 17px; }
+  .ax-tech-line { font-size: 15px; }
+  .ax-phone + .ax-phone { margin-top: 40px; }
+  .ax-quote { font-size: 19px; }
+
+  .ax-btn-line { width: 100%; }
+  .ax-foot-row { flex-direction: column; text-align: center; }
+}
+@media (max-width: 479px) {
+  .ax-row2 { grid-template-columns: 1fr; gap: 22px; }
+  .ax-redeem-card .ax-lockup { flex-wrap: nowrap; gap: 10px; }
+  .ax-redeem-card .ax-lockup > img, .ax-redeem-card .ax-lockup .ax-aion-mark { height: 20px; }
+  .ax-redeem-card .ax-lockup .ax-aion { font-size: 15px; }
+  .ax-redeem-card .ax-lockup .ax-x { font-size: 18px; }
+  .ax-redeem-card .ax-lockup .ax-ga { gap: 6px; font-size: 16px; }
+  .ax-redeem-card .ax-lockup .ax-ga img { width: 22px; height: 22px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; }
+}

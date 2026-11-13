@@ -2,6 +2,7 @@
 import { test, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { onRequestGet } from '../functions/arsenal/r/[token].js';
+import { onRequestGet as onAionRequestGet } from '../functions/aion/r/[token].js';
 
 const env = { SUPABASE_URL: 'https://sb.example.co', SUPABASE_SERVICE_ROLE_KEY: 'sb_service', RESEND_API_KEY: 're_test' };
 const TOKEN = 'abcdefghijklmnopqrstuv';
@@ -35,13 +36,51 @@ const get = (token, ua) =>
     env,
     waitUntil: (p) => waited.push(p),
   });
+const getAion = (token, ua) =>
+  onAionRequestGet({
+    params: { token },
+    request: new Request(`https://groundapp.live/aion/r/${token}`, { headers: { 'user-agent': ua } }),
+    env,
+    waitUntil: (p) => waited.push(p),
+  });
+
+test('AION iPhone link redirects to Apple and counts its tap', async () => {
+  state.tap.partner = 'aion';
+  const res = await getAion(TOKEN, IPHONE);
+  assert.equal(res.status, 302);
+  assert.equal(res.headers.get('location'), APPLE);
+  assert.deepEqual(calls[0].body, { p_token: TOKEN, p_ios: true, p_partner: 'aion' });
+  await Promise.all(waited);
+  assert.ok(calls.some((c) => c.url.endsWith('/cancel')));
+});
+
+test('AION desktop page uses AION lockup, stylesheet, back link and QR link', async () => {
+  state.tap.partner = 'aion';
+  const res = await getAion(TOKEN, MAC);
+  assert.equal(res.status, 200);
+  assert.deepEqual(calls[0].body, { p_token: TOKEN, p_ios: false, p_partner: 'aion' });
+  const markup = await res.text();
+  assert.ok(markup.includes('AION × GroundApp'));
+  assert.ok(markup.includes('/assets/css/aion-v1.css'));
+  assert.ok(markup.includes('data-qr="https://groundapp.live/aion/r/abcdefghijklmnopqrstuv"'));
+  assert.ok(markup.includes('href="/aion"'));
+  assert.ok(markup.includes('/assets/js/partner-qr-v1.js'));
+});
+
+test('a token from the other partner is not found on either route', async () => {
+  state.tap = { found: false };
+  assert.equal((await getAion(TOKEN, IPHONE)).status, 404);
+  assert.deepEqual(calls[0].body, { p_token: TOKEN, p_ios: true, p_partner: 'aion' });
+  assert.equal((await get(TOKEN, IPHONE)).status, 404);
+  assert.deepEqual(calls[1].body, { p_token: TOKEN, p_ios: true, p_partner: 'arsenal' });
+});
 
 test('iPhone: counted, reminder cancelled, redirected to Apple', async () => {
   const res = await get(TOKEN, IPHONE);
   assert.equal(res.status, 302);
   assert.equal(res.headers.get('location'), APPLE);
   assert.equal(res.headers.get('cache-control'), 'no-store');
-  assert.deepEqual(calls[0].body, { p_token: TOKEN, p_ios: true });
+  assert.deepEqual(calls[0].body, { p_token: TOKEN, p_ios: true, p_partner: 'arsenal' });
   await Promise.all(waited);
   assert.ok(calls.some((c) => c.url === 'https://api.resend.com/emails/email_2/cancel' && c.method === 'POST'));
   assert.ok(calls.some((c) => c.method === 'PATCH' && c.url.includes('partner_claims?id=eq.c1') && c.body.nudge_email_id === null));
@@ -82,7 +121,7 @@ test('a second tap retries a reminder that still has an id', async () => {
 test('laptop: a page with the code and the link, not counted', async () => {
   const res = await get(TOKEN, MAC);
   assert.equal(res.status, 200);
-  assert.deepEqual(calls[0].body, { p_token: TOKEN, p_ios: false });
+  assert.deepEqual(calls[0].body, { p_token: TOKEN, p_ios: false, p_partner: 'arsenal' });
   const html = await res.text();
   assert.ok(html.includes('ABC123XYZ'));
   assert.ok(html.includes(`data-qr="https://groundapp.live/arsenal/r/${TOKEN}"`));
@@ -110,7 +149,15 @@ test('malformed token: 404 without calling the database', async () => {
   assert.equal(calls.length, 0);
 });
 
-test("another partner's token does not work here", async () => {
-  state.tap = { ...state.tap, partner: 'othergym' };
+test("another partner's token is not found here", async () => {
+  state.tap = { found: false };
   assert.equal((await get(TOKEN, IPHONE)).status, 404);
+  assert.deepEqual(calls[0].body, { p_token: TOKEN, p_ios: true, p_partner: 'arsenal' });
+});
+
+test('a mismatched RPC response is rejected as a second guard', async () => {
+  state.tap.partner = 'aion';
+  assert.equal((await get(TOKEN, IPHONE)).status, 404);
+  assert.deepEqual(calls[0].body, { p_token: TOKEN, p_ios: true, p_partner: 'arsenal' });
+  assert.equal(calls.filter((c) => c.url.endsWith('/cancel')).length, 0);
 });

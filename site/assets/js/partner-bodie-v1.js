@@ -1,5 +1,5 @@
-/* Live Bodie for groundapp.live/arsenal: the landing page's own 3D Bodie (/js/bodie-v3.js), awake and breathing
-   Resonance 6·6. The awake still (/img/arsenal/bodie-awake-750.webp) is the first paint and the fallback: it stays when
+/* Live Bodie for partner landing pages: the site's 3D Bodie (/js/bodie-v3.js), awake and breathing
+   Resonance 6·6. The page's awake still is the first paint and the fallback: it stays when
    the visitor asks for reduced motion, when WebGL is off, or when the module or three.js fails to load.
    Bodie is never started asleep and never set still: both give the bowed, eyes-shut pose. */
 const box = document.getElementById('ax-bodie');

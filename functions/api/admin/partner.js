@@ -1,5 +1,5 @@
 // /api/admin/partner (behind Cloudflare Access, see lib/access.js)
-// GET  ?slug=arsenal                          everything the Partners panel shows
+// GET  ?slug=<partner>                        everything the Partners panel shows; no slug lists programs
 // POST { action: 'pause' | 'resume', slug }   turn the form into a waitlist, or back
 // POST { action: 'resend', slug, claim_id }   send one member their email again
 // POST { action: 'release_waitlist', slug }   give up to 10 waiting iPhone claims a code and email them
@@ -13,7 +13,13 @@ const UUID_RE = /^[0-9a-f-]{2,36}$/i;
 export async function onRequestGet({ request, env }) {
   const admin = await requireAdmin(request, env);
   if (admin instanceof Response) return admin;
-  const slug = new URL(request.url).searchParams.get('slug') || '';
+  const params = new URL(request.url).searchParams;
+  if (!params.has('slug')) {
+    const programs = await supabase(env, 'partner_programs?select=slug,name,status&order=created_at.asc');
+    if (!programs.ok) { console.error('partner programs failed', programs.status); return json({ ok: false, error: 'server' }, 500); }
+    return json({ ok: true, programs: programs.data });
+  }
+  const slug = params.get('slug') || '';
   if (!SLUG_RE.test(slug)) return json({ ok: false, error: 'invalid' }, 400);
   const rpc = await supabase(env, 'rpc/partner_admin_summary', { method: 'POST', body: { p_partner: slug } });
   if (!rpc.ok) { console.error('partner summary failed', rpc.status); return json({ ok: false, error: 'server' }, 500); }

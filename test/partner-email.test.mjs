@@ -2,8 +2,9 @@
 import { test, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { renderClaimEmail, renderNudgeEmail, renderAndroidEmail, renderWaitlistEmail, renderAlertEmail, sendEmail, cancelEmail } from '../lib/partner-email.js';
+import { partnerConfig } from '../lib/partners.js';
 
-const base = { partnerName: 'Arsenal Health', firstName: 'Sam', mailingAddress: '123 Test St, Denver, CO 80202' };
+const base = { partner: partnerConfig('arsenal'), firstName: 'Sam', mailingAddress: '123 Test St, Denver, CO 80202' };
 const link = 'https://groundapp.live/arsenal/r/abcdefghijklmnopqrstuv';
 
 test('claim email: code, link, renewal line and address in both parts', () => {
@@ -16,6 +17,32 @@ test('claim email: code, link, renewal line and address in both parts', () => {
     assert.ok(part.includes('Sam'));
   }
   assert.ok(m.subject.includes('GroundApp'));
+});
+
+test('Arsenal code email keeps its existing subject, cold-plunge copy and HTML', () => {
+  const m = renderClaimEmail({ ...base, code: 'ABC123XYZ', link });
+  assert.equal(m.subject, 'Your free year of GroundApp, from Arsenal and Collin');
+  assert.ok(m.text.includes('Arsenal Health already gives you the cold plunge and the sauna.'));
+  assert.ok(m.html.includes('text-transform:uppercase;\">Arsenal Health</span>'));
+});
+
+test('all AION member emails use only AION branding', () => {
+  const aion = { ...base, partner: partnerConfig('aion') };
+  const aionLink = link.replace('/arsenal/', '/aion/');
+  const messages = [
+    renderClaimEmail({ ...aion, code: 'ABC123XYZ', link: aionLink }),
+    renderNudgeEmail({ ...aion, link: aionLink, unsubUrl: 'https://groundapp.live/api/unsubscribe?e=x&t=y' }),
+    renderAndroidEmail(aion),
+    renderWaitlistEmail(aion),
+  ];
+  assert.equal(messages[0].subject, 'Your free year of GroundApp, from AION and Collin');
+  assert.match(messages[0].html, /AION<\/span> <span[^>]*>&times;<\/span> GroundApp/);
+  assert.ok(messages[0].text.includes('AION builds your strength and your engine.'));
+  for (const message of messages) {
+    for (const part of [message.subject, message.html, message.text]) {
+      assert.ok(!part.includes('Arsenal'), 'AION mail never mentions Arsenal');
+    }
+  }
 });
 
 test('member emails follow the copy rules', () => {

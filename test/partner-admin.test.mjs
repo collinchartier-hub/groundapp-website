@@ -15,7 +15,7 @@ let state;
 let realFetch;
 beforeEach(() => {
   calls = [];
-  state = { claimRows: [{ id: 'c1', partner: 'arsenal', status: 'assigned', first_name: 'Sam', email: 'c1@example.com', token: 'abcdefghijklmnopqrstuv', emailed_at: null }], codeRows: [{ code: 'CODEc1', redeem_url: 'https://apps.apple.com/redeem?code=CODEc1' }], released: [result('w1'), result('w2')], throwOnPatchFor: null };
+  state = { claimRows: [{ id: 'c1', partner: 'arsenal', status: 'assigned', first_name: 'Sam', email: 'c1@example.com', token: 'abcdefghijklmnopqrstuv', emailed_at: null }], codeRows: [{ code: 'CODEc1', redeem_url: 'https://apps.apple.com/redeem?code=CODEc1' }], released: [result('w1'), result('w2')], throwOnPatchFor: null, programsStatus: 200 };
   realFetch = globalThis.fetch;
   globalThis.fetch = async (url, init = {}) => {
     const u = String(url);
@@ -23,7 +23,8 @@ beforeEach(() => {
     calls.push({ url: u, method, headers: init.headers, body: init.body ? JSON.parse(init.body) : null });
     if (state.throwOnPatchFor && method === 'PATCH' && u.includes(`partner_claims?id=eq.${state.throwOnPatchFor}`)) throw new Error('connection lost');
     if (method === 'PATCH' && u.includes('partner_programs?') && u.includes('low_stock_alerted')) return new Response('[]', { status: 200 });
-    if (u.endsWith('/rpc/partner_admin_summary')) return new Response(JSON.stringify({ program: { slug: 'arsenal', status: 'live' }, codes: { left: 440 }, rows: [] }), { status: 200 });
+    if (method === 'GET' && u.includes('partner_programs?select=slug,name,status&order=created_at.asc')) return new Response(JSON.stringify([{ slug: 'arsenal', name: 'Arsenal Health', status: 'live' }, { slug: 'aion', name: 'AION', status: 'paused' }]), { status: state.programsStatus });
+    if (u.endsWith('/rpc/partner_admin_summary')) return new Response(JSON.stringify({ program: { slug: init.body ? JSON.parse(init.body).p_partner : 'arsenal', status: 'live' }, codes: { left: 440 }, rows: [] }), { status: 200 });
     if (u.endsWith('/rpc/partner_release_waitlist')) return new Response(JSON.stringify(state.released), { status: 200 });
     if (method === 'GET' && u.includes('partner_claims')) return new Response(JSON.stringify(state.claimRows), { status: 200 });
     if (method === 'GET' && u.includes('partner_codes')) return new Response(JSON.stringify(state.codeRows), { status: 200 });
@@ -50,6 +51,36 @@ test('GET returns the summary for the partner', async () => {
   assert.equal(j.ok, true);
   assert.equal(j.codes.left, 440);
   assert.deepEqual(calls[0].body, { p_partner: 'arsenal' });
+});
+
+test('GET without a slug lists available partner programs', async () => {
+  const res = await get('');
+  assert.deepEqual(await res.json(), {
+    ok: true,
+    programs: [
+      { slug: 'arsenal', name: 'Arsenal Health', status: 'live' },
+      { slug: 'aion', name: 'AION', status: 'paused' },
+    ],
+  });
+  assert.equal(calls[0].method, 'GET');
+  assert.ok(calls[0].url.endsWith('/partner_programs?select=slug,name,status&order=created_at.asc'));
+});
+
+test('GET with AION slug returns only its own summary', async () => {
+  const res = await get('?slug=aion');
+  assert.equal((await res.json()).program.slug, 'aion');
+  assert.deepEqual(calls[0].body, { p_partner: 'aion' });
+});
+
+test('GET program list reports a backend failure', async () => {
+  state.programsStatus = 500;
+  const realError = console.error;
+  console.error = () => {};
+  try {
+    assert.equal((await get('')).status, 500);
+  } finally {
+    console.error = realError;
+  }
 });
 
 test('GET rejects a bad slug', async () => {
