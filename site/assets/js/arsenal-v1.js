@@ -39,7 +39,7 @@
     device: 'Pick iPhone or Android.',
     location: 'Pick your Arsenal location.',
     member: 'This one is for Arsenal members. Tick the box if that is you.',
-    bot_check: "We couldn't confirm you're a person. Wait for the check above the button, then try again.",
+    bot_check: 'One more step: tick "Verify you are human" above the button, then tap it again.',
     rate_limited: 'A lot of people on this network just signed up. Try again in an hour.',
     email_failed: 'Something went wrong on our side. Your spot is saved. Try again in a minute.',
     server: 'Something went wrong on our side. Try again in a minute.'
