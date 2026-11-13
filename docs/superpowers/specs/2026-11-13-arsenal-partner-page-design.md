@@ -14,7 +14,8 @@ The page looks and feels like arsenalhealth.com and presents the partnership as 
 
 | Topic | Decision |
 |---|---|
-| Who can claim | Honor system: a required "I'm an Arsenal member" tick box plus location. One code per email |
+| Who can claim | Honor system: a required "I'm an Arsenal member" tick box plus location |
+| One person, one code | Collin, 2026-11-13: "Only one person, one email, can get one code." One email address holds one code, for good. A second submit with the same address never draws a new code; it resends the one they have |
 | Codes | Use the existing reserve of 450 one-time App Store offer codes (numbers 51 to 500 of the batch made 2026-11-04, expiring 2027-05-03). No new batch now |
 | Layout | Option A, "split down the middle", with the letter card from option C. Mockups: `docs/arsenal/layout-options-2026-11-13.html` |
 | Intro photo | A training still pulled from Collin's Arsenal video footage. Collin names the clips that show him |
@@ -143,7 +144,16 @@ Every member email carries the mailing address footer (`MAILING_ADDRESS`).
 
 ## Abuse protection
 
-Turnstile; honeypot and time-on-form; one claim per `email_key`; code by email only, so each code needs a working inbox; per-network hourly limit; Apple's own one code per offer per Apple ID; low-stock alerts; the pause switch.
+One person, one code is held by four things together:
+
+1. The database allows one claim per `email_key` per partner (unique constraint), and one owner per code (unique constraint). `email_key` folds gmail dots, plus-tags and googlemail into one address, so `sam.lee+2@gmail.com` is the same person as `samlee@gmail.com`.
+2. A repeat submit returns the existing claim and resends the same code. It cannot draw a second one, even when two requests arrive at the same instant.
+3. The code is delivered by email only, so each code needs a working inbox.
+4. Apple lets one Apple ID redeem one code from this offer, so a second code is useless to the same person.
+
+What this cannot stop: one person using two different real email addresses. They would hold two codes and could redeem only one themselves. The admin list shows every claim with name, email and location so Collin can spot it.
+
+Also: Turnstile; honeypot and time-on-form; per-network hourly limit; low-stock alerts; the pause switch.
 
 ## For Arsenal to promote it
 
