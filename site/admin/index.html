@@ -35,6 +35,9 @@
   .seg button { appearance: none; border: 0; background: none; color: var(--text-2); font: 600 13px var(--sans); padding: 8px 14px; min-height: 36px; border-radius: 999px; cursor: pointer; }
   .seg button[aria-pressed="true"] { background: var(--accent); color: var(--bg); }
   .seg button:focus-visible, .chart:focus-visible, summary:focus-visible { outline: 2px solid var(--accent-hi); outline-offset: 2px; }
+  #partners button { appearance: none; border: 1px solid var(--line); background: var(--card); color: var(--text-2); font: 600 13px var(--sans); padding: 8px 14px; min-height: 36px; border-radius: 999px; cursor: pointer; }
+  #partners button:disabled { opacity: .6; cursor: default; }
+  #partners button:focus-visible { outline: 2px solid var(--accent-hi); outline-offset: 2px; }
   .updated { color: var(--muted); font-size: 13px; }
   main { transition: opacity .2s; }
   main.loading { opacity: .45; }
@@ -156,6 +159,20 @@
       </div>
       <div class="grid" style="margin-top:12px">
         <div class="card"><h3>Everything else Apple reported</h3><p class="cap">Totals for the selected range</p><div data-slot="apple-other"></div></div>
+      </div>
+    </section>
+
+    <section id="partners">
+      <h2>Partners: Arsenal Health</h2>
+      <p class="note">Free-year codes for Arsenal members from groundapp.live/arsenal. "Tapped" means they opened their link on an iPhone. Apple reports redemptions per offer, not per person.</p>
+      <div class="kpis" data-slot="partner-kpis"></div>
+      <div data-slot="partner-actions" style="margin:12px 0;display:flex;gap:8px;flex-wrap:wrap"></div>
+      <div class="grid two">
+        <div class="card"><h3>Claims by location</h3><p class="cap">All statuses</p><div data-slot="partner-location"></div></div>
+        <div class="card"><h3>Claims by link</h3><p class="cap">The ?src= on the link they came from</p><div data-slot="partner-src"></div></div>
+      </div>
+      <div class="grid" style="margin-top:12px">
+        <div class="card"><h3>People</h3><p class="cap">Newest first</p><div data-slot="partner-rows"></div></div>
       </div>
     </section>
 
@@ -431,6 +448,84 @@
     k.appendChild(tile('App Store rating', store && store.rating ? store.rating.toFixed(1) + ' ★' : '–', store ? fmt(store.ratings) + ' ratings · v' + store.version : ''));
   }
 
+  // Partners panel (GET/POST /api/admin/partner). Not tied to the date range.
+  var PARTNER = 'arsenal';
+  var partnerData = null;
+  var STATUS_NAMES = { assigned: 'Code sent', waitlist: 'Waiting for a code', android_waitlist: 'Android list' };
+  function when(iso) { return iso ? new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : ''; }
+  function objRows(o) { return Object.keys(o || {}).map(function (k) { return { label: k, value: o[k] }; }).sort(function (a, b) { return b.value - a.value; }); }
+  function actionButton(label, fn) {
+    var b = el('button', { type: 'button' }, label);
+    b.addEventListener('click', fn);
+    return b;
+  }
+  function partnerPost(body, done) {
+    body.slug = PARTNER;
+    fetch('/api/admin/partner', { method: 'POST', credentials: 'same-origin', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) })
+      .then(function (r) { return r.json(); })
+      .then(function (j) { done(j); loadPartner(); })
+      .catch(function () { done({ ok: false }); });
+  }
+  function csvCell(v) { v = v == null ? '' : String(v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
+  function downloadCsv(rows) {
+    var head = ['first_name', 'last_name', 'email', 'device', 'location', 'src', 'status', 'newsletter_opt_in', 'created_at', 'emailed_at', 'redeem_tapped_at', 'tap_count', 'code_seq'];
+    var text = [head.join(',')].concat(rows.map(function (r) { return head.map(function (h) { return csvCell(r[h]); }).join(','); })).join('\n');
+    var a = el('a', { href: URL.createObjectURL(new Blob([text], { type: 'text/csv' })), download: PARTNER + '-claims-' + new Date().toISOString().slice(0, 10) + '.csv' });
+    document.body.appendChild(a); a.click(); a.remove();
+  }
+  function renderPartner(d) {
+    partnerData = d;
+    var c = d.claims || {}, codes = d.codes || {}, paused = d.program && d.program.status === 'paused';
+    var k = clear(slot('partner-kpis'));
+    k.appendChild(tile('Codes left', fmt(codes.left), 'of ' + fmt(codes.total) + (codes.expires_on ? ', expire ' + shortDate(codes.expires_on) : '')));
+    k.appendChild(tile('Codes sent', fmt(c.assigned), fmt(c.email_failed) + ' emails failed'));
+    k.appendChild(tile('Tapped on iPhone', fmt(c.tapped), c.assigned ? Math.round(c.tapped / c.assigned * 100) + '% of codes sent' : ''));
+    k.appendChild(tile('Waiting for a code', fmt(c.waitlist), fmt(c.android_waitlist) + ' on the Android list'));
+    k.appendChild(tile('Joined your list', fmt(c.newsletter), 'Ticked the newsletter box'));
+
+    var acts = clear(slot('partner-actions'));
+    acts.appendChild(el('span', { class: 'cap' }, paused ? 'Paused: the form is taking a waitlist.' : 'Live: the form is handing out codes.'));
+    acts.appendChild(actionButton(paused ? 'Resume' : 'Pause', function () {
+      if (!paused && !confirm('Pause Arsenal? New claims go on a waitlist until you resume.')) return;
+      partnerPost({ action: paused ? 'resume' : 'pause' }, function () {});
+    }));
+    if (c.waitlist > 0 && codes.left > 0) {
+      acts.appendChild(actionButton('Send codes to the next 10 waiting', function () {
+        partnerPost({ action: 'release_waitlist' }, function (j) { alert(j.ok ? j.sent + ' sent, ' + j.failed + ' failed.' : 'That didn\'t work. Try again in a minute.'); });
+      }));
+    }
+    acts.appendChild(actionButton('Download CSV', function () { downloadCsv(d.rows || []); }));
+
+    barList(slot('partner-location'), objRows(d.by_location), { empty: 'No claims yet.' });
+    barList(slot('partner-src'), objRows(d.by_src), { empty: 'No claims yet.' });
+
+    var rows = d.rows || [];
+    if (!rows.length) { empty(slot('partner-rows'), 'No claims yet.'); return; }
+    var box = clear(slot('partner-rows'));
+    var tv = tableView(['Name', 'Email', 'Location', 'Phone', 'Status', 'Claimed', 'Tapped', ''], rows.map(function (r) {
+      return [r.first_name + ' ' + r.last_name, r.email, r.location, r.device === 'iphone' ? 'iPhone' : 'Android',
+        r.email_error ? 'Email failed' : (STATUS_NAMES[r.status] || r.status), when(r.created_at), when(r.redeem_tapped_at), ''];
+    }), true);
+    tv.querySelector('summary').textContent = 'Everyone who claimed (' + rows.length + ')';
+    Array.prototype.forEach.call(tv.querySelectorAll('tbody tr'), function (tr, i) {
+      var b = actionButton('Resend', function () {
+        b.disabled = true;
+        partnerPost({ action: 'resend', claim_id: rows[i].id }, function (j) { b.textContent = j.ok ? 'Sent' : 'Failed'; });
+      });
+      tr.lastChild.appendChild(b);
+    });
+    box.appendChild(tv);
+  }
+  function loadPartner() {
+    fetch('/api/admin/partner?slug=' + PARTNER, { credentials: 'same-origin' })
+      .then(function (r) { return r.json(); })
+      .then(function (j) {
+        if (j.ok) renderPartner(j);
+        else ['partner-location', 'partner-src', 'partner-rows'].forEach(function (s) { empty(slot(s), 'Couldn\'t load partner claims. Try again in a minute.'); });
+      })
+      .catch(function () {});
+  }
+
   var last = null, ctrl = null;
   function load() {
     var main = $('#main');
@@ -463,6 +558,7 @@
   var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { if (last) render(last); }, 150); });
   window.addEventListener('scroll', hideTip, { passive: true });
   load();
+  loadPartner();
 })();
 </script>
 </body>

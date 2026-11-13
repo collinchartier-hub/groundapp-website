@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Arsenal Health × GroundApp: a free year of Premium for members</title>
+<meta name="description" content="Arsenal Health members get a free year of GroundApp Premium. Claim your own code.">
+<meta property="og:title" content="Arsenal Health × GroundApp">
+<meta property="og:description" content="Arsenal members get a free year of GroundApp Premium.">
+<meta property="og:image" content="https://groundapp.live/img/arsenal/og.jpg">
+<meta property="og:url" content="https://groundapp.live/arsenal">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#000000">
 <link rel="icon" type="image/svg+xml" href="/lung-logo.svg">
@@ -22,14 +29,14 @@
 <link rel="modulepreload" href="/js/bodie-v3.js">
 <script type="module" src="/assets/js/arsenal-bodie-v1.js"></script>
 </head>
-<body class="ax" data-hero="3">
+<body class="ax">
 <a class="ax-skip" href="#claim">Skip to the form</a>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <symbol id="ax-i-play" viewBox="0 0 24 24"><path fill="currentColor" d="M8 5.5v13a1 1 0 0 0 1.52.85l10.4-6.5a1 1 0 0 0 0-1.7L9.52 4.65A1 1 0 0 0 8 5.5z"/></symbol>
   <symbol id="ax-i-star" viewBox="0 0 16 16"><path fill="currentColor" d="M8 .8l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5L.8 6.1l5-.7z"/></symbol>
 </svg>
 
-<!-- 1. Lockup over the hero (Hero 2 sets it large inside the hero instead) -->
+<!-- 1. Lockup over the hero -->
 <header class="ax-top">
   <div class="ax-top-a">
     <img class="ax-wordmark" src="/img/arsenal/arsenal-health-wordmark-white.png" alt="Arsenal Health" width="400" height="45">
@@ -41,50 +48,8 @@
 </header>
 
 <main>
-  <!-- Hero 1, "One voice": the offer in Arsenal's voice, Bodie large on the warm side -->
-  <section class="ax-hero ax-hero-1" data-hero-panel="1" aria-labelledby="ax-h1-1" hidden>
-    <div class="ax-hero-bg" aria-hidden="true">
-      <img class="ax-hero-photo" src="/img/arsenal/arsenal-hero-dtc-floor-1200.webp"
-           srcset="/img/arsenal/arsenal-hero-dtc-floor-1200.webp 1200w, /img/arsenal/arsenal-hero-dtc-floor-1920.webp 1920w"
-           sizes="(min-width: 720px) 75vw, 100vw" width="1920" height="1280" alt="" loading="lazy">
-    </div>
-    <div class="ax-wrap ax-h1-grid">
-      <div class="ax-h1-copy">
-        <h1 class="ax-h1-voice" id="ax-h1-1">Arsenal members get <span class="ax-cy">a free year</span> of GroundApp Premium.</h1>
-        <p class="ax-hero-sub ax-serif">Breathwork for performance and nervous system regulation, from Collin Chartier. On us for 12 months.</p>
-        <div class="ax-hero-cta">
-          <a class="ax-btn-gold" href="#claim">Claim your free year</a>
-          <p class="ax-hero-note">Free for 12 months. iPhone only.</p>
-        </div>
-      </div>
-      <div class="ax-slot ax-slot-1"></div>
-    </div>
-  </section>
-
-  <!-- Hero 2, "The lockup is the picture": the two marks across the blend, Bodie at the meeting point -->
-  <section class="ax-hero ax-hero-2" data-hero-panel="2" aria-labelledby="ax-h1-2" hidden>
-    <div class="ax-hero-bg" aria-hidden="true">
-      <img class="ax-hero-photo" src="/img/arsenal/arsenal-hero-dtc-floor-1200.webp"
-           srcset="/img/arsenal/arsenal-hero-dtc-floor-1200.webp 1200w, /img/arsenal/arsenal-hero-dtc-floor-1920.webp 1920w"
-           sizes="(min-width: 720px) 67vw, 100vw" width="1920" height="1280" alt="" loading="lazy">
-    </div>
-    <div class="ax-wrap ax-h2-stack">
-      <div class="ax-slot ax-slot-2"></div>
-      <p class="ax-bigmark">
-        <img class="ax-bigmark-a" src="/img/arsenal/arsenal-health-wordmark-white.png" alt="Arsenal Health" width="400" height="45">
-        <span class="ax-x" aria-hidden="true">×</span>
-        <span class="ax-ga ax-bigmark-g"><img src="/lung-logo.svg" alt="" width="64" height="64"><span>GroundApp</span></span>
-      </p>
-      <h1 class="ax-h1-center" id="ax-h1-2">A free year of GroundApp Premium for every Arsenal member.</h1>
-      <div class="ax-hero-cta ax-hero-cta-center">
-        <a class="ax-btn-gold" href="#claim">Claim your free year</a>
-        <p class="ax-hero-note">Free for 12 months. iPhone only.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Hero 3, "Bodie in the gym": Arsenal's floor wide and brighter, Bodie turned up on it -->
-  <section class="ax-hero ax-hero-3" data-hero-panel="3" aria-labelledby="ax-h1-3">
+  <!-- Hero, "Bodie in the gym": Arsenal's floor wide and brighter, Bodie turned up on it -->
+  <section class="ax-hero ax-hero-3" aria-labelledby="ax-h1-3">
     <div class="ax-hero-bg" aria-hidden="true">
       <img class="ax-hero-photo" src="/img/arsenal/arsenal-hero-dtc-floor-bright-1200.webp"
            srcset="/img/arsenal/arsenal-hero-dtc-floor-bright-1200.webp 1200w, /img/arsenal/arsenal-hero-dtc-floor-bright-1920.webp 1920w"
@@ -150,8 +115,9 @@
             <label class="ax-check"><input type="checkbox" name="newsletter"> Send me Collin's breathwork emails</label>
           </div>
           <div aria-hidden="true" style="position:absolute;left:-9999px"><label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
-          <div class="cf-turnstile" data-theme="dark"></div>
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAAGAEDKjpS4Wucji0" data-theme="dark"></div>
           <button type="submit" class="ax-btn-cyan">Email me my code</button>
+          <noscript><p>Turn on JavaScript to claim your code, or email collin@groundapp.live.</p></noscript>
           <p class="ax-under">One code per person. It's tied to your email and works once.</p>
           <p id="claim-status" role="status" aria-live="polite"></p>
         </form>
@@ -323,55 +289,6 @@
   </div>
 </footer>
 
-<!-- PREVIEW ONLY: hero switcher for Collin's review; delete with its script and CSS before launch -->
-<nav class="ax-switch" aria-label="Hero preview">
-  <button type="button" data-hero-set="1" aria-pressed="false">Hero 1</button>
-  <button type="button" data-hero-set="2" aria-pressed="false">Hero 2</button>
-  <button type="button" data-hero-set="3" aria-pressed="true">Hero 3</button>
-</nav>
-<!-- PREVIEW ONLY: switches the visible hero, moves the one Bodie into its slot, keeps the choice in ?hero= -->
-<script>
-(function () {
-  var body = document.body;
-  var bodie = document.getElementById('ax-bodie');
-  function show(n, remember) {
-    if (!/^[123]$/.test(n)) return;
-    var panels = document.querySelectorAll('[data-hero-panel]');
-    for (var i = 0; i < panels.length; i++) panels[i].hidden = panels[i].getAttribute('data-hero-panel') !== n;
-    body.setAttribute('data-hero', n);
-    document.querySelector('[data-hero-panel="' + n + '"] .ax-slot').appendChild(bodie);
-    var buttons = document.querySelectorAll('[data-hero-set]');
-    for (var j = 0; j < buttons.length; j++) buttons[j].setAttribute('aria-pressed', String(buttons[j].getAttribute('data-hero-set') === n));
-    if (remember) {
-      var url = new URL(location.href);
-      url.searchParams.set('hero', n);
-      history.replaceState(null, '', url);
-    }
-  }
-  show(new URLSearchParams(location.search).get('hero') || body.getAttribute('data-hero'), false);
-  document.querySelector('.ax-switch').addEventListener('click', function (e) {
-    var b = e.target.closest('[data-hero-set]');
-    if (b) show(b.getAttribute('data-hero-set'), true);
-  });
-})();
-</script>
-
-<!-- PREVIEW ONLY: replaced by /assets/js/arsenal-v1.js -->
-<script>
-(function () {
-  var form = document.getElementById('claim-form');
-  var status = document.getElementById('claim-status');
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    if (!form.elements.member.checked) {
-      status.className = 'is-error';
-      status.textContent = 'This one is for Arsenal members. Tick the box if that is you.';
-      return;
-    }
-    status.className = 'is-ok';
-    status.textContent = 'Check your inbox. Your code and link are on the way to ' + form.elements.email.value.trim() + '. Open it on your iPhone.';
-  });
-})();
-</script>
+<script src="/assets/js/arsenal-v1.js" defer></script>
 </body>
 </html>

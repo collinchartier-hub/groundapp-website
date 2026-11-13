@@ -4,7 +4,7 @@ Arsenal's own published photos, used with Arsenal's permission (confirmed by Col
 
 | File in `site/img/arsenal/` | Where on the page | Source on arsenalhealth.com | What it shows |
 |---|---|---|---|
-| `arsenal-hero-dtc-floor-1920.webp`, `-1200.webp` | Hero, behind "Arsenal members get", darkened | `/assets/dtc-training-floor-CXnRssOW.jpg` (page `/locations/dtc`) | Training floor at Arsenal Health DTC: squat racks, sleds, rowers, a turf lane |
+| `arsenal-hero-dtc-floor-bright-1920.webp`, `-1200.webp` | Hero, behind the headline and Bodie | `/assets/dtc-training-floor-CXnRssOW.jpg` (page `/locations/dtc`) | Training floor at Arsenal Health DTC: squat racks, sleds, rowers, a turf lane |
 | `arsenal-cold-plunge-800.webp`, `-480.webp` | At Arsenal, card 1 | `/uploads/instagram/ig-dsc01108.jpg` (home page, their Instagram section) | A man in an outdoor cold plunge tub, eyes closed, hands clasped |
 | `arsenal-sauna-800.webp`, `-480.webp` | At Arsenal, card 2 | `/assets/sauna-interior-Cof_tukO.jpg` (page `/recovery`) | A member inside the barrel sauna |
 | `arsenal-group-training-800.webp`, `-480.webp` | At Arsenal, card 3 | `/uploads/instagram/ig-group-training.jpg` (home page, their Instagram section) | Members gathered around a coach at the whiteboard before a class |

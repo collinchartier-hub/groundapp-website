@@ -100,11 +100,10 @@ body.ax, body.ax-redeem {
 }
 .ax-ga img { width: 32px; height: 32px; flex: none; }
 
-/* ---------- hero: three directions, one shown at a time (body[data-hero]) ----------
-   Shared layers, back to front: GroundApp's Obsidian ground, Arsenal's photo masked so it dissolves into it, a fade
-   to Arsenal's black at the bottom that lands on the form, then the content. The dark photo file is tone-mapped to a
-   0.064 luminance ceiling, so white and cyan type keep 9:1 and 4.7:1 anywhere on it. Hero 3 uses a brighter file and
-   keeps its type where that photo has faded out. */
+/* ---------- hero ----------
+   Layers, back to front: GroundApp's Obsidian ground, Arsenal's photo masked so it dissolves into it, a fade to
+   Arsenal's black at the bottom that lands on the form, then the content. The photo is the brighter file, so the
+   type sits where it has faded out. */
 :where(.ax) [hidden] { display: none !important; }
 .ax-hero {
   position: relative;
@@ -138,7 +137,6 @@ body.ax, body.ax-redeem {
 .ax-bodie.is-live .ax-bodie-still { visibility: hidden; transition: visibility 0s linear 400ms; }
 
 .ax-hero-sub { margin-top: 24px; color: var(--text); }
-.ax-hero-sub.ax-serif { max-width: 30em; font: 400 clamp(19px, 1rem + 0.45vw, 23px)/1.45 var(--font-display); font-variation-settings: "opsz" 20; }
 .ax-hero-sub.ax-sans { max-width: 31em; font: 500 clamp(17px, 0.95rem + 0.3vw, 19px)/1.55 var(--ax-font); }
 .ax-hero-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 22px; margin-top: 32px; }
 .ax-btn-gold {
@@ -153,64 +151,7 @@ body.ax, body.ax-redeem {
 .ax-btn-gold:focus-visible { outline-color: var(--gold); }
 .ax-hero-note { color: #d5c7b8; font: 400 16px/1.5 var(--font-text); } /* 5.6:1 even on the photo's brightest pixel */
 
-/* Hero 1, "One voice": the photo top left, Obsidian to the right and below; Bodie large on the warm side */
-.ax-hero-1 .ax-hero-bg {
-  right: auto; width: 80%;
-  -webkit-mask-image: linear-gradient(90deg, #000 42%, transparent 100%), linear-gradient(180deg, #000 48%, transparent 94%);
-  -webkit-mask-composite: source-in;
-  mask-image: linear-gradient(90deg, #000 42%, transparent 100%), linear-gradient(180deg, #000 48%, transparent 94%);
-  mask-composite: intersect;
-}
-.ax-h1-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
-  gap: clamp(24px, 4vw, 64px);
-  align-items: center;
-}
-.ax-h1-voice {
-  max-width: 11.5em;
-  color: var(--ax-white);
-  font: 800 clamp(2.75rem, 1.5rem + 3.7vw, 5rem)/1 var(--ax-font);
-  letter-spacing: -0.03em;
-  text-wrap: balance;
-}
-.ax-slot-1 { width: min(100%, 296px); justify-self: center; }
-
-/* Hero 2, "The lockup is the picture": both marks large across the blend, Bodie on the meeting point */
-body[data-hero="2"] .ax-top { display: none; }
-.ax-hero-2 { padding-top: clamp(28px, 3vw, 48px); }
-.ax-hero-2 .ax-hero-bg {
-  right: auto; width: 72%;
-  -webkit-mask-image: linear-gradient(90deg, #000 46%, transparent 96%), linear-gradient(180deg, #000 42%, transparent 90%);
-  -webkit-mask-composite: source-in;
-  mask-image: linear-gradient(90deg, #000 46%, transparent 96%), linear-gradient(180deg, #000 42%, transparent 90%);
-  mask-composite: intersect;
-}
-.ax-h2-stack { display: flex; flex-direction: column; align-items: center; text-align: center; }
-.ax-slot-2 { width: clamp(150px, 22vw, 244px); }
-.ax-bigmark {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  gap: clamp(14px, 2.2vw, 36px);
-  width: 100%;
-  margin-top: 4px;
-}
-.ax-bigmark-a { justify-self: end; width: clamp(150px, 30vw, 440px); height: auto; }
-.ax-bigmark .ax-x { font-size: clamp(26px, 3.6vw, 52px); }
-.ax-bigmark-g { justify-self: start; gap: 0.3em; font-size: clamp(22px, 3.6vw, 52px); }
-.ax-bigmark-g img { width: 1.2em; height: 1.2em; }
-.ax-h1-center {
-  max-width: 17em;
-  margin-top: clamp(28px, 3.2vw, 44px);
-  color: var(--ax-white);
-  font: 800 clamp(1.875rem, 1.1rem + 2.3vw, 3.25rem)/1.05 var(--ax-font);
-  letter-spacing: -0.03em;
-  text-wrap: balance;
-}
-.ax-hero-cta-center { justify-content: center; margin-top: 28px; }
-
-/* Hero 3, "Bodie in the gym": the floor runs wide and brighter, fading to Obsidian left and below; he sits on it */
+/* "Bodie in the gym": the floor runs wide and brighter, fading to Obsidian left and below; he sits on it */
 .ax-hero-3 .ax-hero-bg {
   -webkit-mask-image: linear-gradient(90deg, transparent 22%, #000 70%), linear-gradient(180deg, #000 52%, transparent 97%);
   -webkit-mask-composite: source-in;
@@ -653,24 +594,6 @@ body.ax-redeem {
   text-decoration: underline; text-underline-offset: 4px;
 }
 
-/* ---------- PREVIEW ONLY: hero switcher (delete with its markup and script before launch) ---------- */
-.ax-switch {
-  position: fixed; left: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); z-index: 50;
-  display: flex; gap: 2px;
-  padding: 4px;
-  border: 1px solid #333333;
-  border-radius: 9999px;
-  background: rgba(10, 10, 10, 0.92);
-}
-.ax-switch button {
-  min-height: 44px; padding: 0 14px;
-  border: 0; border-radius: 9999px;
-  background: transparent; color: var(--ax-text-2);
-  font: 600 14px/1 var(--ax-font);
-  cursor: pointer;
-}
-.ax-switch button[aria-pressed="true"] { background: var(--ax-cyan); color: var(--ax-on-cyan); }
-
 /* ---------- hover (pointer devices only) ---------- */
 @media (hover: hover) and (pointer: fine) {
   .ax-btn-gold:hover { background: var(--gold-2); }
@@ -678,7 +601,6 @@ body.ax-redeem {
   .ax-field input:hover, .ax-field select:hover { border-color: #8a8a8a; }
   .ax-seg-row label:not(:has(:checked)):hover { color: var(--ax-text); }
   .ax-terms a:hover, .ax-redeem-card a:hover { text-decoration-thickness: 2px; }
-  .ax-switch button[aria-pressed="false"]:hover { color: var(--ax-text); }
 }
 
 /* ---------- tablet ---------- */
@@ -711,36 +633,19 @@ body.ax-redeem {
   .ax-top .ax-ga img { width: 24px; height: 24px; }
 
   .ax-hero { display: block; min-height: 0; padding: calc(var(--ax-top-h) + 20px) 0 40px; }
-  .ax-hero-1 .ax-hero-bg, .ax-hero-2 .ax-hero-bg, .ax-hero-3 .ax-hero-bg {
+  .ax-hero-3 .ax-hero-bg {
     right: 0; bottom: auto; width: 100%; height: 380px;
     -webkit-mask-image: linear-gradient(180deg, #000 40%, transparent 100%);
     mask-image: linear-gradient(180deg, #000 40%, transparent 100%);
   }
   .ax-hero::after { height: 72px; }
   .ax-hero-sub { margin-top: 0; }
-  .ax-hero-sub.ax-serif { font-size: 18px; }
   .ax-hero-sub.ax-sans { font-size: 16px; }
   .ax-hero-cta { flex-direction: column; align-items: stretch; gap: 12px; margin-top: 24px; text-align: center; }
   .ax-btn-gold { width: 100%; }
   .ax-hero-note { font-size: 15px; }
 
-  /* Hero 1: headline over the photo, then Bodie beside the supporting line, then the button */
-  .ax-h1-grid { grid-template-columns: minmax(0, 1fr) 124px; grid-template-areas: "h h" "sub bodie" "cta cta"; gap: 20px 12px; align-items: center; }
-  .ax-h1-copy { display: contents; }
-  .ax-h1-voice { grid-area: h; font-size: 42px; line-height: 1.04; }
-  .ax-hero-1 .ax-hero-sub { grid-area: sub; }
-  .ax-hero-1 .ax-hero-cta { grid-area: cta; margin-top: 4px; }
-  .ax-slot-1 { grid-area: bodie; width: 124px; }
-
-  /* Hero 2: Bodie, the lockup, the line, the button, centred */
-  .ax-hero-2 { padding-top: 24px; }
-  .ax-slot-2 { width: 148px; }
-  .ax-bigmark { gap: 10px; }
-  .ax-bigmark-a { width: 138px; }
-  .ax-bigmark-g { font-size: 20px; }
-  .ax-h1-center { margin-top: 24px; font-size: 32px; }
-
-  /* Hero 3: Bodie on the floor first, the serif line under him on Obsidian */
+  /* Bodie on the floor first, the serif line under him on Obsidian */
   .ax-hero-3 { padding-top: calc(var(--ax-top-h) + 4px); }
   .ax-hero-3 .ax-hero-photo { object-position: 56% 70%; }
   .ax-h3-grid { display: flex; flex-direction: column; gap: 0; }
