@@ -654,3 +654,9 @@ Source: the 1.4.2 release notes ("After you check in, Bodie comes up with your p
 **llms.txt:** 12 ratings as of November 2026; Premium yearly or monthly, with Bodie's AI plans and Meditations.
 
 Still open, Collin's call: the intro film's transcript line about being "less anxious and have less panic attacks".
+
+**Account correction after the round-2 critique:** The Free plan now says only "Free to download." The account FAQ
+and its JSON-LD answer say: "Yes. Create one when you start, with Apple, Google or email. You can delete your account
+any time in Settings." The live 1.4.2 listing explicitly asks you to create an account. The same release's
+`App/AppState+Account.swift` and `Models/FirstUseFlow.swift` confirm mandatory sign-in before practice; the public
+privacy policy already says an account is required on iPhone. The older guest-mode answer above is retired.

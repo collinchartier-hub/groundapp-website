@@ -155,3 +155,27 @@ Open, for Collin:
 - The intro film's transcript still says "less anxious and have less panic attacks". Both jurors call it an outcome
   promise. It is his own spoken line, so it is his to approve or recut.
 - Low Power Mode, the deploy check and a real iPhone: unchanged from part 3.
+
+# 5. Resumed round-2 review
+
+The independent round-2 juror scored the page **7.6 overall** (7.55 weighted, no cap), versus round 1's 6.0 capped
+and 7.2 uncapped. Design 7.5, usability 7.5, creativity 8.0, content 7.0. The verdict remains **FIX**, not approved
+to ship. Report: `design-juror-branch-r2.md` in the existing review folder.
+
+Fresh final-state phone parity: **0 FAIL, 0 WARN**, all three sheets inspected. This preceded the two focused
+post-review corrections:
+- The footer keeps its tagline's two-line measure from 721px up; navigation wraps instead of squeezing it.
+  The landing stylesheet was versioned to `home-v8.css`. Browser checks at 320, 390, 720, 721, 768, 1024, 1280
+  and 1440 found no page or footer-nav overflow. The tagline is two lines from 390 up, three at 320.
+- The Free plan no longer promises no account. The account FAQ and JSON-LD now say to create an account with
+  Apple, Google or email. This matches both the live 1.4.2 listing and the release's mandatory account gate.
+  The FAQ was opened through its control and its rendered answer matched the structured answer.
+
+After these corrections: `check-site.sh` clean; `check-tells.py` **0 FAIL**. No full-page rescore was requested;
+7.6 describes the reviewed page before these two corrections, not an invented new score.
+
+The demo code is unchanged. Its plan descriptions are verbatim from the shipped product, including the
+vagus-nerve and heart/lung-frequency lines the juror flagged. Rewriting only the demo would misrepresent the app;
+these lines need Collin's approval or a coordinated product-and-demo copy change. The film's outcome line
+likewise remains an owner decision. No real iPhone, Safari, Low Power Mode or simulator verification this round.
+

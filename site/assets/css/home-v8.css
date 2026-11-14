@@ -1,6 +1,6 @@
 /* GroundApp landing page (site v3): sections in page order. Chrome, type and buttons: site-v4.css.
    Bodie is one canvas (#bodie) that home-v7.js moves between [data-slot] boxes, so he never sits on text.
-   Bump the filename (v7) when editing: Cloudflare caches .css at the edge for 7 days. */
+   Bump the filename (v8) when editing: Cloudflare caches .css at the edge for 7 days. */
 
 /* ---------- shared section parts ---------- */
 .sec { padding: var(--sec) 0; position: relative; }
@@ -398,8 +398,9 @@ html.low-power .still-note { display: block; }
 .faq details p { margin: 0; padding: 0 20px 20px; max-width: 62ch; }
 @media (max-width: 860px) { .faq-list { grid-template-columns: minmax(0, 1fr); row-gap: 8px; } }
 
-/* ---------- footer: on this page the links fit one line at desktop width ---------- */
+/* ---------- footer: reserve the tagline's measure; links wrap before squeezing it ---------- */
 .foot-nav { max-width: none; }
+@media (min-width: 721px) { .foot-grid { grid-template-columns: minmax(19rem, 1fr) auto; } }
 
 /* ---------- phone sizes ---------- */
 .plan .btn:not(.btn-gold) { background-color: #44301f; }
