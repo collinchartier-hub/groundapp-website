@@ -178,3 +178,32 @@ for name, code in [("artifact", art[art.index('<script type="module">') + 22:art
     p = os.path.join(OUT, f"check-{name}.mjs"); open(p, "w").write(code)
     r = subprocess.run(["node", "--check", p], capture_output=True, text=True)
     print(name, "SYNTAX_OK" if r.returncode == 0 else r.stderr[:800])
+
+# ---- next-play prototypes, separate from the original game
+NEXT_VER = "v1"
+next_source = os.path.join(HERE, "src", "next")
+next_modules = ["world.js", "seed-wind.js", "explore.js", "app.js"]
+next_codes = {}
+for name in next_modules:
+    path = os.path.join(next_source, name)
+    code = open(path).read()
+    result = subprocess.run(["node", "--check", path], capture_output=True, text=True)
+    if result.returncode:
+        print(name, result.stderr)
+        sys.exit(result.returncode)
+    next_codes[name] = code
+    print("next", name, "SYNTAX_OK")
+if "--artifact-only" not in sys.argv:
+    asset_path = "/js/ground-play-next-" + NEXT_VER
+    next_output = os.path.join(SITE, asset_path.lstrip("/"))
+    os.makedirs(next_output, exist_ok=True)
+    for name, code in next_codes.items():
+        open(os.path.join(next_output, name), "w").write(code)
+    css_path = "/assets/css/ground-play-next-" + NEXT_VER + ".css"
+    open(os.path.join(SITE, css_path.lstrip("/")), "w").write(
+        open(os.path.join(next_source, "play.css")).read())
+    next_page = (open(os.path.join(next_source, "index.html")).read()
+                 .replace("%%NEXT_CSS%%", css_path)
+                 .replace("%%NEXT_ASSET%%", asset_path))
+    open(os.path.join(SITE, "play-next.html"), "w").write(next_page)
+    print("site/play-next.html and versioned prototype assets written")

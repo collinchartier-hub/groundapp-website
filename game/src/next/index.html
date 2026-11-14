@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#1a110e">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Play again | GroundApp</title>
+  <meta name="description" content="Seed Wind, a same-phone game for two, and The Deep, a quiet exploration with Bodie. A GroundApp playtest.">
+  <link rel="stylesheet" href="/assets/css/ground-tokens-v1.css">
+  <link rel="stylesheet" href="%%NEXT_CSS%%">
+</head>
+<body>
+  <main id="app">
+    <section id="menu" aria-labelledby="menu-title">
+      <header class="menu-brand"><img src="/lung-logo.svg" width="24" height="24" alt=""><span>GroundApp</span><span class="playtest-label">Playtest</span></header>
+      <div class="menu-intro"><h1 id="menu-title">One more rematch.</h1><p>Put the phone between you.<br>A little aim. A little patience. Your move.</p></div>
+      <div class="menu-seed" aria-hidden="true"><svg viewBox="0 0 280 180"><path d="M20 120 Q100 40 140 90 T260 50"/><path d="M20 145 Q100 65 140 115 T260 75"/><circle cx="140" cy="90" r="17"/><path d="M140 73 V38 M140 38 L118 25 M140 38 L162 25 M140 38 V16"/></svg></div>
+      <div class="game-choices">
+        <button id="choose-wind" disabled><span class="choice-title">Seed Wind</span><span>Two players. Aim, defend, send it home.</span><span class="choice-action">Play together</span></button>
+        <button id="choose-explore" disabled><span class="choice-title">The Deep</span><span>One player. Choose a path. Follow the light.</span><span class="choice-action">Explore</span></button>
+      </div>
+      <p id="boot-status" role="status">Getting the playfield ready…</p>
+      <footer class="menu-footer"><p>Your fingers control the game. Keep breathing normally.</p><a href="/play">Original game and The Big Hold</a><a href="/">Back to GroundApp</a></footer>
+    </section>
+
+    <section id="rules" hidden aria-labelledby="rules-title">
+      <button class="quiet" id="rules-back">Back</button>
+      <h1 id="rules-title">Seed Wind</h1>
+      <div id="rules-copy"></div>
+      <fieldset id="assistance"><legend>A little help, if you want it</legend><label><input id="assist-0" type="checkbox"> Aim help for Gold</label><label><input id="assist-1" type="checkbox"> Aim help for Sage</label></fieldset>
+      <p class="normal-breathing">No blowing or breath holding. These are finger controls.</p>
+      <button id="begin" class="primary">Start the match</button>
+    </section>
+
+    <section id="play-screen" hidden aria-label="Game">
+      <header class="play-toolbar"><button id="leave" class="quiet">Games</button><h1 id="game-title">Seed Wind</h1><button id="pause" class="quiet">Pause</button></header>
+      <div class="seat seat-top" id="seat-1"><div class="seat-heading"><b>Sage <span id="score-1">0</span></b><span id="seat-time-1" class="seat-clock">1:30</span><span id="ready-1">Ready</span></div><div class="seat-input"><label class="sr-only" for="aim-1">Sage aim</label><input id="aim-1" type="range" min="100" max="900" step="20" value="500"><button id="gust-1" aria-label="Send Sage gust">Gust</button></div></div>
+      <div id="arena-wrap"><canvas id="arena" width="1000" height="1600" tabindex="0" aria-label="Playfield. Use the aim sliders and Gust buttons, or the route and steering controls below."></canvas><div id="game-cue" aria-hidden="true"></div><p id="game-status" class="sr-only" role="status" aria-live="polite"></p></div>
+      <div class="seat seat-bottom" id="seat-0"><div class="seat-heading"><b>Gold <span id="score-0">0</span></b><span id="seat-time-0" class="seat-clock">1:30</span><span id="ready-0">Ready</span></div><div class="seat-input"><label class="sr-only" for="aim-0">Gold aim</label><input id="aim-0" type="range" min="100" max="900" step="20" value="500"><button id="gust-0" aria-label="Send Gold gust">Gust</button></div></div>
+      <div id="explore-controls" hidden>
+        <div id="route-choices"></div>
+        <div id="steering"><label for="lantern-aim">Guide the light</label><input id="lantern-aim" type="range" min="100" max="900" step="20" value="500"></div>
+        <p id="explore-detail"></p>
+        <section id="home-controls" hidden aria-labelledby="home-title">
+          <h2 id="home-title">Home clearing</h2><p id="home-detail">Choose a discovery to show in this clearing.</p>
+          <label for="home-discovery">Your discovery</label><select id="home-discovery"></select>
+          <div class="home-actions"><button id="explore-again" class="primary">Explore another path</button><button id="explore-menu" class="quiet">Back to games</button></div>
+        </section>
+      </div>
+      <footer class="play-footer"><span id="round-label">First to 5 · 1:30</span><button id="sound" class="quiet" aria-pressed="false">Sound off</button><button id="motion" class="quiet" aria-pressed="false">Less motion</button></footer>
+    </section>
+
+    <dialog id="pause-dialog" aria-labelledby="pause-title"><h2 id="pause-title">Take your time.</h2><p>The game is paused.</p><button id="resume" class="primary">Keep playing</button><button id="restart" class="quiet">Start over</button><button id="quit" class="quiet">Back to games</button></dialog>
+    <dialog id="result-dialog" aria-labelledby="result-title"><h2 id="result-title" tabindex="-1" autofocus></h2><p id="result-detail"></p><p id="set-score"></p><button id="again" class="primary">Rematch</button><button id="swap" class="quiet">Swap seats and rematch</button><button id="result-menu" class="quiet">Back to games</button></dialog>
+  </main>
+  <noscript><p class="load-error">JavaScript is needed to play. <a href="/">Return to GroundApp</a>.</p></noscript>
+  <script>
+    window.groundPlayLoading = setTimeout(function () {
+      var status = document.getElementById('boot-status');
+      if (!document.documentElement.dataset.playReady) status.textContent = 'The playfield could not load. Check your connection and reload. The original game is linked below.';
+    }, 12000);
+  </script>
+  <script type="module" src="%%NEXT_ASSET%%/app.js"></script>
+</body>
+</html>
