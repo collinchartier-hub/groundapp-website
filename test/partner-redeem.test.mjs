@@ -3,6 +3,7 @@ import { test, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { onRequestGet } from '../functions/arsenal/r/[token].js';
 import { onRequestGet as onAionRequestGet } from '../functions/aion/r/[token].js';
+import { onRequestGet as onTraverseRequestGet } from '../functions/traverse/r/[token].js';
 
 const env = { SUPABASE_URL: 'https://sb.example.co', SUPABASE_SERVICE_ROLE_KEY: 'sb_service', RESEND_API_KEY: 're_test' };
 const TOKEN = 'abcdefghijklmnopqrstuv';
@@ -43,6 +44,43 @@ const getAion = (token, ua) =>
     env,
     waitUntil: (p) => waited.push(p),
   });
+const getTraverse = (token, ua) =>
+  onTraverseRequestGet({
+    params: { token },
+    request: new Request(`https://groundapp.live/traverse/r/${token}`, { headers: { 'user-agent': ua } }),
+    env,
+    waitUntil: (p) => waited.push(p),
+  });
+
+test('Traverse iPhone link asks for its own claim and redirects to Apple', async () => {
+  state.tap.partner = 'traverse';
+  const res = await getTraverse(TOKEN, IPHONE);
+  assert.equal(res.status, 302);
+  assert.equal(res.headers.get('location'), APPLE);
+  assert.deepEqual(calls[0].body, { p_token: TOKEN, p_ios: true, p_partner: 'traverse' });
+  await Promise.all(waited);
+});
+
+test('Traverse laptop link shows its own branding, QR and return page', async () => {
+  state.tap.partner = 'traverse';
+  const res = await getTraverse(TOKEN, MAC);
+  assert.equal(res.status, 200);
+  assert.deepEqual(calls[0].body, { p_token: TOKEN, p_ios: false, p_partner: 'traverse' });
+  const markup = await res.text();
+  assert.ok(markup.includes('TRAVERSE × GroundApp'));
+  assert.ok(markup.includes('/assets/css/traverse-v1.css'));
+  assert.ok(markup.includes(`data-qr="https://groundapp.live/traverse/r/${TOKEN}"`));
+  assert.ok(markup.includes('Back to the Traverse Fitness page'));
+});
+
+test('Traverse rejects AION and Arsenal member tokens', async () => {
+  for (const other of ['aion', 'arsenal']) {
+    state.tap = { found: false, partner: other };
+    const res = await getTraverse(TOKEN, IPHONE);
+    assert.equal(res.status, 404);
+    assert.deepEqual(calls.at(-1).body, { p_token: TOKEN, p_ios: true, p_partner: 'traverse' });
+  }
+});
 
 test('AION iPhone link redirects to Apple and counts its tap', async () => {
   state.tap.partner = 'aion';
