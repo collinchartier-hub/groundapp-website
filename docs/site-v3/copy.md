@@ -625,3 +625,32 @@ Source: [S1] [S5] [S12] (current `site/llms.txt` structure and rating line)
 - Thrive Real Estate Group appears in Collin's collinchartier.com bio. It is left out here on purpose (not about breathwork).
 
 > 2026-10-30: Aura was removed from the app (Collin). Its section became "Your session, built from your answers." in Check-in; every Aura line below is retired.
+
+---
+
+## Changes on 2026-11-13 (round 2 of the demo preview, not approved yet)
+
+These lines replace the ones above where they differ. Facts are from the live App Store listing, version 1.4.2
+(`https://itunes.apple.com/lookup?id=6760352779`, read 2026-11-13).
+
+**Check-in, session step (was "Save your check-in, tap Build my guided session..."):** Tap Continue, and Bodie comes up with your plan and shows it to you first: the techniques, how long, and why each one fits. Tap Begin session when you're ready. Check-ins with Bodie are free.
+Source: the 1.4.2 release notes ("After you check in, Bodie comes up with your plan and shows it to you first: the techniques, how long, and why each one fits. Tap Begin session when you're ready.").
+
+**Check-in pictures:** the recording (ch06) and screenshot 05 are gone. One live demo of the 1.4.2 check-in takes their place.
+
+**Connections pictures:** the health recording is recut (`ch07-health-v2`, 14 s: Health and devices, the Apple Health prompt, Apple Health on). Screenshot 10 is gone: it still named Aura. The five watch screenshots are one live watch.
+**Alt, clip ch07-health-v2:** The Health and devices screen in GroundApp. Apple Health is switched on: the Apple Health access prompt appears, the switches for mindful minutes and workouts are turned on, and the screen comes back with Apple Health reading HRV, resting heart rate and sleep.
+
+**Plan 2: GroundApp Premium, $39.99 a year (US)**
+**Plan 2 sub-line:** Or $6.99 a month. A 3-day free trial for eligible new subscribers.
+**Plan 2 list:** All 40+ techniques / Advanced O2 and CO2 tables / Guided sessions in Collin's voice / Bodie's AI plans / Meditations: eight guided meditations by Collin, 3 to 19 minutes
+**Plan 2 fine print:** Premium is a yearly or monthly subscription that renews automatically. It is billed through your Apple ID. Cancel any time in Settings > your name > Subscriptions, at least 24 hours before the period ends.
+
+**FAQ, What does GroundApp cost?** GroundApp is free to download. GroundApp Premium is $39.99 a year or $6.99 a month in the US and adds all 40+ techniques, the Advanced O2 and CO2 tables, guided sessions in my voice, Bodie's AI plans and Meditations. Eligible new subscribers get a 3-day free trial.
+
+**Reviews H2:** Rated 5.0 on the App Store, from 12 ratings.
+**Reviews sub-line (was "Three reviews, word for word."):** From three App Store reviews. Two of the three quotes are excerpts, so "word for word" was not true of the whole review.
+
+**llms.txt:** 12 ratings as of November 2026; Premium yearly or monthly, with Bodie's AI plans and Meditations.
+
+Still open, Collin's call: the intro film's transcript line about being "less anxious and have less panic attacks".

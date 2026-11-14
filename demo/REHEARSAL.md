@@ -130,3 +130,28 @@ Open, for Collin:
 - The deploy check does not notice a demo that was edited without being rebuilt.
 - Not from these changes, found by both jurors: on a 390px phone the hero's pause button hangs off the right edge and
   widens the page by 10px.
+
+# 4. Round 2 (2026-11-13)
+
+The open items above, worked through from the two jurors' FIX lines. Nothing here is live.
+
+- Check-in: one phone and one Bodie. The page's Bodie has no slot in this section, the 1.2.1 session screenshot (05)
+  is gone, and the words follow the 1.4.2 release notes (Continue, Bodie shows the plan first, Begin session).
+- Connections: one row of three, each with its words under it: the health recording, the progress screen, the watch.
+  The watch is no longer alone on a row. The health recording is recut to 14 s (`ch07-health-v2`): it starts on Health
+  and devices and stops before the screen that names Aura. Screenshot 10, which named Aura, is gone.
+- Phone hero: the pause button sits inside Bodie's corner. The page is 390px wide on a 390px screen (it was 400).
+- Collin: the IRONMAN photo and the film are one band at one height; the bio and the film's words sit under them.
+- FAQ: heading on top, two stacks. The half-empty screen beside a pinned heading is gone.
+- Facts, from the live 1.4.2 listing: 12 ratings, Premium yearly or monthly, Bodie's AI plans and Meditations in the
+  Premium list. "Three reviews, word for word." became "From three App Store reviews." (two quotes are excerpts).
+- Smaller: the Advanced phone is 340px (was 300), the CO2 rounds are filled by mid-screen, "O2 and CO2 tables." stays
+  on one line, the footer links fit one line, and DESIGN.md has its line for the fourth moving picture.
+
+Left as it is, on purpose: the newsletter row under Download (minor in both reports).
+
+Open, for Collin:
+- Every new line of copy above needs his read (`docs/site-v3/copy.md`, last section).
+- The intro film's transcript still says "less anxious and have less panic attacks". Both jurors call it an outcome
+  promise. It is his own spoken line, so it is his to approve or recut.
+- Low Power Mode, the deploy check and a real iPhone: unchanged from part 3.

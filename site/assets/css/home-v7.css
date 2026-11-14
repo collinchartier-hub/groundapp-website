@@ -1,5 +1,5 @@
 /* GroundApp landing page (site v3): sections in page order. Chrome, type and buttons: site-v4.css.
-   Bodie is one canvas (#bodie) that home-v6.js moves between [data-slot] boxes, so he never sits on text.
+   Bodie is one canvas (#bodie) that home-v7.js moves between [data-slot] boxes, so he never sits on text.
    Bump the filename (v7) when editing: Cloudflare caches .css at the edge for 7 days. */
 
 /* ---------- shared section parts ---------- */
@@ -48,9 +48,10 @@ html.bodie-live .bodie-still { visibility: hidden; transition: visibility 0s lin
 .still-note { display: none; grid-area: note; text-align: center; margin: 6px 0 0; max-width: 34ch; justify-self: center; }
 html.low-power .still-note { display: block; }
 @media (prefers-reduced-motion: reduce) { .still-note { display: block; } }
-/* Pause motion (WCAG 2.2.2): a round button beside Bodie's top right stops his breathing and the app recordings, so
-   it costs the first screen no height. home-v6.js shows it when something moves (not under reduced motion or Low
-   Power Mode), swaps pause and play, and remembers the choice. */
+/* Pause motion (WCAG 2.2.2): a round button at Bodie's top right stops his breathing, the app recordings and the
+   demos, so it costs the first screen no height. Beside his box on desktop, inside its corner on phones (beside it
+   would hang off a 390px screen). home-v7.js shows it when something moves (not under reduced motion or Low Power
+   Mode), swaps pause and play, and remembers the choice. */
 .motion-btn { position: absolute; top: 0; left: calc(100% + 8px); display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 50%; background-color: var(--card); color: var(--text); cursor: pointer; touch-action: manipulation; }
 .motion-btn svg { width: 18px; height: 18px; }
 .motion-btn[hidden] { display: none; }
@@ -80,32 +81,37 @@ html.low-power .still-note { display: block; }
   .hero-act .actions { width: 100%; max-width: 360px; }
   .hero-meta { text-align: center; max-width: 30ch; }
   .scroll-cue { display: none; }
+  .motion-btn { left: auto; right: 0; z-index: 2; }
 }
 
 /* ---------- the page grid: copy starts on one of two edges, column 1 or column 7 ---------- */
 .g12 { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 32px; }
 .nw { white-space: nowrap; }
 
-/* ---------- collin: the IRONMAN win, the bio, the intro film, Bodie waving at it ---------- */
-.collin-grid { row-gap: clamp(56px, 7vw, 96px); align-items: center; }
-/* the film row is the section's last beat: end it at the in-section gap, not a full section pad, so no dead band sits before Check-in */
+/* ---------- collin: one band of pictures (the IRONMAN win and the intro film, at one height), then the bio and
+   the film's words under them, Bodie waving between ---------- */
+.collin-grid { row-gap: clamp(40px, 5vw, 64px); align-items: start; }
+/* the text row is the section's last beat: end it at the in-section gap, not a full section pad */
 .collin { padding-bottom: clamp(56px, 7vw, 96px); }
-.collin-grid > * { align-self: center; }
 .ph { margin: 0; }
 .ph img { width: 100%; height: auto; border-radius: var(--radius-card); background-color: var(--card); }
 .ph figcaption { margin-top: 10px; font-size: 15px; color: var(--text-2); }
-.ph-win { grid-column: 1 / 7; grid-row: 1; }
-.collin-copy { grid-column: 7 / 13; grid-row: 1; }
-.collin-copy .lede { margin: 20px 0 22px; }
+/* The heading, then the band. Widths in the ratio of the two pictures' shapes (3:2 and 9:16), so both come out the
+   same height. The photo's caption sits over the bio's first line, never over the heading. */
+.collin-head { grid-column: 1 / 9; grid-row: 1; }
+.collin-head .lede { margin: 20px 0 0; }
+.collin-band { grid-column: 1 / -1; grid-row: 2; display: flex; gap: 32px; align-items: flex-start; }
+.ph-win { flex: 2666 1 0; min-width: 0; }
+.collin-copy { grid-column: 1 / 7; grid-row: 3; }
 .collin-then { margin: 0 0 10px; }
 .accolades { margin: 0 0 24px; color: var(--text); }
 .press { margin: 0; font-size: 16px; line-height: 1.6; max-width: 34rem; }
 .press-label { color: var(--text); font-weight: 600; margin-right: 6px; }
-.film-side { grid-column: 1 / 6; grid-row: 2; display: grid; gap: 20px; }
+.film-side { grid-column: 9 / 13; grid-row: 3; display: grid; gap: 20px; }
 .film-line { margin: 0; font: 400 26px/1.35 var(--font-display); color: var(--text); max-width: 32ch; text-wrap: balance; }
 .film-note { margin: 0; }
-.slot-side { grid-column: 6 / 9; grid-row: 2; width: min(220px, 100%); justify-self: center; }
-.film { grid-column: 9 / 13; grid-row: 2; width: min(300px, 100%); position: relative; aspect-ratio: 9 / 16; border-radius: var(--radius-card); overflow: hidden; background-color: var(--card); }
+.slot-side { grid-column: 7 / 9; grid-row: 3; width: min(180px, 100%); justify-self: center; align-self: center; }
+.film { flex: 1000 1 0; min-width: 0; width: min(300px, 100%); position: relative; aspect-ratio: 9 / 16; border-radius: var(--radius-card); overflow: hidden; background-color: var(--card); }
 .film > img, .film > video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .film > video { opacity: 0; background-color: #000; transition: opacity var(--t-ui) ease; }
 .film > video.is-playing, .film.is-on > video { opacity: 1; }
@@ -121,11 +127,13 @@ html.low-power .still-note { display: block; }
 .transcript p { margin: 0; padding: 0 18px 14px; font-size: 16px; line-height: 1.6; max-width: 62ch; }
 .transcript p:last-child { padding-bottom: 18px; }
 @media (max-width: 860px) {
-  .collin-grid { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); row-gap: 28px; column-gap: 16px; grid-template-areas: "win win" "copy copy" "film slot" "side side"; }
+  .collin-grid { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); row-gap: 28px; column-gap: 16px; grid-template-areas: "head head" "win win" "copy copy" "film slot" "side side"; }
+  .collin-band { display: contents; }
   .ph-win { grid-area: win; margin: 0 calc(-1 * var(--gutter)); }
   .ph-win img { border-radius: 0; }
   .ph-win figcaption { padding: 0 var(--gutter); }
-  .collin-copy { grid-area: copy; margin-top: 56px; }
+  .collin-head { grid-area: head; }
+  .collin-copy { grid-area: copy; }
   .film { grid-area: film; justify-self: end; }
   .slot-side { grid-area: slot; justify-self: start; max-width: 220px; width: 100%; }
   .film-side { grid-area: side; }
@@ -206,7 +214,7 @@ html.low-power .still-note { display: block; }
 
 /* ---------- advanced: the recording, the safety line, a CO2 table whose rounds fill as it scrolls by ---------- */
 .adv-grid { row-gap: clamp(48px, 6vw, 72px); align-items: start; }
-.adv-phone { grid-column: 1 / 6; grid-row: 1 / 3; width: min(300px, 100%); justify-self: center; position: sticky; top: calc(var(--head-h) + 32px); }
+.adv-phone { grid-column: 1 / 6; grid-row: 1 / 3; width: min(340px, 100%); justify-self: center; position: sticky; top: calc(var(--head-h) + 32px); }
 .adv-copy { grid-column: 7 / 13; }
 .adv-copy .lede { margin: 16px 0 16px; }
 .adv-copy .copy { margin: 0; }
@@ -232,7 +240,8 @@ html.low-power .still-note { display: block; }
 .co2 .small { margin: 0; max-width: 46rem; }
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
-    .seg::after { animation: seg-fill linear both; animation-timeline: --co2; animation-range: cover calc(18% + var(--k) * 3.6%) cover calc(22% + var(--k) * 3.6%); }
+    /* every round is filled by the time the table reaches the middle of the screen */
+    .seg::after { animation: seg-fill linear both; animation-timeline: --co2; animation-range: cover calc(6% + var(--k) * 2.8%) cover calc(10% + var(--k) * 2.8%); }
   }
 }
 @keyframes seg-fill { from { transform: scaleX(0); } }
@@ -276,37 +285,32 @@ html.low-power .still-note { display: block; }
   .play-copy .actions { flex-direction: column; align-items: stretch; }
 }
 
-/* ---------- connections: what you wear and your numbers (health, heart rate, progress, the watch) ---------- */
-.conn-head { align-items: center; margin-bottom: 8px; }
-.conn-head .sec-head { grid-column: 1 / 7; margin: 0; }
-.slot-conn { grid-column: 9 / 12; width: min(220px, 100%); justify-self: center; }
-.conn-shots { list-style: none; margin: 32px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 32px; align-items: start; }
-.conn-shots .phone { width: min(280px, 100%); justify-self: center; }
-.conn-shots .phone:nth-child(2) { margin-top: 56px; }
-.conn-blocks { margin: clamp(56px, 7vw, 88px) 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
-.conn-blocks > div { max-width: 34rem; }
+/* ---------- connections: three things you wear or carry in one row (the Health recording, the Progress screen,
+   the watch running a session), each with its words under it. Bodie has no slot here: he is on the watch. ---------- */
+.conn-head { margin-bottom: clamp(32px, 4vw, 56px); }
+.conn-grid { row-gap: clamp(28px, 3vw, 40px); align-items: start; }
+.conn-shots { grid-column: 1 / 9; grid-row: 1; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 32px; align-items: start; }
+.conn-shots .phone { width: min(300px, 100%); }
+/* One watch, running a session (demo/src/watch) */
+.watch-demo { grid-column: 9 / 13; grid-row: 1; align-self: center; width: min(100%, 360px); aspect-ratio: 360 / 500; margin-left: -31px; }
+/* Before the live watch arrives: the app's own screenshot where its screen will be, in a plain bezel */
+.watch-demo > img { position: absolute; left: 12.5%; top: 17.8%; width: 75%; height: auto; border-radius: 26% / 22%; box-shadow: 0 0 0 10px #000, 0 0 0 14px #2b2420; }
+.conn-blocks { grid-row: 2; margin: 0; display: grid; gap: 24px; align-content: start; }
+.conn-a { grid-column: 1 / 5; }
+.conn-b { grid-column: 5 / 9; }
+.conn-c { grid-column: 9 / 13; }
+.conn-blocks > div { max-width: 22rem; }
 .conn-blocks dt { color: var(--text); font-weight: 500; font-size: 19px; }
 .conn-blocks dd { margin: 6px 0 0; font-size: 16px; }
 .connections .safety { margin-top: 40px; }
-/* One watch, running a session (demo/src/watch), with its line beside it on the page's second edge */
-.watches { margin: clamp(40px, 5vw, 72px) 0 0; align-items: center; }
-.watch-demo { grid-column: 1 / 7; justify-self: center; width: min(100%, 360px); aspect-ratio: 360 / 500; }
-/* Before the live watch arrives: the app's own screenshot where its screen will be, in a plain bezel */
-.watch-demo > img { position: absolute; left: 12.5%; top: 17.8%; width: 75%; height: auto; border-radius: 26% / 22%; box-shadow: 0 0 0 10px #000, 0 0 0 14px #2b2420; }
-.watches figcaption { grid-column: 7 / 13; max-width: 34rem; font-size: 16px; }
-.watches figcaption b { display: block; margin-bottom: 6px; color: var(--text); font-weight: 500; font-size: 19px; }
 @media (max-width: 860px) {
-  .conn-head { grid-template-columns: minmax(0, 1fr); row-gap: 24px; }
-  .conn-head .sec-head, .slot-conn { grid-column: 1; }
-  .slot-conn { width: 190px; }
-  .conn-shots { grid-template-columns: none; grid-auto-flow: column; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; margin-left: calc(-1 * var(--gutter)); margin-right: calc(-1 * var(--gutter)); padding: 0 var(--gutter) 8px; scroll-padding: 0 var(--gutter); scrollbar-width: none; }
-  .conn-shots { grid-auto-columns: 62%; column-gap: 16px; }
+  .conn-grid { grid-template-columns: minmax(0, 1fr); row-gap: 28px; }
+  .conn-shots, .watch-demo, .conn-blocks { grid-column: 1; grid-row: auto; }
+  .conn-shots { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 62%; column-gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; margin-left: calc(-1 * var(--gutter)); margin-right: calc(-1 * var(--gutter)); padding: 0 var(--gutter) 8px; scroll-padding: 0 var(--gutter); scrollbar-width: none; }
   .conn-shots .phone { width: 100%; scroll-snap-align: start; }
-  .conn-shots .phone:nth-child(2) { margin-top: 0; }
-  .watches { grid-template-columns: minmax(0, 1fr); row-gap: 20px; }
-  .watch-demo, .watches figcaption { grid-column: 1; }
-  .watch-demo { width: min(100%, 300px); }
-  .conn-blocks { grid-template-columns: minmax(0, 1fr); gap: 22px; }
+  .watch-demo { width: min(100%, 300px); justify-self: center; margin-left: 0; }
+  .conn-blocks { gap: 22px; }
+  .conn-blocks > div { max-width: 34rem; }
 }
 
 /* ---------- story: one column in Collin's words, his client's question as the one large line ---------- */
@@ -382,17 +386,20 @@ html.low-power .still-note { display: block; }
   .nlf .btn { justify-self: stretch; }
 }
 
-/* ---------- faq ---------- */
-.faq-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 32px; align-items: start; }
-.faq-list { display: grid; gap: 8px; }
+/* ---------- faq: the heading on top, the questions in two stacks, so no half of the screen stands empty ---------- */
+.faq-grid { display: grid; row-gap: clamp(28px, 3vw, 40px); }
+.faq-list { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 32px; align-items: start; }
+.faq-col { display: grid; gap: 8px; }
 .faq details { border-radius: var(--radius-card); background-color: var(--bg-2); }
 .faq summary { display: flex; justify-content: space-between; align-items: center; gap: 16px; min-height: 60px; padding: 14px 20px; color: var(--text); font-weight: 500; cursor: pointer; list-style: none; }
 .faq summary::-webkit-details-marker { display: none; }
 .faq summary::after { content: "+"; flex: none; color: var(--gold); font: 300 26px/1 var(--font-data); }
 .faq details[open] summary::after { content: "\2212"; }
 .faq details p { margin: 0; padding: 0 20px 20px; max-width: 62ch; }
-.faq-h { position: sticky; top: calc(var(--head-h) + 32px); }
-@media (max-width: 860px) { .faq-grid { grid-template-columns: minmax(0, 1fr); row-gap: 32px; } .faq-h { position: static; } }
+@media (max-width: 860px) { .faq-list { grid-template-columns: minmax(0, 1fr); row-gap: 8px; } }
+
+/* ---------- footer: on this page the links fit one line at desktop width ---------- */
+.foot-nav { max-width: none; }
 
 /* ---------- phone sizes ---------- */
 .plan .btn:not(.btn-gold) { background-color: #44301f; }

@@ -58,11 +58,11 @@ These are done from Collin's laptop, through Claude Code only. If a change needs
 ## Copy rules
 
 - No em dashes. Casual and direct. Spell it GroundApp. The companion is Bodie.
-- Claims must match the shipped app (App Store version 1.2.1, 2026-10-29). Source of truth: the live App Store listing (`https://itunes.apple.com/lookup?id=6760352779`); a copy is in `docs/site-v3/app-store-listing-2026-10-29.txt`.
+- Claims must match the shipped app (App Store version 1.4.2, 2026-11-12). Source of truth: the live App Store listing (`https://itunes.apple.com/lookup?id=6760352779`); the copy in `docs/site-v3/app-store-listing-2026-10-29.txt` is the older 1.2.1 listing.
   - Free to download.
   - More than 40 techniques. 4 are free forever: Box Breathing, Deep Slow Breathing, 2-to-1 Breathing, Triangle Breathing.
   - Free also includes the session timer, streaks, basic stats, check-ins with Bodie and live heart rate.
-  - GroundApp Premium: $39.99 a year in the US. Adds all techniques, the Advanced O2 and CO2 tables and guided sessions in Collin's voice. Aura was removed from the app: never mention it.
+  - GroundApp Premium: $39.99 a year or $6.99 a month in the US. Adds all techniques, the Advanced O2 and CO2 tables, guided sessions in Collin's voice, Bodie's AI plans and Meditations (eight guided meditations by Collin, 3 to 19 minutes). Aura is now Bodie: never mention Aura.
   - Eligible new subscribers get a 3-day free trial. Say "eligible new subscribers"; never promise a trial to everyone.
   - iPhone and Apple Watch. Wearables (Whoop, Garmin, Oura, COROS) reach GroundApp through Apple Health; live heart rate comes from a Bluetooth monitor or a Whoop or Garmin broadcasting heart rate.
 - Advanced tables always carry: "Dry land only. Never in or near water."
