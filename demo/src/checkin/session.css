@@ -29,8 +29,9 @@
     height: 100%;
   }
 
+  /* The still comes after the canvas, so it is on top until he has drawn, then it steps aside */
   .gad-bodie__still { object-fit: contain; }
-  .gad-bodie:has(.is-live) .gad-bodie__still { visibility: hidden; }
+  .gad-bodie__canvas.is-live + .gad-bodie__still { visibility: hidden; }
 
   /* ---- Waiting ---- */
 

@@ -44,7 +44,7 @@
     height: 350px;
     padding: 4px;
     border-radius: 84px;
-    background: linear-gradient(150deg, #4a403a 0%, #2b2420 38%, #1c1613 100%);
+    background: #2b2420;
   }
 
   .gaw-glass {
@@ -78,7 +78,7 @@
   .gaw-button {
     position: absolute;
     left: 327px;
-    background: linear-gradient(90deg, #1c1613 0%, #4a403a 60%, #2b2420 100%);
+    background: #3a322d;
   }
 
   .gaw-crown {
@@ -178,8 +178,9 @@
     height: 100%;
   }
 
+  /* The still comes after the canvas, so it is on top until he has drawn, then it steps aside */
   .gaw-bodie__still { object-fit: contain; }
-  .gaw-bodie:has(.is-live) .gaw-bodie__still { visibility: hidden; }
+  .gaw-bodie__canvas.is-live + .gaw-bodie__still { visibility: hidden; }
 
   /* The word and its count share one centred line, so the count moves as the word changes */
   .gaw-phase {

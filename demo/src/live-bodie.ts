@@ -16,17 +16,18 @@ const BODIE_MODULE = '/js/bodie-v3.js'
 
 /**
  * The site's live Bodie on a canvas. The returned ref holds him once he has loaded; it stays null
- * before that, when the script cannot load and when there is no WebGL, so keep a still image under
+ * before that, when the script cannot load and when there is no WebGL, so keep a still image with
  * the canvas (bodie-v3.js adds `.is-live` to the canvas once he has drawn).
+ * `still` holds him motionless (reduced motion, the page's pause, Low Power Mode).
  * `onReady` runs once when he arrives; `onPhase` runs every frame with his breath's phase.
  */
 export function useLiveBodie(
   canvas: RefObject<HTMLCanvasElement | null>,
   first: Pattern,
-  opts: { onReady?: (b: BodieApi) => void; onPhase?: (phase: string) => void } = {},
+  opts: { still: boolean; onReady?: (b: BodieApi) => void; onPhase?: (phase: string) => void },
 ) {
   const api = useRef<BodieApi | null>(null)
-  // He arrives after the first effects have run, so the callbacks are read when they are called.
+  // He arrives after the first effects have run, so the options are read when they are needed.
   const latest = useRef(opts)
   latest.current = opts
 
@@ -38,6 +39,7 @@ export function useLiveBodie(
         const b: BodieApi = mountBodie(canvas.current, { pattern: first, onPhase: (phase: string) => latest.current.onPhase?.(phase) })
         if (canvas.current.dataset.webgl === 'off') return void b.destroy()
         api.current = b
+        if (latest.current.still) b.setStill(true, { glow: false })
         latest.current.onReady?.(b)
       })
       .catch(() => {
@@ -50,6 +52,18 @@ export function useLiveBodie(
     }
     // Mounted once: `first` is only his opening breath.
   }, [])
+
+  // bodie-v3.js also follows the system's reduced-motion setting by itself, and would set him moving
+  // again when that setting is switched off while the page is still paused. So our answer goes back
+  // in after it has had its say.
+  useEffect(() => {
+    const apply = () => api.current?.setStill(latest.current.still, { glow: false })
+    apply()
+    const system = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const afterHis = () => setTimeout(apply, 0)
+    system.addEventListener('change', afterHis)
+    return () => system.removeEventListener('change', afterHis)
+  }, [opts.still])
 
   return api
 }

@@ -41,10 +41,12 @@
     max-width: revert-layer;
   }
 
+  /* No shadow: the page draws its phones flat on the ground (DESIGN.md, Colour) */
   .gad-phone {
     position: absolute;
     top: 16px;
     left: 16px;
+    box-shadow: none;
   }
 
   .gad-app {

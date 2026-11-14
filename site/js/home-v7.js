@@ -132,9 +132,10 @@ syncMotionBtn();
 publishMotion();
 
 /* ---------- App demos (the check-in phone, the watch): React islands built from demo/, fetched once the first
-   of them is a screen away. Until they run, and whenever they cannot, the still of each stays in its place. ---------- */
+   of them is a screen away. Until they run, and whenever they cannot, the still of each stays in its place.
+   They load only where the demo kit's own CSS works (it leans on color-mix, cascade layers and revert-layer). ---------- */
 const appDemos = $$('[data-app-demo]');
-if (appDemos.length) {
+if (appDemos.length && window.CSS && CSS.supports('color', 'color-mix(in srgb, red, blue)')) {
   const demoIO = new IntersectionObserver((es) => {
     if (!es.some((e) => e.isIntersecting)) return;
     demoIO.disconnect();

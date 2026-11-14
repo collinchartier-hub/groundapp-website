@@ -53,25 +53,23 @@ const script = async (a: Act<S>) => {
   a.put({ dim: false })
 }
 
-/** Bodie on the watch: the site's live figure, started again at each cycle so he and the count agree. */
-function WatchBodie({ cycle }: { cycle: number | null }) {
+/**
+ * Bodie on the watch: the site's live figure. His breath runs on his own clock, so it is started
+ * again whenever the count starts a cycle (`cycleStart` changes) and whenever he comes back from
+ * holding still. That covers each new cycle, a new session, the stage coming back on screen and
+ * the page's pause being lifted.
+ */
+function WatchBodie({ cycleStart }: { cycleStart: number | null }) {
   const canvas = useRef<HTMLCanvasElement>(null)
   const still = useReducedMotion()
-  const api = useLiveBodie(canvas, BOX, {
-    onReady: (b) => {
-      if (still) b.setStill(true, { glow: false })
-    },
-  })
+  const api = useLiveBodie(canvas, BOX, { still })
   useEffect(() => {
-    if (cycle !== null) api.current?.setPattern(BOX)
-  }, [api, cycle])
-  useEffect(() => {
-    api.current?.setStill(still, { glow: false })
-  }, [api, still])
+    if (!still && cycleStart !== null) api.current?.setPattern(BOX)
+  }, [api, cycleStart, still])
   return (
     <div className="gaw-bodie">
-      <img className="gaw-bodie__still" src="/media/v3/bodie/bodie-still-600.webp" alt="" width={600} height={744} />
       <canvas ref={canvas} className="gaw-bodie__canvas" />
+      <img className="gaw-bodie__still" src="/media/v3/bodie/bodie-still-600.webp" alt="" width={600} height={744} />
     </div>
   )
 }
@@ -98,7 +96,7 @@ export default function WatchDemo({ paused = false }: { paused?: boolean }) {
                         <circle cx="52" cy="52" r="51" />
                         <circle cx="52" cy="52" r="51" pathLength={1} style={{ strokeDasharray: `${s.t / SESSION_SECONDS} 1` }} />
                       </svg>
-                      <WatchBodie cycle={s.dim ? null : cycle} />
+                      <WatchBodie cycleStart={!s.dim && s.t % CYCLE_SECONDS === 0 ? cycle : null} />
                     </div>
                     <div className="gaw-phase">
                       <Roll variant="fade">{STEPS[step]}</Roll>

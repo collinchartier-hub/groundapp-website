@@ -26,10 +26,8 @@ export function Bodie({ screen }: { screen: Screen }) {
   const still = useReducedMotion()
   const breathing = screen === 'play'
   const api = useLiveBodie(canvas, RESONANCE, {
-    onReady: (b) => {
-      b.setPattern(breathing ? SIGH : RESONANCE)
-      if (still) b.setStill(true, { glow: false })
-    },
+    still,
+    onReady: (b) => b.setPattern(breathing ? SIGH : RESONANCE),
     // Home's line under him ("Breathe in") comes from his own clock, written only when the word changes.
     onPhase: (phase) => {
       const line = canvas.current?.closest('.gad-app')?.querySelector('.gad-home__phase')
@@ -44,14 +42,10 @@ export function Bodie({ screen }: { screen: Screen }) {
     api.current?.setPattern(breathing ? SIGH : RESONANCE)
   }, [api, breathing])
 
-  useEffect(() => {
-    api.current?.setStill(still, { glow: false })
-  }, [api, still])
-
   return (
     <div className="gad-bodie" data-place={PLACE[screen]} aria-hidden>
-      <img className="gad-bodie__still" src="/media/v3/bodie/bodie-still-600.webp" alt="" width={600} height={744} />
       <canvas ref={canvas} className="gad-bodie__canvas" />
+      <img className="gad-bodie__still" src="/media/v3/bodie/bodie-still-600.webp" alt="" width={600} height={744} />
     </div>
   )
 }

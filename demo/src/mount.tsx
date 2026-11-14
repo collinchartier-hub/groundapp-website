@@ -16,6 +16,8 @@ function Host({ Demo }: { Demo: ComponentType<{ paused?: boolean }> }) {
   useEffect(() => {
     const sync = () => setPaused(isStill())
     document.addEventListener('ga:motion', sync)
+    // The page may have gone still between the first render and this subscription
+    sync()
     return () => document.removeEventListener('ga:motion', sync)
   }, [])
   return <Demo paused={paused} />

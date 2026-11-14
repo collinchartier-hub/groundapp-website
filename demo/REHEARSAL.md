@@ -94,3 +94,39 @@ one session and the next.
 - On a real iPhone or in Safari. A third live Bodie on one page (hero, phone, watch) was only run on this laptop.
 - Against a real watch. The session screen matches the app's screenshot; the case is a plain drawing, not a product photo.
 - Playback watched live by a person.
+
+# 3. Independent review (2026-11-13)
+
+Three reviewers who did not build the demos: two design jurors following the studio's site-critic method (one on this
+branch, one on `origin/main` as the baseline, neither told about the other) and a code review by a different model family.
+
+| | origin/main | this branch |
+|---|---|---|
+| Verdict | FIX | FIX |
+| Overall | 6.6 (usability capped at 5) | 6.0 (7.2 before the cap for inspector FAILs) |
+| Check-in section | 7.0 | 6.5 |
+| Connections section | 6.5 | 5.5 |
+
+The two jurors did not apply the caps the same way (the baseline was capped for the phone's pause button, which both
+pages have), so the overall numbers are not a clean before and after. The section scores are the fairer comparison.
+
+What the branch juror said about the demos: the check-in demo is "the best product shot on the page", but its section
+now has two live Bodies, two phone styles and copy that describes the old flow; the watch stands alone beside a
+two-line caption with an empty half screen.
+
+Fixed after the review (commit after `0fb09a9`):
+- The four inspector FAILs that caused the cap: the demo slots now carry `data-ui`, the demo phone's shadow is gone,
+  the gradients have their Choices line.
+- Code review: the demos keep their description for screen readers once live; the page's pause can no longer be
+  undone by a change of the system's reduced-motion setting; the watch's count and Bodie start together again after
+  the stage leaves the screen or the pause is lifted; a pause during mounting is no longer missed; the built CSS is
+  written out flat and the demos load only where the kit's CSS works; the bundled licences ship beside the script.
+
+Open, for Collin:
+- Check-in: one Bodie or two, one phone style or two, and the copy and screenshot that still describe 1.2.1.
+- Connections: the watch needs company or a smaller place (the juror suggests setting it beside the health screens).
+- Low Power Mode: the page learns about it from the first recording that refuses to play. That used to be the check-in
+  recording; it is now the Advanced one, so the check-in demo can play before the page goes still. Not tested on a phone.
+- The deploy check does not notice a demo that was edited without being rebuilt.
+- Not from these changes, found by both jurors: on a 390px phone the hero's pause button hangs off the right edge and
+  widens the page by 10px.

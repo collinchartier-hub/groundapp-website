@@ -137,10 +137,12 @@ Defaults used on purpose, one line why each (check-tells reads the `- <rule-id>:
 - watch-demo: five watch screenshots in a row read as a contact sheet (Collin 2026-11-13: "it looks weird when there are so many screenshots"). One watch that runs the session says the same thing once. Its screen is rebuilt from the watch app's code and measured on screenshot 02, which stays as its still; the other four files are removed.
 - watch-case: the stageshow kit has no watch, so the case, crown, button and band are ours: a plain dark case with the band fading out above and below. No Apple artwork is used. The time on it (10:09) is the system's clock, set in the system face.
 - watch-length: the loop is one real session, 64 s. There is no shorter true loop: the cycle count would have to jump back.
+- gradient: one, inside the check-in demo: the app's own screen ground (Obsidian warming toward the bottom, as the app draws it and as the page's screenshots of the app show it). The watch case is flat. Both demo slots carry `data-ui`, like the page's other bezels, so the inspector reads what is inside them as interface. Its gradient rule has no such exemption, so run it with `--allow gradient`.
+- demo-flat-phone: the demo phone has no shadow. The kit gives its phones one by default; this page draws its phones flat on the ground.
 
 ## Checker notes
 Run before every review round: `python3 ~/.claude/skills/studio-site-design/check-tells.py site --design-md DESIGN.md`
-(0 FAIL), `inspect.mjs` at 1440/768/390, `motion-frames.mjs`, `phone-parity.mjs` (0 FAIL), `./scripts/check-site.sh`.
+(0 FAIL), `inspect.mjs` at 1440/768/390 with `--allow gradient` (see Choices), `motion-frames.mjs`, `phone-parity.mjs` (0 FAIL), `./scripts/check-site.sh`.
 After any change in `demo/`: `npm run build` there, then film it with the stageshow skill's `film.mjs --gate` at the shown
 width and at 390 (how, and the lines left on purpose, are in `demo/REHEARSAL.md`).
 
