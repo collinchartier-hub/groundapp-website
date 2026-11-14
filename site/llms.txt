@@ -1,15 +1,16 @@
 # GroundApp
 
-> GroundApp is a breathwork app for iPhone and Apple Watch, created and developed by Collin Chartier, a performance breathwork coach. Bodie, a breathing companion, sits in the middle of Home and breathes along with your technique. You check in with Bodie, name how you feel, and GroundApp matches breathwork to it. It has more than 40 breathing techniques with practice guides, Advanced O2 and CO2 tables for breath-hold training (dry land only), guided sessions in Collin's voice, sleep sounds, live heart rate and HRV, and Apple Health. Free to download on the App Store. GroundApp Premium is $39.99 a year in the US. Website: https://groundapp.live
+> GroundApp is a breathwork app for iPhone and Apple Watch, created and developed by performance breathwork coach Collin Chartier. Bodie is its breathing companion. Check in with how you feel and see a breathing plan before you start. More than 40 techniques, practice guides, guided sessions, Meditations, live heart rate and Apple Health. Free to download, with four core techniques free and an optional Premium subscription. Website: https://groundapp.live/
 
 - App Store: https://apps.apple.com/us/app/groundapp-breathwork/id6760352779
-- Rated 5.0 on the US App Store (11 ratings as of October 2026)
+- Rated 5.0 on the US App Store (12 ratings as of November 2026)
 - Requires iOS 17 or later. The Apple Watch app requires watchOS 11 or later.
+- Create an account when you start, with Apple, Google or email. You can delete it in Settings.
 
 ## Pricing
 
-- Free to download. Four core techniques are free, along with the session timer, streaks, basic stats, check-ins with Bodie and live heart rate.
-- GroundApp Premium is $39.99 a year (US). It adds all techniques, the Advanced O2 and CO2 tables and guided sessions. Eligible new subscribers get a 3-day free trial. Billed through Apple; cancel any time in Settings > your name > Subscriptions.
+- Free to download. Box breathing, Deep slow breathing, 2-to-1 breathing and Triangle breathing are free, along with the session timer, streaks, basic stats, check-ins with Bodie and live heart rate.
+- GroundApp Premium is $39.99 a year or $6.99 a month (US). It adds all techniques, the Advanced O2 and CO2 tables, guided sessions, Bodie's AI plans and Meditations. Eligible new subscribers get a 3-day free trial. Billed through Apple; cancel any time in Settings > your name > Subscriptions.
 
 ## Features
 
@@ -17,6 +18,8 @@
 - Check in with Bodie: name how you feel and get breathwork matched to it
 - Advanced O2 and CO2 tables for breath-hold training (dry land only)
 - Guided sessions in Collin's voice, with ambient sound and haptic cues (Premium)
+- Meditations: eight guided meditations by Collin, 3 to 19 minutes (Premium)
+- Guided sessions use an AI model of Collin's voice, trained on his recordings; haptic-only mode is available
 - Live heart rate and HRV from a Bluetooth heart rate monitor or a Whoop or Garmin broadcasting heart rate
 - Apple Health, plus Whoop, Garmin, Oura and COROS through Apple Health
 - Apple Watch app
@@ -57,6 +60,12 @@
 - Focus and composure before a performance, presentation or competition
 - Energy in the morning or before training
 - Building a daily breathwork habit
+
+## Safety and scope
+
+- This is coaching and education, not medical or mental health treatment.
+- Advanced breath-hold tables: Dry land only. Never in or near water.
+- Wearable readings inform suggestions. They are not a medical assessment.
 
 ## Optional
 

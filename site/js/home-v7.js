@@ -76,6 +76,7 @@ function goStill() {
   if (bodie) bodie.setStill(true);
   showReadout();
   syncMotionBtn();
+  publishMotion();
 }
 function playClip(v) {
   if (still()) return;
@@ -113,6 +114,14 @@ function applyMotion() {
   }
   showReadout();
   syncMotionBtn();
+  publishMotion();
+}
+// The same answer for scripts that load later (the check-in demo): data-motion on <html>, "ga:motion" when it changes.
+function publishMotion() {
+  const motion = still() ? 'still' : 'on';
+  if (root.dataset.motion === motion) return;
+  root.dataset.motion = motion;
+  document.dispatchEvent(new Event('ga:motion'));
 }
 if (motionBtn) motionBtn.addEventListener('click', () => {
   paused = !paused;
@@ -120,9 +129,27 @@ if (motionBtn) motionBtn.addEventListener('click', () => {
   applyMotion();
 });
 syncMotionBtn();
+publishMotion();
+
+/* ---------- App demos (the check-in phone, the watch): React islands built from demo/, fetched once the first
+   of them is a screen away. Until they run, and whenever they cannot, the still of each stays in its place.
+   They load only where the demo kit's own CSS works (it leans on color-mix, cascade layers and revert-layer). ---------- */
+const appDemos = $$('[data-app-demo]');
+if (appDemos.length && window.CSS && CSS.supports('color', 'color-mix(in srgb, red, blue)')) {
+  const demoIO = new IntersectionObserver((es) => {
+    if (!es.some((e) => e.isIntersecting)) return;
+    demoIO.disconnect();
+    const css = document.createElement('link');
+    css.rel = 'stylesheet';
+    css.href = '/assets/css/app-demo-v1.min.css';
+    css.onload = () => { import('/js/app-demo-v1.min.js').catch(() => { /* the stills stay */ }); };
+    document.head.append(css);
+  }, { rootMargin: '100% 0px' });
+  appDemos.forEach((el) => demoIO.observe(el));
+}
 
 /* ---------- Swipe rails (phone): focusable while they scroll, so a keyboard can scroll them too ---------- */
-const rails = $$('.conn-shots, .watch-row');
+const rails = $$('.conn-shots');
 function syncRails() { rails.forEach((r) => { if (r.scrollWidth > r.clientWidth + 1) r.tabIndex = 0; else r.removeAttribute('tabindex'); }); }
 syncRails();
 addEventListener('resize', () => { clearTimeout(syncRails.t); syncRails.t = setTimeout(syncRails, 200); });
@@ -173,7 +200,7 @@ const zoneIO = new IntersectionObserver((es) => {
   syncDock();
 });
 ['hero', 'download', 'foot'].forEach((id) => { const el = document.getElementById(id); if (el) zoneIO.observe(el); });
-const KEEP_CLEAR = '[data-slot], .readout, .lib-name, .safety, .mode-safe, .techs, .plan, main h2, main .h3, main .quote, main .film-line';
+const KEEP_CLEAR = '[data-slot], .readout, .lib-name, .safety, .mode-safe, .techs, .plan, .app-demo, main h2, main .h3, main .quote, main .film-line';
 let bandIO = null;
 function watchBand() {
   if (bandIO) bandIO.disconnect();

@@ -1,0 +1,244 @@
+/* GroundApp Apple Watch demo. Every rule sits under .gaw. Inside the screen, lengths are watch points:
+   the screen is laid out at 208 x 248 (46 mm) and scaled by --k. */
+
+.gaw {
+  & .ss-stage {
+    --ss-font: "Ground Font Type", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --gaw-gold: #c4935a;
+    --k: 1.3;
+    background: transparent;
+  }
+
+  /* The page's resets stop at the stage (see checkin.css); the watch, which is ours, is border-box. */
+  & .ss-stage,
+  & .ss-stage *,
+  & .ss-stage *::before,
+  & .ss-stage *::after {
+    box-sizing: revert-layer;
+  }
+
+  & .gaw-watch,
+  & .gaw-watch *,
+  & .gaw-watch *::before,
+  & .gaw-watch *::after {
+    box-sizing: border-box;
+  }
+
+  & .gaw-watch :where(svg, img, canvas) {
+    display: block;
+    max-width: none;
+  }
+
+  /* ---- The watch: a dark case, whole, on its band. Only the band leaves the picture. ---- */
+
+  .gaw-watch {
+    position: absolute;
+    inset: 0;
+  }
+
+  .gaw-case {
+    position: absolute;
+    top: 75px;
+    left: 31px;
+    width: 298px;
+    height: 350px;
+    padding: 4px;
+    border-radius: 84px;
+    background: #2b2420;
+  }
+
+  .gaw-glass {
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    border-radius: 80px;
+    background: #000;
+  }
+
+  .gaw-band {
+    position: absolute;
+    left: 57px;
+    width: 246px;
+    height: 110px;
+    border-inline: 1px solid rgba(232, 221, 208, 0.07);
+    background: #2d1e17;
+  }
+
+  .gaw-band--top {
+    top: 0;
+    mask-image: linear-gradient(to top, #000 30%, transparent 96%);
+  }
+
+  .gaw-band--bottom {
+    bottom: 0;
+    mask-image: linear-gradient(to bottom, #000 30%, transparent 96%);
+  }
+
+  .gaw-crown,
+  .gaw-button {
+    position: absolute;
+    left: 327px;
+    background: #3a322d;
+  }
+
+  .gaw-crown {
+    top: 156px;
+    width: 12px;
+    height: 54px;
+    border-radius: 3px 6px 6px 3px;
+  }
+
+  .gaw-button {
+    top: 246px;
+    width: 5px;
+    height: 72px;
+    border-radius: 0 3px 3px 0;
+  }
+
+  /* ---- The screen ---- */
+
+  .gaw-screen {
+    position: relative;
+    width: 208px;
+    height: 248px;
+    overflow: hidden;
+    border-radius: 54px;
+    background: #000;
+    color: #fff;
+    font-family: var(--ss-font);
+    transform: scale(var(--k));
+    transform-origin: 0 0;
+  }
+
+  /* The system's clock, in the system's face */
+  .gaw-time {
+    position: absolute;
+    top: 17px;
+    right: 16px;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 18px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .gaw-session {
+    position: absolute;
+    inset: 0;
+    transition: opacity 0.32s ease;
+  }
+
+  .gaw-session[data-dim] {
+    opacity: 0;
+  }
+
+  /* The ring is 104 across. On the watch Bodie's own square (96) hides all of it but the four arcs past
+     its sides, so the ring is cut to that frame here. */
+  .gaw-figure {
+    position: absolute;
+    top: 26px;
+    left: 52px;
+    width: 104px;
+    height: 104px;
+  }
+
+  .gaw-ring {
+    position: absolute;
+    inset: 0;
+    transform: rotate(-90deg);
+    clip-path: polygon(evenodd, 0 0, 104px 0, 104px 104px, 0 104px, 0 0, 4px 4px, 4px 100px, 100px 100px, 100px 4px, 4px 4px);
+  }
+
+  .gaw-ring circle {
+    fill: none;
+    stroke: rgba(196, 147, 90, 0.15);
+    stroke-width: 2;
+  }
+
+  .gaw-ring circle + circle {
+    stroke: rgba(196, 147, 90, 0.7);
+    stroke-linecap: round;
+    transition: stroke-dasharray 1s linear;
+  }
+
+  .gaw-session[data-dim] .gaw-ring circle + circle {
+    transition: none;
+  }
+
+  .gaw-bodie {
+    position: absolute;
+    inset: 4px;
+  }
+
+  .gaw-bodie__still,
+  .gaw-bodie__canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* The still comes after the canvas, so it is on top until he has drawn, then it steps aside */
+  .gaw-bodie__still { object-fit: contain; }
+  .gaw-bodie__canvas.is-live + .gaw-bodie__still { visibility: hidden; }
+
+  /* The word and its count share one centred line, so the count moves as the word changes */
+  .gaw-phase {
+    position: absolute;
+    top: 134px;
+    right: 4px;
+    left: 4px;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 8px;
+    height: 26px;
+    color: var(--gaw-gold);
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 26px;
+    white-space: nowrap;
+  }
+
+  .gaw-count {
+    color: #949494;
+    font-size: 22px;
+    font-weight: 300;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .gaw-cycle {
+    position: absolute;
+    top: 160px;
+    right: 4px;
+    left: 4px;
+    color: #4d4d4d;
+    font-size: 12px;
+    line-height: 16px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .gaw-controls {
+    position: absolute;
+    top: 178px;
+    left: 6px;
+    display: grid;
+    grid-template-columns: 90px 90px;
+    gap: 16px;
+  }
+
+  .gaw-ctl {
+    display: grid;
+    place-items: center;
+    height: 52px;
+    border-radius: 24px;
+    background: #464548;
+    color: #afaeb3;
+  }
+
+  .gaw-ctl--end {
+    background: #411111;
+    color: #fc4a59;
+  }
+}

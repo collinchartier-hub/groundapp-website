@@ -9,15 +9,17 @@ Studio defaults to question: `DESIGN-BANS.md`.
 middle of the app's Home screen, is the guide: the visitor meets him breathing on his terracotta disc, presses and
 holds him to breathe, and he walks them through the app section by section. Every picture is the shipped app
 (GroundApp v2, App Store 1.2.1): real screen recordings in a phone, real Apple Watch screens, Collin's own two photos
-and his intro film. One scrolling page; `/play` stays the game's own page.
+and his intro film. The one drawn picture is the check-in demo (2026-11-13, preview, not approved yet): the 1.4.2
+check-in rebuilt screen by screen from the app's own code and recordings, with the site's live Bodie inside it
+(`demo/`, built with the `stageshow` skill). One scrolling page; `/play` stays the game's own page.
 
 World (stage 1 nouns): the disc, the belly that fills and glows, the breath marks (inhale, hold, exhale), the wheel of
 techniques, the check-in feelings, a CO2 table's rounds and rests, a heart-rate strap, the watch on a wrist, a finish
 tape, a country road, Sage's Great Tree, Kip's espresso.
 
 Signature: press and hold Bodie to breathe in, let go to breathe out (the app's own gesture). Between sections he
-travels beside the page and reacts: waves at Collin, leans toward the check-in phone, breathes the technique you tap
-in the Library, sits with the cast at the game, cheers at Download.
+travels beside the page and reacts: waves at Collin, breathes the technique you tap in the Library, sits with the
+cast at the game, cheers at Download. In Check-in and Connections he is inside the phone and on the watch instead.
 
 ## Type
 Font reason: the kit fixes the faces (Ground Brand Kit v5, the system the v2 app ships with). The moves are ours.
@@ -67,19 +69,22 @@ Tokens: studio `motion-tokens.css` (copied into `site/assets/css/site-v4.css`). 
 |---|---|---|---|---|
 | Signature | always, press and hold | Bodie canvas (`/js/bodie-v3.js`) | breath clock, sine in-out | `setStill(true, { glow: false })`: one still frame, press still answers |
 | Hero entrance | load | Bodie `react('wake')`; lede, hint, actions (stagger 70ms) | wake 1.3 s; --t-reveal, --ease-expo, 24px rise | Bodie awake and still, copy in place |
-| Bodie moves (desktop) | a section with a Bodie slot crosses the middle of the screen | the one canvas moves to that slot, then reacts: wave (Collin), lean (Check-in), breathes the tapped pattern (Library), wave (Play, Connections), cheer (Download). He flies only when his old slot is on screen and his straight path (sampled 12 times, his figure as the middle 60% of the box) stays clear of copy and buttons; otherwise he fades out at the old slot and in at the new one, so he never crosses a headline or the App Store button | fly: --t-reveal + 100ms, --ease-in-out; fade: 250ms out, 400ms in, ease | appears at the new slot, no travel, no fade |
+| Bodie moves (desktop) | a section with a Bodie slot crosses the middle of the screen | the one canvas moves to that slot, then reacts: wave (Collin), breathes the tapped pattern (Library), wave (Play), cheer (Download). He flies only when his old slot is on screen and his straight path (sampled 12 times, his figure as the middle 60% of the box) stays clear of copy and buttons; otherwise he fades out at the old slot and in at the new one, so he never crosses a headline or the App Store button | fly: --t-reveal + 100ms, --ease-in-out; fade: 250ms out, 400ms in, ease | appears at the new slot, no travel, no fade |
 | Bodie appears (phone) | same | canvas moves into the section's own beat | --t-panel opacity fade | instant |
 | Library pattern | tap Box, 4-7-8, Physiological sigh, Resonance | Bodie's breath, readout with breath marks | the real pattern | readout shows the pattern, no live count |
 | CO2 rounds fill (scroll moment) | table scrolls through view | 6 holds, 5 rests, recovery | scroll-linked, linear | filled |
 | Cast peeks in (scroll moment) | play band enters view, once | Kip, Sage, Ember rise into their tiles (stagger 90ms) | --t-reveal, --ease-expo | in place |
-| App recordings (moving picture) | 30% in view; pause off screen | check-in, advanced, health clips | loop, muted | poster still, never plays |
+| App recordings (moving picture) | 30% in view; pause off screen | advanced, health clips | loop, muted | poster still, never plays |
+| Check-in demo (moving picture, in the check-in recording's place, so the count of moving pictures is unchanged) | in view; stops and resets off screen | a phone playing the 1.4.2 check-in as a 21 s loop: Check in on Home, Anxious, Worried, Nervous, 6 and Medium, Continue, "Bodie is coming up with your plan", the 4-minute plan, Begin session, Bodie breathing one Physiological sigh (2 in, 1 more in, 3 out), then the player's X back to Home. Bodie is one figure throughout: he glides between Home's middle, the check-in's corner and the player (0.75 s, cubic-bezier(0.45, 0, 0.1, 1)); screens crossfade (0.2 s out, 0.32 s in, as the app does); plan parts rise 12px (0.5 s ease-out, 130 ms apart); taps are the kit's touch dot | script on the kit's clock; Bodie's breath on his own clock (`bodie-v3.js`) | the still of the player: "Breathe in", Bodie holding still, no touch dot |
+| Watch demo (moving picture, in place of the five watch screenshots; 2026-11-13, preview) | in view; stops and resets off screen | one Apple Watch running a whole Box breathing session as the watch app does (1.4.2): Bodie, live, breathes 4 in, 4 hold with his eyes closed, 4 out, 4 hold; the word and the count change with him, "Cycle 1 of 4" counts up, the thin ring fills. After cycle 4 the screen dips (0.32 s) and a new session starts. No cursor and no taps: nothing is pressed | 64 s, each second timed from the session's start; Bodie's breath on his own clock, started again at each cycle | the still of "Breathe in 4, Cycle 1 of 4", Bodie holding still |
 | Phone dock | after the hero, away at Download, the footer and over anything that must stay readable | dock slides up from the bottom edge | --t-ui, --ease-out | opacity only |
 Sound is off everywhere. The intro film plays with sound only on tap. Low Power Mode (a clip's `play()` is refused):
 Bodie goes still, clips stay on their poster stills.
 
 Pause (WCAG 2.2.2, Norway launch 2026-11-10): anything that moves on its own for more than 5 seconds has a control to
-stop it. Landing page: a round pause button beside Bodie's top right in the hero holds Bodie and the clips still like
-reduced motion does and is remembered (`localStorage` `ga-motion`); hidden under reduced motion and Low Power Mode,
+reduced motion. Landing page: a round pause button beside Bodie's top right in the hero holds Bodie, the clips and the
+check-in demo still like reduced motion does and is remembered (`localStorage` `ga-motion`; `home-v7.js` publishes it as
+`data-motion` on `<html>` with a `ga:motion` event); hidden under reduced motion and Low Power Mode,
 where nothing moves. 404: "Pause the circle" in the help line. /play: a "Motion on/off" button with Sound and Voice
 stills the menu and result scenes (a run itself always moves; it has its own Pause). Waiting room: a "Pause" button
 next to the sound toggle stops the loop. The intro film has a caption track (`media/v3/film/intro-captions-v1.vtt`)
@@ -88,21 +93,21 @@ transcript under each player. Form fields show their labels above the field. Sta
 
 ## Phone
 Phone cut: one 9:16 story. Bodie moves into each of his sections as its own beat above, below or beside the copy
-(never behind it), the recordings keep their own 9:16 frame in the bezel, the five watch screens become a swipe rail.
+(never behind it), the recordings keep their own 9:16 frame in the bezel, the watch is one live watch above its line.
 | Section | Desktop | Phone | Footage on phone | Copy | Thumb / motion | Low Power Mode |
 |---|---|---|---|---|---|---|
 | Hero | h1 over a large centred Bodie, lede left, actions right | h1 in two lines, Bodie sized to what 100svh leaves (190-380px), hint, App Store and Play buttons and the meta line all inside the first screen above Safari's toolbar; the lede follows | live canvas | above and below Bodie, never on him | touch and hold Bodie; entrance as desktop | Bodie still (canvas still frame) |
-| Collin | IRONMAN photo left, bio, accolades and press right; then the film line and buttons, Bodie waving, the intro film | IRONMAN photo full bleed, bio, then film card and Bodie side by side, film line and buttons | IRONMAN photo, film poster, tap to play with sound | own beats | Bodie waves as the slot arrives; film button 72px | poster; film still plays on tap |
-| Check-in | copy, steps and button left, Bodie leaning in, the check-in recording right; then "Your session, built from your answers." as text left and the session screen (05) right. Aura was removed from the app (Collin 2026-10-30) | copy, then the recording and Bodie side by side (Bodie leans toward it), the session step, the session screen | ch06-check-in, 05-check-in-plan | above the phone | lean toward the phone | poster still |
+| Collin | one band of pictures across 12 columns, the IRONMAN photo and the intro film at one height; under it the bio, accolades and press on column 1, Bodie waving in columns 7 to 8, the film line, buttons and transcript on column 9 | IRONMAN photo full bleed, bio, then film card and Bodie side by side, film line and buttons | IRONMAN photo, film poster, tap to play with sound | own beats | Bodie waves as the slot arrives; film button 72px | poster; film still plays on tap |
+| Check-in | copy, steps, the session step and the button on column 1; one phone, the check-in demo, in columns 8 to 12 (392px stage). No Bodie slot and no second phone: he is inside the demo, and the demo shows the plan screen | copy, steps, session step and button, then the demo on its own row at the column's width (its compact design: phone 326 in a 358 stage, about 311px at a 390 screen) | the demo (drawn, not footage) | above the phone | the demo plays by itself; nothing to tap | the demo's still (the player), Bodie still |
 | Library | the page's second live stage, centred across 12 columns: h2 and lede, Bodie (up to 400px, sized so the stage fits one screen) with his readout, the four tappable techniques as a 2x2 grid right under him; below, practice notes and "Also in the list" on column 1, "More in the Library" and the safety line on column 7 | the same stage in one column: Bodie 190px, readout, the four techniques (60px rows) so a tap and his breath share one screen, then the notes and tabs | live canvas | readout under Bodie | tap a row, Bodie breathes it | Bodie still, readout shows the pattern |
 | Advanced | recording left, copy, safety line and CO2 table right (unboxed, on column 7) | copy, recording, then the table on its own band | ch05-advanced | own beat | rounds fill on scroll | poster still, table filled |
 | Play | band: pitch and modes left, sticky cast tiles with Bodie right | the four cast tiles first (2 by 2, Bodie in his own), then pitch, modes, Play button | live canvas, three cast stills | own beat | cast peeks in; Play 52px | Bodie still |
-| Connections (with Progress) | head left and Bodie waving right; health recording, health and progress screens in a row; four blocks on the two edges; the watch rail | head, Bodie, the three screens as a swipe rail, blocks, watch rail | ch07-health, 10-health, 09-progress, 5 watch shots | own beats | swipe rails; Bodie waves | poster still |
+| Connections (with Progress) | head on column 1; then one row of three things you wear or carry, each on its own third (columns 1, 5 and 9): the health recording, the progress screen, the live watch, with each one's words under it. No Bodie slot: he is on the watch | head, the two screens as a swipe rail, the watch (300 wide, centred), then the words | ch07-health-v2, 09-progress, the watch demo (drawn, with one watch screenshot as its still) | own beats | swipe rail; the watch plays by itself | poster still; the watch's still |
 | Story | one centred 62ch column; the client's question at quote size; Running Home full width 16:10 | one column; the photo full bleed | Running Home photo | own column | none | same |
 | Pricing | Free and Premium side by side | stacked, Premium second | none | in the plans | buttons 52px | same |
 | Reviews | the large quote (30px serif) left, two quotes stacked right, cards sized to their words | stacked quotes | none | quotes | Leave a review 52px | same |
 | Download | the closing poster, centred: h2, lede, Bodie cheering (up to 400px), the gold App Store button and its line under him, the review prompt; then a quieter row: newsletter (dark button) on column 1, Say hi on column 7 | the same poster with Bodie 220px and a full-width App Store button, then the form and links | live canvas | own beats | cheer; form fields 52px | Bodie still |
-| FAQ | "Questions, answered" sticky on the left while the questions scroll on the right | one column | none | accordions | 60px summaries | same |
+| FAQ | "Questions, answered" on top, the questions in two stacks of six and five under it, so neither half of the screen is empty | one column | none | accordions | 60px summaries | same |
 
 ## Choices
 Defaults used on purpose, one line why each (check-tells reads the `- <rule-id>: <reason>` lines).
@@ -114,16 +119,36 @@ Defaults used on purpose, one line why each (check-tells reads the `- <rule-id>:
 - phone-touch-none: the game canvas on `/play` takes every touch as a breath; the page around it scrolls.
 - phone-hover-only: legacy stylesheets (`home-v2/3/4.css`; `home-v4.css` still styles the masterclass waiting room) and the game's `bodie-run-v2.css`; every other hover sits inside `(hover: hover) and (pointer: fine)`.
 - grey-body: running text is Driftwood (#A89585, 6.3:1 on Obsidian) because the kit makes it the reading ink; headlines, titles and quotes are Bone.
-- character: Bodie is the app's own companion with a job (the breath pacer), drawn from the shipped app. After Play his lower-half moment is Connections (he waves beside "Works with what you wear.", the watch screens show him on the wrist) and Download (cheer); he stays away from prices and reviews (mobile.md §8).
+- character: Bodie is the app's own companion with a job (the breath pacer), drawn from the shipped app. His own slots are the hero, Collin (wave), the Library, Play and Download (cheer). In Check-in and Connections he appears inside the phone demo and on the watch, never twice on one screen; he stays away from prices and reviews (mobile.md §8).
 - headline-on-load: "Breathe with Bodie." is in the first paint (it is the LCP); Bodie's wake carries the entrance instead of the headline arriving on the exhale.
-- side-scroll: on phones and tablets the Connections screens (health clip, health, progress) and the five watch screens are swipe rails (inspect WARN at 768 and 390); each screen keeps a readable size and the next one peeks in.
+- side-scroll: on phones and tablets the two Connections screens (health clip, progress) are a swipe rail (inspect WARN at 768 and 390); each screen keeps a readable size and the next one peeks in.
 - size-count: inspect counts 17 sizes because the kit's scale (102/52 display, 46 story quote, 32 session step heading, 30 the large review quote, 22-26 serif lines, 22/19/18/17/16/15 text) meets the price numerals (48) and breath readout (18-22); every size is a kit token or its clamp. The large review quote stops at 30px: past that a 300-character quote reads as a headline.
 - phone-100vh: only `.stage:fullscreen` in the game's `bodie-run-v2.css` (from `game/src/1-page.html`), where there is no browser toolbar. (check-tells cannot excuse this rule id from Choices because its id contains digits, so it stays a WARN.)
 - dock: the phone's "Get the app" is the full-width opaque bottom dock copy.md calls the sticky phone bar, so copy scrolls under an edge instead of under a floating button; it slides away whenever a Bodie slot or readout, a safety line, the technique list, a plan, a headline or a quote is in the bottom 120px, and over the hero, Download and the footer.
+- product-demo: the check-in is shown as a drawn demo, not footage, because the 1.2.1 recording no longer matches the app (1.4.2 shows the plan before the session, and Aura became Bodie). Every string and screen comes from the app's code (`demo/src/checkin/data.ts` lists the sources); nothing is invented. The rules for it are the `stageshow` skill's, under the studio skill.
+- demo-whole-phone: the demo shows the whole phone (the kit's `unframed`), not a cropped one, because this site's pictures of the app are whole screens in a bezel and the story needs the top of the screen (Bodie's line) and the bottom (Save, Begin session) at once.
+- demo-one-bodie: Check-in and Connections have no Bodie slot. The first juror counted two live Bodies 100px apart in Check-in as the section's main fault, so the page's Bodie skips those two sections on every screen size.
+- demo-icons: the app's SF Symbols are Apple's and not licensed for the web, so the demo uses Lucide (ISC) for the six feelings, the batteries, the tab bar and the player's controls. One set, one stroke.
+- demo-length: the loop runs about 21 s, past the stageshow guide of 10 to 16, because it plays the whole check-in in the app's real order. A shorter cut is a choice for Collin.
+- demo-copy-142: the words beside the demo now say what 1.4.2 does (Continue, Bodie shows the plan first, Begin session), taken from the 1.4.2 release notes. Pricing, the cost answer, the Premium list and the rating count follow the live 1.4.2 listing too (`docs/site-v3/copy.md`, last section). All of it waits for Collin's read.
+- over-budget: four moving pictures (Advanced clip, health clip, check-in demo, watch demo) and two scroll moments, one more picture than motion.md's budget. The two demos replaced a recording and a row of five stills, so the count of things that move went up by one (the watch). Each plays only in view and all four stop with the hero's pause button.
+- picture-band: the Collin section opens with one full-width band (photo and film at one height) so the run of "copy beside a phone" is broken once, as the first juror asked.
+- demo-weight: React and the kit add one lazy script (`js/app-demo-v1.min.js`, 208 KB, 70 KB gzipped) and one stylesheet (`assets/css/app-demo-v1.min.css`, 8 KB gzipped), fetched only when the Check-in section is a screen away. Nothing is added to the first paint.
+- demo-min-files: the two built files are named `.min.` because they are minified bundles with React inside. check-tells skips `.min.` files (React's own attribute list contains a word its stock-copy rule looks for); the source it would otherwise read is `demo/src/`, which is not under `site/`.
+- demo-phone-type: in the phone column the demo is the same screen at about three quarters of its size, so its five smallest labels (tab names, the plan's tags and times, the scale's ends, the minutes and the cycle line) are set one step larger there to stay near 10px.
+- watch-demo: five watch screenshots in a row read as a contact sheet (Collin 2026-11-13: "it looks weird when there are so many screenshots"). One watch that runs the session says the same thing once. Its screen is rebuilt from the watch app's code and measured on screenshot 02, which stays as its still; the other four files are removed.
+- watch-case: the stageshow kit has no watch, so the case, crown, button and band are ours: a plain dark case with the band fading out above and below. No Apple artwork is used. The time on it (10:09) is the system's clock, set in the system face.
+- watch-length: the loop is one real session, 64 s. There is no shorter true loop: the cycle count would have to jump back.
+- gradient: one, inside the check-in demo: the app's own screen ground (Obsidian warming toward the bottom, as the app draws it and as the page's screenshots of the app show it). The watch case is flat. Both demo slots carry `data-ui`, like the page's other bezels, so the inspector reads what is inside them as interface. Its gradient rule has no such exemption, so run it with `--allow gradient`.
+- demo-flat-phone: the demo phone has no shadow. The kit gives its phones one by default; this page draws its phones flat on the ground.
+- card-rows: inspect counts two rows of same-size boxes. One is the page's (the review quotes). The other is inside the check-in demo: the app's own grid of six feelings, which the demo copies and the page does not style.
+- font-fallback: the demo phone's status bar asks for SF Pro Text first (the kit's rule, for the 9:41). Apple devices have it; elsewhere the system font stands in. Apple's licence does not let a site ship it, and the page's own type is not affected.
 
 ## Checker notes
 Run before every review round: `python3 ~/.claude/skills/studio-site-design/check-tells.py site --design-md DESIGN.md`
-(0 FAIL), `inspect.mjs` at 1440/768/390, `motion-frames.mjs`, `phone-parity.mjs` (0 FAIL), `./scripts/check-site.sh`.
+(0 FAIL), `inspect.mjs` at 1440/768/390 with `--allow gradient` (see Choices), `motion-frames.mjs`, `phone-parity.mjs` (0 FAIL), `./scripts/check-site.sh`.
+After any change in `demo/`: `npm run build` there, then film it with the stageshow skill's `film.mjs --gate` at the shown
+width and at 390 (how, and the lines left on purpose, are in `demo/REHEARSAL.md`).
 
 ## /play: Bodie's Breath Run (game page, Collin's request 2026-10-30)
 A free browser game, built from `game/src/` by `python3 game/build.py` into `site/play.html`, `js/bodie-run-v2.js`

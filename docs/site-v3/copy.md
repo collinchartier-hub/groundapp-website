@@ -339,11 +339,7 @@ Source: [S1] (Aura paragraph, trial, price) [S9: screenshot 05]. The lede uses "
 
 **Alt, clip ch07-health:** GroundApp opens on Bodie saying "Hi, I'm Bodie", then the Health and devices screen. The Apple Health access prompt appears.
 
-**Alt, watch 01-bodie-instant-calm-breathe-in:** Apple Watch showing Bodie on his disc with "Breathe in" in Instant Calm.
-**Alt, watch 02-box-breathing-breathe-in:** Apple Watch showing Bodie in Box breathing, "Breathe in 1", cycle 1 of 4.
-**Alt, watch 03-box-breathing-hold:** Apple Watch showing Bodie with eyes closed, "Hold 4", cycle 1 of 4.
-**Alt, watch 04-box-breathing-breathe-out:** Apple Watch showing Bodie in Box breathing, "Breathe out 4", cycle 1 of 4.
-**Alt, watch 05-physiological-sigh-breathe-out:** Apple Watch showing Bodie in the physiological sigh, "Breathe out 6", cycle 1 of 5.
+**Alt, the watch (one live watch since 2026-11-13; its still is screenshot 02-box-breathing-breathe-in):** GroundApp on an Apple Watch, running Box breathing. Bodie sits on his disc inside a thin ring and breathes with the count: "Breathe in 4", "Hold 4" with his eyes closed, "Breathe out 4", "Hold 4". Under the count it says "Cycle 1 of 4", with a pause button and a button to end the session.
 
 **Watch caption:** Bodie on your wrist.
 
@@ -629,3 +625,61 @@ Source: [S1] [S5] [S12] (current `site/llms.txt` structure and rating line)
 - Thrive Real Estate Group appears in Collin's collinchartier.com bio. It is left out here on purpose (not about breathwork).
 
 > 2026-10-30: Aura was removed from the app (Collin). Its section became "Your session, built from your answers." in Check-in; every Aura line below is retired.
+
+---
+
+## Changes on 2026-11-13 (round 2 of the demo preview, not approved yet)
+
+These lines replace the ones above where they differ. Facts are from the live App Store listing, version 1.4.2
+(`https://itunes.apple.com/lookup?id=6760352779`, read 2026-11-13).
+
+**Check-in, session step (was "Save your check-in, tap Build my guided session..."):** Tap Continue, and Bodie comes up with your plan and shows it to you first: the techniques, how long, and why each one fits. Tap Begin session when you're ready. Check-ins with Bodie are free.
+Source: the 1.4.2 release notes ("After you check in, Bodie comes up with your plan and shows it to you first: the techniques, how long, and why each one fits. Tap Begin session when you're ready.").
+
+**Check-in pictures:** the recording (ch06) and screenshot 05 are gone. One live demo of the 1.4.2 check-in takes their place.
+
+**Connections pictures:** the health recording is recut (`ch07-health-v2`, 14 s: Health and devices, the Apple Health prompt, Apple Health on). Screenshot 10 is gone: it still named Aura. The five watch screenshots are one live watch.
+**Alt, clip ch07-health-v2:** The Health and devices screen in GroundApp. Apple Health is switched on: the Apple Health access prompt appears, the switches for mindful minutes and workouts are turned on, and the screen comes back with Apple Health reading HRV, resting heart rate and sleep.
+
+**Plan 2: GroundApp Premium, $39.99 a year (US)**
+**Plan 2 sub-line:** Or $6.99 a month. A 3-day free trial for eligible new subscribers.
+**Plan 2 list:** All 40+ techniques / Advanced O2 and CO2 tables / Guided sessions in Collin's voice / Bodie's AI plans / Meditations: eight guided meditations by Collin, 3 to 19 minutes
+**Plan 2 fine print:** Premium is a yearly or monthly subscription that renews automatically. It is billed through your Apple ID. Cancel any time in Settings > your name > Subscriptions, at least 24 hours before the period ends.
+
+**FAQ, What does GroundApp cost?** GroundApp is free to download. GroundApp Premium is $39.99 a year or $6.99 a month in the US and adds all 40+ techniques, the Advanced O2 and CO2 tables, guided sessions in my voice, Bodie's AI plans and Meditations. Eligible new subscribers get a 3-day free trial.
+
+**Reviews H2:** Rated 5.0 on the App Store, from 12 ratings.
+**Reviews sub-line (was "Three reviews, word for word."):** From three App Store reviews. Two of the three quotes are excerpts, so "word for word" was not true of the whole review.
+
+**llms.txt:** 12 ratings as of November 2026; Premium yearly or monthly, with Bodie's AI plans and Meditations.
+
+Still open, Collin's call: the intro film's transcript line about being "less anxious and have less panic attacks".
+
+**Account correction after the round-2 critique:** The Free plan now says only "Free to download." The account FAQ
+and its JSON-LD answer say: "Yes. Create one when you start, with Apple, Google or email. You can delete your account
+any time in Settings." The live 1.4.2 listing explicitly asks you to create an account. The same release's
+`App/AppState+Account.swift` and `Models/FirstUseFlow.swift` confirm mandatory sign-in before practice; the public
+privacy policy already says an account is required on iPhone. The older guest-mode answer above is retired.
+
+## SEO and answer coverage (local preview, not deployed)
+
+- Search and social title: "GroundApp | Breathwork App for iPhone & Apple Watch".
+- Description: "GroundApp is a breathwork app for iPhone and Apple Watch. Try four free techniques, check in with
+  Bodie, and explore 40+ breathing techniques."
+- The FAQ now opens with "What is GroundApp?", using the sourced platform, creator, technique and Premium facts.
+  "Where can I learn about breathwork?" links the existing science and nervous-system articles and Coherence audio.
+  All 14 FAQ answers match their JSON-LD answers. Both new answers use existing product facts and resources.
+- The WebPage, app, creator, publisher, website and FAQ schema entries are linked by stable IDs. The app description
+  includes both prices and the current Premium features. App Store ratings remain attributed visible content,
+  not imported aggregate-review markup. The release 1.4.2 project confirms watchOS 11.0 in Debug and Release.
+- `llms.txt` mirrors the required account, named free techniques, Meditations, AI-voice disclosure and safety scope.
+  The homepage's sitemap modification date reflects this work; other pages' dates were not refreshed.
+- One shared robots group allows public search/AI discovery while keeping admin and API exclusions. Source rules
+  no longer conflict with Cloudflare's managed training restrictions. The regression test checks source policy,
+  not Cloudflare's combined production robots document.
+
+Search claims: no ranking, indexing, citation or rich-result guarantee. Google does not use `llms.txt` for rankings,
+and retired FAQ rich results in May 2026; FAQ JSON-LD remains semantic data, not a promised search treatment.
+Sources: [Google AI optimization guide](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide),
+[OpenAI crawler roles](https://developers.openai.com/api/docs/bots),
+[Google documentation updates](https://developers.google.com/search/updates).

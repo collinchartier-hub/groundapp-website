@@ -17,9 +17,8 @@ Measured output inventory. Dimensions and durations are from ffprobe; bytes are 
 | `site/media/v3/clips/ch05-advanced-poster.webp` | 588×1280 | — | 14,512 |
 | `site/media/v3/clips/ch05-advanced.mp4` | 588×1280 | 30.60 s | 887,516 |
 | `site/media/v3/clips/ch06-check-in-poster.webp` | 588×1280 | — | 11,150 |
-| `site/media/v3/clips/ch06-check-in.mp4` | 588×1280 | 33.00 s | 525,752 |
-| `site/media/v3/clips/ch07-health-poster.webp` | 588×1280 | — | 17,048 |
-| `site/media/v3/clips/ch07-health.mp4` | 588×1280 | 32.50 s | 511,400 |
+| `site/media/v3/clips/ch07-health-v2-poster.webp` | 588×1280 | — | 44,864 |
+| `site/media/v3/clips/ch07-health-v2.mp4` | 588×1280 | 14.00 s | 278,009 |
 | `site/media/v3/film/intro-720.mp4` | 720×1280 | 184.31 s | 8,892,158 |
 | `site/media/v3/film/intro-poster.webp` | 1080×1080 | — | 22,908 |
 | `site/media/v3/photos/collin-ironman-win-1600.webp` | 1600×1067 | — | 103,678 |
@@ -34,8 +33,6 @@ Measured output inventory. Dimensions and durations are from ffprobe; bytes are 
 | `site/media/v3/shots/03-player-960.webp` | 960×2086 | — | 26,264 |
 | `site/media/v3/shots/04-check-in-480.webp` | 480×1043 | — | 10,456 |
 | `site/media/v3/shots/04-check-in-960.webp` | 960×2086 | — | 23,502 |
-| `site/media/v3/shots/05-check-in-plan-480.webp` | 480×1043 | — | 24,310 |
-| `site/media/v3/shots/05-check-in-plan-960.webp` | 960×2086 | — | 53,826 |
 | `site/media/v3/shots/06-library-480.webp` | 480×1043 | — | 25,622 |
 | `site/media/v3/shots/06-library-960.webp` | 960×2086 | — | 53,458 |
 | `site/media/v3/shots/07-advanced-480.webp` | 480×1043 | — | 23,780 |
@@ -44,13 +41,9 @@ Measured output inventory. Dimensions and durations are from ffprobe; bytes are 
 | `site/media/v3/shots/08-co2-table-960.webp` | 960×2086 | — | 66,758 |
 | `site/media/v3/shots/09-progress-480.webp` | 480×1043 | — | 22,154 |
 | `site/media/v3/shots/09-progress-960.webp` | 960×2086 | — | 47,414 |
-| `site/media/v3/shots/10-health-480.webp` | 480×1043 | — | 35,258 |
-| `site/media/v3/shots/10-health-960.webp` | 960×2086 | — | 79,490 |
-| `site/media/v3/watch/01-bodie-instant-calm-breathe-in-416.webp` | 416×496 | — | 6,498 |
 | `site/media/v3/watch/02-box-breathing-breathe-in-416.webp` | 416×496 | — | 6,992 |
-| `site/media/v3/watch/03-box-breathing-hold-416.webp` | 416×496 | — | 6,360 |
-| `site/media/v3/watch/04-box-breathing-breathe-out-416.webp` | 416×496 | — | 7,342 |
-| `site/media/v3/watch/05-physiological-sigh-breathe-out-416.webp` | 416×496 | — | 7,446 |
+
+The other four watch screenshots (01, 03, 04, 05) were removed on 2026-11-13, when one live watch replaced the row of five.
 
 Added by the landing page build (Task 6): Bodie's still frame (rendered from `site/js/bodie-v3.js`, asleep pose, transparent, shown until the canvas draws and kept as the no-WebGL fallback) and the game's own cast portraits (rendered by `/play`, `game/src/6-app.js` `renderPortraits`; Kip re-rendered with the camera pulled back to 5.0 so his wing and eye stay in the tile).
 

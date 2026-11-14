@@ -1,0 +1,261 @@
+.gad {
+  /* ---- Check-in: the sheet's top, Bodie's line, then one step at a time ---- */
+
+  .gad-top {
+    position: absolute;
+    top: 66px;
+    right: 20px;
+    left: 20px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    height: 24px;
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .gad-back {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+
+  .gad-back[data-on] {
+    opacity: 1;
+  }
+
+  .gad-notnow {
+    justify-self: end;
+    color: var(--ss-text-faint);
+  }
+
+  .gad-progress {
+    position: absolute;
+    top: 102px;
+    right: 20px;
+    left: 20px;
+    height: 3px;
+    overflow: hidden;
+    border-radius: 2px;
+    background: rgba(232, 221, 208, 0.1);
+  }
+
+  .gad-progress i {
+    display: block;
+    height: 100%;
+    border-radius: 2px;
+    background: var(--ss-accent);
+    transition: width 0.5s var(--gad-ui);
+  }
+
+  /* Bodie's line starts level with his head and grows down, so its words never move when it changes */
+  .gad-says {
+    position: absolute;
+    top: 128px;
+    right: 20px;
+    left: 164px;
+    display: flex;
+    align-items: flex-start;
+  }
+
+  /* One cloud for every line: it takes the line's height, the lines crossfade inside it */
+  .gad-bubble {
+    position: relative;
+    width: 218px;
+    border: 1px solid var(--gad-edge);
+    border-radius: 26px;
+    background: var(--ss-surface);
+    transition: height 0.4s var(--gad-ui);
+  }
+
+  .gad-says__line {
+    position: absolute;
+    top: 12px;
+    left: 16px;
+    width: 184px;
+    opacity: 0;
+    transition: opacity 0.16s ease;
+  }
+
+  .gad-says__line[data-on] {
+    opacity: 1;
+    transition: opacity 0.26s ease 0.14s;
+  }
+
+  .gad-says .gad-puff--1 {
+    top: 44px;
+    left: -24px;
+    width: 14px;
+    height: 14px;
+  }
+
+  .gad-says .gad-puff--2 {
+    top: 62px;
+    left: -40px;
+    width: 8px;
+    height: 8px;
+  }
+
+  .gad-step {
+    position: absolute;
+    inset: 246px 20px 0;
+    opacity: 0;
+    transition: opacity 0.18s ease;
+  }
+
+  .gad-step[data-on] {
+    opacity: 1;
+    transition: opacity 0.3s ease 0.1s;
+  }
+
+  .gad-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .gad-grid--one {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .gad-opt,
+  .gad-num,
+  .gad-en {
+    border: 1px solid var(--gad-edge);
+    border-radius: 14px;
+    background: rgba(45, 30, 23, 0.72);
+    transition: border-color 0.15s ease, background-color 0.15s ease, transform 0.12s ease;
+    /* Pressed, they dip; the lasting layer keeps their words from hopping as they come back */
+    will-change: transform;
+  }
+
+  .gad-opt[data-picked],
+  .gad-num[data-picked],
+  .gad-en[data-picked] {
+    border-color: var(--ss-accent);
+    background: var(--ss-accent-soft);
+  }
+
+  .gad-opt {
+    display: flex;
+    align-items: center;
+    height: 48px;
+    padding: 0 14px;
+  }
+
+  .gad-opt[data-icon] {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    height: 68px;
+    padding: 12px 14px 10px;
+  }
+
+  .gad-opt svg { color: var(--ss-text-faint); }
+  .gad-opt[data-feel="calm"] svg { color: #7a8b6f; }
+  .gad-opt[data-feel="anxious"] svg,
+  .gad-opt[data-feel="energized"] svg { color: var(--ss-accent-2); }
+  .gad-opt[data-feel="angry"] svg { color: #c2594b; }
+
+  .gad-chips {
+    display: flex;
+    align-items: center;
+    height: 30px;
+    margin-bottom: 14px;
+  }
+
+  .gad-chips__item {
+    display: flex;
+    align-items: center;
+  }
+
+  .gad-chips b {
+    margin: 0 8px;
+    color: var(--ss-text-faint);
+    font-weight: 400;
+  }
+
+  .gad-chip {
+    padding: 4px 11px;
+    border: 1px solid var(--gad-edge);
+    border-radius: 15px;
+    background: var(--ss-surface);
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  /* ---- Strength and energy ---- */
+
+  .gad-path {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 34px;
+    color: var(--ss-text-faint);
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .gad-path svg { color: var(--ss-accent-2); }
+
+  .gad-q {
+    margin: 22px 0 14px;
+    font-size: 19px;
+    font-weight: 600;
+    line-height: 24px;
+  }
+
+  .gad-nums {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 12px 8px;
+  }
+
+  .gad-num {
+    display: grid;
+    place-items: center;
+    height: 46px;
+    border-radius: 12px;
+  }
+
+  .gad-scale {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    color: var(--ss-text-faint);
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  /* Odd cells for an odd icon, so it centers on a whole pixel */
+  .gad-energy {
+    display: grid;
+    grid-template-columns: repeat(3, 111px);
+    gap: 10px;
+  }
+
+  .gad-en {
+    display: grid;
+    justify-items: center;
+    gap: 4px;
+    padding: 12px 0 10px;
+    font-size: 14px;
+    line-height: 18px;
+  }
+
+  .gad-en svg { color: var(--ss-accent-2); }
+
+  .gad-foot {
+    position: absolute;
+    right: 0;
+    bottom: 44px;
+    left: 0;
+  }
+
+  .gad-foot:not([data-ready]) {
+    opacity: 0.42;
+  }
+}

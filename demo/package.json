@@ -1,0 +1,21 @@
+{
+  "name": "groundapp-demo",
+  "private": true,
+  "type": "module",
+  "description": "Source for the product demos on groundapp.live. Builds into site/js and site/assets/css.",
+  "scripts": {
+    "build": "node build.mjs",
+    "watch": "node build.mjs --watch"
+  },
+  "dependencies": {
+    "lucide-react": "0.468.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.1",
+    "esbuild": "^0.25.12",
+    "typescript": "^5.6.3"
+  }
+}
