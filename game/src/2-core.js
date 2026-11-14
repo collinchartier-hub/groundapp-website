@@ -17,6 +17,7 @@ const HAS_HALL = !!(window.claude && window.claude.use);
 const KEY = "bodie-run-v3";
 const DEF = () => ({
   leaves: 0, unlocked: 1, wins: 0, best: {}, bestTime: {}, last: {}, stars: {},
+  intro: false, // Bodie's first-visit hello has been seen or skipped
   up: { lungs: 0, spring: 0, magnet: 0, aura: 0, sigh: 0, charge: 0 }, owned: ["classic"], skin: "classic", acc: [],
   sound: true, voice: true, glow: null, motion: null, // motion null: follow the device's reduced-motion setting
   deep: { static: { best: null, last: null, hist: [] }, dash: { best: null, last: null, hist: [] } },
@@ -32,6 +33,7 @@ function loadProfile() {
       const d = DEF(), pd = p.deep || {};
       return { ...d, ...p, up: { ...d.up, ...p.up }, best: { ...(p.best || {}) }, bestTime: { ...(p.bestTime || {}) }, last: { ...(p.last || {}) }, stars: { ...(p.stars || {}) },
         owned: p.owned || d.owned, acc: p.acc || [], surf: { ...(p.surf || {}) }, daily: { ...d.daily, ...(p.daily || {}) },
+        intro: p.intro !== false, // a save from before the intro existed belongs to someone who knows the game
         deep: { static: { ...d.deep.static, ...(pd.static || {}) }, dash: { ...d.deep.dash, ...(pd.dash || {}) } },
         // The arrays are rebuilt entry by entry: the menu reads them at boot, so a damaged save must not stop the game.
         streak: { ...d.streak, ...(p.streak || {}), days: Array.isArray((p.streak || {}).days) ? p.streak.days : [] },

@@ -346,6 +346,12 @@ section h3 { margin: 0 0 14px; font-weight: 300; font-size: 22px; letter-spacing
 .cast-dots { display: flex; gap: 6px; }
 .cast-dots span { width: 8px; height: 8px; border-radius: 50%; background: rgba(232,221,208,.25); }
 .cast-dots span.on { background: var(--amber); }
+/* First visit: Bodie's hello. The card is his speech bubble, with a tail toward him. */
+.intro-card { position: relative; }
+.intro-card::after { content: ""; position: absolute; right: -9px; top: 40px; width: 16px; height: 16px; rotate: 45deg; background: rgb(42,27,20); border: solid rgba(196,147,90,.35); border-width: 1px 1px 0 0; }
+.intro-hold { display: grid; gap: 6px; }
+.intro-hold .qbar { height: 10px; }
+@media (max-width: 700px) { .intro-card::after { right: auto; left: 50%; top: -9px; translate: -50% 0; border-width: 1px 0 0 1px; } }
 .speaker.quote img { width: 52px; height: 52px; }
 .speaker.quote p { font-size: 16px; line-height: 1.45; }
 .rules { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
@@ -516,6 +522,16 @@ kbd { font: 700 12px/1 var(--mono); padding: 2px 6px; border: 1px solid rgba(232
       </div>
     </div>
 
+    <div class="overlay cast-ov" id="ov-intro" hidden>
+      <div class="card cast-card intro-card">
+        <div class="eyebrow">Bodie</div>
+        <p class="cast-line" id="intro-line" aria-live="polite"></p>
+        <div class="intro-hold" id="intro-hold" hidden><span class="qbar"><i id="intro-bar"></i></span><span class="muted" id="intro-hint"></span></div>
+        <div class="row"><button class="btn" id="btn-intro-next" type="button">Hi, Bodie</button><button class="btn ghost" id="btn-intro-alt" type="button">Skip</button></div>
+        <div class="cast-dots" id="intro-dots" aria-hidden="true"></div>
+      </div>
+    </div>
+
     <div class="overlay cast-ov" id="ov-cast" hidden>
       <div class="card cast-card">
         <div class="speaker"><img id="cast-img" alt=""><div><div class="eyebrow" id="cast-role">Hero</div><h2 id="cast-name">Bodie</h2></div></div>
@@ -536,7 +552,7 @@ kbd { font: 700 12px/1 var(--mono); padding: 2px 6px; border: 1px solid rgba(232
         <div class="help-sec"><h4>Breath Surf</h4><p>Five techniques: resonance breathing, box breathing, 4-7-8, the physiological sigh and power breaths. Press as you breathe in, let go as you breathe out, and stay on the ribbon.</p></div>
         <div class="help-sec"><h4>Every day</h4><p>Finish any run and the day counts for your <b>streak</b>. Three <b>daily quests</b> pay Gold Leaves, and finishing all three earns Ember's seed pouch. <b>Badges</b> mark the big moments. It's all saved in this browser.</p></div>
         <p class="muted"><kbd>Space</kbd> <kbd>↑</kbd> <kbd>W</kbd>, click or tap. Duel: Player 1 is <kbd>W</kbd>/<kbd>Space</kbd> or the left half of the screen, Player 2 is <kbd>↑</kbd>/<kbd>L</kbd> or the right half. <kbd>P</kbd> pauses.</p>
-        <div class="row"><button class="btn" id="btn-help-back" type="button">Got it</button></div>
+        <div class="row"><button class="btn" id="btn-help-back" type="button">Got it</button><button class="btn ghost" id="btn-help-intro" type="button">Replay Bodie's intro</button></div>
       </div>
     </div>
 
@@ -579,6 +595,8 @@ kbd { font: 700 12px/1 var(--mono); padding: 2px 6px; border: 1px solid rgba(232
 </div>
 
 <script>
+// A first visit opens on Bodie's hello, so the menu stays out of sight until the game decides which one to show.
+try { if (!localStorage.getItem("bodie-run-v3") && !localStorage.getItem("bodie-run-v2")) document.getElementById("ov-title").hidden = true; } catch (e) {}
 // If the 3D engine can't load (offline, blocked CDN), say so instead of leaving dead buttons.
 setTimeout(function () {
   if (window.__bodieBoot) return;

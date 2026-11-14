@@ -21,7 +21,7 @@ Source parts, in the order they are joined:
 3. `3-models.js`: Bodie (ported from `site/js/figure-v1.js`), Kip, Sage, Ember, particles and the course pieces.
 4. `4-race.js`: Race Kip, Daily Dash and the duel: course generation, breath cues, ghosts, star challenges.
 5. `5-modes.js`: The Big Hold (max breath hold, timed on the real clock) and Breath Surf (guided techniques).
-6. `6-app.js`: menus, the Today strip, quests and badges screens, shop, Hall of Breath (artifact only), input, main loop, boot.
+6. `6-app.js`: menus, Bodie's first-visit intro, the Today strip, quests and badges screens, shop, Hall of Breath (artifact only), input, main loop, boot.
 
 The Hall of Breath leaderboard runs on the Claude artifact database. On groundapp.live it is hidden and every
 record stays in the visitor's browser. A site leaderboard would need a Supabase table and a Pages Function.

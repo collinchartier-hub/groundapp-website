@@ -242,6 +242,16 @@ body > .site-foot a { color: var(--text-2); }
       </div>
     </div>
 
+    <div class="overlay cast-ov" id="ov-intro" hidden>
+      <div class="card cast-card intro-card">
+        <div class="eyebrow">Bodie</div>
+        <p class="cast-line" id="intro-line" aria-live="polite"></p>
+        <div class="intro-hold" id="intro-hold" hidden><span class="qbar"><i id="intro-bar"></i></span><span class="muted" id="intro-hint"></span></div>
+        <div class="row"><button class="btn" id="btn-intro-next" type="button">Hi, Bodie</button><button class="btn ghost" id="btn-intro-alt" type="button">Skip</button></div>
+        <div class="cast-dots" id="intro-dots" aria-hidden="true"></div>
+      </div>
+    </div>
+
     <div class="overlay cast-ov" id="ov-cast" hidden>
       <div class="card cast-card">
         <div class="speaker"><img id="cast-img" alt=""><div><div class="eyebrow" id="cast-role">Hero</div><h2 id="cast-name">Bodie</h2></div></div>
@@ -262,7 +272,7 @@ body > .site-foot a { color: var(--text-2); }
         <div class="help-sec"><h4>Breath Surf</h4><p>Five techniques: resonance breathing, box breathing, 4-7-8, the physiological sigh and power breaths. Press as you breathe in, let go as you breathe out, and stay on the ribbon.</p></div>
         <div class="help-sec"><h4>Every day</h4><p>Finish any run and the day counts for your <b>streak</b>. Three <b>daily quests</b> pay Gold Leaves, and finishing all three earns Ember's seed pouch. <b>Badges</b> mark the big moments. It's all saved in this browser.</p></div>
         <p class="muted"><kbd>Space</kbd> <kbd>↑</kbd> <kbd>W</kbd>, click or tap. Duel: Player 1 is <kbd>W</kbd>/<kbd>Space</kbd> or the left half of the screen, Player 2 is <kbd>↑</kbd>/<kbd>L</kbd> or the right half. <kbd>P</kbd> pauses.</p>
-        <div class="row"><button class="btn" id="btn-help-back" type="button">Got it</button></div>
+        <div class="row"><button class="btn" id="btn-help-back" type="button">Got it</button><button class="btn ghost" id="btn-help-intro" type="button">Replay Bodie's intro</button></div>
       </div>
     </div>
 
@@ -319,6 +329,8 @@ body > .site-foot a { color: var(--text-2); }
 </footer>
 
 <script>
+// A first visit opens on Bodie's hello, so the menu stays out of sight until the game decides which one to show.
+try { if (!localStorage.getItem("bodie-run-v3") && !localStorage.getItem("bodie-run-v2")) document.getElementById("ov-title").hidden = true; } catch (e) {}
 // If the 3D engine can't load (offline, blocked CDN), say so instead of leaving dead buttons.
 setTimeout(function () {
   if (window.__bodieBoot) return;

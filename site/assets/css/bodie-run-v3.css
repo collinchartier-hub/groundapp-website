@@ -347,6 +347,12 @@ section h3 { margin: 0 0 14px; font-weight: 300; font-size: 22px; letter-spacing
 .cast-dots { display: flex; gap: 6px; }
 .cast-dots span { width: 8px; height: 8px; border-radius: 50%; background: rgba(232,221,208,.25); }
 .cast-dots span.on { background: var(--amber); }
+/* First visit: Bodie's hello. The card is his speech bubble, with a tail toward him. */
+.intro-card { position: relative; }
+.intro-card::after { content: ""; position: absolute; right: -9px; top: 40px; width: 16px; height: 16px; rotate: 45deg; background: rgb(42,27,20); border: solid rgba(196,147,90,.35); border-width: 1px 1px 0 0; }
+.intro-hold { display: grid; gap: 6px; }
+.intro-hold .qbar { height: 10px; }
+@media (max-width: 700px) { .intro-card::after { right: auto; left: 50%; top: -9px; translate: -50% 0; border-width: 1px 0 0 1px; } }
 .speaker.quote img { width: 52px; height: 52px; }
 .speaker.quote p { font-size: 16px; line-height: 1.45; }
 .rules { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }

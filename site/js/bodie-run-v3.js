@@ -18,6 +18,7 @@ const HAS_HALL = !!(window.claude && window.claude.use);
 const KEY = "bodie-run-v3";
 const DEF = () => ({
   leaves: 0, unlocked: 1, wins: 0, best: {}, bestTime: {}, last: {}, stars: {},
+  intro: false, // Bodie's first-visit hello has been seen or skipped
   up: { lungs: 0, spring: 0, magnet: 0, aura: 0, sigh: 0, charge: 0 }, owned: ["classic"], skin: "classic", acc: [],
   sound: true, voice: true, glow: null, motion: null, // motion null: follow the device's reduced-motion setting
   deep: { static: { best: null, last: null, hist: [] }, dash: { best: null, last: null, hist: [] } },
@@ -33,6 +34,7 @@ function loadProfile() {
       const d = DEF(), pd = p.deep || {};
       return { ...d, ...p, up: { ...d.up, ...p.up }, best: { ...(p.best || {}) }, bestTime: { ...(p.bestTime || {}) }, last: { ...(p.last || {}) }, stars: { ...(p.stars || {}) },
         owned: p.owned || d.owned, acc: p.acc || [], surf: { ...(p.surf || {}) }, daily: { ...d.daily, ...(p.daily || {}) },
+        intro: p.intro !== false, // a save from before the intro existed belongs to someone who knows the game
         deep: { static: { ...d.deep.static, ...(pd.static || {}) }, dash: { ...d.deep.dash, ...(pd.dash || {}) } },
         // The arrays are rebuilt entry by entry: the menu reads them at boot, so a damaged save must not stop the game.
         streak: { ...d.streak, ...(p.streak || {}), days: Array.isArray((p.streak || {}).days) ? p.streak.days : [] },
@@ -2086,7 +2088,7 @@ function showSurfResult() {
 }
 
 // ---------------------------------------------------------------- menus
-const OVERLAYS = ["ov-title", "ov-courses", "ov-brief", "ov-deep", "ov-surf", "ov-result", "ov-shop", "ov-hall", "ov-help", "ov-pause", "ov-cast", "ov-today", "ov-badges"];
+const OVERLAYS = ["ov-title", "ov-courses", "ov-brief", "ov-deep", "ov-surf", "ov-result", "ov-shop", "ov-hall", "ov-help", "ov-pause", "ov-cast", "ov-today", "ov-badges", "ov-intro"];
 const SAGE_SAY = { hollow: "When the cloud comes, hold your breath.", lake: "Hold your breath to dive under the logs.", swamp: "Double tap to sigh the storms away.", peaks: "Tap fast on the pads, then hold through the thin air.", temple: "Ride the updraft, then glide through the rings." };
 const pickOne = (a) => a[Math.floor(Math.random() * a.length)];
 function show(id) {
@@ -2366,7 +2368,8 @@ function press(i) { if (!G || state !== "play") return; const P = G.players[i]; 
 function release(i) { if (!G) return; const P = G.players[i]; if (P) P.held = false; }
 stage.addEventListener("pointerdown", (e) => {
   Sound.unlock();
-  if (e.target.closest("button, a, input, .panel, .card")) return;
+  // In Bodie's intro the card is his speech bubble, and a press on it is a breath like anywhere else.
+  if (e.target.closest("button, a, input") || (e.target.closest(".panel, .card") && !(state === "menu" && menuView === "ov-intro"))) return;
   try { stage.setPointerCapture(e.pointerId); } catch (_) {}
   if (state === "play") {
     e.preventDefault();
@@ -2378,7 +2381,7 @@ stage.addEventListener("pointerdown", (e) => {
 function endPointer(e) {
   if (!pointers.has(e.pointerId)) return;
   const i = pointers.get(e.pointerId); pointers.delete(e.pointerId);
-  if (i === -1) { if (menuHold) Sound.play("exhale"); menuHold = false; }
+  if (i === -1) { if ([...pointers.values()].includes(-1)) return; if (menuHold) Sound.play("exhale"); menuHold = false; } // another finger is still down
   else if (i === "deep") deepAnchorUp(e.pointerId);
   else if (i === "surf") { if (S) S.pressed = Math.max(0, S.pressed - 1); }
   else if (![...pointers.values()].includes(i)) release(i);
@@ -2426,7 +2429,7 @@ function pause() {
   Sound.hold(false); Sound.danger(0); Sound.music(-1); try { speechSynthesis.cancel(); } catch (e) {} show("ov-pause");
 }
 function resume() { state = "play"; show(null); if (mode === "race" && G) Sound.music(G.anyFlow ? 2 : 1, G.co.bpm, G.co.key); else Sound.music(3, 72, 0); }
-document.addEventListener("visibilitychange", () => { if (!document.hidden) return; if (mode === "deep" && D && D.st === "hold") { D.anchorId = null; D.graceUntil = performance.now(); } else pause(); });
+document.addEventListener("visibilitychange", () => { if (!document.hidden) return; menuHold = false; if (mode === "deep" && D && D.st === "hold") { D.anchorId = null; D.graceUntil = performance.now(); } else pause(); });
 
 $("btn-race").addEventListener("click", () => { Sound.play("click"); raceMode = "kip"; menuView = "ov-courses"; renderCourses(); show("ov-courses"); });
 $("btn-duel").addEventListener("click", () => { Sound.play("click"); raceMode = "duel"; menuView = "ov-courses"; renderCourses(); show("ov-courses"); });
@@ -2465,6 +2468,46 @@ document.querySelectorAll(".hear").forEach((b) => b.addEventListener("click", ()
 $("btn-hall").addEventListener("click", () => { Sound.play("click"); menuView = "ov-hall"; renderHall(); show("ov-hall"); });
 $("btn-help").addEventListener("click", () => { Sound.play("click"); show("ov-help"); });
 $("btn-help-back").addEventListener("click", () => { Sound.play("click"); show("ov-title"); });
+
+// ---------------------------------------------------------------- first visit: Bodie says hello and teaches the one control
+const INTRO_HOLD = 3;
+const INTRO = [
+  { line: "Hi, I'm Bodie! I run on breath. Want to try one with me?", next: "Hi, Bodie" },
+  { line: coarse ? "Press and hold anywhere, and breathe in with me." : "Press and hold anywhere, or hold the Space bar, and breathe in with me.", hold: true },
+  { line: "Now let go and breathe out. Ahhh." },
+  { line: "That's the whole game. Hold your breath to float through Worry Clouds, let go to breathe out. Kip the Caffeine Crow says he's faster. Let's race him.", next: "Race Kip", alt: "See the menu" },
+];
+let introI = 0, introT = 0, introWas = false;
+// quiet: opened by the page itself, before any tap. Browsers refuse speech until then, so the first line is text only.
+function openIntro(quiet) { if (state !== "menu") toMenu("title"); menuView = "ov-intro"; show("ov-intro"); introStep(0, quiet); if (!quiet) $("btn-intro-next").focus(); }
+function introStep(i, quiet) {
+  const s = INTRO[i]; introI = i; introT = 0; introWas = false;
+  $("intro-line").textContent = s.line;
+  $("intro-hold").hidden = !s.hold; $("intro-bar").style.width = "0%"; $("intro-hint").textContent = `Hold for ${INTRO_HOLD} seconds`;
+  $("btn-intro-next").hidden = !s.next; if (s.next) $("btn-intro-next").textContent = s.next;
+  $("btn-intro-alt").textContent = s.alt || "Skip";
+  $("intro-dots").innerHTML = INTRO.map((_, j) => `<span class="${j === i ? "on" : ""}"></span>`).join("");
+  if (i === 2) Sound.play("calm");
+  if (i === 3) { Sound.play("caw"); $("btn-intro-next").focus(); }
+  if (!quiet) Voice.say(s.line, true, "bodie");
+}
+function updateIntro(dt) {
+  if (introI === 1) {
+    if (introWas !== menuHold) $("intro-hint").textContent = menuHold ? `Keep holding for ${INTRO_HOLD} seconds` : "A little longer. Keep holding until the bar is full.";
+    introWas = menuHold;
+    introT = menuHold ? introT + dt : Math.max(0, introT - dt * 2);
+    $("intro-bar").style.width = Math.round(clamp01(introT / INTRO_HOLD) * 100) + "%";
+    if (introT >= INTRO_HOLD) introStep(2);
+  } else if (introI === 2 && !menuHold) introStep(3);
+}
+function endIntro(race) {
+  profile.intro = true; save(); try { speechSynthesis.cancel(); } catch (e) {}
+  Sound.play("click"); menuHold = false; menuView = "title";
+  if (race) { raceMode = "kip"; courseIdx = 0; openBrief(COURSES[0]); } else show("ov-title");
+}
+$("btn-intro-next").addEventListener("click", () => { if (introI === 0) { Sound.play("click"); introStep(1); } else endIntro(true); });
+$("btn-intro-alt").addEventListener("click", () => endIntro(false));
+$("btn-help-intro").addEventListener("click", () => { Sound.play("click"); openIntro(); });
 $("tab-up").addEventListener("click", () => { shopTab = "up"; renderShop(); });
 $("tab-looks").addEventListener("click", () => { shopTab = "looks"; renderShop(); });
 $("tab-static").addEventListener("click", () => openDeep("static"));
@@ -2516,19 +2559,22 @@ function menuCamera(dt, t) {
 let last = performance.now(), clock = 0;
 function updateMenu(dt, mdt) {
   menuIdleT += dt;
-  const cast = menuView === "ov-cast", focus = cast ? CAST_ORDER[castI] : null;
+  const cast = menuView === "ov-cast", intro = menuView === "ov-intro", focus = cast ? CAST_ORDER[castI] : null;
+  if (intro) updateIntro(dt);
+  // Bodie breathes on his own when left alone, except while the intro waits for the visitor's own hold.
+  const idle = menuIdleT > 2.5 && mdt && !(intro && (introI === 1 || introI === 2));
   if (cast) castT += dt;
   let target;
   if (focus === "bodie") target = castT < 3.4 ? 1 : .35;
   else if (menuHold) target = 1;
-  else if (menuIdleT > 2.5 && mdt) { const c = clock % 12; target = c < 4 ? c / 4 : c < 6 ? 1 : c < 10 ? 1 - (c - 6) / 4 : 0; }
+  else if (idle) { const c = clock % 12; target = c < 4 ? c / 4 : c < 6 ? 1 : c < 10 ? 1 - (c - 6) / 4 : 0; }
   else target = Math.max(0, menuFill - dt * .5);
   menuFill += (target - menuFill) * Math.min(1, dt * (menuHold ? 1.6 : 3));
-  const holdPhase = menuFill > .96 || (menuIdleT > 2.5 && mdt && (clock % 12) >= 4 && (clock % 12) < 6);
+  const holdPhase = menuFill > .96 || (idle && (clock % 12) >= 4 && (clock % 12) < 6);
   if (menuBodie) { menuBodie.update(dt, menuFill, reduceMotion || !mdt, holdPhase ? "hold" : null, menuFill, menuHold && menuFill > .9 ? .5 : 0); menuBodie.root.rotation.y = .15; menuBodie.head.rotation.y = -.2 + Math.sin(clock * .5) * .1; }
   // In Meet the cast everyone is on stage at once; elsewhere each one turns up where they belong.
   menuBodie.root.visible = !cast || focus === "bodie";
-  menuKip.root.visible = cast ? focus === "kip" : ["title", "ov-courses", "ov-help", "ov-brief"].includes(menuView);
+  menuKip.root.visible = cast ? focus === "kip" : ["title", "ov-courses", "ov-help", "ov-brief"].includes(menuView) || (intro && introI === 3);
   menuKip.update(mdt, clock, focus === "kip" && castT < 3 ? "sprint" : "cruise");
   menuKip.root.position.set(cast ? 1.7 : 2.3, (cast ? 2.5 : 2.1) + Math.sin(clock * 2.6) * .25 + (focus === "kip" ? Math.sin(clock * 9) * .08 : 0), cast ? -1.5 : -1.2);
   menuSage.root.visible = cast ? focus === "sage" : ["ov-hall", "ov-surf", "ov-deep", "ov-badges"].includes(menuView);
@@ -2556,6 +2602,8 @@ function frame(now) {
 // ---------------------------------------------------------------- boot
 async function boot() {
   if (!HAS_HALL) $("btn-hall").remove();
+  // First thing, before the 3D helpers load: a first visit has its menu hidden by the page and must not sit on an empty stage.
+  if (profile.intro) show("ov-title"); else openIntro(true);
   resize(); new ResizeObserver(resize).observe(stage);
   try { ({ mergeVertices } = await import(JSM + "utils/BufferGeometryUtils.js/+esm")); } catch (e) { mergeVertices = null; }
   try {
