@@ -408,6 +408,8 @@ function kipSay(text) {
 // A line from one of the cast at the top of a results card, spoken in their voice.
 function quoteHTML(who, line) { return `<div class="speaker quote"><img alt="${CAST[who].name}" ${PORTRAIT[who] ? `src="${PORTRAIT[who]}"` : ""}><p><b>${CAST[who].name.split(" ")[0]}:</b> "${line}"</p></div>`; }
 function quote(who, line) { Voice.say(line, true, who === "sage" ? "sage" : who); return quoteHTML(who, line); }
+// Result tiles: [label, value, tag]. The tag marks a record, like "New best".
+function tilesHTML(tiles) { return `<div class="tiles">${tiles.map(([k, v, tag]) => `<div class="tile${tag ? " rec" : ""}"><span class="k">${k}</span><span class="v">${v}</span>${tag ? `<span class="badge">${tag}</span>` : ""}</div>`).join("")}</div>`; }
 function updateKip(dt) {
   const K = G.kip, P = G.players[0];
   K.t -= dt;
@@ -637,7 +639,7 @@ function endRace(winner) {
     const margin = duel ? Math.abs(Math.round(G.players[0].x - G.players[1].x)) : Math.abs(Math.round(P.x - G.kip.x));
     const winBonus = won ? 500 + margin * 5 : 0;
     const tokens = P.seeds + P.gold * 5, purse = won ? 40 + Math.max(0, co.idx) * 20 + (co.daily ? 30 : 0) : (duel ? 10 : 5);
-    res.players[i] = { won, margin, winBonus, tokens, purse, leaves: tokens + purse, score: scoreOf(P) + winBonus, time: P.finishT || null, pct: Math.round(clamp01(P.x / G.finish) * 100) };
+    res.players[i] = { won, margin, winBonus, tokens, purse, leaves: tokens + purse, score: Math.round(scoreOf(P)) + winBonus, time: P.finishT || null, pct: Math.round(clamp01(P.x / G.finish) * 100) };
     profile.leaves += tokens + purse;
   });
   if (!duel) {
@@ -660,7 +662,10 @@ function endRace(winner) {
     }
     profile.last[k] = { won: r.won, time: r.time, pct: r.pct, score: r.score };
   }
-  save(); G.result = res;
+  const P0 = G.players[0];
+  // A Daily Dash left open overnight is yesterday's course: it still counts as a race, not as today's dash.
+  G.today = logPlay(duel ? { kind: "duel" } : { kind: "race", clouds: P0.calm, boxes: P0.boxes, seeds: P0.seeds + P0.gold * 5, storms: P0.storms, rings: P0.rings, won: res.players[0].won, daily: !!co.daily && co.key === "daily-" + dayKey() });
+  G.result = res;
   showCallout(null);
   const W = winner >= 0 ? G.players[winner] : null;
   if (W) { Sound.play("win"); if (duel) Voice.say(`Player ${winner + 1} wins!`, true); else Voice.say("Yes! I did it! Bodie wins!", true, "bodie"); launchConfetti(W.x, 2, W.z); event(duel ? `PLAYER ${winner + 1} WINS` : "BODIE WINS!", "First to the Great Tree", "good", 3.4); }
@@ -683,25 +688,25 @@ function showRaceResult() {
     const p = r.players[0], P = G.players[0];
     t.textContent = p.won ? "Bodie wins" : "Kip wins"; t.className = p.won ? "win" : "lose";
     const hint = P.pops ? `Bodie popped ${P.pops} time${P.pops > 1 ? "s" : ""}. Hold your breath when the cue says so.` : P.pffts ? "Bodie held too long. Let go when the lungs flash red." : P.thinPops ? "Hold all the way through thin air, and charge up on the power pad first." : "Try a Box Breath for a Flow boost.";
-    $("res-line").textContent = p.won ? `Bodie beat Kip to the Great Tree by ${p.margin}m.${p.newBest ? " New best score!" : ""}` : `Kip got there ${p.margin}m ahead. ${hint}`;
+    $("res-line").textContent = p.won ? `Bodie beat Kip to the Great Tree by ${p.margin}m.` : `Kip got there ${p.margin}m ahead. ${hint}`;
     const bench = [];
-    if (p.time) bench.push(`<span>Time <b>${fmtT(p.time)}</b></span>`); else bench.push(`<span>Reached <b>${p.pct}%</b></span>`);
-    if (p.prevBestTime) bench.push(`<span>Best ${p.newBestTime ? "was " : ""}<b>${fmtT(p.prevBestTime)}</b></span>`);
-    if (p.prevLast) bench.push(`<span>Last <b>${p.prevLast.time ? fmtT(p.prevLast.time) : p.prevLast.pct + "%"}</b></span>`);
-    if (p.newBestTime) bench.push(`<span class="badge">New best time, ghost saved</span>`);
+    if (p.prevBestTime) bench.push(`<span>Best time ${p.newBestTime ? "was " : ""}<b>${fmtT(p.prevBestTime)}</b></span>`);
+    if (p.prevLast) bench.push(`<span>Last race <b>${p.prevLast.time ? fmtT(p.prevLast.time) : p.prevLast.pct + "%"}</b></span>`);
+    body += tilesHTML([p.time ? ["Time", fmtT(p.time), p.newBestTime ? "New best" : ""] : ["Reached", p.pct + "%", ""], ["Points", p.score, p.newBest ? "New best" : ""], ["Leaves", "+" + p.leaves, ""]]);
     body += quote(p.won ? "sage" : "kip", p.won ? (p.margin >= 20 ? "Beautifully breathed. Kip is still looking for his coffee." : "Beautifully breathed. Kip is still catching his breath.") : "Rematch, slowpoke? I'll be here. Probably on espresso number eight.");
-    body += `<div class="bench">${bench.join("")}</div>`;
+    if (p.newBestTime) body += `<p class="muted">New best time. A see-through Bodie replays it in your next race.</p>`;
     if (p.stars) body += `<ul class="chs">${p.stars.map((s) => `<li class="${s.got ? "got" : ""} ${s.fresh ? "new" : ""}"><span>★</span><span>${s.text}</span></li>`).join("")}</ul>`;
-    const rows = [["Distance", Math.floor(Math.min(P.x, G.finish)) + " pts"], ["Seeds, rings, holds and tricks", P.points + " pts"], ["Win bonus", p.winBonus + " pts"], ["<b>Points</b>", `<b>${p.score}</b>`], ["Gold Leaves: seeds + purse", `${p.tokens} + ${p.purse} = +${p.leaves}`], ["Box Breaths, calm passes, best combo", `${P.boxes}, ${P.calm}, x${P.bestCombo}`]];
+    const rows = [["Distance", Math.floor(Math.min(P.x, G.finish)) + " pts"], ["Seeds, rings, holds and tricks", Math.round(P.points) + " pts"], ["Win bonus", p.winBonus + " pts"], ["<b>Points</b>", `<b>${p.score}</b>`], ["Gold Leaves: seeds + purse", `${p.tokens} + ${p.purse} = +${p.leaves}`], ["Box Breaths, calm passes, best combo", `${P.boxes}, ${P.calm}, x${P.bestCombo}`]];
     if (co.sigh) rows.push(["Storms sighed away", String(P.storms)]);
     if (P.maxCharge > 0 || P.thinCleared) rows.push(["Max lung charge, thin air cleared", `${Math.round((1 + P.maxCharge) * 100)}%, ${P.thinCleared}`]);
     if (P.rings) rows.push(["Rhythm rings", String(P.rings)]);
-    body += `<div class="tally">${rows.map(([a, b], i) => `<span class="${i === 3 ? "total" : ""}">${a}</span><span class="${i === 3 ? "total" : ""}">${b}</span>`).join("")}</div>`;
+    body += `<details class="more"><summary>Score breakdown</summary><div>${bench.length ? `<div class="bench">${bench.join("")}</div>` : ""}<div class="tally">${rows.map(([a, b], i) => `<span class="${i === 3 ? "total" : ""}">${a}</span><span class="${i === 3 ? "total" : ""}">${b}</span>`).join("")}</div></div></details>`;
   }
   $("res-body").innerHTML = body;
   const next = $("btn-next");
   if (!duel && !co.daily && r.players[0].won && co.idx + 1 < COURSES.length) { next.hidden = false; next.textContent = "Next course"; next.onclick = () => { courseIdx = co.idx + 1; openBrief(COURSES[courseIdx]); }; }
   else next.hidden = true;
   $("btn-again").textContent = duel ? "Rematch" : "Race again"; $("btn-again").onclick = () => startRace(co);
+  renderResToday(G.today);
   state = "result"; refreshWallets(); show("ov-result"); hudEl.hidden = true; showCallout(null);
 }

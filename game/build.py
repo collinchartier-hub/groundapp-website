@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build Bodie's Breath Run two ways from one source (run: python3 game/build.py):
    1. bodie-breath-run.html: the Claude artifact (one file, lung logo inlined, Google Fonts).
-   2. groundapp.live/play: site/play.html + site/js/bodie-run-v2.js + site/assets/css/bodie-run-v2.css
+   2. groundapp.live/play: site/play.html + site/js/bodie-run-v3.js + site/assets/css/bodie-run-v3.css
       (self-hosted fonts, /lung-logo.svg, site head, bar and footer)."""
 import base64, os, re, subprocess, sys
 
@@ -9,7 +9,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.join(HERE, "..", "site")
 OUT = os.path.join(HERE, "out")  # artifact build and syntax-check files, gitignored
 os.makedirs(OUT, exist_ok=True)
-VER = "v2"
+VER = "v3"
 OG_VER = "v1"  # the share image (site/img/play/bodie-run-og-v1.jpg) has its own number
 src = lambda n: open(os.path.join(HERE, "src", n)).read()
 page = src("1-page.html")

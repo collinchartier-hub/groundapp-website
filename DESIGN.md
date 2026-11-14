@@ -110,15 +110,15 @@ Defaults used on purpose, one line why each (check-tells reads the `- <rule-id>:
 - phone-no-portrait-cut: every app clip is already a portrait screen recording (588x1280) and the intro film is 720x1280, so the phone and desktop play the same 9:16 files; nothing is cropped.
 - fake-sequence: the check-in steps 1 to 3 are a real sequence (the app's order).
 - eyebrow-labels: only on `/play` (the game's instrument panel, see the /play section below).
-- middot-meta: inside the game's in-play readout (`js/bodie-run-v2.js`) and the admin dashboard, which is not public.
+- middot-meta: inside the game's in-play readout (`js/bodie-run-v3.js`) and the admin dashboard, which is not public.
 - phone-touch-none: the game canvas on `/play` takes every touch as a breath; the page around it scrolls.
-- phone-hover-only: legacy stylesheets (`home-v2/3/4.css`; `home-v4.css` still styles the masterclass waiting room) and the game's `bodie-run-v2.css`; every other hover sits inside `(hover: hover) and (pointer: fine)`.
+- phone-hover-only: legacy stylesheets (`home-v2/3/4.css`; `home-v4.css` still styles the masterclass waiting room) and the game's `bodie-run-v3.css`; every other hover sits inside `(hover: hover) and (pointer: fine)`.
 - grey-body: running text is Driftwood (#A89585, 6.3:1 on Obsidian) because the kit makes it the reading ink; headlines, titles and quotes are Bone.
 - character: Bodie is the app's own companion with a job (the breath pacer), drawn from the shipped app. After Play his lower-half moment is Connections (he waves beside "Works with what you wear.", the watch screens show him on the wrist) and Download (cheer); he stays away from prices and reviews (mobile.md §8).
 - headline-on-load: "Breathe with Bodie." is in the first paint (it is the LCP); Bodie's wake carries the entrance instead of the headline arriving on the exhale.
 - side-scroll: on phones and tablets the Connections screens (health clip, health, progress) and the five watch screens are swipe rails (inspect WARN at 768 and 390); each screen keeps a readable size and the next one peeks in.
 - size-count: inspect counts 17 sizes because the kit's scale (102/52 display, 46 story quote, 32 session step heading, 30 the large review quote, 22-26 serif lines, 22/19/18/17/16/15 text) meets the price numerals (48) and breath readout (18-22); every size is a kit token or its clamp. The large review quote stops at 30px: past that a 300-character quote reads as a headline.
-- phone-100vh: only `.stage:fullscreen` in the game's `bodie-run-v2.css` (from `game/src/1-page.html`), where there is no browser toolbar. (check-tells cannot excuse this rule id from Choices because its id contains digits, so it stays a WARN.)
+- phone-100vh: only `.stage:fullscreen` in the game's `bodie-run-v3.css` (from `game/src/1-page.html`), where there is no browser toolbar. (check-tells cannot excuse this rule id from Choices because its id contains digits, so it stays a WARN.)
 - dock: the phone's "Get the app" is the full-width opaque bottom dock copy.md calls the sticky phone bar, so copy scrolls under an edge instead of under a floating button; it slides away whenever a Bodie slot or readout, a safety line, the technique list, a plan, a headline or a quote is in the bottom 120px, and over the hero, Download and the footer.
 
 ## Checker notes
@@ -126,8 +126,8 @@ Run before every review round: `python3 ~/.claude/skills/studio-site-design/chec
 (0 FAIL), `inspect.mjs` at 1440/768/390, `motion-frames.mjs`, `phone-parity.mjs` (0 FAIL), `./scripts/check-site.sh`.
 
 ## /play: Bodie's Breath Run (game page, Collin's request 2026-10-30)
-A free browser game, built from `game/src/` by `python3 game/build.py` into `site/play.html`, `js/bodie-run-v2.js`
-and `assets/css/bodie-run-v2.css`. Edit the source, never the built files. Three.js 0.186.1 from jsDelivr.
+A free browser game, built from `game/src/` by `python3 game/build.py` into `site/play.html`, `js/bodie-run-v3.js`
+and `assets/css/bodie-run-v3.css`. Edit the source, never the built files. Three.js 0.186.1 from jsDelivr.
 The landing page loads no game JS: its Play section links to `/play`. The cast stills on the landing page
 (`img/play/cast-kip-v2.webp`, `cast-{sage,ember}-v1.webp`) are the game's own portraits, rendered by `/play` and saved as files.
 

@@ -17,10 +17,13 @@ const HAS_HALL = !!(window.claude && window.claude.use);
 const KEY = "bodie-run-v3";
 const DEF = () => ({
   leaves: 0, unlocked: 1, wins: 0, best: {}, bestTime: {}, last: {}, stars: {},
+  intro: false, // Bodie's first-visit hello has been seen or skipped
   up: { lungs: 0, spring: 0, magnet: 0, aura: 0, sigh: 0, charge: 0 }, owned: ["classic"], skin: "classic", acc: [],
   sound: true, voice: true, glow: null, motion: null, // motion null: follow the device's reduced-motion setting
   deep: { static: { best: null, last: null, hist: [] }, dash: { best: null, last: null, hist: [] } },
   surf: {}, daily: { date: "", best: 0 },
+  streak: { n: 0, best: 0, last: "", days: [] }, quests: { date: "", list: [], pouch: 0 }, badges: {},
+  stats: { clouds: 0, boxes: 0, seeds: 0, storms: 0, rings: 0, quests: 0, pouches: 0, hold: 0 },
 });
 function loadProfile() {
   try {
@@ -30,7 +33,12 @@ function loadProfile() {
       const d = DEF(), pd = p.deep || {};
       return { ...d, ...p, up: { ...d.up, ...p.up }, best: { ...(p.best || {}) }, bestTime: { ...(p.bestTime || {}) }, last: { ...(p.last || {}) }, stars: { ...(p.stars || {}) },
         owned: p.owned || d.owned, acc: p.acc || [], surf: { ...(p.surf || {}) }, daily: { ...d.daily, ...(p.daily || {}) },
-        deep: { static: { ...d.deep.static, ...(pd.static || {}) }, dash: { ...d.deep.dash, ...(pd.dash || {}) } } };
+        intro: p.intro !== false, // a save from before the intro existed belongs to someone who knows the game
+        deep: { static: { ...d.deep.static, ...(pd.static || {}) }, dash: { ...d.deep.dash, ...(pd.dash || {}) } },
+        // The arrays are rebuilt entry by entry: the menu reads them at boot, so a damaged save must not stop the game.
+        streak: { ...d.streak, ...(p.streak || {}), days: Array.isArray((p.streak || {}).days) ? p.streak.days : [] },
+        quests: { ...d.quests, ...(p.quests || {}), list: (Array.isArray((p.quests || {}).list) ? p.quests.list : []).filter((x) => x && typeof x.id === "string").map((x) => ({ id: x.id, p: +x.p || 0, done: !!x.done })) },
+        badges: { ...(p.badges || {}) }, stats: { ...d.stats, ...(p.stats || {}) } };
     }
   } catch (e) {}
   return DEF();
@@ -94,6 +102,105 @@ function dailyCourse() {
 }
 const SAGE_LINES = ["Slow is smooth. Smooth is fast.", "Your breath is the one thing Kip can't buy.", "Breathe out longer than you breathe in.", "Calm lungs, fast feet.", "The ring you're in is the only ring."];
 const KIP_LINES = ["Breathing is for slowpokes!", "Espresso number seven!", "Fast fast fast fast!", "Who needs lungs?!", "Can't stop! Won't stop!", "CAW CAW CAW!", "Decaf is a myth!"];
+
+// ---------------------------------------------------------------- today: day streak, daily quests, badges
+// Finishing any run (race, duel, dive or surf) counts the day. The three quests are the same for everyone on a date.
+function dayShift(n, d = new Date()) { return dayKey(new Date(d.getFullYear(), d.getMonth(), d.getDate() + n)); }
+const streakNow = () => (profile.streak.last === dayKey() || profile.streak.last === dayShift(-1) ? profile.streak.n : 0);
+function weekDots() { // Monday to Sunday of this week
+  const now = new Date(), mon = -((now.getDay() + 6) % 7), today = dayKey(now);
+  return [0, 1, 2, 3, 4, 5, 6].map((i) => { const k = dayShift(mon + i, now); return { l: "MTWTFSS"[i], on: profile.streak.days.includes(k), today: k === today }; });
+}
+const QUEST_LEAVES = 15, POUCH_LEAVES = 40;
+// pool "race" is done in Race Kip or the Daily Dash, pool "calm" in The Big Hold or Breath Surf. n is the target.
+const QUESTS = {
+  clouds: { pool: "race", n: 6, text: "Hold your breath through 6 Worry Clouds" },
+  boxes: { pool: "race", n: 3, text: "Land 3 Box Breaths" },
+  seeds: { pool: "race", n: 80, text: "Grab 80 Breath Seeds" },
+  win: { pool: "race", n: 1, text: "Beat Kip to the Great Tree" },
+  dash: { pool: "race", n: 1, text: "Run today's Daily Dash" },
+  hold: { pool: "calm", n: 30, unit: "s", text: "Hold for 30 seconds in total in The Big Hold" },
+  swim: { pool: "calm", n: 60, unit: "m", text: "Swim 60m in total in The Big Hold: Dash" },
+  surf: { pool: "calm", n: 1, alt: "sync", text: "Finish any Breath Surf" }, // alt: never on the same day as that quest (one surf would finish both)
+  sync: { pool: "calm", n: 1, alt: "surf", text: "Score 75% or better in a Breath Surf" },
+};
+function todayQuests() {
+  const k = dayKey(), q = profile.quests;
+  if (q.date !== k || q.list.length !== 3 || q.list.some((x) => !QUESTS[x.id])) {
+    const owed = q.pouch === 1; // a pouch left unopened yesterday still pays
+    if (owed) { profile.leaves += POUCH_LEAVES; profile.stats.pouches++; }
+    const r = mulberry(hashStr("quests-" + k)), ids = Object.keys(QUESTS), list = [];
+    for (const pool of ["race", "calm", null]) { const c = ids.filter((id) => (!pool || QUESTS[id].pool === pool) && !list.some((x) => x.id === id || QUESTS[x.id].alt === id)); list.push({ id: c[Math.floor(r() * c.length)], p: 0, done: false }); }
+    profile.quests = { date: k, list, pouch: 0 }; if (owed) save();
+  }
+  return profile.quests.list;
+}
+const GLYPHS = {
+  race: '<path fill="currentColor" d="M12 2.5l2.9 6.1 6.6.9-4.8 4.6 1.2 6.6L12 17.5l-5.9 3.2 1.2-6.6-4.8-4.6 6.6-.9z"/>',
+  hold: '<path fill="currentColor" d="M12 2.8c3.4 4.2 6 7.4 6 10.7a6 6 0 0 1-12 0c0-3.3 2.6-6.5 6-10.7z"/>',
+  surf: '<path fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" d="M2.5 14.5c2.4 0 2.4-5 4.75-5s2.35 5 4.75 5 2.4-5 4.75-5 2.35 5 4.75 5"/>',
+  day: '<path fill="currentColor" d="M12.6 2.2c.5 3.1 4.9 5.4 4.9 10.6a5.5 5.5 0 0 1-11 0c0-2 .8-3.6 2-4.9.2 1.5.9 2.5 1.9 3-.3-3.3.6-6.3 2.2-8.7z"/>',
+  shop: '<path fill="currentColor" d="M4.5 19.5c.4-8.6 5.4-13.6 15-15-.6 9.8-5.6 14.8-15 15z"/>',
+};
+const glyph = (g) => `<svg viewBox="0 0 24 24" aria-hidden="true">${GLYPHS[g]}</svg>`;
+// The longest hold in either dive mode. A Dash best is ranked by distance, so its time is not always the longest one.
+const bestHold = (p) => Math.max(p.stats.hold, ...[p.deep.static.best, p.deep.dash.best, ...p.deep.dash.hist].map((e) => (e ? e.t || 0 : 0)));
+// Every badge is worked out from the saved profile, so records made before badges existed count too.
+const BADGES = [
+  { id: "win1", g: "race", name: "First Wingbeat", how: "Beat Kip once", test: (p) => p.wins >= 1 },
+  { id: "tree", g: "race", name: "Great Tree Regular", how: "Beat Kip on all 5 courses", test: (p) => COURSES.every((c) => (p.stars[c.key] || [])[0]) },
+  { id: "star5", g: "race", name: "Star Gatherer", how: "Earn 5 stars", test: () => totalStars() >= 5 },
+  { id: "star15", g: "race", name: "Full Sky", how: "Earn all 15 stars", test: () => totalStars() >= 15 },
+  { id: "cloud", g: "race", name: "Cloud Walker", how: "Hold through 50 Worry Clouds", test: (p) => p.stats.clouds >= 50 },
+  { id: "box", g: "race", name: "Square Lungs", how: "Land 25 Box Breaths", test: (p) => p.stats.boxes >= 25 },
+  { id: "seed", g: "race", name: "Seed Hoarder", how: "Grab 1,000 Breath Seeds", test: (p) => p.stats.seeds >= 1000 },
+  { id: "storm", g: "race", name: "Storm Whisperer", how: "Sigh away 20 storms", test: (p) => p.stats.storms >= 20 },
+  { id: "ring", g: "race", name: "Ring Rider", how: "Fly through 30 rhythm rings", test: (p) => p.stats.rings >= 30 },
+  { id: "hold30", g: "hold", name: "Half a Minute", how: "Hold for 30 seconds in The Big Hold", test: (p) => bestHold(p) >= 30 },
+  { id: "hold60", g: "hold", name: "One Minute Club", how: "Hold for 1 minute", test: (p) => bestHold(p) >= 60 },
+  { id: "hold90", g: "hold", name: "Deep Diver", how: "Hold for 1 minute 30", test: (p) => bestHold(p) >= 90 },
+  { id: "reef", g: "hold", name: "Reef Runner", how: "Swim 100m in one Dash dive", test: (p) => !!p.deep.dash.best && p.deep.dash.best.d >= 100 },
+  { id: "surf1", g: "surf", name: "First Wave", how: "Finish a Breath Surf", test: (p) => PATTERNS.some((t) => p.surf[t.key]) },
+  { id: "surf5", g: "surf", name: "Five Techniques", how: "Finish all 5 Breath Surfs", test: (p) => PATTERNS.every((t) => p.surf[t.key]) },
+  { id: "sync", g: "surf", name: "Locked In", how: "Get 3 stars in a Breath Surf", test: (p) => PATTERNS.some((t) => p.surf[t.key] && p.surf[t.key].stars >= 3) },
+  { id: "ribbon", g: "surf", name: "Ribbon Master", how: "Get 3 stars in all 5 Breath Surfs", test: (p) => PATTERNS.every((t) => p.surf[t.key] && p.surf[t.key].stars >= 3) },
+  { id: "day3", g: "day", name: "Three in a Row", how: "Play 3 days in a row", test: (p) => p.streak.best >= 3 },
+  { id: "day7", g: "day", name: "Full Week", how: "Play 7 days in a row", test: (p) => p.streak.best >= 7 },
+  { id: "day30", g: "day", name: "Thirty Days of Breath", how: "Play 30 days in a row", test: (p) => p.streak.best >= 30 },
+  { id: "quest10", g: "day", name: "Errand Runner", how: "Finish 10 daily quests", test: (p) => p.stats.quests >= 10 },
+  { id: "pouch5", g: "day", name: "Ember's Favorite", how: "Open 5 seed pouches", test: (p) => p.stats.pouches >= 5 },
+  { id: "looks", g: "shop", name: "Dressed Up", how: "Own 3 extra looks", test: (p) => p.owned.length >= 4 },
+  { id: "roots", g: "shop", name: "Fully Rooted", how: "Max out every upgrade", test: (p) => UPS.every((u) => (p.up[u.id] || 0) >= u.max) },
+];
+function syncBadges() { const fresh = []; for (const b of BADGES) if (!profile.badges[b.id] && b.test(profile)) { profile.badges[b.id] = dayKey(); fresh.push(b); } return fresh; }
+// One finished run. ev: { kind: "race" | "duel" | "deep" | "surf", clouds, boxes, seeds, storms, rings, won, daily, hold (s), swim (m), acc (%) }.
+// Returns what changed, for the result card: the streak step, quests that moved or finished, the pouch and new badges.
+function logPlay(ev) {
+  const out = { streakUp: false, streakLeaves: 0, moved: [], done: [], pouchReady: false, badges: [] }, today = dayKey(), s = profile.streak, st = profile.stats;
+  if (s.last !== today) {
+    s.n = s.last === dayShift(-1) ? s.n + 1 : 1; s.last = today; s.best = Math.max(s.best, s.n);
+    s.days = s.days.filter((d) => d !== today).concat(today).slice(-14);
+    out.streakUp = true; out.streakLeaves = Math.min(s.n, 7) * 3; profile.leaves += out.streakLeaves;
+  }
+  if (ev.kind !== "duel") {
+    st.clouds += ev.clouds || 0; st.boxes += ev.boxes || 0; st.seeds += ev.seeds || 0; st.storms += ev.storms || 0; st.rings += ev.rings || 0; st.hold = Math.max(st.hold, ev.hold || 0);
+    const gain = { clouds: ev.clouds, boxes: ev.boxes, seeds: ev.seeds, win: ev.won ? 1 : 0, dash: ev.daily ? 1 : 0, hold: ev.hold, swim: ev.swim, surf: ev.kind === "surf" ? 1 : 0, sync: ev.acc >= 75 ? 1 : 0 };
+    for (const q of todayQuests()) {
+      const g = gain[q.id] || 0; if (q.done || g <= 0) continue;
+      const n = QUESTS[q.id].n; q.p = Math.min(n, q.p + g); out.moved.push(q.id);
+      if (q.p >= n) { q.done = true; st.quests++; profile.leaves += QUEST_LEAVES; out.done.push(q.id); }
+    }
+    if (!profile.quests.pouch && profile.quests.list.every((q) => q.done)) { profile.quests.pouch = 1; out.pouchReady = true; }
+  }
+  out.badges = syncBadges();
+  save(); return out;
+}
+// Returns the badges the pouch earned, or null when there is no pouch to open.
+function openPouch() {
+  todayQuests(); if (profile.quests.pouch !== 1) return null;
+  profile.quests.pouch = 2; profile.leaves += POUCH_LEAVES; profile.stats.pouches++;
+  const fresh = syncBadges(); save(); return fresh;
+}
 
 // ---------------------------------------------------------------- sound: chiptune music, sfx, voice
 const SILENT_WAV = "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABAAZGF0YQAAAAA=";
