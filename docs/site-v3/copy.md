@@ -660,3 +660,26 @@ and its JSON-LD answer say: "Yes. Create one when you start, with Apple, Google 
 any time in Settings." The live 1.4.2 listing explicitly asks you to create an account. The same release's
 `App/AppState+Account.swift` and `Models/FirstUseFlow.swift` confirm mandatory sign-in before practice; the public
 privacy policy already says an account is required on iPhone. The older guest-mode answer above is retired.
+
+## SEO and answer coverage (local preview, not deployed)
+
+- Search and social title: "GroundApp | Breathwork App for iPhone & Apple Watch".
+- Description: "GroundApp is a breathwork app for iPhone and Apple Watch. Try four free techniques, check in with
+  Bodie, and explore 40+ breathing techniques."
+- The FAQ now opens with "What is GroundApp?", using the sourced platform, creator, technique and Premium facts.
+  "Where can I learn about breathwork?" links the existing science and nervous-system articles and Coherence audio.
+  All 14 FAQ answers match their JSON-LD answers. Both new answers use existing product facts and resources.
+- The WebPage, app, creator, publisher, website and FAQ schema entries are linked by stable IDs. The app description
+  includes both prices and the current Premium features. App Store ratings remain attributed visible content,
+  not imported aggregate-review markup. The release 1.4.2 project confirms watchOS 11.0 in Debug and Release.
+- `llms.txt` mirrors the required account, named free techniques, Meditations, AI-voice disclosure and safety scope.
+  The homepage's sitemap modification date reflects this work; other pages' dates were not refreshed.
+- One shared robots group allows public search/AI discovery while keeping admin and API exclusions. Source rules
+  no longer conflict with Cloudflare's managed training restrictions. The regression test checks source policy,
+  not Cloudflare's combined production robots document.
+
+Search claims: no ranking, indexing, citation or rich-result guarantee. Google does not use `llms.txt` for rankings,
+and retired FAQ rich results in May 2026; FAQ JSON-LD remains semantic data, not a promised search treatment.
+Sources: [Google AI optimization guide](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide),
+[OpenAI crawler roles](https://developers.openai.com/api/docs/bots),
+[Google documentation updates](https://developers.google.com/search/updates).
