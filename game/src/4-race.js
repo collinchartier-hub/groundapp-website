@@ -68,7 +68,7 @@ function buildRaceHUD(n, withKip, withGhost) {
   hudEl.innerHTML = ""; hudParts = [];
   for (let i = 0; i < n; i++) {
     const d = document.createElement("div"); d.className = "hp" + (i === 1 ? " right" : "");
-    d.innerHTML = `${lungsHTML()}<div class="hp-stats"><div class="hp-label">${n > 1 ? "PLAYER " + (i + 1) : "BREATH"}</div><div class="hp-score">0</div><div class="hp-sub"><span class="s-seeds">0</span> SEEDS <span class="s-extra"></span></div></div>`;
+    d.innerHTML = `${lungsHTML()}<div class="hp-stats"><div class="hp-label">${n > 1 ? "PLAYER " + (i + 1) : "SHIELD"}</div><div class="hp-score">0</div><div class="hp-sub"><span class="s-seeds">0</span> SEEDS <span class="s-extra"></span></div></div>`;
     hudEl.appendChild(d);
     hudParts.push({ fill: d.querySelector(".l-fill"), ring: d.querySelector("circle"), lungs: d.querySelector(".lungs"), score: d.querySelector(".hp-score"), seeds: d.querySelector(".s-seeds"), extra: d.querySelector(".s-extra"), last: {} });
   }
@@ -93,8 +93,8 @@ function updateRaceHUD() {
     setIf(h, "se", P.seeds + P.gold * 5, (v) => (h.seeds.textContent = String(v)));
     const mult = comboMult(P), bits = [];
     if (P.flow > 0) bits.push(`<span class="hot">FLOW</span>`); else if (mult > 1) bits.push(`<span class="hot">x${mult}</span>`);
-    if (P.charge > 0) bits.push(`<span class="hot">LUNGS ${Math.round((1 + P.charge) * 100)}%</span>`);
-    if (G.co.sigh) bits.push(P.sigh >= 1 ? `<span class="ready">SIGH READY</span>` : `SIGH ${Math.round(P.sigh * 100)}%`);
+    if (P.charge > 0) bits.push(`<span class="hot">SHIELD ${Math.round((1 + P.charge) * 100)}%</span>`);
+    if (G.co.sigh) bits.push(P.sigh >= 1 ? `<span class="ready">GUST READY</span>` : `GUST ${Math.round(P.sigh * 100)}%`);
     setIf(h, "ex", bits.join(" · "), (v) => (h.extra.innerHTML = v ? "· " + v : ""));
   });
   const pct = (x) => (clamp01(x / G.finish) * 100).toFixed(1) + "%";
@@ -180,7 +180,7 @@ function genWorld(toX) {
       const gap = 2.2 + R() * (1.1 + Math.max(0, co.idx) * .25); seedArc(x - .6, x + gap + .6, 1.6, 2.1);
       G.genX += gap; const land = 8 + R() * 5; addSeg(G.genX, G.genX + land, false); G.genX += land;
     } else if (r < f.lake + f.pits + f.pads && x < G.finish - 70) {
-      // power pad, then a long stretch of thin air you must hold through
+      // power pad, then a long stretch of windy zone you must hold through
       const padLen = 7, thinLen = (co.key === "peaks" ? 33 : 26) + R() * 5, tail = 6, len = 3 + padLen + 2 + thinLen + tail;
       addSeg(x, x + len, false);
       const p0 = x + 3, t0 = p0 + padLen + 2;
@@ -223,22 +223,22 @@ function blowout(P) {
   P.gasp = 1.1; P.holdT = 0; P.pffts++; P.red = 0; hurt(P, .55, 1.1); P.dive = 0; P.charge = 0; P.cap = P.baseCap; P.breath = Math.min(P.breath, P.cap);
   Sound.play("pfft"); Sound.danger(0);
   emit({ x: P.x + .6, y: bodyY(P) + .6, z: P.z, n: 26, speed: 6, vx: 4, color: 0xe8ddd0, size: .35, grav: 0, life: .7, grow: 2 });
-  event("PFFFT!", "You held too long. Let go when the lungs flash red", "warn", 1.4);
-  if (voiceFor(P)) Voice.say("Too long! Breathe!", true);
+  event("PFFFT!", "Shield empty. Release the button to recharge", "warn", 1.4);
+  if (voiceFor(P)) Voice.say("Release the button to recharge.", true);
 }
 function pop(P, zap) {
   P.inflate = 0; P.smogT = 0; P.dizzy = .9; P.pops++; hurt(P, .5, 1.3); P.breath = Math.max(0, P.breath - 1);
   Sound.play(zap ? "zap" : "pop");
   emit({ x: P.x, y: bodyY(P), z: P.z, n: 30, speed: 5, color: zap ? 0x6a5a70 : 0x8f8580, size: .5, grav: -.5, life: 1, grow: 1.5 });
   emit({ x: P.x, y: bodyY(P) + .4, z: P.z, n: 12, speed: 4, color: 0xf3d7a8, size: .2, grav: 5, life: .6, add: true });
-  if (zap) { event("ZAP!", "Storms need a sigh: double tap before you reach them", "warn", 1.5); if (voiceFor(P)) Voice.say("Zap! Double tap to sigh!", true); }
-  else { event("POP!", "You breathed in the smog. Hold your breath next time", "warn", 1.5); if (voiceFor(P)) Voice.say("Pop! Hold your breath!", true); }
+  if (zap) { event("ZAP!", "Double tap for a gust before a storm", "warn", 1.5); if (voiceFor(P)) Voice.say("Double tap for a gust!", true); }
+  else { event("POP!", "Use the screen shield through a cloud", "warn", 1.5); if (voiceFor(P)) Voice.say("Press the button for your shield!", true); }
   G.shake = .35;
 }
 function doSigh(P) {
   P.sigh = 0; P.sighs++; P.sighT = 1.3; Sound.play("sigh");
   G.pendingGust = { P, at: G.t + .35 };
-  event("SIGH!", "Two breaths in, one long breath out", "good", 1.1);
+  event("GUST!", "Two taps create a screen gust", "good", 1.1);
 }
 function gust(P) {
   let n = 0;
@@ -251,7 +251,7 @@ function gust(P) {
   }
   emit({ x: P.x + 1, y: bodyY(P) + .5, z: P.z, n: 30, speed: 3, vx: 9, color: 0xe8ddd0, size: .25, grav: 0, life: .8, add: true });
   P.boost = Math.max(P.boost, .8); P.slow = 0; P.slowF = 1;
-  if (n) floater(`SIGHED AWAY ${n}`, P.x + 2, bodyY(P) + 1.4, P.z, "#F3D7A8");
+  if (n) floater(`CLEARED ${n}`, P.x + 2, bodyY(P) + 1.4, P.z, "#F3D7A8");
 }
 function chargeTap(P) {
   const step = profile.up.charge ? .08 : .06;
@@ -277,8 +277,8 @@ function updatePlayer(P, dt) {
   if (holding && !P.wasHolding) Sound.play("inhale");
   if (!holding && P.wasHolding) {
     if (P.gasp <= 0) {
-      if (P.holdT >= 4) { P.boxes++; P.points += 100; P.flow = 3.2; Sound.play("box"); Sound.play("flow"); event("BOX BREATH!", "Flow: +100 and faster legs", "good", 1.4); if (voiceFor(P)) Voice.say("Box breath! Flow!", true); emit({ x: P.x, y: bodyY(P), z: P.z, n: 30, speed: 5, color: 0xf3d7a8, size: .25, grav: 0, life: .9, add: true }); }
-      else if (P.holdT > .4 && P.breath / P.cap < .15) { P.clutch++; P.points += 50; Sound.play("clutch"); floater("CLUTCH EXHALE +50", P.x, bodyY(P) + 1.4, P.z, "#F3D7A8"); }
+      if (P.holdT >= 4) { P.boxes++; P.points += 100; P.flow = 3.2; Sound.play("box"); Sound.play("flow"); event("SHIELD READY!", "Flow: +100 and faster legs", "good", 1.4); if (voiceFor(P)) Voice.say("Shield release! Flow!", true); emit({ x: P.x, y: bodyY(P), z: P.z, n: 30, speed: 5, color: 0xf3d7a8, size: .25, grav: 0, life: .9, add: true }); }
+      else if (P.holdT > .4 && P.breath / P.cap < .15) { P.clutch++; P.points += 50; Sound.play("clutch"); floater("TIMED RELEASE +50", P.x, bodyY(P) + 1.4, P.z, "#F3D7A8"); }
       Sound.play("exhale");
       emit({ x: P.x + .5, y: bodyY(P) + .7, z: P.z, n: 8, speed: 1.6, vx: 2, color: 0xe8ddd0, size: .22, grav: -.3, life: .6, grow: 1.5 });
     }
@@ -293,14 +293,14 @@ function updatePlayer(P, dt) {
   P.gasp = Math.max(0, P.gasp - dt); P.flow = Math.max(0, P.flow - dt); P.dizzy = Math.max(0, P.dizzy - dt); P.boost = Math.max(0, P.boost - dt); P.sighT = Math.max(0, P.sighT - dt);
   if (co.sigh) P.sigh = Math.min(1, P.sigh + dt / (profile.up.sigh ? 2 : 3));
   if (P.smogT > 0) { P.smogT -= dt; P.inflate = Math.min(1, P.inflate + dt * 2.2); if (P.smogT <= 0) pop(P); } else P.inflate = Math.max(0, P.inflate - dt * 6);
-  // thin air: hold all the way through or keep coughing
+  // windy zone: hold all the way through or keep coughing
   if (thin) {
     if (!P.inThin) { P.inThin = true; P.thinZonePops = 0; }
-    if (!holding) { P.chokeT -= dt; if (P.chokeT <= 0) { P.chokeT = .7; P.thinPops++; P.thinZonePops++; hurt(P, .55, .6); Sound.play("cough"); emit({ x: P.x + .4, y: bodyY(P) + .5, z: P.z, n: 10, speed: 1.5, color: 0x8a8079, size: .35, grav: -.3, life: .6, grow: 1 }); if (voiceFor(P) && P.thinZonePops === 1) Voice.say("Hold your breath!", true); } }
+    if (!holding) { P.chokeT -= dt; if (P.chokeT <= 0) { P.chokeT = .7; P.thinPops++; P.thinZonePops++; hurt(P, .55, .6); Sound.play("cough"); emit({ x: P.x + .4, y: bodyY(P) + .5, z: P.z, n: 10, speed: 1.5, color: 0x8a8079, size: .35, grav: -.3, life: .6, grow: 1 }); if (voiceFor(P) && P.thinZonePops === 1) Voice.say("Press the button!", true); } }
     else { P.chokeT = .25; P.points += dt * 12; }
   } else if (P.inThin) {
     P.inThin = false;
-    if (P.thinZonePops === 0) { P.thinCleared++; P.points += 100; floater("THIN AIR CLEARED +100", P.x, bodyY(P) + 1.5, P.z, "#F3D7A8"); Sound.play("calm"); }
+    if (P.thinZonePops === 0) { P.thinCleared++; P.points += 100; floater("WINDY ZONE CLEARED +100", P.x, bodyY(P) + 1.5, P.z, "#F3D7A8"); Sound.play("calm"); }
   }
   // speed
   if (P.slow > 0) { P.slow -= dt; if (P.slow <= 0) P.slowF = 1; }
@@ -355,8 +355,8 @@ function updatePlayer(P, dt) {
     } else if (e.type === "rock") {
       if (!e.hit[0] && Math.abs(dx) < e.w / 2 + .35 && P.y < e.h - .05 && !P.inWater) { e.hit[0] = true; P.bonks++; hurt(P, .5, .9); P.vy = 6; P.onGround = false; G.shake = .25; Sound.play("bonk"); floater("OOF!", P.x, by + 1.3, P.z, "#E07A5A"); }
     } else if (e.type === "log") {
-      if (!e.hit[P.i] && P.inWater && Math.abs(dx) < .85 && P.dive < .45) { e.hit[P.i] = true; P.bonks++; hurt(P, .45, 1); G.shake = .25; Sound.play("bonk"); event("BONK!", "Hold your breath to dive under the logs", "warn", 1.1); }
-      if (!e.passed[P.i] && dx < -.9) { e.passed[P.i] = true; if (!e.hit[P.i] && P.inWater) { P.dives++; floater("DIVE", P.x, by + 1.2, P.z, "#8FB3AC"); } }
+      if (!e.hit[P.i] && P.inWater && Math.abs(dx) < .85 && P.dive < .45) { e.hit[P.i] = true; P.bonks++; hurt(P, .45, 1); G.shake = .25; Sound.play("bonk"); event("BONK!", "Use the button to clear the obstacle", "warn", 1.1); }
+      if (!e.passed[P.i] && dx < -.9) { e.passed[P.i] = true; if (!e.hit[P.i] && P.inWater) { P.dives++; floater("CLEAR", P.x, by + 1.2, P.z, "#8FB3AC"); } }
     } else if (e.type === "cloud" || e.type === "storm") {
       if (e.cleared || e.calmed) continue;
       if (!e.hit[P.i] && (Math.hypot(dx, e.y - by) < e.r + .55 || Math.hypot(dx, e.y - hy) < e.r + .35)) {
@@ -367,7 +367,7 @@ function updatePlayer(P, dt) {
         else { P.smogT = .55; Sound.play("smog"); emit({ x: P.x + .5, y: by + .5, z: P.z, n: 14, speed: 1.5, vx: -3, color: 0x7d6f67, size: .4, grav: 0, life: .5, grow: 1 }); }
       }
     } else if (e.type === "bubble") {
-      if (Math.hypot(dx, e.y - by) < 1) { e.dead[0] = true; world.remove(e.mesh); P.breath = Math.min(P.cap, P.breath + 2.5); P.gasp = 0; Sound.play("bubble"); floater("+AIR", e.x, e.y + .6, P.z, "#CFE2DE"); emit({ x: e.x, y: e.y, z: P.z, n: 10, speed: 2.5, color: 0xcfe2de, size: .18, grav: 0, life: .5, add: true }); }
+      if (Math.hypot(dx, e.y - by) < 1) { e.dead[0] = true; world.remove(e.mesh); P.breath = Math.min(P.cap, P.breath + 2.5); P.gasp = 0; Sound.play("bubble"); floater("+SHIELD", e.x, e.y + .6, P.z, "#CFE2DE"); emit({ x: e.x, y: e.y, z: P.z, n: 10, speed: 2.5, color: 0xcfe2de, size: .18, grav: 0, life: .5, add: true }); }
     } else if (e.type === "vent") {
       if (!e.hit[P.i] && P.onGround && Math.abs(dx) < .75) { e.hit[P.i] = true; P.vy = 16; P.onGround = false; Sound.play("vent"); emit({ x: e.x, y: .3, z: P.z, n: 20, speed: 2, up: 8, color: 0xf3d7a8, size: .22, grav: 2, life: .8, add: true }); floater("UPDRAFT!", P.x, by + 1.6, P.z, "#F3D7A8"); }
     } else if (e.type === "ring") {
@@ -440,14 +440,14 @@ function updateGhost() {
   g.fig.root.position.set(g.x, g.y, -.9);
   g.fig.pose(1 / 60, { mode: g.y > .05 ? "air" : (i >= d.xs.length - 1 ? "idle" : "run"), rate: 1 });
 }
-// What should the cue band say for this player? Priority: run-out warning, storms, thin air, clouds and logs, pads, glide, hold states.
+// What should the cue band say for this player? Priority: run-out warning, storms, windy zone, clouds and logs, pads, glide, hold states.
 function cueFor(P) {
   if (G.over || G.phase !== "race") return null;
   const holding = P.wasHolding, v = Math.max(3, P.v || BASE), frac = P.breath / P.cap;
-  if (holding && frac < .22) return { text: "LET IT OUT!", sub: "Let go now, or Bodie goes PFFFT", kind: "warn pulse", voice: "Let it out!", danger: 2 };
+  if (holding && frac < .22) return { text: "RELEASE BUTTON", sub: "Release the button to recharge the shield", kind: "warn pulse", voice: "Release the button!", danger: 2 };
   const pad = zoneAt(P.x, "pad"), thinIn = zoneAt(P.x, "thin");
-  if (pad) return { text: "TAP TAP TAP!", sub: `Power breaths · lungs at ${Math.round((1 + P.charge) * 100)}%`, kind: "good pulse", voice: "Tap tap tap!", id: "pad" + pad.x0 };
-  if (thinIn) return holding ? { text: "KEEP HOLDING", sub: `Thin air · ${Math.ceil(thinIn.x1 - P.x)}m to clear`, kind: "good", danger: frac < .4 ? 1 : 0 } : { text: "HOLD YOUR BREATH!", sub: "Thin air: press and hold all the way through", kind: "warn pulse", voice: "Hold your breath!" };
+  if (pad) return { text: "TAP TAP TAP!", sub: `Pad taps · shield at ${Math.round((1 + P.charge) * 100)}%`, kind: "good pulse", voice: "Tap tap tap!", id: "pad" + pad.x0 };
+  if (thinIn) return holding ? { text: "KEEP HOLDING", sub: `Windy zone · ${Math.ceil(thinIn.x1 - P.x)}m to clear`, kind: "good", danger: frac < .4 ? 1 : 0 } : { text: "PRESS THE BUTTON", sub: "Windy zone: press and hold all the way through", kind: "warn pulse", voice: "Press the button!" };
   let best = null;
   for (const z of G.zones) {
     const dist = z.x0 - P.x; if (dist < 0 || dist > v * 1.4) continue;
@@ -468,19 +468,19 @@ function cueFor(P) {
   }
   if (best) {
     const k = best.kind, inside = best.dist <= 0;
-    if (k === "storm") return P.sigh >= 1 ? { text: "DOUBLE TAP TO SIGH!", sub: "Two quick taps blow the storm away", kind: "pulse", voice: "Double tap! Sigh!", id: best.e } : { text: "SIGH RECHARGING", sub: `Storm ahead · sigh ready in ${Math.ceil((1 - P.sigh) * (profile.up.sigh ? 2 : 3))}s`, kind: "warn" };
-    if (k === "pad") return { text: "POWER PAD AHEAD", sub: "Get ready to tap as fast as you can", kind: "good", voice: "Power pad!", id: "padAhead" + best.z.x0 };
-    if (k === "thin") return holding ? { text: "HOLDING", sub: "Thin air next. Keep it held", kind: "good" } : { text: "HOLD YOUR BREATH!", sub: "Thin air ahead: hold all the way through", kind: "pulse", voice: "Hold your breath!", id: best.z };
-    if (k === "ring") return holding ? { text: "GLIDING", sub: "Keep holding to float through the rings", kind: "good" } : { text: "HOLD TO GLIDE!", sub: "Hold your breath to float through the rings", kind: "pulse", voice: "Hold to glide!", id: best.e };
+    if (k === "storm") return P.sigh >= 1 ? { text: "DOUBLE TAP FOR A GUST", sub: "Two quick taps blow the storm away", kind: "pulse", voice: "Double tap! Gust!", id: best.e } : { text: "GUST RECHARGING", sub: `Storm ahead · gust ready in ${Math.ceil((1 - P.sigh) * (profile.up.sigh ? 2 : 3))}s`, kind: "warn" };
+    if (k === "pad") return { text: "POWER PAD AHEAD", sub: "Tap the pad to charge the shield", kind: "good", voice: "Power pad!", id: "padAhead" + best.z.x0 };
+    if (k === "thin") return holding ? { text: "HOLDING", sub: "Windy zone next. Keep it held", kind: "good" } : { text: "PRESS THE BUTTON", sub: "Windy zone ahead: hold all the way through", kind: "pulse", voice: "Press the button!", id: best.z };
+    if (k === "ring") return holding ? { text: "GLIDING", sub: "Keep holding to float through the rings", kind: "good" } : { text: "HOLD TO GLIDE!", sub: "Press the button to float through the rings", kind: "pulse", voice: "Hold to glide!", id: best.e };
     const isLog = k === "log";
-    if (!holding) return { text: "HOLD YOUR BREATH!", sub: isLog ? "Press and hold to dive under the log" : "Worry Cloud ahead. Press and hold", kind: "pulse", voice: isLog ? "Dive! Hold your breath!" : "Hold your breath!", id: best.e };
+    if (!holding) return { text: "PRESS THE BUTTON", sub: isLog ? "Press for your screen shield" : "Worry Cloud ahead. Press and hold", kind: "pulse", voice: isLog ? "Press for the shield!" : "Press the button!", id: best.e };
     return { text: inside ? "KEEP HOLDING" : "HOLDING", sub: isLog ? "Stay under..." : "Right through the smog", kind: "good", danger: frac < .4 ? 1 : 0 };
   }
   if (holding) {
     const need = 4 - P.holdT;
-    if (need > 0 && P.breath > need + .25) return { text: "BOX BREATH IN " + need.toFixed(1), sub: "Keep holding for Flow, or let go to breathe", kind: "good", anim: "boxcd" };
-    if (need > 0) return { text: "BREATHE OUT", sub: "Let go to refill your lungs", kind: "", voice: "Breathe out" };
-    return { text: "LET GO FOR FLOW!", sub: "Box Breath ready", kind: "good pulse" };
+    if (need > 0 && P.breath > need + .25) return { text: "SHIELD CHARGE IN " + need.toFixed(1), sub: "Keep the button pressed, or release to recharge", kind: "good", anim: "boxcd" };
+    if (need > 0) return { text: "RELEASE BUTTON", sub: "Release to recharge the screen shield", kind: "", voice: "Release button" };
+    return { text: "LET GO FOR FLOW!", sub: "Shield release ready", kind: "good pulse" };
   }
   return null;
 }
@@ -491,7 +491,7 @@ function updateCues() {
       const k = cueFor(P);
       if (k) { danger = Math.max(danger, k.danger || 0); const urgent = (k.kind || "").includes("pulse") || (k.kind || "").includes("warn"); if (!c || (urgent && !(c.kind || "").includes("warn"))) c = G.players.length > 1 ? { ...k, sub: "P" + (P.i + 1) + " · " + k.sub } : k; }
       if (k && k.id && P.lastHazardCue !== k.id) { P.lastHazardCue = k.id; if (k.voice) { Sound.play("alarm"); if (voiceFor(P)) Voice.say(k.voice); } }
-      else if (k && k.voice && !k.id && k.text !== P.lastVoiceText && voiceFor(P)) { if (k.text !== "BREATHE OUT" || P.holdT > 1.5) Voice.say(k.voice); }
+      else if (k && k.voice && !k.id && k.text !== P.lastVoiceText && voiceFor(P)) { if (k.text !== "RELEASE BUTTON" || P.holdT > 1.5) Voice.say(k.voice); }
       P.lastVoiceText = k ? k.text : null;
     }
   }
@@ -580,13 +580,13 @@ function startRace(co) {
   buildRaceHUD(G.players.length, !!G.kip, !!G.ghost);
   state = "play"; show(null); hudEl.hidden = false;
   camPos.set(-6, 3.6, 16); camLook.set(2, 1.5, 0);
-  Sound.music(1, G.co.bpm, G.co.key);
+  Sound.music(1, G.co.bpm, G.co.musicKey);
 }
-const CD = [[0, "BREATHE IN", "beep", "Breathe in"], [1.1, "HOLD", "beep", "Hold"], [2.2, "AND...", "beep", null], [3.0, "GO!", "go", "Go!"]];
+const CD = [[0, "READY", "beep", "Ready"], [1.1, "SET", "beep", "Set"], [2.2, "AND...", "beep", null], [3.0, "GO!", "go", "Go!"]];
 function updateCountdown(dt) {
   const prev = G.cd; G.cd += dt;
   for (const [t, txt, snd, v] of CD) if (prev <= t && G.cd > t) { $("countdown").hidden = false; const b = $("countdown-t"); b.textContent = txt; b.style.animation = "none"; void b.offsetWidth; b.style.animation = ""; Sound.play(snd); if (v) Voice.say(v, true); }
-  G.players.forEach((P) => { const f = G.cd < 1.1 ? G.cd / 1.1 : (G.cd < 2.2 ? 1 : 1 - (G.cd - 2.2) / .8); P.fig.update(dt, f, false, G.cd > 1.1 && G.cd < 2.6 ? "hold" : null, f, G.cd > 1.1 && G.cd < 2.6 ? .5 : 0); P.fig.pose(dt, { mode: "idle" }); P.fig.root.position.set(P.x, P.y, P.z); P.shadow.position.set(P.x, .02, P.z); });
+  G.players.forEach((P) => { P.fig.update(dt, .4, true, null, .4, 0); P.fig.pose(dt, { mode: "idle" }); P.fig.root.position.set(P.x, P.y, P.z); P.shadow.position.set(P.x, .02, P.z); });
   if (G.cd > 3.0) { G.phase = "race"; G.t = 0; if (G.kip) { Sound.play("caw"); kipSay("Catch me if you can! CAW!"); } }
 }
 function updateRace(rawDt) {
@@ -664,7 +664,7 @@ function endRace(winner) {
   showCallout(null);
   const W = winner >= 0 ? G.players[winner] : null;
   if (W) { Sound.play("win"); if (duel) Voice.say(`Player ${winner + 1} wins!`, true); else Voice.say("Yes! I did it! Bodie wins!", true, "bodie"); launchConfetti(W.x, 2, W.z); event(duel ? `PLAYER ${winner + 1} WINS` : "BODIE WINS!", "First to the Great Tree", "good", 3.4); }
-  else { Sound.play("lose"); kipSay("CAW! Winner winner, coffee dinner!"); Voice.say("CAW! Winner winner, coffee dinner!", true, "kip"); event("KIP WINS", "So close. Breathe, then rematch", "warn", 3.4); }
+  else { Sound.play("lose"); kipSay("CAW! Winner winner, coffee dinner!"); Voice.say("CAW! Winner winner, coffee dinner!", true, "kip"); event("KIP WINS", "You can stop here, or choose another run", "warn", 3.4); }
   Sound.music(0, 128, 0);
   if (!duel) postScore();
 }
@@ -676,25 +676,25 @@ function showRaceResult() {
   if (duel) {
     t.textContent = `Player ${r.winner + 1} wins`; t.className = "win";
     $("res-line").textContent = `Player ${r.winner + 1} reached the Great Tree ${r.players[r.winner].margin}m ahead. Player ${2 - r.winner}, that's the loser seat. Rematch?`;
-    body += quote("sage", `Well raced, both of you. Player ${r.winner + 1} takes it. Now everyone, take a breath.`);
-    const rows = [["", "P1", "P2"], ["Distance", ...G.players.map((P) => Math.floor(Math.min(P.x, G.finish)))], ["Seeds", ...G.players.map((P) => P.seeds + P.gold * 5)], ["Calm passes", ...G.players.map((P) => P.calm)], ["Box Breaths", ...G.players.map((P) => P.boxes)], ["Pops", ...G.players.map((P) => P.pops)], ["Points", ...r.players.map((p) => p.score)]];
+    body += quote("sage", `Well raced, both of you. Player ${r.winner + 1} takes it. Pause whenever you want.`);
+    const rows = [["", "P1", "P2"], ["Distance", ...G.players.map((P) => Math.floor(Math.min(P.x, G.finish)))], ["Seeds", ...G.players.map((P) => P.seeds + P.gold * 5)], ["Calm passes", ...G.players.map((P) => P.calm)], ["Shield releases", ...G.players.map((P) => P.boxes)], ["Pops", ...G.players.map((P) => P.pops)], ["Points", ...r.players.map((p) => p.score)]];
     body = `<div class="duel-tally">${rows.map((row, i) => row.map((c) => `<span class="${i === 0 ? "h" : ""}">${c}</span>`).join("")).join("")}</div>`;
   } else {
     const p = r.players[0], P = G.players[0];
     t.textContent = p.won ? "Bodie wins" : "Kip wins"; t.className = p.won ? "win" : "lose";
-    const hint = P.pops ? `Bodie popped ${P.pops} time${P.pops > 1 ? "s" : ""}. Hold your breath when the cue says so.` : P.pffts ? "Bodie held too long. Let go when the lungs flash red." : P.thinPops ? "Hold all the way through thin air, and charge up on the power pad first." : "Try a Box Breath for a Flow boost.";
+    const hint = P.pops ? `Bodie popped ${P.pops} time${P.pops > 1 ? "s" : ""}. Press the button when the cue says so.` : P.pffts ? "Release when the shield meter is low." : P.thinPops ? "Hold all the way through windy zone, and charge up on the power pad first." : "Try releasing a charged shield for a Flow boost.";
     $("res-line").textContent = p.won ? `Bodie beat Kip to the Great Tree by ${p.margin}m.${p.newBest ? " New best score!" : ""}` : `Kip got there ${p.margin}m ahead. ${hint}`;
     const bench = [];
     if (p.time) bench.push(`<span>Time <b>${fmtT(p.time)}</b></span>`); else bench.push(`<span>Reached <b>${p.pct}%</b></span>`);
     if (p.prevBestTime) bench.push(`<span>Best ${p.newBestTime ? "was " : ""}<b>${fmtT(p.prevBestTime)}</b></span>`);
     if (p.prevLast) bench.push(`<span>Last <b>${p.prevLast.time ? fmtT(p.prevLast.time) : p.prevLast.pct + "%"}</b></span>`);
     if (p.newBestTime) bench.push(`<span class="badge">New best time, ghost saved</span>`);
-    body += quote(p.won ? "sage" : "kip", p.won ? (p.margin >= 20 ? "Beautifully breathed. Kip is still looking for his coffee." : "Beautifully breathed. Kip is still catching his breath.") : "Rematch, slowpoke? I'll be here. Probably on espresso number eight.");
+    body += quote(p.won ? "sage" : "kip", p.won ? (p.margin >= 20 ? "Nicely played. Kip is still looking for his coffee." : "Nicely played. Kip is still on the trail.") : "Rematch, slowpoke? I'll be here. Probably on espresso number eight.");
     body += `<div class="bench">${bench.join("")}</div>`;
     if (p.stars) body += `<ul class="chs">${p.stars.map((s) => `<li class="${s.got ? "got" : ""} ${s.fresh ? "new" : ""}"><span>★</span><span>${s.text}</span></li>`).join("")}</ul>`;
-    const rows = [["Distance", Math.floor(Math.min(P.x, G.finish)) + " pts"], ["Seeds, rings, holds and tricks", P.points + " pts"], ["Win bonus", p.winBonus + " pts"], ["<b>Points</b>", `<b>${p.score}</b>`], ["Gold Leaves: seeds + purse", `${p.tokens} + ${p.purse} = +${p.leaves}`], ["Box Breaths, calm passes, best combo", `${P.boxes}, ${P.calm}, x${P.bestCombo}`]];
-    if (co.sigh) rows.push(["Storms sighed away", String(P.storms)]);
-    if (P.maxCharge > 0 || P.thinCleared) rows.push(["Max lung charge, thin air cleared", `${Math.round((1 + P.maxCharge) * 100)}%, ${P.thinCleared}`]);
+    const rows = [["Distance", Math.floor(Math.min(P.x, G.finish)) + " pts"], ["Seeds, rings, holds and tricks", P.points + " pts"], ["Win bonus", p.winBonus + " pts"], ["<b>Points</b>", `<b>${p.score}</b>`], ["Gold Leaves: seeds + purse", `${p.tokens} + ${p.purse} = +${p.leaves}`], ["Shield releases, calm passes, best combo", `${P.boxes}, ${P.calm}, x${P.bestCombo}`]];
+    if (co.sigh) rows.push(["Storms cleared", String(P.storms)]);
+    if (P.maxCharge > 0 || P.thinCleared) rows.push(["Max shield charge, windy zones cleared", `${Math.round((1 + P.maxCharge) * 100)}%, ${P.thinCleared}`]);
     if (P.rings) rows.push(["Rhythm rings", String(P.rings)]);
     body += `<div class="tally">${rows.map(([a, b], i) => `<span class="${i === 3 ? "total" : ""}">${a}</span><span class="${i === 3 ? "total" : ""}">${b}</span>`).join("")}</div>`;
   }

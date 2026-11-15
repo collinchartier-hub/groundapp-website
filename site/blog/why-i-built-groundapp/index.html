@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Why I built GroundApp: from breathwork coach to app creator | GroundApp</title>
-<meta name="description" content="Collin Chartier on the gap between coaching sessions, why most breathwork apps hand you a menu, and what he built instead.">
+<title>Why I built GroundApp: between coached sessions | GroundApp</title>
+<meta name="description" content="Collin Chartier on building a check-in and guided breathing practice for the moments between sessions. A creator&#x27;s account, not evidence of user outcomes.">
 <meta name="theme-color" content="#1A110E">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="author" content="Collin Chartier">
 <meta name="apple-itunes-app" content="app-id=6760352779, affiliate-data=pt=128638571&amp;ct=site-banner">
 <link rel="canonical" href="https://groundapp.live/blog/why-i-built-groundapp/">
-<meta property="og:title" content="Why I built GroundApp: from breathwork coach to app creator | GroundApp">
-<meta property="og:description" content="Collin Chartier on the gap between coaching sessions, why most breathwork apps hand you a menu, and what he built instead.">
+<meta property="og:title" content="Why I built GroundApp: between coached sessions | GroundApp">
+<meta property="og:description" content="Collin Chartier on building a check-in and guided breathing practice for the moments between sessions. A creator&#x27;s account, not evidence of user outcomes.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://groundapp.live/blog/why-i-built-groundapp/">
 <meta property="og:image" content="https://groundapp.live/og-image.jpg">
@@ -20,11 +20,11 @@
 <meta property="og:image:alt" content="GroundApp. Breathe with intention.">
 <meta property="og:site_name" content="GroundApp">
 <meta property="article:published_time" content="2026-03-26">
-<meta property="article:modified_time" content="2026-10-02">
+<meta property="article:modified_time" content="2026-11-14">
 <meta property="article:author" content="Collin Chartier">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Why I built GroundApp: from breathwork coach to app creator | GroundApp">
-<meta name="twitter:description" content="Collin Chartier on the gap between coaching sessions, why most breathwork apps hand you a menu, and what he built instead.">
+<meta name="twitter:title" content="Why I built GroundApp: between coached sessions | GroundApp">
+<meta name="twitter:description" content="Collin Chartier on building a check-in and guided breathing practice for the moments between sessions. A creator&#x27;s account, not evidence of user outcomes.">
 <meta name="twitter:image" content="https://groundapp.live/og-image.jpg">
 <link rel="icon" type="image/svg+xml" href="/lung-logo.svg">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -32,11 +32,11 @@
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "Why I built GroundApp: from breathwork coach to app creator",
-  "description": "Collin Chartier on the gap between coaching sessions, why most breathwork apps hand you a menu, and what he built instead.",
+  "headline": "Why I built GroundApp: between coached sessions",
+  "description": "Collin Chartier on building a check-in and guided breathing practice for the moments between sessions. A creator's account, not evidence of user outcomes.",
   "image": "https://groundapp.live/og-image.jpg",
   "datePublished": "2026-03-26",
-  "dateModified": "2026-10-02",
+  "dateModified": "2026-11-14",
   "author": {
     "@type": "Person",
     "name": "Collin Chartier",
@@ -69,6 +69,7 @@
 <link rel="preload" href="/assets/fonts/source-serif-4-latin-v1.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/ground-font-type-v1.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/css/ground-tokens-v1.css">
+<script src="/js/preview-mode-v1.js"></script>
 <link rel="stylesheet" href="/assets/css/site-v4.css">
 <style>
 /* Blog: one reading column. Headlines Source Serif 4 in sentence case, everything else Ground Font Type. */
@@ -171,51 +172,34 @@
 <main id="main" class="wrap blog">
 <article>
   <p class="crumb"><a href="/blog/">Blog</a></p>
-  <h1 class="h2 title">Why I built GroundApp: from breathwork coach to app creator</h1>
-  <p class="byline">By <a href="/#story">Collin Chartier</a>, breathwork and mental performance coach &middot; Updated <time datetime="2026-10-02">October 2, 2026</time> &middot; 3 min read</p>
+  <h1 class="h2 title">Why I built GroundApp: between coached sessions</h1>
+  <p class="byline">By <a href="/#story">Collin Chartier</a>, breathwork and mental performance coach &middot; Updated <time datetime="2026-11-14">November 14, 2026</time> &middot; 2 min read</p>
   <div class="prose">
-<p>I never planned to build an app. I'm a breathwork coach. I coach people through breathing: in person, one-on-one, in groups. I watch their shoulders drop, their jaw unclench, their eyes soften after three minutes of controlled breathing. That moment when someone shifts out of fight-or-flight and into calm is the most rewarding thing I do.</p>
-<p>But I kept running into the same problem.</p>
+<p>I'm a breathwork coach, and I built GroundApp. The question behind it was simple: what could someone return to between our sessions?</p>
 <h2>The gap between sessions</h2>
-<p>My clients would leave a session feeling incredible: regulated, grounded, present in their body. Then they'd go back to their inbox, their commute, their 14-hour workday. By the time our next session came around, they were right back where they started. Chest tight, breathing shallow, nervous system on fire.</p>
-<p>They'd try breathwork apps. Generic ones with countdown timers and ambient sounds. But none of them answered the question my clients actually needed answered: <strong>"I feel anxious right now. What should I breathe?"</strong></p>
-<p>That's the question that started GroundApp.</p>
-<h2>The problem with most breathwork apps</h2>
-<p>I tried a lot of breathwork apps. Most of them did the same thing: gave you a menu of techniques and let you pick one.</p>
-<p>But here's the thing about someone in fight-or-flight: <strong>they can't choose well.</strong> Under acute stress, the part of your brain that handles careful planning and decisions works less well. Asking someone in a stress response to scroll a menu of 30 breathing techniques and pick the right one is like asking someone who's drowning to choose which life raft to swim to.</p>
-<p>What they need is for someone to say: <em>"I hear you. Here's exactly what to do right now. Follow my voice."</em></p>
-<p>That's what I do in person. That's what I wanted an app to do.</p>
-<h2>Building the app I wished existed</h2>
-<p>GroundApp starts the way a good coaching session starts: with a check-in. You open the app and tap how you feel on a feelings wheel. Anxious. Overwhelmed. Flat. Wired. There are 102 feelings in there, from broad to specific. Add how intense it is and how much energy you have, and the app matches you to a breathing session: calming, energizing, focusing or balancing. The matching is simple and rule-based. No guesswork in the moment.</p>
-<p>Then it guides you through it. And if you don't want to think at all, there's Instant Calm: one tap, no voice, and it works offline.</p>
-<p>No decision fatigue. Just: tell me what's happening, and breathe.</p>
-<h2>Why the voice matters</h2>
-<p>In my coaching, I noticed that how someone is guided matters as much as the technique. A calm, steady voice that tells you exactly when to breathe in and when to let go gives your nervous system something to follow.</p>
-<p>That's why the guided sessions in GroundApp are narrated in my voice. To be straight with you about how: the narration is an AI model of my voice, trained on my own recordings. And if you'd rather not hear a voice at all, there's a haptic-only mode that lets you breathe with vibrations.</p>
+<p>A coached session has a person in the room. There is time to ask a question, change the pace or decide not to practise. An app is different. I wanted a clear starting point that someone could use on an ordinary day, without pretending a phone is a coach or a clinician.</p>
+<p>That became a check-in with Bodie.</p>
+<h2>A place to start</h2>
+<p>In GroundApp you name how you feel, rate its intensity and your energy, and see a suggested session. You can also choose a technique and read its practice guide.</p>
+<p>The suggestion is guidance based on your answers, not a diagnosis or a reading of your nervous system. A check-in does not establish what is medically appropriate for you.</p>
+<p>The app's matching and optional AI plan features should not be confused. Local matching uses app rules; optional AI plans involve a separate service and data flow described in the <a href="/privacy">privacy policy</a>. Neither is a human assessment.</p>
+<h2>Why the voice matters to me</h2>
+<p>I wanted the guidance to sound familiar. The guided narration uses an AI model of my voice, trained on my recordings. I want that disclosed plainly, not hidden behind the words "my voice."</p>
+<p>The app also has haptic guidance. The point is a usable practice, not a requirement to listen to me.</p>
 <h2>What the name means</h2>
-<p>The name isn't an accident. From the mind into the body, this is where we feel grounded.</p>
-<p>Every technique in the app is a tool for the same thing: getting out of your head and into your body. When your nervous system is dysregulated (anxious, scattered, burned out, overstimulated) you're living in your mind. Ruminating, catastrophizing, replaying. Breathwork is the bridge back to your body.</p>
-<p>GroundApp is that bridge in your pocket.</p>
-<h2>Who this is for</h2>
-<p>I built GroundApp for the people I coach:</p>
-<ul>
-<li><strong>The burned-out professional</strong> who hasn't taken a full breath all day</li>
-<li><strong>The athlete</strong> who needs to dial in their nervous system before competition</li>
-<li><strong>The new parent</strong> who lies awake at 2am with a racing mind</li>
-<li><strong>The person in therapy</strong> who needs a tool between sessions</li>
-<li><strong>Anyone</strong> who has ever googled "how to stop feeling anxious right now"</li>
-</ul>
-<p>If you've ever needed someone to tell you exactly how to breathe in a moment of stress, GroundApp is what I built for you.</p>
-<h2>Try it</h2>
-<p>GroundApp is on the App Store for iPhone, with an Apple Watch app included. It's free to download, and four techniques are free forever: Box Breathing, Deep Slow Breathing, 2-to-1 Breathing and Triangle Breathing, along with the breathing timer, streaks and basic stats. GroundApp Premium is $39.99 a year in the US and adds all techniques and guided sessions in Collin's voice.</p>
-<p>From the mind into the body.</p>
-<p>Let's get grounded.</p>
+<p>From the mind into the body, this is where we feel grounded. That is how I describe the practice, not a promised result.</p>
+<p>My own history explains why I care about it. It does not prove an outcome for anyone else. You can read that history on <a href="https://collinchartier.com/">my personal site</a>.</p>
+<h2>What you can try</h2>
+<p>GroundApp is free to download on iPhone, with an Apple Watch app, a free tier and optional Premium. The app shows current inclusions, local pricing and any eligible trial before you subscribe.</p>
+<p>If you choose to practise, sit comfortably on dry land. Keep breathing easy. Shorten a count, skip a hold or stop whenever you want. Stop if you feel dizzy, tingly, breathless or unwell. If you are pregnant, have a heart or lung condition, or a history of seizures or fainting, check with your doctor before a new breathing practice.</p>
+<p>This is coaching and education, not medical or mental health treatment. If you're dealing with panic attacks, trauma, or thoughts of hurting yourself, start with a licensed professional. In the US you can call or text 988 any time.</p>
+<p><a href="/#check-in">Explore GroundApp</a>, or read <a href="/blog/science-of-breathwork/">what the research does and does not show</a>.</p>
   </div>
   <p class="note">This is general education, not medical advice. If you have a heart or lung condition, are pregnant, or have a history of seizures or fainting, check with your doctor before trying breath holds or fast breathing. Stop if you feel dizzy or unwell.</p>
 </article>
 <section class="box" aria-labelledby="appTitle">
   <h2 id="appTitle">Breathe with Collin, anywhere</h2>
-  <p>GroundApp is a breathwork app for iPhone and Apple Watch with more than 40 techniques, guided sessions in Collin's voice, and a check-in that matches how you feel to a breath. Free to download, with four techniques free forever. GroundApp Premium is $39.99 a year in the US.</p>
+  <p>GroundApp offers check-ins with Bodie and guided breathing on iPhone and Apple Watch. Free to download, with a free tier and optional Premium. Current inclusions, local price and any trial eligibility are shown in the app before purchase. Research discussed here does not establish results from the app.</p>
   <a class="btn btn-gold" href="https://apps.apple.com/app/apple-store/id6760352779?pt=128638571&amp;mt=8&amp;ct=site-blog-cta" data-ct="blog-cta"><svg aria-hidden="true"><use href="#i-apple"/></svg>Download on the App Store</a>
 </section>
 
@@ -242,9 +226,9 @@
 <nav class="more" aria-labelledby="moreTitle">
   <h2 id="moreTitle">More from the blog</h2>
   <ul class="post-list">
-    <li><a class="post-card" href="/blog/nervous-system-regulation-explained/"><h3>Nervous system regulation: the skill nobody taught you</h3><p>What your nervous system is actually doing, what it costs when it gets stuck in stress mode, and why your breath is the most direct way to shift it.</p></a></li>
-    <li><a class="post-card" href="/blog/science-of-breathwork/"><h3>The science of breathwork: what actually happens when you control your breathing</h3><p>The vagus nerve, CO2, heart rate variability and your diaphragm. A plain-language look at what changes in your body when you change how you breathe.</p></a></li>
-    <li><a class="post-card" href="/blog/future-of-breathwork-tech/"><h3>Where breathwork tech is going (and what it should never replace)</h3><p>Collin Chartier&#x27;s take on where breathwork apps are headed, what GroundApp does today, and the human part no app should try to replace.</p></a></li>
+    <li><a class="post-card" href="/blog/nervous-system-regulation-explained/"><h3>Nervous system regulation, without the promises</h3><p>A practical way to talk about stress and breathing without diagnosing yourself, promising a reset or confusing coaching with treatment.</p></a></li>
+    <li><a class="post-card" href="/blog/science-of-breathwork/"><h3>The science of breathwork, and its limits</h3><p>What approved breathing studies report, why an HRV change is not a diagnosis, and why research on a practice is not proof of an app&#x27;s results.</p></a></li>
+    <li><a class="post-card" href="/blog/future-of-breathwork-tech/"><h3>Where breathwork tech is going (and what it should never replace)</h3><p>What GroundApp does today, what Collin hopes future tools may offer, and why privacy and human care stay separate from a product roadmap.</p></a></li>
   </ul>
 </nav>
 </main>
@@ -295,6 +279,11 @@
       return;
     }
     errEl.textContent = '';
+    if (window.GroundPreview && window.GroundPreview.active()) {
+      okEl.textContent = 'Private preview. Nothing was sent and no subscription was created.';
+      okEl.hidden = false;
+      return;
+    }
     btn.disabled = true;
     btn.textContent = 'Joining...';
     var ctrl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
@@ -321,7 +310,7 @@
 })();
 </script>
 
-<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "03e507bb97d74e78bc8de83dc6b261ec"}'></script>
+<script src="/js/site-analytics-v1.js" defer></script>
 <script src="/js/app-links-v3.js" defer></script>
 <script src="/js/site-menu-v1.js" defer></script>
 </body>

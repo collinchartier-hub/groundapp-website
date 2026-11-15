@@ -14,32 +14,31 @@ const fmtT = (s) => { s = Math.max(0, s); const m = Math.floor(s / 60), r = s - 
 
 // ---------------------------------------------------------------- profile (this browser only)
 // The Hall of Breath runs on the Claude artifact database. Where that is missing (groundapp.live), records stay on this device.
-const HAS_HALL = !!(window.claude && window.claude.use);
-const KEY = "bodie-run-v3";
+const HAS_HALL = !window.GroundPreview?.active() && !!(window.claude && window.claude.use);
+const KEY = "bodie-controls-v1";
 const DEF = () => ({
   leaves: 0, unlocked: 1, wins: 0, best: {}, bestTime: {}, last: {}, stars: {},
   up: { lungs: 0, spring: 0, magnet: 0, aura: 0, sigh: 0, charge: 0 }, owned: ["classic"], skin: "classic", acc: [],
-  sound: true, voice: true, glow: null, motion: null, // motion null: follow the device's reduced-motion setting
-  deep: { static: { best: null, last: null, hist: [] }, dash: { best: null, last: null, hist: [] } },
+  sound: false, voice: false, glow: null, motion: null, // motion null: follow the device's reduced-motion setting
   surf: {}, daily: { date: "", best: 0 },
 });
 function loadProfile() {
   try {
-    const raw = localStorage.getItem(KEY) || localStorage.getItem("bodie-run-v2");
+    const raw = localStorage.getItem(KEY);
     const p = JSON.parse(raw);
     if (p && p.up) {
-      const d = DEF(), pd = p.deep || {};
+      const d = DEF();
       return { ...d, ...p, up: { ...d.up, ...p.up }, best: { ...(p.best || {}) }, bestTime: { ...(p.bestTime || {}) }, last: { ...(p.last || {}) }, stars: { ...(p.stars || {}) },
         owned: p.owned || d.owned, acc: p.acc || [], surf: { ...(p.surf || {}) }, daily: { ...d.daily, ...(p.daily || {}) },
-        deep: { static: { ...d.deep.static, ...(pd.static || {}) }, dash: { ...d.deep.dash, ...(pd.dash || {}) } } };
+      };
     }
   } catch (e) {}
   return DEF();
 }
 let profile = loadProfile();
 function save() { try { localStorage.setItem(KEY, JSON.stringify(profile)); } catch (e) {} }
-function loadGhost(k) { try { const g = JSON.parse(localStorage.getItem("bodie-ghost-" + k)); return g && g.xs ? g : null; } catch (e) { return null; } }
-function saveGhost(k, g) { try { localStorage.setItem("bodie-ghost-" + k, JSON.stringify(g)); } catch (e) {} }
+function loadGhost(k) { try { const g = JSON.parse(localStorage.getItem("bodie-controls-ghost-" + k)); return g && g.xs ? g : null; } catch (e) { return null; } }
+function saveGhost(k, g) { try { localStorage.setItem("bodie-controls-ghost-" + k, JSON.stringify(g)); } catch (e) {} }
 const totalStars = () => Object.values(profile.stars).reduce((a, s) => a + (s || []).filter(Boolean).length, 0);
 
 const SKINS = {
@@ -50,37 +49,37 @@ const SKINS = {
   moon: { name: "Moonstone", desc: "Pale and glowing. Needs 9 stars.", body: "#dcd6cf", cheek: "#c4935a", cost: 300, stars: 9 },
 };
 const ACCS = {
-  sprout: { name: "Bodhi Sprout", desc: "A heart-shaped bodhi leaf on top.", cost: 80 },
+  sprout: { name: "Bodie Sprout", desc: "A heart-shaped bodhi leaf on top.", cost: 80 },
   scarf: { name: "Amber Scarf", desc: "Flaps when Bodie runs.", cost: 60 },
   halo: { name: "Ring Halo", desc: "Concentric rings of light. Needs 5 stars.", cost: 250, stars: 5 },
 };
 
-// ---------------------------------------------------------------- courses: each one teaches a breathwork technique
+// ---------------------------------------------------------------- courses: finger-control courses, never physiological instruction
 const COURSES = [
-  { key: "hollow", name: "Root Hollow", tech: "Box Breathing", len: 420, kip: .94, seed: 1101,
-    f: { pits: .26, rocks: .5, clouds: .36, lake: 0, storms: 0, pads: 0, vents: 0, bubbles: .04 }, refill: 1.7, bpm: 150, key: 0,
+  { key: "hollow", name: "Root Hollow", tech: "Shield control", len: 420, kip: .94, seed: 1101,
+    f: { pits: .26, rocks: .5, clouds: .36, lake: 0, storms: 0, pads: 0, vents: 0, bubbles: .04 }, refill: 1.7, bpm: 150, musicKey: 0,
     sky: ["#0d0806", "#22150e", "#4a2b1b"], fog: 0x2b1b13, hills: [0x3a2618, 0x2c1d14, 0x22170f], ground: 0x3a2a1e, top: 0x4a3626, trees: "round",
-    tip: "Tap to jump rocks and gaps. When the game says HOLD YOUR BREATH, press and keep holding: Bodie walks right through the Worry Cloud. Breathe that smog in and he POPS. Hold 4 seconds for a Box Breath.",
-    ch: [{ text: "Beat Kip to the Great Tree", test: (P, r) => r.won }, { text: "Hold your breath through 5 Worry Clouds", test: (P) => P.calm >= 5 }, { text: "Win without a single POP", test: (P, r) => r.won && P.pops === 0 }] },
-  { key: "lake", name: "Still Lake", tech: "Breath-hold dives", len: 500, kip: .97, seed: 2202,
-    f: { pits: .2, rocks: .36, clouds: .38, lake: .34, storms: 0, pads: 0, vents: 0, bubbles: .08 }, refill: 1.6, bpm: 156, key: 2,
+    tip: "Tap to jump. Keep the button pressed for a screen shield, then release to recharge. Keep breathing normally.",
+    ch: [{ text: "Beat Kip to the Great Tree", test: (P, r) => r.won }, { text: "Use the screen shield through 5 clouds", test: (P) => P.calm >= 5 }, { text: "Win without a single POP", test: (P, r) => r.won && P.pops === 0 }] },
+  { key: "lake", name: "Still Lake", tech: "Obstacle control", len: 500, kip: .97, seed: 2202,
+    f: { pits: .2, rocks: .36, clouds: .38, lake: 0, storms: 0, pads: 0, vents: 0, bubbles: .08 }, refill: 1.6, bpm: 156, musicKey: 2,
     sky: ["#090a0a", "#18201e", "#3b3a30"], fog: 0x1e2422, hills: [0x2b2c27, 0x23251f, 0x1b1d19], ground: 0x35281d, top: 0x463525, trees: "round",
-    tip: "On the lake, holding your breath makes Bodie dive. Stay under to slip below the logs, and grab the seeds down there. A long dive is also a Box Breath.",
-    ch: [{ text: "Beat Kip to the Great Tree", test: (P, r) => r.won }, { text: "Dive under 6 logs without a bonk", test: (P) => P.dives >= 6 }, { text: "Land 2 Box Breaths", test: (P) => P.boxes >= 2 }] },
-  { key: "swamp", name: "Sigh Swamp", tech: "Physiological Sigh", len: 540, kip: .99, seed: 3303, sigh: true,
-    f: { pits: .2, rocks: .34, clouds: .3, lake: .1, storms: .2, pads: 0, vents: 0, bubbles: .06 }, refill: 1.6, bpm: 160, key: 5,
+    tip: "Tap to jump obstacles. The shield is a finger control, not a breathing cue.",
+    ch: [{ text: "Beat Kip to the Great Tree", test: (P, r) => r.won }, { text: "Pass 6 clouds with the shield", test: (P) => P.calm >= 6 }, { text: "Use 2 shield releases", test: (P) => P.boxes >= 2 }] },
+  { key: "swamp", name: "Sigh Swamp", tech: "Double-tap gust", len: 540, kip: .99, seed: 3303, sigh: true,
+    f: { pits: .2, rocks: .34, clouds: .3, lake: 0, storms: .2, pads: 0, vents: 0, bubbles: .06 }, refill: 1.6, bpm: 160, musicKey: 5,
     sky: ["#080907", "#1a1d14", "#3a3524"], fog: 0x1f2117, hills: [0x2c2c20, 0x23241a, 0x1b1c14], ground: 0x342a1c, top: 0x3f3a24, trees: "round",
-    tip: "Storm clouds zap you even if you hold your breath. Double tap fast to do a physiological sigh: two quick breaths in, one long breath out. The big exhale blows the storm away. It recharges in a few seconds.",
-    ch: [{ text: "Beat Kip to the Great Tree", test: (P, r) => r.won }, { text: "Sigh away 4 storms", test: (P) => P.storms >= 4 }, { text: "Grab 60 Breath Seeds", test: (P) => P.seeds + P.gold * 5 >= 60 }] },
-  { key: "peaks", name: "Power Peaks", tech: "Power Breaths", len: 600, kip: 1.01, seed: 4404,
-    f: { pits: .26, rocks: .34, clouds: .32, lake: 0, storms: 0, pads: .2, vents: 0, bubbles: .14 }, refill: 1.1, bpm: 166, key: -3, snow: true,
+    tip: "Double tap for a gust that clears nearby storm clouds. No breathing action is involved.",
+    ch: [{ text: "Beat Kip to the Great Tree", test: (P, r) => r.won }, { text: "Clear 4 storms with a gust", test: (P) => P.storms >= 4 }, { text: "Grab 60 Trail Seeds", test: (P) => P.seeds + P.gold * 5 >= 60 }] },
+  { key: "peaks", name: "Power Peaks", tech: "Power pads", len: 600, kip: 1.01, seed: 4404,
+    f: { pits: .26, rocks: .34, clouds: .32, lake: 0, storms: 0, pads: .2, vents: 0, bubbles: .14 }, refill: 1.1, bpm: 166, musicKey: -3, snow: true,
     sky: ["#07060a", "#1c1418", "#47302a"], fog: 0x24191b, hills: [0x3a2c28, 0x2e2320, 0x241b19], ground: 0x3e2e24, top: 0x52402f, trees: "pine",
-    tip: "Thin air up here. On a glowing power pad, tap tap tap: every tap is a power breath that charges your lungs past 100%. Then hold through the thin air all the way. Air bubbles top you up.",
-    ch: [{ text: "Beat Kip to the Great Tree", test: (P, r) => r.won }, { text: "Charge your lungs to 150%", test: (P) => P.maxCharge >= .5 }, { text: "Cross thin air without a single cough", test: (P) => P.thinCleared >= 1 && P.thinPops === 0 }] },
+    tip: "On a glowing pad, tap to charge the screen shield, then keep the button pressed through the windy zone. Release when the shield meter is low.",
+    ch: [{ text: "Beat Kip to the Great Tree", test: (P, r) => r.won }, { text: "Charge the screen shield to 150%", test: (P) => P.maxCharge >= .5 }, { text: "Cross a windy zone without a shield bump", test: (P) => P.thinCleared >= 1 && P.thinPops === 0 }] },
   { key: "temple", name: "Starfall Temple", tech: "Glide control", len: 640, kip: 1.04, seed: 5505, sigh: true,
-    f: { pits: .22, rocks: .32, clouds: .3, lake: .1, storms: .1, pads: .08, vents: .16, bubbles: .08 }, refill: 1.5, bpm: 172, key: 7,
+    f: { pits: .22, rocks: .32, clouds: .3, lake: 0, storms: .1, pads: .08, vents: .16, bubbles: .08 }, refill: 1.5, bpm: 172, musicKey: 7,
     sky: ["#08060c", "#1d1422", "#4a2d33"], fog: 0x221824, hills: [0x33263a, 0x2a1f2f, 0x211824], ground: 0x3a2c2a, top: 0x4c3a34, trees: "pine",
-    tip: "Everything you've learned, plus updrafts. Step on a vent to launch, then hold your breath to glide down through the rhythm rings. Every ring in a row is worth more. Kip is at full caffeine.",
+    tip: "Ride the updraft and press the button to glide through rings. Your own breathing stays normal.",
     ch: [{ text: "Beat Kip to the Great Tree", test: (P, r) => r.won }, { text: "Fly through 10 rhythm rings", test: (P) => P.rings >= 10 }, { text: "Win by 20m or more", test: (P, r) => r.won && r.margin >= 20 }] },
 ];
 COURSES.forEach((c, i) => (c.idx = i));
@@ -89,12 +88,12 @@ function hashStr(s) { let h = 2166136261; for (const ch of s) { h ^= ch.charCode
 function mulberry(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 function dailyCourse() {
   const k = dayKey(), r = mulberry(hashStr(k)), th = COURSES[Math.floor(r() * COURSES.length)];
-  const f = { pits: .18 + r() * .1, rocks: .3 + r() * .15, clouds: .26 + r() * .14, lake: r() < .5 ? .12 : 0, storms: r() < .55 ? .14 : 0, pads: r() < .45 ? .1 : 0, vents: r() < .5 ? .1 : 0, bubbles: .08 };
+  const f = { pits: .18 + r() * .1, rocks: .3 + r() * .15, clouds: .26 + r() * .14, lake: 0, storms: r() < .55 ? .14 : 0, pads: r() < .45 ? .1 : 0, vents: r() < .5 ? .1 : 0, bubbles: .08 };
   return { ...th, key: "daily-" + k, idx: -1, daily: true, name: "Daily Dash", len: 480, kip: .99, seed: hashStr(k), f, sigh: f.storms > 0, refill: 1.5, tech: "A bit of everything",
-    tip: "Today's course mixes hazards from every course, and it's the same course for everyone today." + (HAS_HALL ? " Check the Hall of Breath to see who's on top." : "") + " Double tap to sigh storms away, and tap fast on power pads.", ch: [] };
+    tip: "Today's course mixes hazards from every course, and it's the same course for everyone today." + (HAS_HALL ? " Check the Hall of Breath to see who's on top." : "") + " Double tap to clear storms, and tap on power pads.", ch: [] };
 }
-const SAGE_LINES = ["Slow is smooth. Smooth is fast.", "Your breath is the one thing Kip can't buy.", "Breathe out longer than you breathe in.", "Calm lungs, fast feet.", "The ring you're in is the only ring."];
-const KIP_LINES = ["Breathing is for slowpokes!", "Espresso number seven!", "Fast fast fast fast!", "Who needs lungs?!", "Can't stop! Won't stop!", "CAW CAW CAW!", "Decaf is a myth!"];
+const SAGE_LINES = ["One button at a time.", "This is finger-control play.", "Keep breathing normally.", "Pause whenever you want.", "Follow the trail."];
+const KIP_LINES = ["Catch me on the trail!", "Espresso number seven!", "Fast fast fast fast!", "Who needs decaf?!", "Can't stop! Won't stop!", "CAW CAW CAW!", "Decaf is a myth!"];
 
 // ---------------------------------------------------------------- sound: chiptune music, sfx, voice
 const SILENT_WAV = "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABAAZGF0YQAAAAA=";
@@ -238,10 +237,10 @@ const Sound = (() => {
 })();
 // The cast. Each one has a voice: the browser's own speech with a pitch, speed and preferred voice per character.
 const CAST = {
-  bodie: { name: "Bodie", role: "Hero", line: "Hi, I'm Bodie! When I hold my breath, my belly fills up and glows gold. Want to breathe with me?", fact: "Runs on belly breaths. Has never skipped an exhale." },
-  kip: { name: "Kip the Caffeine Crow", role: "Rival", line: "CAW! Kip's the name, speed's the game! Breathing? Never heard of it. Bet you can't catch me!", fact: "Favorite drink: espresso. Second favorite: also espresso." },
+  bodie: { name: "Bodie", role: "Hero", line: "Hi, I'm Bodie! Tap to jump and press for my screen shield. Keep breathing normally while we play.", fact: "A finger-control game, not a breathing test." },
+  kip: { name: "Kip the Caffeine Crow", role: "Rival", line: "CAW! Kip's the name, speed's the game! A shortcut? Never heard of it. Bet you can't catch me!", fact: "Favorite drink: espresso. Second favorite: also espresso." },
   sage: { name: "Sage the Owl", role: "Coach", line: "Hello, friend. I'm Sage. I live in the Great Tree at the end of every course. Slow is smooth, and smooth is fast.", fact: "Has never rushed. Not once. Not even for dessert." },
-  ember: { name: "Ember the Fox", role: "Shopkeeper", line: "Ember's the name, deals are my game! Bring me Breath Seeds and I'll swap them for Gold Leaves. Fancy a new look?", fact: "Accepts seeds, leaves and compliments." },
+  ember: { name: "Ember the Fox", role: "Shopkeeper", line: "Ember's the name, deals are my game! Bring me Trail Seeds and I'll swap them for Gold Leaves. Fancy a new look?", fact: "Accepts seeds, leaves and compliments." },
 };
 const DEEP_VOICE = /Daniel|Arthur|Aaron|Alex|Fred|Rishi|Oliver|Google UK English Male|\bMale\b/i;
 const VOICE_STYLE = {
@@ -320,7 +319,7 @@ const TEX = {
 TEX.roots.wrapS = THREE.RepeatWrapping;
 function skyTexture(c) { return canvasTex(256, (g, s) => { const gr = g.createLinearGradient(0, 0, 0, s); gr.addColorStop(0, c[0]); gr.addColorStop(.55, c[1]); gr.addColorStop(1, c[2]); g.fillStyle = gr; g.fillRect(0, 0, s, s); }); }
 function textSprite(text, color = "#E8DDD0", size = .9) {
-  const c = document.createElement("canvas"), g = c.getContext("2d"), fs = 56, font = `700 ${fs}px "Source Code Pro", ui-monospace, monospace`;
+  const c = document.createElement("canvas"), g = c.getContext("2d"), fs = 56, font = `600 ${fs}px "Ground Font Type", sans-serif`;
   g.font = font; const w = Math.ceil(g.measureText(text).width) + 44; c.width = w; c.height = fs + 32;
   g.font = font; g.fillStyle = "rgba(26,17,14,.78)"; if (g.roundRect) { g.beginPath(); g.roundRect(0, 0, w, c.height, 22); g.fill(); } else g.fillRect(0, 0, w, c.height);
   g.fillStyle = color; g.textBaseline = "middle"; g.fillText(text, 22, c.height / 2 + 2);
@@ -942,7 +941,7 @@ function buildRaceHUD(n, withKip, withGhost) {
   hudEl.innerHTML = ""; hudParts = [];
   for (let i = 0; i < n; i++) {
     const d = document.createElement("div"); d.className = "hp" + (i === 1 ? " right" : "");
-    d.innerHTML = `${lungsHTML()}<div class="hp-stats"><div class="hp-label">${n > 1 ? "PLAYER " + (i + 1) : "BREATH"}</div><div class="hp-score">0</div><div class="hp-sub"><span class="s-seeds">0</span> SEEDS <span class="s-extra"></span></div></div>`;
+    d.innerHTML = `${lungsHTML()}<div class="hp-stats"><div class="hp-label">${n > 1 ? "PLAYER " + (i + 1) : "SHIELD"}</div><div class="hp-score">0</div><div class="hp-sub"><span class="s-seeds">0</span> SEEDS <span class="s-extra"></span></div></div>`;
     hudEl.appendChild(d);
     hudParts.push({ fill: d.querySelector(".l-fill"), ring: d.querySelector("circle"), lungs: d.querySelector(".lungs"), score: d.querySelector(".hp-score"), seeds: d.querySelector(".s-seeds"), extra: d.querySelector(".s-extra"), last: {} });
   }
@@ -967,8 +966,8 @@ function updateRaceHUD() {
     setIf(h, "se", P.seeds + P.gold * 5, (v) => (h.seeds.textContent = String(v)));
     const mult = comboMult(P), bits = [];
     if (P.flow > 0) bits.push(`<span class="hot">FLOW</span>`); else if (mult > 1) bits.push(`<span class="hot">x${mult}</span>`);
-    if (P.charge > 0) bits.push(`<span class="hot">LUNGS ${Math.round((1 + P.charge) * 100)}%</span>`);
-    if (G.co.sigh) bits.push(P.sigh >= 1 ? `<span class="ready">SIGH READY</span>` : `SIGH ${Math.round(P.sigh * 100)}%`);
+    if (P.charge > 0) bits.push(`<span class="hot">SHIELD ${Math.round((1 + P.charge) * 100)}%</span>`);
+    if (G.co.sigh) bits.push(P.sigh >= 1 ? `<span class="ready">GUST READY</span>` : `GUST ${Math.round(P.sigh * 100)}%`);
     setIf(h, "ex", bits.join(" · "), (v) => (h.extra.innerHTML = v ? "· " + v : ""));
   });
   const pct = (x) => (clamp01(x / G.finish) * 100).toFixed(1) + "%";
@@ -1054,7 +1053,7 @@ function genWorld(toX) {
       const gap = 2.2 + R() * (1.1 + Math.max(0, co.idx) * .25); seedArc(x - .6, x + gap + .6, 1.6, 2.1);
       G.genX += gap; const land = 8 + R() * 5; addSeg(G.genX, G.genX + land, false); G.genX += land;
     } else if (r < f.lake + f.pits + f.pads && x < G.finish - 70) {
-      // power pad, then a long stretch of thin air you must hold through
+      // power pad, then a long stretch of windy zone you must hold through
       const padLen = 7, thinLen = (co.key === "peaks" ? 33 : 26) + R() * 5, tail = 6, len = 3 + padLen + 2 + thinLen + tail;
       addSeg(x, x + len, false);
       const p0 = x + 3, t0 = p0 + padLen + 2;
@@ -1097,22 +1096,22 @@ function blowout(P) {
   P.gasp = 1.1; P.holdT = 0; P.pffts++; P.red = 0; hurt(P, .55, 1.1); P.dive = 0; P.charge = 0; P.cap = P.baseCap; P.breath = Math.min(P.breath, P.cap);
   Sound.play("pfft"); Sound.danger(0);
   emit({ x: P.x + .6, y: bodyY(P) + .6, z: P.z, n: 26, speed: 6, vx: 4, color: 0xe8ddd0, size: .35, grav: 0, life: .7, grow: 2 });
-  event("PFFFT!", "You held too long. Let go when the lungs flash red", "warn", 1.4);
-  if (voiceFor(P)) Voice.say("Too long! Breathe!", true);
+  event("PFFFT!", "Shield empty. Release the button to recharge", "warn", 1.4);
+  if (voiceFor(P)) Voice.say("Release the button to recharge.", true);
 }
 function pop(P, zap) {
   P.inflate = 0; P.smogT = 0; P.dizzy = .9; P.pops++; hurt(P, .5, 1.3); P.breath = Math.max(0, P.breath - 1);
   Sound.play(zap ? "zap" : "pop");
   emit({ x: P.x, y: bodyY(P), z: P.z, n: 30, speed: 5, color: zap ? 0x6a5a70 : 0x8f8580, size: .5, grav: -.5, life: 1, grow: 1.5 });
   emit({ x: P.x, y: bodyY(P) + .4, z: P.z, n: 12, speed: 4, color: 0xf3d7a8, size: .2, grav: 5, life: .6, add: true });
-  if (zap) { event("ZAP!", "Storms need a sigh: double tap before you reach them", "warn", 1.5); if (voiceFor(P)) Voice.say("Zap! Double tap to sigh!", true); }
-  else { event("POP!", "You breathed in the smog. Hold your breath next time", "warn", 1.5); if (voiceFor(P)) Voice.say("Pop! Hold your breath!", true); }
+  if (zap) { event("ZAP!", "Double tap for a gust before a storm", "warn", 1.5); if (voiceFor(P)) Voice.say("Double tap for a gust!", true); }
+  else { event("POP!", "Use the screen shield through a cloud", "warn", 1.5); if (voiceFor(P)) Voice.say("Press the button for your shield!", true); }
   G.shake = .35;
 }
 function doSigh(P) {
   P.sigh = 0; P.sighs++; P.sighT = 1.3; Sound.play("sigh");
   G.pendingGust = { P, at: G.t + .35 };
-  event("SIGH!", "Two breaths in, one long breath out", "good", 1.1);
+  event("GUST!", "Two taps create a screen gust", "good", 1.1);
 }
 function gust(P) {
   let n = 0;
@@ -1125,7 +1124,7 @@ function gust(P) {
   }
   emit({ x: P.x + 1, y: bodyY(P) + .5, z: P.z, n: 30, speed: 3, vx: 9, color: 0xe8ddd0, size: .25, grav: 0, life: .8, add: true });
   P.boost = Math.max(P.boost, .8); P.slow = 0; P.slowF = 1;
-  if (n) floater(`SIGHED AWAY ${n}`, P.x + 2, bodyY(P) + 1.4, P.z, "#F3D7A8");
+  if (n) floater(`CLEARED ${n}`, P.x + 2, bodyY(P) + 1.4, P.z, "#F3D7A8");
 }
 function chargeTap(P) {
   const step = profile.up.charge ? .08 : .06;
@@ -1151,8 +1150,8 @@ function updatePlayer(P, dt) {
   if (holding && !P.wasHolding) Sound.play("inhale");
   if (!holding && P.wasHolding) {
     if (P.gasp <= 0) {
-      if (P.holdT >= 4) { P.boxes++; P.points += 100; P.flow = 3.2; Sound.play("box"); Sound.play("flow"); event("BOX BREATH!", "Flow: +100 and faster legs", "good", 1.4); if (voiceFor(P)) Voice.say("Box breath! Flow!", true); emit({ x: P.x, y: bodyY(P), z: P.z, n: 30, speed: 5, color: 0xf3d7a8, size: .25, grav: 0, life: .9, add: true }); }
-      else if (P.holdT > .4 && P.breath / P.cap < .15) { P.clutch++; P.points += 50; Sound.play("clutch"); floater("CLUTCH EXHALE +50", P.x, bodyY(P) + 1.4, P.z, "#F3D7A8"); }
+      if (P.holdT >= 4) { P.boxes++; P.points += 100; P.flow = 3.2; Sound.play("box"); Sound.play("flow"); event("SHIELD READY!", "Flow: +100 and faster legs", "good", 1.4); if (voiceFor(P)) Voice.say("Shield release! Flow!", true); emit({ x: P.x, y: bodyY(P), z: P.z, n: 30, speed: 5, color: 0xf3d7a8, size: .25, grav: 0, life: .9, add: true }); }
+      else if (P.holdT > .4 && P.breath / P.cap < .15) { P.clutch++; P.points += 50; Sound.play("clutch"); floater("TIMED RELEASE +50", P.x, bodyY(P) + 1.4, P.z, "#F3D7A8"); }
       Sound.play("exhale");
       emit({ x: P.x + .5, y: bodyY(P) + .7, z: P.z, n: 8, speed: 1.6, vx: 2, color: 0xe8ddd0, size: .22, grav: -.3, life: .6, grow: 1.5 });
     }
@@ -1167,14 +1166,14 @@ function updatePlayer(P, dt) {
   P.gasp = Math.max(0, P.gasp - dt); P.flow = Math.max(0, P.flow - dt); P.dizzy = Math.max(0, P.dizzy - dt); P.boost = Math.max(0, P.boost - dt); P.sighT = Math.max(0, P.sighT - dt);
   if (co.sigh) P.sigh = Math.min(1, P.sigh + dt / (profile.up.sigh ? 2 : 3));
   if (P.smogT > 0) { P.smogT -= dt; P.inflate = Math.min(1, P.inflate + dt * 2.2); if (P.smogT <= 0) pop(P); } else P.inflate = Math.max(0, P.inflate - dt * 6);
-  // thin air: hold all the way through or keep coughing
+  // windy zone: hold all the way through or keep coughing
   if (thin) {
     if (!P.inThin) { P.inThin = true; P.thinZonePops = 0; }
-    if (!holding) { P.chokeT -= dt; if (P.chokeT <= 0) { P.chokeT = .7; P.thinPops++; P.thinZonePops++; hurt(P, .55, .6); Sound.play("cough"); emit({ x: P.x + .4, y: bodyY(P) + .5, z: P.z, n: 10, speed: 1.5, color: 0x8a8079, size: .35, grav: -.3, life: .6, grow: 1 }); if (voiceFor(P) && P.thinZonePops === 1) Voice.say("Hold your breath!", true); } }
+    if (!holding) { P.chokeT -= dt; if (P.chokeT <= 0) { P.chokeT = .7; P.thinPops++; P.thinZonePops++; hurt(P, .55, .6); Sound.play("cough"); emit({ x: P.x + .4, y: bodyY(P) + .5, z: P.z, n: 10, speed: 1.5, color: 0x8a8079, size: .35, grav: -.3, life: .6, grow: 1 }); if (voiceFor(P) && P.thinZonePops === 1) Voice.say("Press the button!", true); } }
     else { P.chokeT = .25; P.points += dt * 12; }
   } else if (P.inThin) {
     P.inThin = false;
-    if (P.thinZonePops === 0) { P.thinCleared++; P.points += 100; floater("THIN AIR CLEARED +100", P.x, bodyY(P) + 1.5, P.z, "#F3D7A8"); Sound.play("calm"); }
+    if (P.thinZonePops === 0) { P.thinCleared++; P.points += 100; floater("WINDY ZONE CLEARED +100", P.x, bodyY(P) + 1.5, P.z, "#F3D7A8"); Sound.play("calm"); }
   }
   // speed
   if (P.slow > 0) { P.slow -= dt; if (P.slow <= 0) P.slowF = 1; }
@@ -1229,8 +1228,8 @@ function updatePlayer(P, dt) {
     } else if (e.type === "rock") {
       if (!e.hit[0] && Math.abs(dx) < e.w / 2 + .35 && P.y < e.h - .05 && !P.inWater) { e.hit[0] = true; P.bonks++; hurt(P, .5, .9); P.vy = 6; P.onGround = false; G.shake = .25; Sound.play("bonk"); floater("OOF!", P.x, by + 1.3, P.z, "#E07A5A"); }
     } else if (e.type === "log") {
-      if (!e.hit[P.i] && P.inWater && Math.abs(dx) < .85 && P.dive < .45) { e.hit[P.i] = true; P.bonks++; hurt(P, .45, 1); G.shake = .25; Sound.play("bonk"); event("BONK!", "Hold your breath to dive under the logs", "warn", 1.1); }
-      if (!e.passed[P.i] && dx < -.9) { e.passed[P.i] = true; if (!e.hit[P.i] && P.inWater) { P.dives++; floater("DIVE", P.x, by + 1.2, P.z, "#8FB3AC"); } }
+      if (!e.hit[P.i] && P.inWater && Math.abs(dx) < .85 && P.dive < .45) { e.hit[P.i] = true; P.bonks++; hurt(P, .45, 1); G.shake = .25; Sound.play("bonk"); event("BONK!", "Use the button to clear the obstacle", "warn", 1.1); }
+      if (!e.passed[P.i] && dx < -.9) { e.passed[P.i] = true; if (!e.hit[P.i] && P.inWater) { P.dives++; floater("CLEAR", P.x, by + 1.2, P.z, "#8FB3AC"); } }
     } else if (e.type === "cloud" || e.type === "storm") {
       if (e.cleared || e.calmed) continue;
       if (!e.hit[P.i] && (Math.hypot(dx, e.y - by) < e.r + .55 || Math.hypot(dx, e.y - hy) < e.r + .35)) {
@@ -1241,7 +1240,7 @@ function updatePlayer(P, dt) {
         else { P.smogT = .55; Sound.play("smog"); emit({ x: P.x + .5, y: by + .5, z: P.z, n: 14, speed: 1.5, vx: -3, color: 0x7d6f67, size: .4, grav: 0, life: .5, grow: 1 }); }
       }
     } else if (e.type === "bubble") {
-      if (Math.hypot(dx, e.y - by) < 1) { e.dead[0] = true; world.remove(e.mesh); P.breath = Math.min(P.cap, P.breath + 2.5); P.gasp = 0; Sound.play("bubble"); floater("+AIR", e.x, e.y + .6, P.z, "#CFE2DE"); emit({ x: e.x, y: e.y, z: P.z, n: 10, speed: 2.5, color: 0xcfe2de, size: .18, grav: 0, life: .5, add: true }); }
+      if (Math.hypot(dx, e.y - by) < 1) { e.dead[0] = true; world.remove(e.mesh); P.breath = Math.min(P.cap, P.breath + 2.5); P.gasp = 0; Sound.play("bubble"); floater("+SHIELD", e.x, e.y + .6, P.z, "#CFE2DE"); emit({ x: e.x, y: e.y, z: P.z, n: 10, speed: 2.5, color: 0xcfe2de, size: .18, grav: 0, life: .5, add: true }); }
     } else if (e.type === "vent") {
       if (!e.hit[P.i] && P.onGround && Math.abs(dx) < .75) { e.hit[P.i] = true; P.vy = 16; P.onGround = false; Sound.play("vent"); emit({ x: e.x, y: .3, z: P.z, n: 20, speed: 2, up: 8, color: 0xf3d7a8, size: .22, grav: 2, life: .8, add: true }); floater("UPDRAFT!", P.x, by + 1.6, P.z, "#F3D7A8"); }
     } else if (e.type === "ring") {
@@ -1314,14 +1313,14 @@ function updateGhost() {
   g.fig.root.position.set(g.x, g.y, -.9);
   g.fig.pose(1 / 60, { mode: g.y > .05 ? "air" : (i >= d.xs.length - 1 ? "idle" : "run"), rate: 1 });
 }
-// What should the cue band say for this player? Priority: run-out warning, storms, thin air, clouds and logs, pads, glide, hold states.
+// What should the cue band say for this player? Priority: run-out warning, storms, windy zone, clouds and logs, pads, glide, hold states.
 function cueFor(P) {
   if (G.over || G.phase !== "race") return null;
   const holding = P.wasHolding, v = Math.max(3, P.v || BASE), frac = P.breath / P.cap;
-  if (holding && frac < .22) return { text: "LET IT OUT!", sub: "Let go now, or Bodie goes PFFFT", kind: "warn pulse", voice: "Let it out!", danger: 2 };
+  if (holding && frac < .22) return { text: "RELEASE BUTTON", sub: "Release the button to recharge the shield", kind: "warn pulse", voice: "Release the button!", danger: 2 };
   const pad = zoneAt(P.x, "pad"), thinIn = zoneAt(P.x, "thin");
-  if (pad) return { text: "TAP TAP TAP!", sub: `Power breaths · lungs at ${Math.round((1 + P.charge) * 100)}%`, kind: "good pulse", voice: "Tap tap tap!", id: "pad" + pad.x0 };
-  if (thinIn) return holding ? { text: "KEEP HOLDING", sub: `Thin air · ${Math.ceil(thinIn.x1 - P.x)}m to clear`, kind: "good", danger: frac < .4 ? 1 : 0 } : { text: "HOLD YOUR BREATH!", sub: "Thin air: press and hold all the way through", kind: "warn pulse", voice: "Hold your breath!" };
+  if (pad) return { text: "TAP TAP TAP!", sub: `Pad taps · shield at ${Math.round((1 + P.charge) * 100)}%`, kind: "good pulse", voice: "Tap tap tap!", id: "pad" + pad.x0 };
+  if (thinIn) return holding ? { text: "KEEP HOLDING", sub: `Windy zone · ${Math.ceil(thinIn.x1 - P.x)}m to clear`, kind: "good", danger: frac < .4 ? 1 : 0 } : { text: "PRESS THE BUTTON", sub: "Windy zone: press and hold all the way through", kind: "warn pulse", voice: "Press the button!" };
   let best = null;
   for (const z of G.zones) {
     const dist = z.x0 - P.x; if (dist < 0 || dist > v * 1.4) continue;
@@ -1342,19 +1341,19 @@ function cueFor(P) {
   }
   if (best) {
     const k = best.kind, inside = best.dist <= 0;
-    if (k === "storm") return P.sigh >= 1 ? { text: "DOUBLE TAP TO SIGH!", sub: "Two quick taps blow the storm away", kind: "pulse", voice: "Double tap! Sigh!", id: best.e } : { text: "SIGH RECHARGING", sub: `Storm ahead · sigh ready in ${Math.ceil((1 - P.sigh) * (profile.up.sigh ? 2 : 3))}s`, kind: "warn" };
-    if (k === "pad") return { text: "POWER PAD AHEAD", sub: "Get ready to tap as fast as you can", kind: "good", voice: "Power pad!", id: "padAhead" + best.z.x0 };
-    if (k === "thin") return holding ? { text: "HOLDING", sub: "Thin air next. Keep it held", kind: "good" } : { text: "HOLD YOUR BREATH!", sub: "Thin air ahead: hold all the way through", kind: "pulse", voice: "Hold your breath!", id: best.z };
-    if (k === "ring") return holding ? { text: "GLIDING", sub: "Keep holding to float through the rings", kind: "good" } : { text: "HOLD TO GLIDE!", sub: "Hold your breath to float through the rings", kind: "pulse", voice: "Hold to glide!", id: best.e };
+    if (k === "storm") return P.sigh >= 1 ? { text: "DOUBLE TAP FOR A GUST", sub: "Two quick taps blow the storm away", kind: "pulse", voice: "Double tap! Gust!", id: best.e } : { text: "GUST RECHARGING", sub: `Storm ahead · gust ready in ${Math.ceil((1 - P.sigh) * (profile.up.sigh ? 2 : 3))}s`, kind: "warn" };
+    if (k === "pad") return { text: "POWER PAD AHEAD", sub: "Tap the pad to charge the shield", kind: "good", voice: "Power pad!", id: "padAhead" + best.z.x0 };
+    if (k === "thin") return holding ? { text: "HOLDING", sub: "Windy zone next. Keep it held", kind: "good" } : { text: "PRESS THE BUTTON", sub: "Windy zone ahead: hold all the way through", kind: "pulse", voice: "Press the button!", id: best.z };
+    if (k === "ring") return holding ? { text: "GLIDING", sub: "Keep holding to float through the rings", kind: "good" } : { text: "HOLD TO GLIDE!", sub: "Press the button to float through the rings", kind: "pulse", voice: "Hold to glide!", id: best.e };
     const isLog = k === "log";
-    if (!holding) return { text: "HOLD YOUR BREATH!", sub: isLog ? "Press and hold to dive under the log" : "Worry Cloud ahead. Press and hold", kind: "pulse", voice: isLog ? "Dive! Hold your breath!" : "Hold your breath!", id: best.e };
+    if (!holding) return { text: "PRESS THE BUTTON", sub: isLog ? "Press for your screen shield" : "Worry Cloud ahead. Press and hold", kind: "pulse", voice: isLog ? "Press for the shield!" : "Press the button!", id: best.e };
     return { text: inside ? "KEEP HOLDING" : "HOLDING", sub: isLog ? "Stay under..." : "Right through the smog", kind: "good", danger: frac < .4 ? 1 : 0 };
   }
   if (holding) {
     const need = 4 - P.holdT;
-    if (need > 0 && P.breath > need + .25) return { text: "BOX BREATH IN " + need.toFixed(1), sub: "Keep holding for Flow, or let go to breathe", kind: "good", anim: "boxcd" };
-    if (need > 0) return { text: "BREATHE OUT", sub: "Let go to refill your lungs", kind: "", voice: "Breathe out" };
-    return { text: "LET GO FOR FLOW!", sub: "Box Breath ready", kind: "good pulse" };
+    if (need > 0 && P.breath > need + .25) return { text: "SHIELD CHARGE IN " + need.toFixed(1), sub: "Keep the button pressed, or release to recharge", kind: "good", anim: "boxcd" };
+    if (need > 0) return { text: "RELEASE BUTTON", sub: "Release to recharge the screen shield", kind: "", voice: "Release button" };
+    return { text: "LET GO FOR FLOW!", sub: "Shield release ready", kind: "good pulse" };
   }
   return null;
 }
@@ -1365,7 +1364,7 @@ function updateCues() {
       const k = cueFor(P);
       if (k) { danger = Math.max(danger, k.danger || 0); const urgent = (k.kind || "").includes("pulse") || (k.kind || "").includes("warn"); if (!c || (urgent && !(c.kind || "").includes("warn"))) c = G.players.length > 1 ? { ...k, sub: "P" + (P.i + 1) + " · " + k.sub } : k; }
       if (k && k.id && P.lastHazardCue !== k.id) { P.lastHazardCue = k.id; if (k.voice) { Sound.play("alarm"); if (voiceFor(P)) Voice.say(k.voice); } }
-      else if (k && k.voice && !k.id && k.text !== P.lastVoiceText && voiceFor(P)) { if (k.text !== "BREATHE OUT" || P.holdT > 1.5) Voice.say(k.voice); }
+      else if (k && k.voice && !k.id && k.text !== P.lastVoiceText && voiceFor(P)) { if (k.text !== "RELEASE BUTTON" || P.holdT > 1.5) Voice.say(k.voice); }
       P.lastVoiceText = k ? k.text : null;
     }
   }
@@ -1454,13 +1453,13 @@ function startRace(co) {
   buildRaceHUD(G.players.length, !!G.kip, !!G.ghost);
   state = "play"; show(null); hudEl.hidden = false;
   camPos.set(-6, 3.6, 16); camLook.set(2, 1.5, 0);
-  Sound.music(1, G.co.bpm, G.co.key);
+  Sound.music(1, G.co.bpm, G.co.musicKey);
 }
-const CD = [[0, "BREATHE IN", "beep", "Breathe in"], [1.1, "HOLD", "beep", "Hold"], [2.2, "AND...", "beep", null], [3.0, "GO!", "go", "Go!"]];
+const CD = [[0, "READY", "beep", "Ready"], [1.1, "SET", "beep", "Set"], [2.2, "AND...", "beep", null], [3.0, "GO!", "go", "Go!"]];
 function updateCountdown(dt) {
   const prev = G.cd; G.cd += dt;
   for (const [t, txt, snd, v] of CD) if (prev <= t && G.cd > t) { $("countdown").hidden = false; const b = $("countdown-t"); b.textContent = txt; b.style.animation = "none"; void b.offsetWidth; b.style.animation = ""; Sound.play(snd); if (v) Voice.say(v, true); }
-  G.players.forEach((P) => { const f = G.cd < 1.1 ? G.cd / 1.1 : (G.cd < 2.2 ? 1 : 1 - (G.cd - 2.2) / .8); P.fig.update(dt, f, false, G.cd > 1.1 && G.cd < 2.6 ? "hold" : null, f, G.cd > 1.1 && G.cd < 2.6 ? .5 : 0); P.fig.pose(dt, { mode: "idle" }); P.fig.root.position.set(P.x, P.y, P.z); P.shadow.position.set(P.x, .02, P.z); });
+  G.players.forEach((P) => { P.fig.update(dt, .4, true, null, .4, 0); P.fig.pose(dt, { mode: "idle" }); P.fig.root.position.set(P.x, P.y, P.z); P.shadow.position.set(P.x, .02, P.z); });
   if (G.cd > 3.0) { G.phase = "race"; G.t = 0; if (G.kip) { Sound.play("caw"); kipSay("Catch me if you can! CAW!"); } }
 }
 function updateRace(rawDt) {
@@ -1538,7 +1537,7 @@ function endRace(winner) {
   showCallout(null);
   const W = winner >= 0 ? G.players[winner] : null;
   if (W) { Sound.play("win"); if (duel) Voice.say(`Player ${winner + 1} wins!`, true); else Voice.say("Yes! I did it! Bodie wins!", true, "bodie"); launchConfetti(W.x, 2, W.z); event(duel ? `PLAYER ${winner + 1} WINS` : "BODIE WINS!", "First to the Great Tree", "good", 3.4); }
-  else { Sound.play("lose"); kipSay("CAW! Winner winner, coffee dinner!"); Voice.say("CAW! Winner winner, coffee dinner!", true, "kip"); event("KIP WINS", "So close. Breathe, then rematch", "warn", 3.4); }
+  else { Sound.play("lose"); kipSay("CAW! Winner winner, coffee dinner!"); Voice.say("CAW! Winner winner, coffee dinner!", true, "kip"); event("KIP WINS", "You can stop here, or choose another run", "warn", 3.4); }
   Sound.music(0, 128, 0);
   if (!duel) postScore();
 }
@@ -1550,25 +1549,25 @@ function showRaceResult() {
   if (duel) {
     t.textContent = `Player ${r.winner + 1} wins`; t.className = "win";
     $("res-line").textContent = `Player ${r.winner + 1} reached the Great Tree ${r.players[r.winner].margin}m ahead. Player ${2 - r.winner}, that's the loser seat. Rematch?`;
-    body += quote("sage", `Well raced, both of you. Player ${r.winner + 1} takes it. Now everyone, take a breath.`);
-    const rows = [["", "P1", "P2"], ["Distance", ...G.players.map((P) => Math.floor(Math.min(P.x, G.finish)))], ["Seeds", ...G.players.map((P) => P.seeds + P.gold * 5)], ["Calm passes", ...G.players.map((P) => P.calm)], ["Box Breaths", ...G.players.map((P) => P.boxes)], ["Pops", ...G.players.map((P) => P.pops)], ["Points", ...r.players.map((p) => p.score)]];
+    body += quote("sage", `Well raced, both of you. Player ${r.winner + 1} takes it. Pause whenever you want.`);
+    const rows = [["", "P1", "P2"], ["Distance", ...G.players.map((P) => Math.floor(Math.min(P.x, G.finish)))], ["Seeds", ...G.players.map((P) => P.seeds + P.gold * 5)], ["Calm passes", ...G.players.map((P) => P.calm)], ["Shield releases", ...G.players.map((P) => P.boxes)], ["Pops", ...G.players.map((P) => P.pops)], ["Points", ...r.players.map((p) => p.score)]];
     body = `<div class="duel-tally">${rows.map((row, i) => row.map((c) => `<span class="${i === 0 ? "h" : ""}">${c}</span>`).join("")).join("")}</div>`;
   } else {
     const p = r.players[0], P = G.players[0];
     t.textContent = p.won ? "Bodie wins" : "Kip wins"; t.className = p.won ? "win" : "lose";
-    const hint = P.pops ? `Bodie popped ${P.pops} time${P.pops > 1 ? "s" : ""}. Hold your breath when the cue says so.` : P.pffts ? "Bodie held too long. Let go when the lungs flash red." : P.thinPops ? "Hold all the way through thin air, and charge up on the power pad first." : "Try a Box Breath for a Flow boost.";
+    const hint = P.pops ? `Bodie popped ${P.pops} time${P.pops > 1 ? "s" : ""}. Press the button when the cue says so.` : P.pffts ? "Release when the shield meter is low." : P.thinPops ? "Hold all the way through windy zone, and charge up on the power pad first." : "Try releasing a charged shield for a Flow boost.";
     $("res-line").textContent = p.won ? `Bodie beat Kip to the Great Tree by ${p.margin}m.${p.newBest ? " New best score!" : ""}` : `Kip got there ${p.margin}m ahead. ${hint}`;
     const bench = [];
     if (p.time) bench.push(`<span>Time <b>${fmtT(p.time)}</b></span>`); else bench.push(`<span>Reached <b>${p.pct}%</b></span>`);
     if (p.prevBestTime) bench.push(`<span>Best ${p.newBestTime ? "was " : ""}<b>${fmtT(p.prevBestTime)}</b></span>`);
     if (p.prevLast) bench.push(`<span>Last <b>${p.prevLast.time ? fmtT(p.prevLast.time) : p.prevLast.pct + "%"}</b></span>`);
     if (p.newBestTime) bench.push(`<span class="badge">New best time, ghost saved</span>`);
-    body += quote(p.won ? "sage" : "kip", p.won ? (p.margin >= 20 ? "Beautifully breathed. Kip is still looking for his coffee." : "Beautifully breathed. Kip is still catching his breath.") : "Rematch, slowpoke? I'll be here. Probably on espresso number eight.");
+    body += quote(p.won ? "sage" : "kip", p.won ? (p.margin >= 20 ? "Nicely played. Kip is still looking for his coffee." : "Nicely played. Kip is still on the trail.") : "Rematch, slowpoke? I'll be here. Probably on espresso number eight.");
     body += `<div class="bench">${bench.join("")}</div>`;
     if (p.stars) body += `<ul class="chs">${p.stars.map((s) => `<li class="${s.got ? "got" : ""} ${s.fresh ? "new" : ""}"><span>★</span><span>${s.text}</span></li>`).join("")}</ul>`;
-    const rows = [["Distance", Math.floor(Math.min(P.x, G.finish)) + " pts"], ["Seeds, rings, holds and tricks", P.points + " pts"], ["Win bonus", p.winBonus + " pts"], ["<b>Points</b>", `<b>${p.score}</b>`], ["Gold Leaves: seeds + purse", `${p.tokens} + ${p.purse} = +${p.leaves}`], ["Box Breaths, calm passes, best combo", `${P.boxes}, ${P.calm}, x${P.bestCombo}`]];
-    if (co.sigh) rows.push(["Storms sighed away", String(P.storms)]);
-    if (P.maxCharge > 0 || P.thinCleared) rows.push(["Max lung charge, thin air cleared", `${Math.round((1 + P.maxCharge) * 100)}%, ${P.thinCleared}`]);
+    const rows = [["Distance", Math.floor(Math.min(P.x, G.finish)) + " pts"], ["Seeds, rings, holds and tricks", P.points + " pts"], ["Win bonus", p.winBonus + " pts"], ["<b>Points</b>", `<b>${p.score}</b>`], ["Gold Leaves: seeds + purse", `${p.tokens} + ${p.purse} = +${p.leaves}`], ["Shield releases, calm passes, best combo", `${P.boxes}, ${P.calm}, x${P.bestCombo}`]];
+    if (co.sigh) rows.push(["Storms cleared", String(P.storms)]);
+    if (P.maxCharge > 0 || P.thinCleared) rows.push(["Max shield charge, windy zones cleared", `${Math.round((1 + P.maxCharge) * 100)}%, ${P.thinCleared}`]);
     if (P.rings) rows.push(["Rhythm rings", String(P.rings)]);
     body += `<div class="tally">${rows.map(([a, b], i) => `<span class="${i === 3 ? "total" : ""}">${a}</span><span class="${i === 3 ? "total" : ""}">${b}</span>`).join("")}</div>`;
   }
@@ -1595,395 +1594,90 @@ function soloCamera(dt, x, y, aheadF, heroF, minDist, halfW, maxY = Infinity) {
   rim.position.set(camLook.x - 5, camLook.y + 5, -12); rim.target.position.copy(camLook);
   fireflies.material.uniforms.uCam.value = camLook.x;
 }
-function svgBars(entries, valueOf, label, bestIdx) {
-  if (!entries.length) return `<text x="8" y="60">No dives yet. Your history shows up here.</text>`;
-  const W = 560, H = 120, pad = 18, n = entries.length, max = Math.max(...entries.map(valueOf)) || 1, bw = Math.min(46, (W - pad * 2) / n - 8);
-  let s = `<line class="axis" x1="${pad}" y1="${H - 18}" x2="${W - pad}" y2="${H - 18}"/>`;
-  entries.forEach((e, i) => {
-    const v = valueOf(e), h = Math.max(2, (v / max) * (H - 46)), x = pad + i * ((W - pad * 2) / n) + 4, y = H - 18 - h;
-    s += `<rect class="bar${i === bestIdx ? " best" : ""}${i === n - 1 ? " now" : ""}" x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}" rx="3"/>`;
-    s += `<text class="val" x="${(x + bw / 2).toFixed(1)}" y="${(y - 4).toFixed(1)}" text-anchor="middle">${label(e)}</text>`;
-  });
-  s += `<text x="${pad}" y="${H - 4}">older</text><text x="${W - pad}" y="${H - 4}" text-anchor="end">latest</text>`;
-  return s;
-}
-function deepChart(sub) {
-  const rec = profile.deep[sub], hist = rec.hist.slice(-10);
-  const val = sub === "static" ? (e) => e.t : (e) => e.d, lab = sub === "static" ? (e) => fmtT(e.t) : (e) => e.d + "m";
-  let bi = -1, bv = -1; hist.forEach((e, i) => { if (val(e) > bv) { bv = val(e); bi = i; } });
-  return { svg: svgBars(hist, val, lab, bi), n: rec.hist.length };
-}
 
-// ---------------------------------------------------------------- The Big Hold (max breath hold)
-const DEEP_SKY = ["#030a0a", "#0a1a19", "#12302d"], FLOOR = -3.7, CEIL = 5.4, TOP_Y = 2.6;
-const DEEP_MILES = [[15, "Settling in. Soft shoulders."], [30, "Turtle pace. Relax your jaw.", "turtle"], [45, "Let your body go heavy.", "fish"], [60, "One minute! A seal would nod.", "fish"], [75, "Calm mind, soft body."], [90, "Dolphin territory.", "turtle"], [120, "Two minutes. Whale mode.", "whale"], [150, "Still and quiet.", "fish"], [180, "Three minutes. Legend.", "whale"], [240, "Four minutes. Breathe the moment you need to.", "turtle"], [300, "Five minutes. Freediver numbers.", "whale"]];
-const DEEP_COACH = ["Soft shoulders.", "Relax your jaw.", "Let your belly stay soft.", "Thoughts drift by like fish.", "Notice your heartbeat.", "Let go whenever you need to breathe.", "Stay still and soft.", "You're doing great. Stay soft."];
-let D = null;
-function makeFlag(x, text, color) {
-  const g = new THREE.Group();
-  const post = new THREE.Mesh(new THREE.CylinderGeometry(.04, .06, 4.2, 8), std(0xe8ddd0, .5, { emissive: color, emissiveIntensity: .6 })); post.position.y = FLOOR + 2.1; g.add(post);
-  const s = textSprite(text, "#" + new THREE.Color(color).getHexString(), .55); s.position.y = FLOOR + 4.6; g.add(s); g.userData.own = s.userData.own;
-  const gl = new THREE.Sprite(new THREE.SpriteMaterial({ map: TEX.glow, color, transparent: true, opacity: .7, depthWrite: false, blending: THREE.AdditiveBlending })); gl.scale.setScalar(1.4); gl.position.y = FLOOR + .2; g.add(gl); g.userData.own.push(gl.material);
-  g.position.x = x; g.position.z = -.6; return g;
-}
-const STATIC_SPEED = 2;
-function deepStart(sub) {
-  Sound.unlock();
-  if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
-  clearWorld(); menu.visible = false; mode = "deep"; state = "play"; show(null);
-  if (backdrop) backdrop.visible = false; sky.visible = false; bdKey = "";
-  scene.background = skyTexture(DEEP_SKY); scene.fog = new THREE.Fog(0x0a1a19, 10, 70);
-  fireflies.material.uniforms.uColor.value.set(.7, 1.3, 1.2); fireflies.material.uniforms.uY.value = -2;
-  const rec = profile.deep[sub];
-  D = { sub, st: "ready", t: 0, holdT: 0, holdStart: 0, x: 0, y: TOP_Y, vy: 0, anchorId: null, graceUntil: 0, endT: 0, best: rec.best, last: rec.last,
-    ents: [], genX: 14, nextMarker: 10, mile: 0, coachT: 0, coachI: 0, warned: false, newRecord: false, contractT: 50, contractTold: false,
-    bonks: 0, strokes: 0, slow: 0, pacerT: 0, fill: .3, creatures: [], result: null, perf: { acc: 0, n: 0 }, event: null, firstBonk: true };
-  const floor = new THREE.Mesh(new THREE.PlaneGeometry(4000, 60), std(0x2a2820, 1)); floor.rotation.x = -Math.PI / 2; floor.position.set(1900, FLOOR, -10); world.add(floor);
-  const surf = new THREE.Mesh(new THREE.PlaneGeometry(4000, 60), new THREE.MeshStandardMaterial({ color: 0x8fb3ac, emissive: 0x3b5a55, emissiveIntensity: .7, transparent: true, opacity: .45, side: THREE.DoubleSide, depthWrite: false })); surf.rotation.x = Math.PI / 2; surf.position.set(1900, CEIL, -10); world.add(surf);
-  D.rays = [];
-  for (let i = 0; i < 8; i++) { const r = new THREE.Mesh(GEO.plane, new THREE.MeshBasicMaterial({ map: TEX.ray, color: 0xbfe0d8, transparent: true, opacity: .09, depthWrite: false, blending: THREE.AdditiveBlending, fog: false })); r.scale.set(2 + Math.random() * 2.4, 16, 1); r.rotation.z = .32; r.userData = { base: i * 9 + Math.random() * 4, z: -2 - Math.random() * 7, own: [r.material] }; world.add(r); D.rays.push(r); }
-  const KN = 70; D.kelp = new THREE.InstancedMesh(new THREE.CylinderGeometry(.05, .09, 1, 5), std(0x4d5a35, 1), KN); D.kelp.frustumCulled = false;
-  D.kelpData = [...Array(KN)].map(() => ({ base: Math.random() * 90, z: -1.5 - Math.random() * 9, h: 1.5 + Math.random() * 4, ph: Math.random() * 6 })); world.add(D.kelp);
-  const RN = 90, rocks = new THREE.InstancedMesh(GEO.rock, std(0x2f2b26, 1, { flatShading: true }), RN);
-  for (let i = 0; i < RN; i++) { const s = .6 + Math.random() * 1.8; _m.compose(_p.set(i * 9 + Math.random() * 6, FLOOR + s * .3, -3 - Math.random() * 9), _q.setFromEuler(_e.set(Math.random(), Math.random(), 0)), _s.set(s, s * .7, s)); rocks.setMatrixAt(i, _m); }
-  world.add(rocks);
-  const speedOf = (e) => (sub === "static" ? e.t * STATIC_SPEED : e.d);
-  if (D.best) world.add(D.bestFlag = makeFlag(speedOf(D.best), "BEST " + (sub === "static" ? fmtT(D.best.t) : D.best.d + "m"), 0xf3d7a8));
-  if (D.last && (!D.best || D.last.at !== D.best.at)) world.add(makeFlag(speedOf(D.last), "LAST " + (sub === "static" ? fmtT(D.last.t) : D.last.d + "m"), 0xa89585));
-  D.fig = buildBodie({ skin: profile.skin, acc: profile.acc }); D.fig.root.scale.setScalar(FIG); D.fig.root.rotation.y = Math.PI / 2 - .65; D.fig.head.rotation.y = -.35;
-  D.swimmer = new THREE.Group(); D.swimmer.add(D.fig.root); world.add(D.swimmer);
-  buildDeepHUD();
-  hudEl.hidden = false;
-  camPos.set(-4, 4, 14); camLook.set(2, 2, 0);
-  Sound.music(3, 72, 2); Sound.hold(false);
-}
-function buildDeepHUD() {
-  const dash = D.sub === "dash";
-  hudEl.innerHTML = `<div class="hp">${lungsHTML()}<div class="hp-stats"><div class="hp-label">${dash ? "HOLD · DASH" : "BREATH HOLD"}</div><div class="hp-score big" id="dh-time">0.0s</div><div class="hp-sub" id="dh-sub"></div></div></div>
-    <div class="track"><div class="t-line" id="dh-line"><span class="t-end"></span>${D.best ? `<span class="pin best" id="dh-pin-best" title="Best"></span>` : ""}${D.last && (!D.best || D.last.at !== D.best.at) ? `<span class="pin last" id="dh-pin-last" title="Last"></span>` : ""}<img class="mk p0" alt="Bodie" ${PORTRAIT.bodie ? `src="${PORTRAIT.bodie}"` : ""}></div><div class="t-txt" id="dh-txt"></div></div>
-    <div class="hp right"><div class="hp-stats"><div class="hp-label">${dash ? "DISTANCE" : "SWUM"}</div><div class="hp-score" id="dh-dist">0 m</div><div class="hp-sub" id="dh-sub2"></div></div></div>`;
-  const parts = { fill: hudEl.querySelector(".l-fill"), ring: hudEl.querySelector("circle"), time: $("dh-time"), sub: $("dh-sub"), dist: $("dh-dist"), sub2: $("dh-sub2"), txt: $("dh-txt"), mk: hudEl.querySelector(".mk.p0"), pb: $("dh-pin-best"), pl: $("dh-pin-last"), last: {} };
-  const fmtV = (e) => (D.sub === "static" ? fmtT(e.t) : e.d + "m");
-  parts.sub.textContent = [D.best ? "BEST " + fmtV(D.best) : "", D.last ? "LAST " + fmtV(D.last) : ""].filter(Boolean).join(" · ") || "FIRST DIVE";
-  D.hud = parts;
-}
-function updateDeepHUD() {
-  const h = D.hud, dash = D.sub === "dash", cur = dash ? D.x : D.holdT, bestV = D.best ? (dash ? D.best.d : D.best.t) : 0, lastV = D.last ? (dash ? D.last.d : D.last.t) : 0;
-  const scaleMax = Math.max(bestV, lastV, cur, dash ? 40 : 30) * 1.15;
-  setIf(h, "t", D.holdT.toFixed(1), () => (h.time.textContent = fmtT(D.holdT)));
-  setIf(h, "d", Math.round(D.x), (v) => (h.dist.textContent = v + " m"));
-  setIf(h, "s2", dash ? `BONKS ${D.bonks}` : `DEPTH ${Math.round(Math.max(0, TOP_Y - D.y) * 3)} m`, (v) => (h.sub2.textContent = v));
-  const fillPct = D.st === "hold" ? 100 : Math.round(D.fill * 100);
-  setIf(h, "f", fillPct, (v) => (h.fill.style.clipPath = `inset(${100 - v}% 0 0 0)`));
-  const ring = bestV ? Math.min(1, cur / bestV) : 0;
-  setIf(h, "r", Math.round(ring * 100), (v) => (h.ring.style.strokeDashoffset = String(289 * (1 - v / 100))));
-  const pct = (v) => (clamp01(v / scaleMax) * 100).toFixed(1) + "%";
-  h.mk.style.left = pct(cur); if (h.pb) h.pb.style.left = pct(bestV); if (h.pl) h.pl.style.left = pct(lastV);
-  let txt;
-  if (D.st === "ready") txt = `<span class="dim">${D.best ? "BEAT " + (dash ? D.best.d + "m" : fmtT(D.best.t)) : "SET YOUR FIRST RECORD"}</span>`;
-  else if (D.newRecord) txt = `<span class="gold">NEW RECORD · +${dash ? Math.round(cur - bestV) + "m" : (cur - bestV).toFixed(1) + "s"}</span>`;
-  else if (D.best) txt = `<span class="dim">${dash ? Math.max(0, Math.ceil(bestV - cur)) + "m" : Math.max(0, bestV - cur).toFixed(1) + "s"} TO YOUR BEST</span>`;
-  else txt = `<span class="dim">FIRST DIVE · EVERY SECOND COUNTS</span>`;
-  if (D.last && D.st === "hold") txt += `<br><span class="${cur >= lastV ? "lead" : "dim"}">${cur >= lastV ? "PAST YOUR LAST DIVE" : "LAST DIVE " + (dash ? lastV + "m" : fmtT(lastV))}</span>`;
-  setIf(h, "x", txt, (v) => (h.txt.innerHTML = v));
-}
-function deepAnchorDown(id) {
-  if (!D || state !== "play") return;
-  if (D.anchorId !== null && D.anchorId !== id) { deepStroke(); return; }
-  D.anchorId = id;
-  if (D.st === "ready") { D.st = "hold"; D.holdT = 0; D.holdStart = performance.now(); D.graceUntil = 0; D.t = 0; Sound.play("inhale"); Sound.hold(true, .85); D.fig.press(); D.event = null; Voice.say("Hold", true, true); }
-  else if (D.st === "hold" && D.graceUntil) D.graceUntil = 0;
-}
-function deepAnchorUp(id) {
-  if (!D || id !== D.anchorId) return;
-  D.anchorId = null;
-  if (D.st === "hold") D.graceUntil = performance.now() + 250; // a slipped thumb gets a quarter second to come back
-}
-function deepStroke() {
-  if (!D || D.st !== "hold" || D.sub !== "dash") return;
-  D.vy = 2.9; D.strokes++; Sound.play("stroke");
-  emit({ x: D.x - .3, y: D.y + .8, z: 0, n: 5, speed: .6, up: 1, color: 0xcfe2de, size: .14, grav: -1, life: .9 });
-}
-function deepGen() {
-  if (D.sub !== "dash") return;
-  while (D.genX < D.x + 40) {
-    const x = D.genX, r = Math.random();
-    if (r < .5) {
-      const c = -1.3 + Math.random() * 4, gap = 3.3 - Math.min(.5, D.x / 600), hb = c - gap / 2 - FLOOR, ht = CEIL - (c + gap / 2);
-      const lo = makeCoral(hb, false); lo.position.set(x, FLOOR, 0); world.add(lo);
-      const hi = makeCoral(ht, true); hi.position.set(x, CEIL, 0); world.add(hi);
-      D.ents.push({ type: "gate", x, lo: FLOOR + hb, hi: CEIL - ht, meshes: [lo, hi], hit: false });
-    } else if (r < .85) {
-      const y = -2 + Math.random() * 5.5, j = makeJelly(); j.position.set(x, y, 0); world.add(j);
-      D.ents.push({ type: "jelly", x, y, y0: y, ph: Math.random() * 6, meshes: [j], hit: false });
-    } else {
-      for (let k = 0; k < 3; k++) { const u = new THREE.Group(); const core = new THREE.Mesh(GEO.sphere, std(0x1d1418, .6)); core.scale.setScalar(.35); u.add(core); for (let s = 0; s < 14; s++) { const sp = new THREE.Mesh(GEO.cone, std(0x2a1d22, .6)); sp.scale.set(.05, .5, .05); const dir = new THREE.Vector3(Math.random() - .5, Math.random() * .8, Math.random() - .5).normalize(); sp.position.copy(dir).multiplyScalar(.4); sp.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir); u.add(sp); } u.position.set(x + k * 1.1, FLOOR + .3, 0); world.add(u); D.ents.push({ type: "urchin", x: x + k * 1.1, y: FLOOR + .3, meshes: [u], hit: false }); }
-    }
-    D.genX += 7 + Math.random() * 3;
-  }
-  D.ents = D.ents.filter((e) => { if (e.x < D.x - 20) { e.meshes.forEach((m) => { world.remove(m); disposeGroup(m); }); return false; } return true; });
-}
-function deepCollide(by) {
-  for (const e of D.ents) {
-    if (e.hit) continue; const dx = e.x - D.x; if (Math.abs(dx) > 1.2) continue;
-    let hit = false;
-    if (e.type === "gate") hit = Math.abs(dx) < .55 && (by < e.lo + .5 || by > e.hi - .5);
-    else if (e.type === "jelly") hit = Math.hypot(dx, e.y - by) < .85;
-    else hit = Math.hypot(dx, e.y - by) < .85;
-    if (hit) {
-      e.hit = true; D.bonks++; D.x -= 1.6; D.slow = .8; D.vy = e.type === "gate" && by < e.lo + .5 ? 2.5 : -1.5;
-      Sound.play("bonk"); D.fig.press(); emit({ x: D.x + .5, y: by, z: 0, n: 12, speed: 3, color: 0xcfe2de, size: .2, grav: 0, life: .5 });
-      D.event = { text: "BONK!", sub: D.firstBonk ? (coarse ? "Tap with another finger to swim up. Keep your thumb down" : "Tap ↑ to swim up. Keep holding Space") : "-1.6m · keep holding", kind: "warn", until: D.t + 1.4 };
-      D.firstBonk = false;
-    }
-  }
-}
-function spawnCreature(kind) {
-  const c = kind === "turtle" ? makeTurtle() : kind === "whale" ? makeWhale() : makeFishSchool();
-  const z = kind === "whale" ? -16 : kind === "turtle" ? -3 : -2.2, v = kind === "whale" ? 1 : kind === "turtle" ? .7 : -1.4;
-  c.position.set(D.x + (kind === "whale" ? 34 : 16), kind === "whale" ? 1 : .5 + Math.random() * 2, z); if (v < 0) c.rotation.y = Math.PI;
-  world.add(c); D.creatures.push({ obj: c, v });
-}
-function endHold() {
-  if (D.holdT < 2) {
-    D.st = "ready"; D.x = 0; D.y = TOP_Y; D.vy = 0; D.holdT = 0; Sound.hold(false);
-    D.ents.forEach((e) => e.meshes.forEach((m) => { world.remove(m); disposeGroup(m); })); D.ents = []; D.genX = 14;
-    D.event = { text: "TOO QUICK", sub: "Press and keep holding to start the dive", kind: "warn", until: D.t + 2 };
-    return;
-  }
-  D.st = "surface"; D.endT = 0; Sound.hold(false); Sound.play("surface");
-  emit({ x: D.x + .4, y: D.y + 1.4, z: 0, n: 40, speed: 2, up: 2.5, color: 0xcfe2de, size: .2, grav: -2, life: 1.6 });
-  const entry = { t: +D.holdT.toFixed(1), d: Math.max(0, Math.round(D.x)), at: Date.now(), bonks: D.bonks };
-  const rec = profile.deep[D.sub], prevBest = rec.best, prevLast = rec.last;
-  rec.hist.push(entry); if (rec.hist.length > 30) rec.hist.shift(); rec.last = entry;
-  const better = D.sub === "static" ? (!prevBest || entry.t > prevBest.t) : (!prevBest || entry.d > prevBest.d || (entry.d === prevBest.d && entry.t > prevBest.t));
-  if (better) rec.best = entry;
-  const leaves = Math.floor(entry.t / 3) + (D.sub === "dash" ? Math.floor(entry.d / 10) : 0); profile.leaves += leaves;
-  D.result = { entry, prevBest, prevLast, better, leaves };
-  save(); postScore();
-  Voice.say(better ? "New record! Breathe in." : "Breathe in. Nice and slow.", true, true);
-}
-function updateDeep(dt) {
-  D.t += dt;
-  const dash = D.sub === "dash";
-  let cue = null;
-  if (D.st === "ready") {
-    D.pacerT += dt; const c = D.pacerT % 10, inhale = c < 4;
-    D.fill += ((inhale ? 1 : .05) - D.fill) * Math.min(1, dt * (inhale ? .9 : .6));
-    D.y = TOP_Y + Math.sin(D.t * 1.2) * .12;
-    const sub = coarse ? (dash ? "Ready? Thumb down and keep it there. Tap a 2nd finger to swim up" : "Ready? Put a thumb on the screen and keep it there") : (dash ? "Ready? Hold Space or the mouse. Tap ↑ to swim up" : "Ready? Hold Space or the mouse button. Don't let go");
-    cue = { text: inhale ? `BREATHE IN · ${Math.ceil(4 - c)}` : `BREATHE OUT SLOWLY · ${Math.ceil(10 - c)}`, sub, kind: "sea", anim: inhale ? "pin" : "pout" };
-    D.fig.update(dt, D.fill, false, null, D.fill * .7, 0);
-    D.fig.pose(dt, { mode: "swim", rate: .3 });
-    D.swimmer.rotation.z += (0 - D.swimmer.rotation.z) * Math.min(1, dt * 3);
-  } else if (D.st === "hold") {
-    // The hold is timed on the real clock, never on frames, so a slow device can't shortchange a record.
-    const now = performance.now(); D.holdT = (Math.min(now, D.graceUntil || now) - D.holdStart) / 1000;
-    if (D.graceUntil && now >= D.graceUntil) { endHold(); return; }
-    Sound.heart(.85 + Math.min(.35, D.holdT / 200));
-    if (D.slow > 0) D.slow -= dt;
-    const spd = (dash ? 3 * (1 + Math.min(.4, D.holdT / 300)) : STATIC_SPEED) * (D.slow > 0 ? .4 : 1);
-    if (dash) D.x += spd * dt; else D.x = D.holdT * STATIC_SPEED;
-    if (dash) {
-      if (D.holdT < 1.2) D.y += (1.2 - D.y) * Math.min(1, dt * 3);
-      else { D.vy = Math.max(-2.2, D.vy - 2.4 * dt); D.y += D.vy * dt; if (D.y < FLOOR + .7) { D.y = FLOOR + .7; D.vy = 0; } if (D.y > CEIL - 1.2) { D.y = CEIL - 1.2; D.vy = Math.min(0, D.vy); } }
-      deepGen(); deepCollide(D.y + 1.1);
-    } else D.y += ((D.holdT < 6 ? 1.5 - D.holdT * .2 : .3 + Math.sin(D.holdT * .2) * .3) - D.y) * Math.min(1, dt * 1.2);
-    D.fill = 1;
-    D.fig.update(dt, 1, false, "hold", .85 + Math.sin(D.t * 2) * .15, .6);
-    D.fig.pose(dt, { mode: "swim", rate: dash ? 1.2 : .6 });
-    D.swimmer.rotation.z += (-.5 - D.swimmer.rotation.z) * Math.min(1, dt * 2);
-    // milestones, coaching, benchmarks
-    const m = DEEP_MILES[D.mile];
-    if (m && D.holdT >= m[0]) { D.mile++; D.event = { text: fmtT(m[0]).replace(".0", ""), sub: m[1], kind: "sea", until: D.t + 3 }; Sound.play("soft", 19); if (m[2]) spawnCreature(m[2]); Voice.say(m[0] < 60 ? `${m[0]} seconds` : `${m[0] / 60 | 0} minute${m[0] >= 120 ? "s" : ""}${m[0] % 60 ? " thirty" : ""}`, true, true); }
-    const bestV = D.best ? (dash ? D.best.d : D.best.t) : 0, cur = dash ? D.x : D.holdT;
-    if (D.best && !D.warned && cur > bestV - (dash ? 15 : 10) && cur < bestV) { D.warned = true; D.event = { text: dash ? "15 METERS TO YOUR BEST" : "10 SECONDS TO YOUR BEST", sub: "Stay soft. Let go whenever you need air", kind: "good", until: D.t + 3 }; Sound.play("soft", 24); }
-    if (D.best && !D.newRecord && cur > bestV) { D.newRecord = true; D.event = { text: "NEW RECORD!", sub: "Every second now is a win. Let go whenever you need to", kind: "good", until: D.t + 3.5 }; Sound.play("record"); emit({ x: D.x, y: D.y + 1.2, z: 0, n: 40, speed: 4, color: 0xf3d7a8, size: .25, grav: 0, life: 1, add: true }); }
-    if (D.holdT > D.contractT && !reduceMotion) { D.contractT = D.holdT + 8 + Math.random() * 4; D.fig.press(); if (!D.contractTold) { D.contractTold = true; D.event = { text: "", sub: "Feel a squeeze? That's a contraction. Normal. Let go any time", kind: "sea", until: D.t + 4.5 }; } }
-    D.coachT += dt; if (D.coachT > 9) { D.coachT = 0; D.coachI = (D.coachI + 1) % DEEP_COACH.length; }
-    cue = { text: "", sub: dash && D.holdT < 8 ? (coarse ? "Thumb stays down. Tap another finger to swim up" : "Keep holding. Tap ↑ to swim up") : DEEP_COACH[D.coachI], kind: "sea" };
-    if (Math.random() < dt * 2) emit({ x: D.x + .3, y: D.y + 1.5, z: 0, n: 1, speed: .2, up: 1, color: 0xcfe2de, size: .1, grav: -1, life: 1.4 });
-  } else if (D.st === "surface") {
-    D.endT += dt;
-    D.y += (TOP_Y - D.y) * Math.min(1, dt * 2.5);
-    const k = D.endT;
-    D.fill = k < 1.2 ? Math.max(0, 1 - k) : k < 3.4 ? (k - 1.2) / 2.2 : Math.max(.05, 1 - (k - 3.4) / 2.6);
-    D.fig.update(dt, D.fill, false, null, D.fill, 0); D.fig.pose(dt, { mode: "swim", rate: .3 });
-    D.swimmer.rotation.z += (0 - D.swimmer.rotation.z) * Math.min(1, dt * 3);
-    cue = k < 1.2 ? { text: "BREATHE", sub: "You did it. Air time", kind: "sea" } : k < 3.4 ? { text: "BREATHE IN", sub: "Recovery breath · tap to skip", kind: "sea" } : { text: "BREATHE OUT", sub: "Slow and easy · tap to skip", kind: "sea" };
-    if (k > 6) { showDeepResult(); return; }
-  }
-  D.swimmer.position.set(D.x, D.y, 0);
-  // ambience
-  const camX = camLook.x;
-  D.kelpData.forEach((k, i) => { const x = camX - 30 + (((k.base - (camX - 30)) % 90) + 90) % 90; _m.compose(_p.set(x, FLOOR + k.h / 2, k.z), _q.setFromEuler(_e.set(0, 0, Math.sin(D.t * .8 + k.ph) * .12)), _s.set(1, k.h, 1)); D.kelp.setMatrixAt(i, _m); });
-  D.kelp.instanceMatrix.needsUpdate = true;
-  D.rays.forEach((r) => { r.position.set(camX - 25 + (((r.userData.base - (camX - 25)) % 72) + 72) % 72, 1.5, r.userData.z); r.material.opacity = .07 + Math.sin(D.t * .5 + r.userData.base) * .03; });
-  D.ents.forEach((e) => { if (e.type === "jelly") { e.y = e.y0 + Math.sin(D.t * 1.3 + e.ph) * .6; e.meshes[0].position.y = e.y; e.meshes[0].scale.y = 1 + Math.sin(D.t * 3 + e.ph) * .08; } });
-  D.creatures = D.creatures.filter((c) => { c.obj.position.x += c.v * dt; if (c.obj.userData.tick) c.obj.userData.tick(D.t); if (c.obj.position.x < D.x - 40) { world.remove(c.obj); disposeGroup(c.obj); return false; } return true; });
-  if (D.st === "hold" && D.x >= D.nextMarker - 20) { const s = textSprite(D.nextMarker + " m", "#8FB3AC", .45); s.position.set(D.nextMarker, FLOOR + .6, -1.4); world.add(s); D.nextMarker += 10; }
-  if (D.event && D.t < D.event.until) showCallout(D.event); else showCallout(cue);
-  updateDeepHUD();
-  soloCamera(dt, D.x, D.y + 1.1, .35, .56, 12, 6.5, CEIL);
-  perfGuard(dt, D.perf);
-}
-function deepIdle(dt) {
-  D.t += dt; D.fill = .35 + Math.sin(D.t * 1.1) * .25;
-  D.fig.update(dt, D.fill, false, null, D.fill, 0); D.fig.pose(dt, { mode: "swim", rate: .3 });
-  D.y = TOP_Y + Math.sin(D.t * 1.2) * .12; D.swimmer.position.set(D.x, D.y, 0);
-  soloCamera(dt, D.x, D.y + 1.1, .35, .56, 12, 6.5, CEIL);
-}
-function showDeepResult() {
-  const r = D.result, e = r.entry, dash = D.sub === "dash";
-  $("res-eyebrow").textContent = `The Big Hold, ${dash ? "Dash" : "Static"}`;
-  const t = $("res-title"); t.textContent = r.better ? "New record" : "Nice dive"; t.className = r.better ? "win" : "sea";
-  const diff = r.prevBest ? (dash ? `${e.d - r.prevBest.d >= 0 ? "+" : ""}${e.d - r.prevBest.d}m vs your best` : `${e.t - r.prevBest.t >= 0 ? "+" : ""}${(e.t - r.prevBest.t).toFixed(1)}s vs your best`) : "Your first recorded dive. Now there's a flag to beat.";
-  $("res-line").textContent = r.better && r.prevBest ? `You beat your old best of ${dash ? r.prevBest.d + "m" : fmtT(r.prevBest.t)}. ${diff}.` : diff;
-  const ch = deepChart(D.sub);
-  $("res-body").innerHTML = quote("sage", r.better ? "A new record. Breathe easy, you earned it." : "Well held. Rest a couple of minutes before you dive again.") + `<div class="big-num">${dash ? e.d + " m" : fmtT(e.t)}</div>
-    <div class="bench"><span>Held <b>${fmtT(e.t)}</b></span><span>Swum <b>${e.d} m</b></span>${dash ? `<span>Bonks <b>${e.bonks}</b></span>` : ""}${r.prevLast ? `<span>Last <b>${dash ? r.prevLast.d + "m" : fmtT(r.prevLast.t)}</b></span>` : ""}<span>Gold Leaves <b>+${r.leaves}</b></span>${r.better ? `<span class="badge">New ${dash ? "distance" : "hold"} record</span>` : ""}</div>
-    <svg class="chart" viewBox="0 0 560 120" role="img" aria-label="Your last ${Math.min(10, ch.n)} dives">${ch.svg}</svg>
-    <p class="muted">Next dive, a flag on the sea floor marks your best and your last one. Rest a couple of minutes between max holds.</p>`;
-  const next = $("btn-next"); next.hidden = false; next.textContent = dash ? "Try Static" : "Try Dash"; next.onclick = () => openDeep(dash ? "static" : "dash");
-  $("btn-again").textContent = "Dive again"; $("btn-again").onclick = () => deepStart(D.sub);
-  state = "result"; refreshWallets(); show("ov-result"); hudEl.hidden = true; showCallout(null);
-}
-
-// ---------------------------------------------------------------- Breath Surf (guided breathwork techniques)
+// Ribbon ride: a bounded finger-control toy. No breath instruction, scores, records or rewards.
 const PATTERNS = [
-  { key: "coherent", name: "Resonance Breathing", goal: "Even pace", desc: "5.5 seconds in, 5.5 out. About five and a half breaths a minute.", phases: [["in", 5.5], ["out", 5.5]], cycles: 6 },
-  { key: "box", name: "Box Breathing", goal: "Square", desc: "4 in, 4 hold, 4 out, 4 hold.", phases: [["in", 4], ["hold", 4], ["out", 4], ["hold0", 4]], cycles: 4 },
-  { key: "478", name: "4-7-8 Breathing", goal: "Long exhale", desc: "4 in, 7 hold, 8 out. The exhale runs twice as long as the inhale.", phases: [["in", 4], ["hold", 7], ["out", 8]], cycles: 4 },
-  { key: "sigh", name: "Physiological Sigh", goal: "Double inhale", desc: "2 in, 1 more in, 6 out. Two breaths in, one long breath out.", phases: [["in", 2, .72], ["in2", 1, 1], ["out", 6]], cycles: 6 },
-  { key: "power", name: "Power Breaths", goal: "Fast pace", desc: "25 quick, full breaths, then a calm 15 second hold. Sit down for this one.", power: true, cycles: 1 },
+  { key: "rolling", name: "Rolling trail", goal: "Finger control", desc: "Press to rise, release to settle. Breathe normally.", wave: 3.2 },
+  { key: "arc", name: "Long arc", goal: "Finger control", desc: "A wider ribbon to explore. No score or perfect route.", wave: 4.6 },
+  { key: "steps", name: "Small steps", goal: "Finger control", desc: "Shorter turns for your fingertips, not your breath.", wave: 2.3 },
 ];
-const SURF_SPEED = 2.4, RIB_BASE = 1.4, RIB_AMP = 2.6;
+const SURF_SPEED = 2.4, RIB_BASE = 1.4, RIB_AMP = 2.6, RIDE_SECONDS = 45;
 let S = null;
-function buildTimeline(p) {
-  let phases = p.phases;
-  if (p.power) { phases = []; for (let i = 0; i < 25; i++) phases.push(["in", 1.2], ["out", 1.2]); phases.push(["in", 1.5], ["hold", 15], ["out", 3]); }
-  const segs = [{ type: "ready", t0: 0, t1: 3, from: 0, to: 0 }];
-  let t = 3, lvl = 0, n = 0;
-  for (let c = 0; c < (p.power ? 1 : p.cycles); c++) for (const ph of phases) {
-    const [type, dur, target] = ph; const to = type === "in" || type === "in2" ? (target ?? 1) : type === "out" ? 0 : lvl;
-    if (type === "in") n++;
-    segs.push({ type, t0: t, t1: t + dur, from: lvl, to, cycle: c, n }); t += dur; lvl = to;
-  }
-  segs.push({ type: "end", t0: t, t1: t + 2, from: lvl, to: lvl });
-  const firstIn = phases.find((x) => x[0] === "in"), firstOut = phases.find((x) => x[0] === "out");
-  return { segs, T: t, rise: (firstIn[2] ?? 1) / firstIn[1], fall: 1 / firstOut[1], breaths: n };
-}
-function segAtT(tl, t) { for (const s of tl.segs) if (t >= s.t0 && t < s.t1) return s; return tl.segs[tl.segs.length - 1]; }
-function levelAt(tl, t) { const s = segAtT(tl, t); if (s.type === "in" || s.type === "in2" || s.type === "out") { const k = clamp01((t - s.t0) / (s.t1 - s.t0)); return lerp(s.from, s.to, .5 - Math.cos(k * Math.PI) / 2); } return s.from; }
-const ribY = (l) => RIB_BASE + l * RIB_AMP;
+const ribY = (level) => RIB_BASE + level * RIB_AMP;
+const ribbonLevel = (p, t) => .5 + .32 * Math.sin(t / p.wave);
 function surfStart(pi) {
   Sound.unlock();
-  if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+  if (document.activeElement?.blur) document.activeElement.blur();
   const p = PATTERNS[pi];
   clearWorld(); menu.visible = false; mode = "surf"; state = "play"; show(null);
-  const tl = buildTimeline(p), len = tl.T * SURF_SPEED + 40;
-  setBackdrop(COURSES[1], len); if (backdrop) backdrop.visible = true;
-  S = { pi, p, tl, t: 0, h: 0, pressed: 0, inSync: 0, active: 0, orbs: [], got: 0, total: 0, lastSeg: null, perf: { acc: 0, n: 0 }, done: false, endT: 0 };
-  const water = new THREE.Mesh(new THREE.PlaneGeometry(len + 200, 60), M.waterTop); water.rotation.x = -Math.PI / 2; water.position.set(len / 2, -.4, -10); world.add(water);
-  const deep = new THREE.Mesh(new THREE.PlaneGeometry(len + 200, 60), M.bed); deep.rotation.x = -Math.PI / 2; deep.position.set(len / 2, -1.6, -10); world.add(deep);
-  // the ribbon: a soft band (the tolerance) with a bright centre line
-  const N = Math.ceil(tl.T / .1) + 1, band = new Float32Array(N * 6), line = new Float32Array(N * 6), idx = [];
+  const len = RIDE_SECONDS * SURF_SPEED + 40;
+  setBackdrop(COURSES[0], len);
+  S = { pi, p, t: 0, h: .5, pressed: 0, perf: { acc: 0, n: 0 }, done: false };
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(len + 200, 60), M.groundTop);
+  floor.rotation.x = -Math.PI / 2; floor.position.set(len / 2, -.4, -10); world.add(floor);
+  const N = Math.ceil(RIDE_SECONDS / .1) + 1, band = new Float32Array(N * 6), line = new Float32Array(N * 6), idx = [];
   for (let i = 0; i < N; i++) {
-    const t = i * .1, x = t * SURF_SPEED, y = ribY(levelAt(tl, t));
-    band.set([x, y - .38, 0, x, y + .38, 0], i * 6); line.set([x, y - .05, .01, x, y + .05, .01], i * 6);
+    const t = i * .1, x = t * SURF_SPEED, y = ribY(ribbonLevel(p, t));
+    band.set([x, y - .38, 0, x, y + .38, 0], i * 6);
+    line.set([x, y - .05, .01, x, y + .05, .01], i * 6);
     if (i < N - 1) { const a = i * 2; idx.push(a, a + 2, a + 1, a + 1, a + 2, a + 3); }
   }
-  const mk = (arr, op) => { const g = new THREE.BufferGeometry(); g.setAttribute("position", new THREE.BufferAttribute(arr, 3)); g.setIndex(idx); const m = new THREE.Mesh(g, new THREE.MeshBasicMaterial({ color: 0xd4a574, transparent: true, opacity: op, depthWrite: false, side: THREE.DoubleSide, blending: THREE.AdditiveBlending, toneMapped: false })); m.userData.own = [m.material]; m.frustumCulled = false; return m; };
-  world.add(mk(band, .16), mk(line, .85));
-  for (let t = 3.5; t < tl.T; t += .5) { const l = levelAt(tl, t), o = makeSeed(false); o.position.set(t * SURF_SPEED, ribY(l), 0); world.add(o); S.orbs.push({ t, l, mesh: o, done: false }); }
-  S.total = S.orbs.length;
-  S.fig = buildBodie({ sit: true, skin: profile.skin, acc: profile.acc }); S.fig.root.scale.setScalar(.9); S.fig.root.rotation.y = .5; world.add(S.fig.root);
-  buildSurfHUD();
-  hudEl.hidden = false;
-  camPos.set(-4, 3, 12); camLook.set(2, 2, 0);
-  Sound.music(3, 72, 0);
-}
-function buildSurfHUD() {
-  const rec = profile.surf[S.p.key];
-  hudEl.innerHTML = `<div class="hp">${lungsHTML()}<div class="hp-stats"><div class="hp-label">IN SYNC</div><div class="hp-score big" id="sh-acc">0%</div><div class="hp-sub">${rec ? `BEST ${rec.best}% · LAST ${rec.last}%` : "FIRST SESSION"}</div></div></div>
-    <div class="track"><div class="t-line"><span class="t-end"></span><img class="mk p0" alt="Bodie" ${PORTRAIT.bodie ? `src="${PORTRAIT.bodie}"` : ""}></div><div class="t-txt" id="sh-txt"></div></div>
-    <div class="hp right"><div class="hp-stats"><div class="hp-label">ORBS</div><div class="hp-score" id="sh-orbs">0</div><div class="hp-sub">${S.p.goal.toUpperCase()}</div></div></div>`;
-  S.hud = { fill: hudEl.querySelector(".l-fill"), ring: hudEl.querySelector("circle"), acc: $("sh-acc"), orbs: $("sh-orbs"), txt: $("sh-txt"), mk: hudEl.querySelector(".mk.p0"), last: {} };
-}
-const SURF_WORDS = { ready: ["GET READY", "Let go and breathe out", "Get ready"], in: ["BREATHE IN", "Press and hold", "In"], in2: ["SIP MORE AIR", "Keep holding · top up", "More"], hold: ["HOLD", "Keep holding", "Hold"], out: ["BREATHE OUT", "Let go · slow and long", "Out"], hold0: ["HOLD EMPTY", "Stay let go", "Hold"], end: ["DONE", "Breathe normally", null] };
-function updateSurf(dt) {
-  if (S.done) { S.endT += dt; if (S.endT > 1.8) { showSurfResult(); return; } }
-  S.t += dt;
-  const tl = S.tl, pressed = S.pressed > 0 && state === "play";
-  S.h = clamp01(S.h + (pressed ? tl.rise : -tl.fall) * dt);
-  const seg = segAtT(tl, S.t), target = levelAt(tl, S.t), ok = Math.abs(S.h - target) < .16;
-  if (seg.type !== "ready" && seg.type !== "end") { S.active += dt; if (ok) S.inSync += dt; }
-  if (seg !== S.lastSeg) {
-    S.lastSeg = seg;
-    const w = SURF_WORDS[seg.type];
-    if (w && w[2] && seg.type !== "ready" && !(S.p.power && (seg.type === "in" || seg.type === "out") && seg.t1 - seg.t0 < 1.4)) Voice.say(w[2], true, true);
-    if (seg.type !== "ready" && seg.type !== "end") Sound.play("soft", seg.type === "in" || seg.type === "in2" ? 19 : seg.type === "out" ? 12 : 16);
-    if (seg.type === "end" && !S.done) { S.done = true; }
+  function makeRibbon(arr, opacity) {
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute("position", new THREE.BufferAttribute(arr, 3)); geo.setIndex(idx);
+    const material = new THREE.MeshBasicMaterial({ color: 0xd4a574, transparent: true, opacity, depthWrite: false, side: THREE.DoubleSide });
+    const mesh = new THREE.Mesh(geo, material); mesh.userData.own = [material]; return mesh;
   }
-  for (const o of S.orbs) if (!o.done && S.t >= o.t) { o.done = true; if (Math.abs(S.h - o.l) < .2) { S.got++; Sound.play("orb", Math.round(o.l * 12)); emit({ x: o.t * SURF_SPEED, y: ribY(o.l), z: 0, n: 6, speed: 1.5, color: 0xf3d7a8, size: .16, grav: 0, life: .4, add: true }); world.remove(o.mesh); } else o.mesh.visible = false; }
+  world.add(makeRibbon(band, .16), makeRibbon(line, .85));
+  S.fig = buildBodie({ sit: true, skin: profile.skin, acc: profile.acc });
+  S.fig.root.scale.setScalar(.9); S.fig.root.rotation.y = .5; world.add(S.fig.root);
+  hudEl.innerHTML = `<div class="hp"><div class="hp-stats"><div class="hp-label">RIBBON RIDE</div><div class="hp-sub">No score. Breathe normally.</div></div></div>`;
+  hudEl.hidden = false;
+  camPos.set(-4, 3, 12); camLook.set(2, 2, 0); Sound.music(3, 72, 0);
+}
+function updateSurf(dt) {
+  S.t += dt;
+  S.h = clamp01(S.h + (S.pressed > 0 ? .55 : -.4) * dt);
   const x = S.t * SURF_SPEED, y = ribY(S.h);
   S.fig.root.position.set(x, y - .9, 0);
-  const hold = seg.type === "hold" || (seg.type === "in2");
-  S.fig.update(dt, S.h, false, hold && S.h > .75 ? "hold" : null, S.h, ok ? .5 : 0);
-  S.fig.root.rotation.y = .5 + Math.sin(S.t * .4) * .1;
-  if (ok && Math.random() < dt * 8) emit({ x, y: y - .2, z: 0, n: 1, speed: .4, vx: -1, color: 0xd4a574, size: .16, grav: 0, life: .6, add: true });
-  // cue band
-  const w = SURF_WORDS[seg.type], left = Math.max(0, Math.ceil(seg.t1 - S.t));
-  let text = w[0] + (seg.type !== "end" ? " · " + left : ""), sub = w[1];
-  if (S.p.power && seg.type !== "ready" && seg.type !== "end") { if (seg.t1 - seg.t0 < 1.4) { text = seg.type === "in" ? "IN" : "OUT"; sub = `Power breath ${seg.n} of 25 · full in, easy out`; } else if (seg.type === "hold") sub = "Calm hold. Let go early if you need to"; }
-  showCallout({ text, sub, kind: ok || seg.type === "ready" ? "good" : "", anim: seg.type + seg.t0 });
-  // HUD
-  const h = S.hud, acc = S.active > 0 ? Math.round(S.inSync / S.active * 100) : 0;
-  setIf(h, "a", acc, (v) => (h.acc.textContent = v + "%"));
-  setIf(h, "o", S.got, (v) => (h.orbs.textContent = `${v}/${S.total}`));
-  setIf(h, "f", Math.round(S.h * 100), (v) => (h.fill.style.clipPath = `inset(${100 - v}% 0 0 0)`));
-  setIf(h, "r", ok ? 100 : 0, (v) => (h.ring.style.strokeDashoffset = String(289 * (1 - v / 100))));
-  h.mk.style.left = (clamp01(S.t / tl.T) * 100).toFixed(1) + "%";
-  const cyc = S.p.power ? `BREATH ${Math.min(25, seg.n || 0)} OF 25` : `CYCLE ${Math.min(S.p.cycles, (seg.cycle ?? 0) + 1)} OF ${S.p.cycles}`;
-  setIf(h, "x", `<span class="gold">${S.p.name.toUpperCase()}</span><br><span class="dim">${cyc}</span>`, (v) => (h.txt.innerHTML = v));
+  S.fig.update(dt, S.h, reduceMotion, null, .4, 0);
+  showCallout({ text: S.pressed > 0 ? "Rising" : "Settling", sub: "Finger or Space only. Keep breathing normally. Pause whenever you want.", kind: "" });
   soloCamera(dt, x, RIB_BASE + RIB_AMP / 2, .32, .52, 11, 5.6);
   perfGuard(dt, S.perf);
+  if (S.t >= RIDE_SECONDS) showSurfResult();
 }
 function surfIdle(dt) {
-  S.t += dt * .3; const x = S.tl.T * SURF_SPEED, y = ribY(.3 + Math.sin(S.t * 2) * .1);
-  S.fig.update(dt, .4 + Math.sin(S.t * 3) * .2, false, null, .4, 0); S.fig.root.position.set(x, y - .9, 0);
-  soloCamera(dt, x, RIB_BASE + RIB_AMP / 2, .32, .52, 11, 5.6);
+  S.fig.update(dt, .5, reduceMotion || !motionOn(), null, .4, 0);
+  soloCamera(dt, S.t * SURF_SPEED, RIB_BASE + RIB_AMP / 2, .32, .52, 11, 5.6);
 }
 function showSurfResult() {
-  const acc = S.active > 0 ? Math.round(S.inSync / S.active * 100) : 0, stars = acc >= 88 ? 3 : acc >= 75 ? 2 : acc >= 60 ? 1 : 0;
-  const prev = profile.surf[S.p.key], better = !prev || acc > prev.best;
-  const leaves = Math.floor(S.got / 2) + stars * 5; profile.leaves += leaves;
-  profile.surf[S.p.key] = { best: Math.max(acc, prev ? prev.best : 0), last: acc, stars: Math.max(stars, prev ? prev.stars : 0) };
-  save();
-  $("res-eyebrow").textContent = `Breath Surf, ${S.p.goal.toLowerCase()}`;
-  const t = $("res-title"); t.textContent = S.p.name; t.className = "win";
-  $("res-line").textContent = acc >= 88 ? "Locked in. Your breath and Bodie moved as one." : acc >= 75 ? "Smooth. A little more patience on the long phases." : acc >= 60 ? "Good start. Follow the ribbon a beat earlier." : "Keep practicing: press as you start breathing in, let go as you start breathing out.";
-  $("res-body").innerHTML = quote("sage", stars >= 2 ? "Lovely rhythm. Come back tomorrow and do it again." : "Good practice. Let the ribbon lead you a little more.") + `<div class="big-num">${acc}%</div><div class="stars" aria-label="${stars} of 3 stars">${"★".repeat(stars)}<i>${"★".repeat(3 - stars)}</i></div>
-    <div class="bench"><span>Orbs <b>${S.got}/${S.total}</b></span>${prev ? `<span>Best ${better ? "was " : ""}<b>${prev.best}%</b></span><span>Last <b>${prev.last}%</b></span>` : ""}<span>Gold Leaves <b>+${leaves}</b></span>${better && prev ? `<span class="badge">New best</span>` : ""}</div>
-    <p class="muted">${S.p.desc}</p>`;
-  const next = $("btn-next"), ni = (S.pi + 1) % PATTERNS.length; next.hidden = false; next.textContent = "Next: " + PATTERNS[ni].name; next.onclick = () => surfStart(ni);
-  $("btn-again").textContent = "Again"; $("btn-again").onclick = () => surfStart(S.pi);
+  S.done = true;
+  $("res-eyebrow").textContent = "Ribbon ride";
+  $("res-title").textContent = "A little time on the trail";
+  $("res-title").className = "";
+  $("res-line").textContent = "No score, breath record or physiological result. You can leave here or try another trail.";
+  $("res-body").textContent = S.p.desc;
+  const next = $("btn-next"), ni = (S.pi + 1) % PATTERNS.length;
+  next.hidden = false; next.textContent = "Next: " + PATTERNS[ni].name; next.onclick = () => surfStart(ni);
+  $("btn-again").textContent = "Ride again"; $("btn-again").onclick = () => surfStart(S.pi);
   state = "result"; refreshWallets(); show("ov-result"); hudEl.hidden = true; showCallout(null);
 }
 
 // ---------------------------------------------------------------- menus
-const OVERLAYS = ["ov-title", "ov-courses", "ov-brief", "ov-deep", "ov-surf", "ov-result", "ov-shop", "ov-hall", "ov-help", "ov-pause", "ov-cast"];
-const SAGE_SAY = { hollow: "When the cloud comes, hold your breath.", lake: "Hold your breath to dive under the logs.", swamp: "Double tap to sigh the storms away.", peaks: "Tap fast on the pads, then hold through the thin air.", temple: "Ride the updraft, then glide through the rings." };
+const OVERLAYS = ["ov-title", "ov-courses", "ov-brief", "ov-surf", "ov-result", "ov-shop", "ov-hall", "ov-help", "ov-pause", "ov-cast"];
+const SAGE_SAY = { hollow: "Press the button for your shield.", lake: "Jump the obstacles.", swamp: "Double tap to clear a storm.", peaks: "Tap on a power pad to charge the shield.", temple: "Press the button to glide through rings." };
 const pickOne = (a) => a[Math.floor(Math.random() * a.length)];
 function show(id) {
   OVERLAYS.forEach((o) => ($(o).hidden = o !== id));
-  $("btn-pause").hidden = !(state === "play" && id === null && mode !== "deep");
-  $("hud-btns").hidden = !!id && $(id).classList.contains("center"); // cards get the whole stage
+  $("btn-pause").hidden = !(state === "play" && id === null);
+  $("hud-btns").hidden = !!id && $(id).classList.contains("center");
+  if (id) $(id).querySelector("button:not(:disabled)")?.focus({ preventScroll: true });
+  else stage.focus({ preventScroll: true });
 }
 function walletHTML() { return `<span>Gold Leaves <b>${profile.leaves}</b></span><span>Wins <b>${profile.wins}</b></span><span>Stars <b>${totalStars()}/15</b></span>`; }
 function refreshWallets() { ["wallet-title", "wallet-res", "wallet-shop"].forEach((id) => ($(id).innerHTML = walletHTML())); }
 function toMenu(view) {
-  clearWorld(); D = null; S = null; mode = "race";
+  clearWorld(); S = null; mode = "race";
   hudEl.hidden = true; showCallout(null); $("countdown").hidden = true;
   state = "menu"; menuView = view || "title"; menu.visible = true;
   const co = COURSES[Math.min(courseIdx, COURSES.length - 1)];
@@ -2008,7 +1702,7 @@ function openBrief(co) {
   briefCourse = co;
   $("brief-course").textContent = co.daily ? `Today's course, ${co.len}m` : `Course ${co.idx + 1}, ${co.tech.toLowerCase()}, ${co.len}m ${raceMode === "duel" ? "for two players" : "against Kip"}`;
   $("brief-title").textContent = co.daily ? "Daily Dash" : co.name;
-  Voice.say(co.daily ? "A new course every day. Breathe well." : SAGE_SAY[co.key], true, "sage");
+  Voice.say(co.daily ? "A new course every day. Keep breathing normally." : SAGE_SAY[co.key], true, "sage");
   $("brief-tip").textContent = `Sage: "${co.tip} ${SAGE_LINES[(co.idx + 5) % SAGE_LINES.length]}"`;
   const st = profile.stars[co.key] || [];
   $("brief-ch").innerHTML = raceMode === "duel" ? "" : co.ch.map((c, j) => `<li class="${st[j] ? "got" : ""}"><span>★</span><span>${c.text}</span></li>`).join("");
@@ -2022,36 +1716,22 @@ function openBrief(co) {
   }
   $("brief-bench").innerHTML = bench.join("");
   $("brief-controls").innerHTML = raceMode === "duel"
-    ? "Player 1: <kbd>W</kbd> or <kbd>Space</kbd>, or tap the left half. Player 2: <kbd>↑</kbd> or <kbd>L</kbd>, or tap the right half. Tap to jump, hold to hold your breath."
-    : "<kbd>Space</kbd> <kbd>↑</kbd> <kbd>W</kbd>, click or tap to jump. Keep holding to hold your breath. Let go to breathe out." + (co.sigh ? " Double tap to sigh." : "");
+    ? "Player 1: <kbd>W</kbd> or <kbd>Space</kbd>, or tap the left half. Player 2: <kbd>↑</kbd> or <kbd>L</kbd>, or tap the right half. Tap to jump. Keep the button pressed for a screen shield. Breathe normally."
+    : "<kbd>Space</kbd> <kbd>↑</kbd> <kbd>W</kbd>, click or tap to jump. Keep the button pressed for a screen shield. Release to recharge it. Keep breathing normally." + (co.sigh ? " Double tap for a gust." : "");
   if (state !== "menu") toMenu("ov-brief"); else show("ov-brief");
 }
-let deepSub = "static";
-function openDeep(sub) {
-  if (sub) deepSub = sub;
-  if (state !== "menu") toMenu("ov-deep");
-  menuView = "ov-deep";
-  $("tab-static").setAttribute("aria-selected", String(deepSub === "static")); $("tab-dash").setAttribute("aria-selected", String(deepSub === "dash"));
-  $("deep-sub-desc").textContent = deepSub === "static"
-    ? "Static: pure breath hold. Bodie glides through the deep for as long as you hold. Your score is time."
-    : "Dash: keep your thumb down to hold your breath, and tap with a second finger to swim up past jellyfish, coral and urchins. On a keyboard, hold Space and tap ↑. Your score is distance.";
-  const rec = profile.deep[deepSub], f = deepSub === "static" ? (e) => fmtT(e.t) : (e) => e.d + "m";
-  $("deep-bench").innerHTML = rec.best ? `<span>Best <b>${f(rec.best)}</b></span><span>Last <b>${f(rec.last)}</b></span><span>Dives <b>${rec.hist.length}</b></span>` : `<span>No dives yet. Your first one sets the flag to beat.</span>`;
-  const ch = deepChart(deepSub); $("deep-chart").setAttribute("viewBox", "0 0 560 120"); $("deep-chart").innerHTML = ch.svg;
-  show("ov-deep");
-}
 function renderSurfList() {
-  $("surf-list").innerHTML = PATTERNS.map((p, i) => { const r = profile.surf[p.key]; return `<button class="pick" type="button" data-i="${i}"><span class="n"><span>${p.goal}</span>${r ? starStr([r.stars > 0, r.stars > 1, r.stars > 2]) : ""}</span><span class="t">${p.name}</span><span class="b">${p.desc}${r ? ` Best ${r.best}%, last ${r.last}%.` : ""}</span></button>`; }).join("");
+  $("surf-list").innerHTML = PATTERNS.map((p, i) => `<button class="pick" type="button" data-i="${i}"><span class="t">${p.name}</span><span class="b">${p.desc}</span></button>`).join("");
   $("surf-list").querySelectorAll(".pick").forEach((b) => b.addEventListener("click", () => { Sound.play("click"); surfStart(+b.dataset.i); }));
 }
 let shopTab = "up";
 const UPS = [
-  { id: "lungs", name: "Bigger Lungs", desc: (lv) => `+1 second of breath to hold in races. Level ${lv}/3.`, cost: (lv) => [40, 90, 160][lv], max: 3 },
+  { id: "lungs", name: "Larger shield", desc: (lv) => `+1 second of screen-shield charge in races. Level ${lv}/3.`, cost: (lv) => [40, 90, 160][lv], max: 3 },
   { id: "spring", name: "Spring Roots", desc: () => "Double jump: tap again in the air.", cost: () => 120, max: 1 },
-  { id: "magnet", name: "Seed Magnet", desc: () => "Pulls nearby Breath Seeds to Bodie.", cost: () => 80, max: 1 },
+  { id: "magnet", name: "Seed Magnet", desc: () => "Pulls nearby Trail Seeds to Bodie.", cost: () => 80, max: 1 },
   { id: "aura", name: "Calm Aura", desc: () => "Your first Worry Cloud each race can't pop you.", cost: () => 60, max: 1 },
-  { id: "sigh", name: "Sigh Charger", desc: () => "Your sigh recharges in 2 seconds instead of 3.", cost: () => 100, max: 1 },
-  { id: "charge", name: "Power Lungs", desc: () => "Each power breath charges 8% instead of 6%.", cost: () => 90, max: 1 },
+  { id: "sigh", name: "Gust charger", desc: () => "Your gust recharges in 2 seconds instead of 3.", cost: () => 100, max: 1 },
+  { id: "charge", name: "Power shield", desc: () => "Each pad tap charges 8% instead of 6%.", cost: () => 90, max: 1 },
 ];
 function renderShop() {
   $("tab-up").setAttribute("aria-selected", String(shopTab === "up")); $("tab-looks").setAttribute("aria-selected", String(shopTab === "looks"));
@@ -2073,10 +1753,11 @@ function renderShop() {
   }));
 }
 
-// ---------------------------------------------------------------- Hall of Breath (shared scores via the artifact's db)
-const HALL_TABS = [...COURSES.map((c, i) => ({ name: c.name, field: "b" + i, fmt: (v) => String(v) })), { name: "Daily Dash", field: "ds", daily: true, fmt: (v) => String(v) }, { name: "Big Hold", field: "hold", fmt: (v) => fmtT(v) }, { name: "Hold Dash", field: "hdash", fmt: (v) => v + "m" }];
+// ---------------------------------------------------------------- Trail board (shared scores via the artifact's db)
+const HALL_TABS = [...COURSES.map((c, i) => ({ name: c.name, field: "b" + i, fmt: (v) => String(v) })), { name: "Daily Dash", field: "ds", daily: true, fmt: (v) => String(v) }];
 let DB = null, USER = null, myId = null, hallDocs = [], hallTab = 0, hallErr = "", canWrite = true, hallToken = 0, dbTried = false;
 async function initDB() {
+  if (window.GroundPreview?.active()) { dbTried = true; renderHall(); return; }
   try {
     const w = window.claude; if (!w || !w.use) { dbTried = true; renderHall(); return; }
     const [db, user] = await Promise.all([w.use("db"), w.use("user")]); DB = db; USER = user;
@@ -2087,8 +1768,6 @@ async function initDB() {
       if (snap.exists) {
         const d = snap.data();
         for (let i = 0; i < COURSES.length; i++) { const v = Number(d["b" + i]) || 0; if (v > (profile.best[i] || 0)) profile.best[i] = v; }
-        const hold = Number(d.hold) || 0; if (hold && (!profile.deep.static.best || profile.deep.static.best.t < hold)) profile.deep.static.best = { t: hold, d: Math.round(hold * STATIC_SPEED), at: 0, bonks: 0 };
-        const hd = Number(d.hdash) || 0; if (hd && (!profile.deep.dash.best || profile.deep.dash.best.d < hd)) profile.deep.dash.best = { t: 0, d: hd, at: 0, bonks: 0 };
         if (d.dd === dayKey() && (profile.daily.date !== dayKey() || Number(d.ds) > profile.daily.best)) profile.daily = { date: dayKey(), best: Number(d.ds) || 0 };
         save(); refreshWallets();
       }
@@ -2099,11 +1778,11 @@ async function initDB() {
 }
 let posting = false, postAgain = false;
 async function postScore() {
-  if (!DB || !myId || !canWrite) return;
+  if (window.GroundPreview?.active() || !DB || !myId || !canWrite) return;
   if (posting) { postAgain = true; return; }
   posting = true;
   const b = COURSES.map((c, i) => profile.best[i] || 0);
-  const doc = { total: b.reduce((a, v) => a + v, 0), wins: profile.wins, hold: profile.deep.static.best ? profile.deep.static.best.t : 0, hdash: profile.deep.dash.best ? profile.deep.dash.best.d : 0, dd: profile.daily.date || "", ds: profile.daily.best || 0, at: Date.now() };
+  const doc = { total: b.reduce((a, v) => a + v, 0), wins: profile.wins, dd: profile.daily.date || "", ds: profile.daily.best || 0, at: Date.now() };
   b.forEach((v, i) => (doc["b" + i] = v));
   try { await DB.doc("scores/" + myId).set(doc); } catch (e) { if (e && e.code === "invalid_argument") canWrite = false; }
   posting = false; if (postAgain) { postAgain = false; postScore(); }
@@ -2112,7 +1791,7 @@ async function renderHall() {
   $("hall-tabs").innerHTML = HALL_TABS.map((t, i) => `<button class="tab" type="button" role="tab" data-i="${i}" aria-selected="${i === hallTab}">${t.name}</button>`).join("");
   $("hall-tabs").querySelectorAll(".tab").forEach((b) => b.addEventListener("click", () => { hallTab = +b.dataset.i; renderHall(); }));
   const list = $("hall-list"), note = $("hall-note"), tab = HALL_TABS[hallTab];
-  if (!DB) { list.innerHTML = ""; note.textContent = dbTried ? "The Hall of Breath shows up when you open this page signed in to claude.ai. Your records are still saved in this browser." : "Loading the Hall..."; return; }
+  if (!DB) { list.innerHTML = ""; note.textContent = dbTried ? "The Trail board shows up when you open this page signed in to claude.ai. Your records are still saved in this browser." : "Loading the Hall..."; return; }
   const f = tab.field, rows = hallDocs.filter((d) => Number(d[f]) > 0 && (!tab.daily || d.dd === dayKey())).sort((a, b) => b[f] - a[f]).slice(0, 10);
   note.textContent = hallErr ? "Couldn't load the latest scores. They'll appear when the connection is back." : !canWrite ? "You can view the Hall. Your records stay in this browser because you have view-only access." : rows.length ? (tab.daily ? "Today's course is the same for everyone. Resets at midnight." : "Your best on each board posts here automatically.") : "No scores here yet. Be the first.";
   const token = ++hallToken;
@@ -2176,78 +1855,60 @@ function syncButtons() {
   $("btn-glow").textContent = glowOn && composer ? "Glow on" : "Glow off";
 }
 
-// ---------------------------------------------------------------- input
-const pointers = new Map();
+// ---------------------------------------------------------------- finger and keyboard input
+const pointers = new Map(), keysDown = new Set();
+const KEYS1 = ["Space", "ArrowUp", "KeyW"], DUEL1 = ["Space", "KeyW"], DUEL2 = ["ArrowUp", "KeyL"];
 function playerFor(clientX) { if (!G || G.players.length < 2) return 0; const r = stage.getBoundingClientRect(); return clientX - r.left < r.width / 2 ? 0 : 1; }
-function press(i) { if (!G || state !== "play") return; const P = G.players[i]; if (!P) return; if (!P.held) P.edges++; P.held = true; }
-function release(i) { if (!G) return; const P = G.players[i]; if (P) P.held = false; }
+function keyPlayer(code) { if (!G || G.players.length < 2) return KEYS1.includes(code) ? 0 : -1; if (DUEL1.includes(code)) return 0; if (DUEL2.includes(code)) return 1; return -1; }
+function press(i) { if (!G || state !== "play") return; const p = G.players[i]; if (!p) return; if (!p.held) p.edges++; p.held = true; }
+function release(i) { if (G?.players[i]) G.players[i].held = false; }
+function releaseInputs() {
+  G?.players.forEach((p) => p.held = false); if (S) S.pressed = 0;
+  menuHold = false; pointers.clear(); keysDown.clear();
+}
 stage.addEventListener("pointerdown", (e) => {
-  Sound.unlock();
   if (e.target.closest("button, a, input, .panel, .card")) return;
-  try { stage.setPointerCapture(e.pointerId); } catch (_) {}
-  if (state === "play") {
-    e.preventDefault();
-    if (mode === "race") { const i = playerFor(e.clientX); pointers.set(e.pointerId, i); press(i); }
-    else if (mode === "deep") { pointers.set(e.pointerId, "deep"); if (D && D.st === "surface") { if (D.endT > .8) showDeepResult(); return; } deepAnchorDown(e.pointerId); }
-    else if (mode === "surf") { pointers.set(e.pointerId, "surf"); S.pressed++; }
-  } else if (state === "menu") { menuHold = true; menuIdleT = 0; pointers.set(e.pointerId, -1); if (menuBodie) menuBodie.press(); Sound.play("inhale"); }
+  Sound.unlock(); stage.focus({ preventScroll: true });
+  if (state !== "play") return;
+  e.preventDefault(); try { stage.setPointerCapture(e.pointerId); } catch (_) {}
+  if (mode === "race") { const i = playerFor(e.clientX); pointers.set(e.pointerId, i); press(i); }
+  else if (mode === "surf" && S) { pointers.set(e.pointerId, "surf"); S.pressed++; }
 });
 function endPointer(e) {
   if (!pointers.has(e.pointerId)) return;
   const i = pointers.get(e.pointerId); pointers.delete(e.pointerId);
-  if (i === -1) { if (menuHold) Sound.play("exhale"); menuHold = false; }
-  else if (i === "deep") deepAnchorUp(e.pointerId);
-  else if (i === "surf") { if (S) S.pressed = Math.max(0, S.pressed - 1); }
+  if (i === "surf") { if (S) S.pressed = Math.max(0, S.pressed - 1); }
   else if (![...pointers.values()].includes(i)) release(i);
 }
-stage.addEventListener("pointerup", endPointer); stage.addEventListener("pointercancel", endPointer);
-document.addEventListener("pointerdown", () => Sound.unlock(), { capture: true });
-const KEYS1 = ["Space", "ArrowUp", "KeyW"], DUEL1 = ["Space", "KeyW"], DUEL2 = ["ArrowUp", "KeyL"];
-function keyPlayer(code) { if (!G || G.players.length < 2) return KEYS1.includes(code) ? 0 : -1; if (DUEL1.includes(code)) return 0; if (DUEL2.includes(code)) return 1; return -1; }
-const keysDown = new Set();
+stage.addEventListener("pointerup", endPointer); stage.addEventListener("pointercancel", endPointer); stage.addEventListener("lostpointercapture", endPointer);
 window.addEventListener("keydown", (e) => {
-  Sound.unlock();
-  const onButton = e.target && e.target.closest && e.target.closest("button");
+  if (e.target.closest?.("button, a, input, textarea, select")) return;
   if (state === "play") {
-    if (mode === "race") { const i = keyPlayer(e.code); if (i >= 0) { e.preventDefault(); if (!e.repeat) press(i); return; } }
-    else if (mode === "deep" && D) {
-      if (KEYS1.includes(e.code) || e.code === "KeyJ") {
-        e.preventDefault(); if (e.repeat) return;
-        if (D.st === "surface") { if (D.endT > .8) showDeepResult(); return; }
-        if (e.code === "Space" || D.anchorId === null) { keysDown.add(e.code); deepAnchorDown("key:" + e.code); }
-        else deepStroke();
-        return;
-      }
-      if (e.code === "Escape" && D.st === "ready") { toMenu("title"); return; }
-    } else if (mode === "surf" && S && KEYS1.includes(e.code)) { e.preventDefault(); if (!e.repeat && !keysDown.has(e.code)) { keysDown.add(e.code); S.pressed++; } return; }
-    if ((e.code === "Escape" || e.code === "KeyP") && mode !== "deep") pause();
+    if (e.code === "Escape" || e.code === "KeyP") { e.preventDefault(); pause(); return; }
+    if (mode === "race") { const i = keyPlayer(e.code); if (i >= 0) { e.preventDefault(); if (!e.repeat) press(i); } }
+    else if (mode === "surf" && S && KEYS1.includes(e.code)) { e.preventDefault(); if (!e.repeat && !keysDown.has(e.code)) { keysDown.add(e.code); S.pressed++; } }
   } else if (state === "paused" && (e.code === "Escape" || e.code === "KeyP")) resume();
-  else if (state === "menu" && e.code === "Space" && !onButton) { e.preventDefault(); if (!menuHold) { menuHold = true; menuIdleT = 0; Sound.play("inhale"); } }
 });
 window.addEventListener("keyup", (e) => {
-  if (state === "play" && mode === "race") { const i = keyPlayer(e.code); if (i >= 0) release(i); }
-  if (mode === "deep" && D && keysDown.has(e.code)) { keysDown.delete(e.code); deepAnchorUp("key:" + e.code); }
-  if (mode === "surf" && S && keysDown.has(e.code)) { keysDown.delete(e.code); S.pressed = Math.max(0, S.pressed - 1); }
-  if (state === "menu" && e.code === "Space") { if (menuHold) Sound.play("exhale"); menuHold = false; }
-});
-window.addEventListener("blur", () => {
-  if (G) G.players.forEach((P) => (P.held = false)); menuHold = false; if (S) S.pressed = 0;
-  keysDown.clear(); pointers.clear();
-  if (D && D.st === "hold") { D.anchorId = null; D.graceUntil = performance.now(); }
+  if (mode === "race") { const i = keyPlayer(e.code); if (i >= 0) release(i); }
+  if (mode === "surf" && S && keysDown.delete(e.code)) S.pressed = Math.max(0, S.pressed - 1);
 });
 function pause() {
-  if (state !== "play" || mode === "deep") return;
-  if (mode === "race" && (!G || G.over)) return;
-  state = "paused"; if (G) G.players.forEach((P) => (P.held = false)); if (S) S.pressed = 0; keysDown.clear();
-  Sound.hold(false); Sound.danger(0); Sound.music(-1); try { speechSynthesis.cancel(); } catch (e) {} show("ov-pause");
+  if (state !== "play" || (mode === "race" && (!G || G.over))) return;
+  releaseInputs(); state = "paused";
+  Sound.hold(false); Sound.danger(0); Sound.music(-1); try { speechSynthesis.cancel(); } catch (_) {}
+  show("ov-pause");
 }
-function resume() { state = "play"; show(null); if (mode === "race" && G) Sound.music(G.anyFlow ? 2 : 1, G.co.bpm, G.co.key); else Sound.music(3, 72, 0); }
-document.addEventListener("visibilitychange", () => { if (!document.hidden) return; if (mode === "deep" && D && D.st === "hold") { D.anchorId = null; D.graceUntil = performance.now(); } else pause(); });
+function resume() {
+  releaseInputs(); state = "play"; show(null);
+  if (mode === "race" && G) Sound.music(G.anyFlow ? 2 : 1, G.co.bpm, G.co.musicKey); else Sound.music(3, 72, 0);
+}
+window.addEventListener("blur", pause);
+document.addEventListener("visibilitychange", () => { if (document.hidden) pause(); });
 
 $("btn-race").addEventListener("click", () => { Sound.play("click"); raceMode = "kip"; menuView = "ov-courses"; renderCourses(); show("ov-courses"); });
 $("btn-duel").addEventListener("click", () => { Sound.play("click"); raceMode = "duel"; menuView = "ov-courses"; renderCourses(); show("ov-courses"); });
 $("btn-daily").addEventListener("click", () => { Sound.play("click"); raceMode = "kip"; openBrief(dailyCourse()); });
-$("btn-deep").addEventListener("click", () => { Sound.play("click"); openDeep(); });
 $("btn-surf").addEventListener("click", () => { Sound.play("click"); menuView = "ov-surf"; renderSurfList(); show("ov-surf"); });
 $("btn-courses-back").addEventListener("click", () => { Sound.play("click"); menuView = "title"; show("ov-title"); });
 $("btn-shop").addEventListener("click", () => { Sound.play("click"); menuView = "ov-shop"; renderShop(); refreshWallets(); show("ov-shop"); Voice.say("Welcome to the Root Market! Have a look around.", true, "ember"); });
@@ -2279,10 +1940,6 @@ $("btn-help").addEventListener("click", () => { Sound.play("click"); show("ov-he
 $("btn-help-back").addEventListener("click", () => { Sound.play("click"); show("ov-title"); });
 $("tab-up").addEventListener("click", () => { shopTab = "up"; renderShop(); });
 $("tab-looks").addEventListener("click", () => { shopTab = "looks"; renderShop(); });
-$("tab-static").addEventListener("click", () => openDeep("static"));
-$("tab-dash").addEventListener("click", () => openDeep("dash"));
-$("btn-deep-go").addEventListener("click", () => deepStart(deepSub));
-$("btn-deep-back").addEventListener("click", () => { Sound.play("click"); menuView = "title"; show("ov-title"); });
 $("btn-surf-back").addEventListener("click", () => { Sound.play("click"); menuView = "title"; show("ov-title"); });
 $("btn-shop-back").addEventListener("click", () => { Sound.play("click"); if (state === "result") { show("ov-result"); return; } menuView = "title"; show("ov-title"); refreshWallets(); });
 $("btn-hall-back").addEventListener("click", () => { Sound.play("click"); menuView = "title"; show("ov-title"); });
@@ -2294,7 +1951,7 @@ $("btn-pause").addEventListener("click", (e) => { e.stopPropagation(); pause(); 
 $("btn-resume").addEventListener("click", resume);
 $("btn-quit").addEventListener("click", () => toMenu("title"));
 $("btn-sound").addEventListener("click", () => { profile.sound = !profile.sound; save(); Sound.unlock(); Sound.setEnabled(profile.sound); if (!profile.sound) try { speechSynthesis.cancel(); } catch (e) {} syncButtons(); });
-$("btn-voice").addEventListener("click", () => { profile.voice = !profile.voice; save(); syncButtons(); if (profile.voice) Voice.say("Hold your breath!", true); });
+$("btn-voice").addEventListener("click", () => { profile.voice = !profile.voice; save(); syncButtons(); if (profile.voice) Voice.say("Use your finger or keyboard. Breathe normally.", true); });
 $("btn-motion").addEventListener("click", () => { profile.motion = !motionOn(); save(); syncButtons(); });
 $("btn-glow").addEventListener("click", () => setGlow(!(glowOn && composer)));
 $("btn-full").addEventListener("click", async () => { try { if (document.fullscreenElement) await document.exitFullscreen(); else await stage.requestFullscreen(); } catch (e) { $("btn-full").hidden = true; } });
@@ -2343,7 +2000,7 @@ function updateMenu(dt, mdt) {
   menuKip.root.visible = cast ? focus === "kip" : ["title", "ov-courses", "ov-help", "ov-brief"].includes(menuView);
   menuKip.update(mdt, clock, focus === "kip" && castT < 3 ? "sprint" : "cruise");
   menuKip.root.position.set(cast ? 1.7 : 2.3, (cast ? 2.5 : 2.1) + Math.sin(clock * 2.6) * .25 + (focus === "kip" ? Math.sin(clock * 9) * .08 : 0), cast ? -1.5 : -1.2);
-  menuSage.root.visible = cast ? focus === "sage" : menuView === "ov-hall" || menuView === "ov-surf" || menuView === "ov-deep";
+  menuSage.root.visible = cast ? focus === "sage" : menuView === "ov-hall" || menuView === "ov-surf";
   menuSage.root.position.set(cast ? -2.4 : 2.1, 0, cast ? -.9 : -.6); menuSage.root.rotation.y = cast ? .5 : -.5; menuSage.update(mdt, clock);
   menuEmber.root.visible = cast ? focus === "ember" : menuView === "ov-shop";
   menuEmber.root.position.set(cast ? 2.5 : 2.0, 0, cast ? .5 : .3); menuEmber.update(mdt, focus === "ember" ? clock * 2.5 : clock);
@@ -2354,10 +2011,9 @@ function frame(now) {
   const dt = Math.min(.05, (now - last) / 1000); last = now;
   const mdt = state === "play" || motionOn() ? dt : 0; // scenery time: frozen while Motion is off, outside a run
   clock += mdt;
-  if (state === "play") { if (mode === "race" && G) updateRace(dt); else if (mode === "deep" && D) updateDeep(dt); else if (mode === "surf" && S) updateSurf(dt); }
+  if (state === "play") { if (mode === "race" && G) updateRace(dt); else if (mode === "surf" && S) updateSurf(dt); }
   else if (state === "result") {
     if (mode === "race" && G) { G.endT += mdt; G.players.forEach((P) => figPose(P, false, mdt)); if (G.kip) updateKip(mdt); raceCamera(mdt); }
-    else if (mode === "deep" && D) deepIdle(mdt);
     else if (mode === "surf" && S) surfIdle(mdt);
   } else if (state === "menu") updateMenu(dt, mdt);
   updateParticles(mdt); updateConfetti(mdt); updateSky(clock);

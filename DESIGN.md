@@ -5,21 +5,19 @@ Studio stage 2 for `site-v3`. Spec: `docs/superpowers/specs/2026-10-30-site-v3-r
 Studio defaults to question: `DESIGN-BANS.md`.
 
 ## Direction
-**Breathe with Bodie.** Collin picked this direction on 2026-10-30 ("Love it"). Bodie, the companion who sits in the
-middle of the app's Home screen, is the guide: the visitor meets him breathing on his terracotta disc, presses and
-holds him to breathe, and he walks them through the app section by section. Every picture is the shipped app
-(GroundApp v2, App Store 1.2.1): real screen recordings in a phone, real Apple Watch screens, Collin's own two photos
-and his intro film. The one drawn picture is the check-in demo (2026-11-13, preview, not approved yet): the 1.4.2
-check-in rebuilt screen by screen from the app's own code and recordings, with the site's live Bodie inside it
-(`demo/`, built with the `stageshow` skill). One scrolling page; `/play` stays the game's own page.
+**Breathe with Bodie.** Collin picked this direction on 2026-10-30. The November 14 alignment preserves it:
+Bodie, his disc, the owned app/watch demonstrations, warm night palette, lung mark, photos and founder film.
+Product usefulness now precedes the founder history. The website's touch/Space interaction moves Bodie's belly;
+it does not ask a visitor to hold their breath. The check-in and watch demos remain real-source interface examples,
+not user outcomes or medical assessments. Source clips and the Stageshow implementations are preserved.
 
 World (stage 1 nouns): the disc, the belly that fills and glows, the breath marks (inhale, hold, exhale), the wheel of
 techniques, the check-in feelings, a CO2 table's rounds and rests, a heart-rate strap, the watch on a wrist, a finish
 tape, a country road, Sage's Great Tree, Kip's espresso.
 
-Signature: press and hold Bodie to breathe in, let go to breathe out (the app's own gesture). Between sections he
-travels beside the page and reacts: waves at Collin, breathes the technique you tap in the Library, sits with the
-cast at the game, cheers at Download. In Check-in and Connections he is inside the phone and on the watch instead.
+Signature: Bodie answers touch or Space with a visible belly movement. The visitor keeps their own breathing
+comfortable. Between sections he travels into his existing slots; he never crosses readable copy or a control.
+Check-in and Connections keep one Bodie inside the phone/watch demonstration, not an added second character.
 
 ## Type
 Font reason: the kit fixes the faces (Ground Brand Kit v5, the system the v2 app ships with). The moves are ours.
@@ -72,7 +70,7 @@ Tokens: studio `motion-tokens.css` (copied into `site/assets/css/site-v4.css`). 
 | Bodie moves (desktop) | a section with a Bodie slot crosses the middle of the screen | the one canvas moves to that slot, then reacts: wave (Collin), breathes the tapped pattern (Library), wave (Play), cheer (Download). He flies only when his old slot is on screen and his straight path (sampled 12 times, his figure as the middle 60% of the box) stays clear of copy and buttons; otherwise he fades out at the old slot and in at the new one, so he never crosses a headline or the App Store button | fly: --t-reveal + 100ms, --ease-in-out; fade: 250ms out, 400ms in, ease | appears at the new slot, no travel, no fade |
 | Bodie appears (phone) | same | canvas moves into the section's own beat | --t-panel opacity fade | instant |
 | Library pattern | tap Box, 4-7-8, Physiological sigh, Resonance | Bodie's breath, readout with breath marks | the real pattern | readout shows the pattern, no live count |
-| CO2 rounds fill (scroll moment) | table scrolls through view | 6 holds, 5 rests, recovery | scroll-linked, linear | filled |
+| Advanced table description | static | prose explaining the existing feature, not prescribed holds/rests | none | same |
 | Cast peeks in (scroll moment) | play band enters view, once | Kip, Sage, Ember rise into their tiles (stagger 90ms) | --t-reveal, --ease-expo | in place |
 | App recordings (moving picture) | 30% in view; pause off screen | advanced, health clips | loop, muted | poster still, never plays |
 | Check-in demo (moving picture, in the check-in recording's place, so the count of moving pictures is unchanged) | in view; stops and resets off screen | a phone playing the 1.4.2 check-in as a 21 s loop: Check in on Home, Anxious, Worried, Nervous, 6 and Medium, Continue, "Bodie is coming up with your plan", the 4-minute plan, Begin session, Bodie breathing one Physiological sigh (2 in, 1 more in, 3 out), then the player's X back to Home. Bodie is one figure throughout: he glides between Home's middle, the check-in's corner and the player (0.75 s, cubic-bezier(0.45, 0, 0.1, 1)); screens crossfade (0.2 s out, 0.32 s in, as the app does); plan parts rise 12px (0.5 s ease-out, 130 ms apart); taps are the kit's touch dot | script on the kit's clock; Bodie's breath on his own clock (`bodie-v3.js`) | the still of the player: "Breathe in", Bodie holding still, no touch dot |
@@ -100,23 +98,22 @@ Phone cut: one 9:16 story. Bodie moves into each of his sections as its own beat
 | Collin | one band of pictures across 12 columns, the IRONMAN photo and the intro film at one height; under it the bio, accolades and press on column 1, Bodie waving in columns 7 to 8, the film line, buttons and transcript on column 9 | IRONMAN photo full bleed, bio, then film card and Bodie side by side, film line and buttons | IRONMAN photo, film poster, tap to play with sound | own beats | Bodie waves as the slot arrives; film button 72px | poster; film still plays on tap |
 | Check-in | copy, steps, the session step and the button on column 1; one phone, the check-in demo, in columns 8 to 12 (392px stage). No Bodie slot and no second phone: he is inside the demo, and the demo shows the plan screen | copy, steps, session step and button, then the demo on its own row at the column's width (its compact design: phone 326 in a 358 stage, about 311px at a 390 screen) | the demo (drawn, not footage) | above the phone | the demo plays by itself; nothing to tap | the demo's still (the player), Bodie still |
 | Library | the page's second live stage, centred across 12 columns: h2 and lede, Bodie (up to 400px, sized so the stage fits one screen) with his readout, the four tappable techniques as a 2x2 grid right under him; below, practice notes and "Also in the list" on column 1, "More in the Library" and the safety line on column 7 | the same stage in one column: Bodie 190px, readout, the four techniques (60px rows) so a tap and his breath share one screen, then the notes and tabs | live canvas | readout under Bodie | tap a row, Bodie breathes it | Bodie still, readout shows the pattern |
-| Advanced | recording left, copy, safety line and CO2 table right (unboxed, on column 7) | copy, recording, then the table on its own band | ch05-advanced | own beat | rounds fill on scroll | poster still, table filled |
+| Advanced | recording left, copy, safety line and non-prescriptive table description right (unboxed, on column 7) | copy, recording, then the description on its own band | ch05-advanced | own beat | native scrolling | poster still, description unchanged |
 | Play | band: pitch and modes left, sticky cast tiles with Bodie right | the four cast tiles first (2 by 2, Bodie in his own), then pitch, modes, Play button | live canvas, three cast stills | own beat | cast peeks in; Play 52px | Bodie still |
 | Connections (with Progress) | head on column 1; then one row of three things you wear or carry, each on its own third (columns 1, 5 and 9): the health recording, the progress screen, the live watch, with each one's words under it. No Bodie slot: he is on the watch | head, the two screens as a swipe rail, the watch (300 wide, centred), then the words | ch07-health-v2, 09-progress, the watch demo (drawn, with one watch screenshot as its still) | own beats | swipe rail; the watch plays by itself | poster still; the watch's still |
 | Story | one centred 62ch column; the client's question at quote size; Running Home full width 16:10 | one column; the photo full bleed | Running Home photo | own column | none | same |
 | Pricing | Free and Premium side by side | stacked, Premium second | none | in the plans | buttons 52px | same |
-| Reviews | the large quote (30px serif) left, two quotes stacked right, cards sized to their words | stacked quotes | none | quotes | Leave a review 52px | same |
+| Reviews | two published quotes side by side, the longer quote larger | stacked quotes | none | quotes | Leave a review 52px | same |
 | Download | the closing poster, centred: h2, lede, Bodie cheering (up to 400px), the gold App Store button and its line under him, the review prompt; then a quieter row: newsletter (dark button) on column 1, Say hi on column 7 | the same poster with Bodie 220px and a full-width App Store button, then the form and links | live canvas | own beats | cheer; form fields 52px | Bodie still |
 | FAQ | "Questions, answered" on top, the questions in two stacks of six and five under it, so neither half of the screen is empty | one column | none | accordions | 60px summaries | same |
 
 ## Choices
 Defaults used on purpose, one line why each (check-tells reads the `- <rule-id>: <reason>` lines).
-- stock-copy: okh78's App Store review says "game changer"; customer quotes stay word for word (hard rule exemption for verbatim quotes), so the HTML writes it `game&nbsp;changer` and the visitor reads the exact words.
 - phone-no-portrait-cut: every app clip is already a portrait screen recording (588x1280) and the intro film is 720x1280, so the phone and desktop play the same 9:16 files; nothing is cropped.
 - fake-sequence: the check-in steps 1 to 3 are a real sequence (the app's order).
 - eyebrow-labels: only on `/play` (the game's instrument panel, see the /play section below).
 - middot-meta: inside the game's in-play readout (`js/bodie-run-v2.js`) and the admin dashboard, which is not public.
-- phone-touch-none: the game canvas on `/play` takes every touch as a breath; the page around it scrolls.
+- phone-touch-none: only the game stage captures touch for finger-control play; the surrounding page keeps native scrolling.
 - phone-hover-only: legacy stylesheets (`home-v2/3/4.css`; `home-v4.css` still styles the masterclass waiting room) and the game's `bodie-run-v2.css`; every other hover sits inside `(hover: hover) and (pointer: fine)`.
 - grey-body: running text is Driftwood (#A89585, 6.3:1 on Obsidian) because the kit makes it the reading ink; headlines, titles and quotes are Bone.
 - character: Bodie is the app's own companion with a job (the breath pacer), drawn from the shipped app. His own slots are the hero, Collin (wave), the Library, Play and Download (cheer). In Check-in and Connections he appears inside the phone demo and on the watch, never twice on one screen; he stays away from prices and reviews (mobile.md §8).
@@ -130,8 +127,8 @@ Defaults used on purpose, one line why each (check-tells reads the `- <rule-id>:
 - demo-one-bodie: Check-in and Connections have no Bodie slot. The first juror counted two live Bodies 100px apart in Check-in as the section's main fault, so the page's Bodie skips those two sections on every screen size.
 - demo-icons: the app's SF Symbols are Apple's and not licensed for the web, so the demo uses Lucide (ISC) for the six feelings, the batteries, the tab bar and the player's controls. One set, one stroke.
 - demo-length: the loop runs about 21 s, past the stageshow guide of 10 to 16, because it plays the whole check-in in the app's real order. A shorter cut is a choice for Collin.
-- demo-copy-142: the words beside the demo now say what 1.4.2 does (Continue, Bodie shows the plan first, Begin session), taken from the 1.4.2 release notes. Pricing, the cost answer, the Premium list and the rating count follow the live 1.4.2 listing too (`docs/site-v3/copy.md`, last section). All of it waits for Collin's read.
-- over-budget: four moving pictures (Advanced clip, health clip, check-in demo, watch demo) and two scroll moments, one more picture than motion.md's budget. The two demos replaced a recording and a row of five stills, so the count of things that move went up by one (the watch). Each plays only in view and all four stop with the hero's pause button.
+- demo-copy-142: the retained demos come from the incumbent 1.4.2 app-source recreation. They are not proof of a current release, entitlement or outcome. Dated publication facts are recorded below, and catalog/free-technique counts are omitted.
+- over-budget: four moving pictures (Advanced clip, health clip, check-in demo, watch demo) and one scroll moment, one more picture than motion.md's budget. The two demos replaced a recording and a row of five stills, so the count of things that move went up by one (the watch). Each plays only in view and all four stop with the hero's pause button.
 - picture-band: the Collin section opens with one full-width band (photo and film at one height) so the run of "copy beside a phone" is broken once, as the first juror asked.
 - demo-weight: React and the kit add one lazy script (`js/app-demo-v1.min.js`, 208 KB, 70 KB gzipped) and one stylesheet (`assets/css/app-demo-v1.min.css`, 8 KB gzipped), fetched only when the Check-in section is a screen away. Nothing is added to the first paint.
 - demo-min-files: the two built files are named `.min.` because they are minified bundles with React inside. check-tells skips `.min.` files (React's own attribute list contains a word its stock-copy rule looks for); the source it would otherwise read is `demo/src/`, which is not under `site/`.
@@ -150,21 +147,104 @@ Run before every review round: `python3 ~/.claude/skills/studio-site-design/chec
 After any change in `demo/`: `npm run build` there, then film it with the stageshow skill's `film.mjs --gate` at the shown
 width and at 390 (how, and the lines left on purpose, are in `demo/REHEARSAL.md`).
 
-## /play: Bodie's Breath Run (game page, Collin's request 2026-10-30)
-A free browser game, built from `game/src/` by `python3 game/build.py` into `site/play.html`, `js/bodie-run-v2.js`
-and `assets/css/bodie-run-v2.css`. Edit the source, never the built files. Three.js 0.186.1 from jsDelivr.
-The landing page loads no game JS: its Play section links to `/play`. The cast stills on the landing page
-(`img/play/cast-kip-v2.webp`, `cast-{sage,ember}-v1.webp`) are the game's own portraits, rendered by `/play` and saved as files.
+## /play: finger-control cutover, November 14, 2026
 
-The cast: Bodie (hero), Kip the Caffeine Crow (rival), Sage the Owl (coach) and Ember the Fox (shopkeeper). "Meet the
-cast" on the title screen walks the camera to each one while they say hello; the cast cards under the game have a
-"Hear" button each (browser speech, a pitch and speed per character).
+The owned Bodie, Kip, Sage, Ember, courses, market, looks, game-point challenges and keyboard/touch input remain.
+The Big Hold, its records, underwater generation and physiological rewards are removed, not covered by a warning.
+Race mechanics now use a screen shield and gusts. All cues and speech describe buttons, not a physical breath.
+Ribbon ride replaces the guided-breath scoring mode: a bounded 45-second finger-control scene without score,
+records, breath matching or rewards. Pause or leave at any time. No physiological action is a test.
 
-Ban exceptions, for /play only:
-- Caps, mono and short "·" readouts inside the game screen: the in-play readout and the breath cue band are an
-  instrument panel, read at a glance mid-run. Menus, cards and the page around the game follow the site rules.
-- Gold fills on game buttons, inside the game screen only.
-- The cue band ("HOLD YOUR BREATH!") is the one place that shouts; it has its own band so it never sits on other text.
+`game/src/` remains the only game source. `python3 game/build.py` generates the v3 assets and removes the obsolete
+public v2 bundles. Browser records start in `bodie-controls-v1`; old physiological records are never loaded or migrated.
+The artifact database retains production game-point behavior, but explicit preview detection skips initialization
+and writes. No new website leaderboard or backend is claimed.
 
-Copy: technique names and timings match the app. No health or outcome claims. The Big Hold keeps its safety note on
-the start card. Records live in the visitor's browser; no leaderboard this round.
+Ground Font Type now styles controls and canvas text; Source Serif 4 remains for sentence-case headings.
+Sound and voice begin off. Keyboard and pointer cancellation release inputs; blur/hidden tabs pause active play.
+Menus follow reduced motion; active movement starts only through a native button. Canvas gameplay is not fully
+screen-reader equivalent, and the accessibility statement says so rather than claiming every surface passes.
+
+## November 14 preview authorization and decisions
+
+Visual owner: studio-site-design. Implementation preserves the incumbent world; no new reference or rebrand.
+The structured owner brief substitutes for a live skill interview in this delegated work. Owner authorization:
+"I want you to do all of them as new previews of all the updates so that I can preview them before anything goes
+live ... I trust you as long as you stick to the brand guideline. Just make all the updates as previews, and then
+I can review them once they're finished." This covers the full local preview, never publication.
+
+| Date | Who | Approval | Artifact | Not approved |
+|---|---|---|---|---|
+| 2026-11-14 | Collin | Full speculative alignment preview | `/Users/collinchartier/dev/brand-preview-groundapp-20261114`, served from `site/` at port 4193 after parent builds | Publication, live writes, checkout, signup, account deletion, clinical/legal/accessibility certification |
+
+### Product-facts record, 2026-11-14
+
+Authority: the approved build contract and Ground manuscript, plus retained app-source demos and existing policies.
+This is a conservative copy record, not a fresh store/release certification.
+
+| Topic | Copy allowed in this preview | Publication confirmation |
+|---|---|---|
+| Product | GroundApp; companion Bodie; iPhone and Apple Watch | Current store version, OS requirements and exact feature names |
+| Catalog and free access | Free to download, free tier and optional Premium; no technique/free counts | Catalog and entitlement counts in the shipping build and store |
+| Pricing | Existing published US $39.99/year or $6.99/month, presented as published context | Current local store pricing, offer and trial eligibility; no universal trial promise |
+| Suggestions | Check-in answers suggest a session; not diagnosis or measured nervous-system state | Released UI labels and plan logic |
+| Local and AI plans | Local rules and optional AI processing are different; policy explains data flow | Privacy/product owner verifies each processor, context field and retention rule |
+| Voice | Guided narration uses an AI model trained on Collin's recordings | Any recording/voice-mode changes |
+| Devices | Native Apple Watch; Apple Health sync; compatible Bluetooth HR broadcast | No native Garmin/Amazfit listing or Google Play launch is claimed |
+| Outcomes | Interface/sample data is not a user result; no treatment promise | Qualified review for any proposed future health statement |
+| Existing policy commitments | Substantive privacy, retention, deletion and provider disclosures retained, with explicit review limits | Owner/legal particulars, released deletion paths and staging exercise |
+| Event | Owner-maintained `site/js/event-status-v1.js` starts unscheduled | Confirmed state or ISO start/end, including timezone, before stating waiting/live/ended |
+| Atlas | Existing audio retained, no unverified page duration or cadence promised | Full audio/transcript review; Coherence has explicit timing and claims limitations |
+
+### Phone and motion additions
+
+The existing section-by-section Phone and Motion tables above remain the media/layout baseline. These rows
+supersede the old game, sound and founder-order descriptions:
+
+| Surface | Phone composition and keyboard | Motion, sound and reduced motion |
+|---|---|---|
+| Home | Hero, product check-in/library/connections, then creator/story; original portrait screens and film remain | Existing pause and static posters retained; film is user-played and skips the older CO2/panic claim segment at 117–149.76 seconds |
+| Articles and policies | Existing single reading column, wrapping text, labeled email controls; source facts/limits adjacent to claims | No new entrance animation; native scrolling |
+| Atlas | Native audio controls and transcripts, labeled email input, unchecked optional-notes consent; preview playback is explicitly review-only | No autoplay; native pause/seek/volume; no new motion |
+| Game | Scrollable phone menu, 44px minimum instrument controls and 48px action buttons; Space/touch input; focus follows visible view | Sound/voice initially off; Pause/P, blur pause, pointer cancellation; reduced motion stills menus, active runs remain moving games |
+| Waiting room | Existing Bodie/poster retained, no automatic count or hold; comfortable skip route | User-started optional no-hold rhythm, sound off, pause/resume; device reduced motion keeps artwork still |
+| 404 | Direct routes home/blog/support; no required practice | Existing circle and pause retained as decorative, not a physiological cue |
+
+### Evidence and tools used
+
+Read own sources, Ground manuscript, Ground kit tokens/copy and studio/impeccable context/craft guidance.
+Loaded Impeccable context once; it permitted scoped incumbent refinement. Read primary Balban 2023 and Fincham
+2023 reports for the exact modest study descriptions used in articles. Laborde DOI metadata did not include its
+abstract, so no additional efficacy claim was built from it. See `CHANGELOG.md` for claims ledger and route map.
+No fresh third-party artwork, fonts or media were introduced. Existing OFL licenses stay with the shipped files.
+
+No builds, tests, linters, screenshots, browser runs or publication ran in this worker. Parent owns verification,
+all generated outputs, the private server, noindex and the shared outgoing-action guard.
+
+### Resumed review resolutions
+
+The vehicle-use testimonial is omitted rather than rewritten; the remaining published quotes are unchanged.
+The round-by-round hold chart is replaced by a non-prescriptive feature explanation, with its obsolete animation CSS removed.
+Atlas headings say Open, Premium links name the App Store rather than imply a trial, and Apple Health/Bluetooth copy does not name unsupported native store submissions.
+Creator copy describes current teaching, not completed redemption. Blog reader copy omits the internal claims-ledger sentence, and llms.txt matches the accessibility page's uncertified design aim.
+Build and runtime evidence for this resumed version is recorded in the parent preview suite, not implied by the earlier worker handoff.
+The waiting room keeps instructions, safety text and Sound/Pause controls at full opacity from first paint; phone headings are centred above and below Bodie. The Atlas consent controls use native 24px checkboxes inside label rows at least 44px high.
+Parent verification exercised optional rhythm start/stop, native Atlas audio and the WebKit finger-control game. Settled desktop/phone images are in the parent suite's `evidence/visual-round3/`; these are scoped UI proofs, not a full accessibility certification.
+Isolated iPhone 17 Pro Safari screenshots in `evidence/isolated-ios/groundapp/` visibly show Bodie in Library, Play and Download. The waiting-room capture is in `evidence/isolated-ios/waiting-room/`.
+Earlier `visual-round2-ios/` captures mixed valid Safari images with blank/wrong-foreground captures from a shared simulator. The `visual-round2/bodie-native-proof.json` DOM state alone is not pixel proof; use the isolated images instead.
+
+## Athlete-led alignment (2026-11-15)
+
+GroundApp remains the product and Bodie remains the companion. This is a private local preview, not a publication or a change to the app, its pricing, policies, recordings or check-in logic. Keep the warm night palette, Ground Font Type, Source Serif 4, real product demonstrations, intro film and existing motion controls.
+
+The homepage now follows hero, check-in, library, advanced, play, connections, pricing, creator, reviews, download, FAQ. The earlier Collin and Story sections are one `#story` section after pricing: "Created by Collin Chartier." Two short first-person paragraphs come from the existing site and creator article. The 2022 finish photo, accolades, press list, Running Home photo and extended racing/ban/rebuild narrative are no longer on this product homepage. The edited intro film, captions, playback control and full walkthrough transcript remain available there; the blog and Collin's own site carry the deeper account.
+
+The former `data-slot="collin"` is now `data-slot="story"` in the merged section. The one Bodie canvas still moves through hero, library, play, story and download in DOM order; the existing flight's copy-clearance check, phone fade and reduced-motion landing stay intact. At 375 to 390px, pricing remains stacked with Premium second; the creator reads as one full-width note, then the intro film beside Bodie, then the film control and collapsed transcript full width. On desktop, the film card starts level with the creator heading, Bodie sits beside it, and the intro button and transcript toggle end the left column beneath the two story links, while the film caption and playback note sit below the film. Reviews and Download follow without a second biographical section. Keep all existing product, rating, device and safety wording.
+
+The existing film playback skips 117–149.76 seconds, the older CO2/panic claim segment; that editorial record belongs here rather than in the visible film note. The transcript's bracketed editorial cut remains. The visible note says only that captions are on and sound plays on press. Header and phone menu links read App, Pricing, Creator (`/#story`), then Play where present.
+
+The "Say hi" exit in the Download section now names breathwork sessions at `https://collinchartier.com/performance/`; the creator's two links lead to the existing GroundApp article and `https://collinchartier.com/#about`. `site/llms.txt` mirrors this creator description without a homepage credentials list. No `content/` source was changed.
+
+Needs confirmation before any separately authorized production release: Collin approves the exact first-person creator note and the choice to remove the Running Home photo from the product page; current App Store release, access, OS requirements and eligible trial are reconciled as in the November 14 product-facts record; film cut and mobile Bodie landing are visually reviewed. The existing `home-v8` CSS and JS filenames must be versioned at that time for production edge caching. Author model family: OpenAI Codex (GPT-6).
+
+Owner approval, 15 Nov 2026. Collin, after reviewing the private preview: "I do approve the wording. That's great." That covers the creator note as shown. Product facts, the film cut and versioned file names stay release checks. Release follows `~/dev/brand-preview-suite-20261115/GO-LIVE-PLAN.md`, on his OK of the exact version.

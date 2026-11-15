@@ -1,7 +1,7 @@
 /* Bodie's Breath Run (groundapp.live/play). Built from one source with the Claude artifact version.
    Bump the filename (v3, v4) when editing: /assets is cached for 7 days. */
-@font-face { font-family: "Source Serif 4"; src: url("../fonts/source-serif-4-v1.woff2") format("woff2"); font-weight: 200 900; font-style: normal; font-display: swap; }
-@font-face { font-family: "Source Code Pro"; src: url("../fonts/source-code-pro-v1.woff2") format("woff2"); font-weight: 200 900; font-style: normal; font-display: swap; }
+@font-face { font-family: "Source Serif 4"; src: url("../fonts/source-serif-4-latin-v1.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Ground Font Type"; src: url("../fonts/ground-font-type-v1.woff2") format("woff2"); font-weight: 100 900; font-style: normal; font-display: swap; }
 *, *::before, *::after { box-sizing: border-box; }
 body { margin: 0; }
 img { max-width: 100%; }
@@ -19,14 +19,15 @@ img { max-width: 100%; }
   --leaf: #9AA06A;
   --danger: #E07A5A;
   --sea: #8FB3AC;
-  --serif: "Source Serif 4", "Iowan Old Style", Georgia, serif;
-  --mono: "Source Code Pro", ui-monospace, Menlo, monospace;
+  --serif: "Ground Font Type", "Commissioner", sans-serif;
+  --display: "Source Serif 4", Georgia, serif;
+  --mono: var(--serif);
   color-scheme: dark;
 }
 [hidden] { display: none !important; }
 html, body { background: var(--obsidian); color: var(--bone); }
 body { font-family: var(--serif); font-size: 16px; line-height: 1.55; font-optical-sizing: auto; font-synthesis: none; }
-h1, h2, .callout b, .countdown b { font-variation-settings: "opsz" 60; }
+h1, h2, h3 { font-family: var(--display); font-weight: 400; font-variation-settings: "opsz" 60; }
 .wrap {
   max-width: 1180px; margin: 0 auto;
   padding-left: max(16px, env(safe-area-inset-left, 0px));
@@ -35,7 +36,7 @@ h1, h2, .callout b, .countdown b { font-variation-settings: "opsz" 60; }
   display: grid; gap: 36px;
 }
 header.top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-header.top h1 { margin: 0; font-weight: 300; font-size: clamp(22px, 3vw, 30px); letter-spacing: .01em; line-height: 1.06; text-transform: uppercase; text-wrap: balance; }
+header.top h1 { margin: 0; font-weight: 400; font-size: clamp(22px, 3vw, 30px); letter-spacing: .01em; line-height: 1.06; text-transform: none; text-wrap: balance; }
 header.top p { margin: 0; color: var(--driftwood); font-size: 14px; }
 
 .stage {
@@ -45,8 +46,9 @@ header.top p { margin: 0; color: var(--driftwood); font-size: 14px; }
   box-shadow: 0 0 0 1px rgba(196,147,90,.28), 0 30px 80px rgba(0,0,0,.55);
   touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
 }
-@media (max-width: 700px) { .stage { --hud-h: 144px; --cue-h: 106px; aspect-ratio: 3 / 5; max-height: 84vh; } }
+@media (max-width: 700px) { .stage { --hud-h: 144px; --cue-h: 106px; aspect-ratio: 3 / 5; max-height: 84svh; } }
 .stage:fullscreen { border-radius: 0; aspect-ratio: auto; width: 100vw; height: 100vh; max-height: none; }
+.stage:focus-visible { outline: 2px solid var(--amber); outline-offset: 4px; }
 canvas#gl { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 
 /* Action band labels (score pops, tutorial tags, Kip's chatter). JS keeps them below the cue band. */
@@ -79,11 +81,11 @@ canvas#gl { position: absolute; inset: 0; width: 100%; height: 100%; display: bl
 }
 .callout { background: linear-gradient(180deg, rgba(26,17,14,0), rgba(26,17,14,.42) 28%, rgba(26,17,14,.42) 72%, rgba(26,17,14,0)); }
 .callout b {
-  display: block; max-width: 100%; font: 300 clamp(22px, 4.3vw, 54px)/1.04 var(--serif); letter-spacing: .02em; text-transform: uppercase;
+  display: block; max-width: 100%; font: 400 clamp(22px, 4.3vw, 54px)/1.04 var(--serif); letter-spacing: .02em; text-transform: none;
   color: var(--amber); text-shadow: 0 3px 0 rgba(26,17,14,.7), 0 0 36px rgba(212,165,116,.4); text-wrap: balance;
 }
 .callout b:empty { display: none; }
-.callout span { display: block; max-width: 640px; font: 700 clamp(11px, 1.2vw, 13px)/1.4 var(--serif); letter-spacing: .1em; text-transform: uppercase; color: var(--bone); text-shadow: 0 2px 0 rgba(26,17,14,.8); text-wrap: balance; }
+.callout span { display: block; max-width: 640px; font: 700 clamp(11px, 1.2vw, 13px)/1.4 var(--serif); letter-spacing: .1em; text-transform: none; color: var(--bone); text-shadow: 0 2px 0 rgba(26,17,14,.8); text-wrap: balance; }
 .callout span:empty { display: none; }
 .callout.warn b { color: var(--danger); text-shadow: 0 3px 0 rgba(26,17,14,.7), 0 0 36px rgba(224,122,90,.5); }
 .callout.good b { color: #F3D7A8; }
@@ -93,7 +95,7 @@ canvas#gl { position: absolute; inset: 0; width: 100%; height: 100%; display: bl
 .callout.in.pulse b { animation: calloutIn .26s ease-out, pulse .5s ease-in-out .26s infinite alternate; }
 @keyframes pulse { from { scale: 1; } to { scale: 1.06; } }
 @keyframes calloutIn { from { opacity: 0; scale: 1.25; } to { opacity: 1; scale: 1; } }
-.countdown b { font: 300 clamp(34px, 7vw, 86px)/1 var(--serif); letter-spacing: .02em; text-transform: uppercase; color: var(--bone); text-shadow: 0 5px 0 rgba(26,17,14,.6), 0 0 44px rgba(212,165,116,.5); animation: calloutIn .3s ease-out; }
+.countdown b { font: 400 clamp(34px, 7vw, 86px)/1 var(--serif); letter-spacing: .02em; text-transform: none; color: var(--bone); text-shadow: 0 5px 0 rgba(26,17,14,.6), 0 0 44px rgba(212,165,116,.5); animation: calloutIn .3s ease-out; }
 
 /* HUD band */
 .hud { position: absolute; left: 0; right: 0; top: 0; height: var(--hud-h); pointer-events: none; z-index: 3; }
@@ -140,6 +142,7 @@ canvas#gl { position: absolute; inset: 0; width: 100%; height: 100%; display: bl
 
 .hud-btns { position: absolute; right: max(10px, env(safe-area-inset-right, 0px)); bottom: 10px; display: flex; gap: 6px; z-index: 6; flex-wrap: wrap; justify-content: flex-end; }
 .icon-btn {
+  min-height: 44px;
   font: 600 12px/1 var(--serif); letter-spacing: .02em; color: var(--bone); background: rgba(26,17,14,.72);
   border: 1px solid rgba(232,221,208,.25); border-radius: 999px; padding: 8px 11px; cursor: pointer;
 }
@@ -157,12 +160,12 @@ button:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
   /* The panel carries its own scrim: on short phones it rises over Bodie's glow, past the gradient (WCAG 1.4.3). */
   .overlay.side .panel { background: rgba(26,17,14,.94); border-radius: 14px; box-shadow: 0 -12px 24px 6px rgba(26,17,14,.94); }
   .panel { padding: 4px; margin-block: 0; gap: 10px; }
-  #ov-title .lede, #ov-title .hint { display: none; }
+  #ov-title .lede, #ov-title .hint { font-size: 13px; }
   .menu-grid .btn { padding: 11px 12px; }
   .menu-grid .btn.big { padding: 10px 14px; }
   .card { padding: 18px; }
 }
-.panel h2, .card h2 { margin: 0; font-weight: 300; font-size: clamp(24px, 4vw, 40px); line-height: 1.06; letter-spacing: .01em; text-transform: uppercase; text-wrap: balance; }
+.panel h2, .card h2 { margin: 0; font-weight: 400; font-size: clamp(24px, 4vw, 40px); line-height: 1.06; letter-spacing: .01em; text-transform: none; text-wrap: balance; }
 .card h2.win { color: var(--amber); }
 .card h2.lose { color: var(--danger); }
 .card h2.sea { color: var(--sea); }
@@ -171,6 +174,7 @@ button:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
 .eyebrow { font: 400 15px/1.3 var(--serif); color: var(--driftwood); }
 .row { display: flex; gap: 10px; flex-wrap: wrap; }
 .btn {
+  min-height: 48px;
   font: 600 15px/1 var(--serif); letter-spacing: .04em; cursor: pointer; padding: 13px 18px; border-radius: 999px;
   border: 1px solid var(--golden); background: var(--golden); color: var(--obsidian); text-align: center;
 }
@@ -248,7 +252,7 @@ button:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
 .hrow .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .hrow .sc { font: 700 14px/1 var(--mono); color: var(--amber); }
 
-section h3 { margin: 0 0 14px; font-weight: 300; font-size: 22px; letter-spacing: .08em; text-transform: uppercase; }
+section h3 { margin: 0 0 14px; font-weight: 400; font-size: 22px; letter-spacing: .08em; text-transform: none; }
 .cast { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
 @media (max-width: 860px) { .cast { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .who { display: grid; gap: 6px; align-content: start; min-width: 0; }

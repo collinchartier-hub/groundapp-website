@@ -1,17 +1,19 @@
 
 // ---------------------------------------------------------------- menus
-const OVERLAYS = ["ov-title", "ov-courses", "ov-brief", "ov-deep", "ov-surf", "ov-result", "ov-shop", "ov-hall", "ov-help", "ov-pause", "ov-cast"];
-const SAGE_SAY = { hollow: "When the cloud comes, hold your breath.", lake: "Hold your breath to dive under the logs.", swamp: "Double tap to sigh the storms away.", peaks: "Tap fast on the pads, then hold through the thin air.", temple: "Ride the updraft, then glide through the rings." };
+const OVERLAYS = ["ov-title", "ov-courses", "ov-brief", "ov-surf", "ov-result", "ov-shop", "ov-hall", "ov-help", "ov-pause", "ov-cast"];
+const SAGE_SAY = { hollow: "Press the button for your shield.", lake: "Jump the obstacles.", swamp: "Double tap to clear a storm.", peaks: "Tap on a power pad to charge the shield.", temple: "Press the button to glide through rings." };
 const pickOne = (a) => a[Math.floor(Math.random() * a.length)];
 function show(id) {
   OVERLAYS.forEach((o) => ($(o).hidden = o !== id));
-  $("btn-pause").hidden = !(state === "play" && id === null && mode !== "deep");
-  $("hud-btns").hidden = !!id && $(id).classList.contains("center"); // cards get the whole stage
+  $("btn-pause").hidden = !(state === "play" && id === null);
+  $("hud-btns").hidden = !!id && $(id).classList.contains("center");
+  if (id) $(id).querySelector("button:not(:disabled)")?.focus({ preventScroll: true });
+  else stage.focus({ preventScroll: true });
 }
 function walletHTML() { return `<span>Gold Leaves <b>${profile.leaves}</b></span><span>Wins <b>${profile.wins}</b></span><span>Stars <b>${totalStars()}/15</b></span>`; }
 function refreshWallets() { ["wallet-title", "wallet-res", "wallet-shop"].forEach((id) => ($(id).innerHTML = walletHTML())); }
 function toMenu(view) {
-  clearWorld(); D = null; S = null; mode = "race";
+  clearWorld(); S = null; mode = "race";
   hudEl.hidden = true; showCallout(null); $("countdown").hidden = true;
   state = "menu"; menuView = view || "title"; menu.visible = true;
   const co = COURSES[Math.min(courseIdx, COURSES.length - 1)];
@@ -36,7 +38,7 @@ function openBrief(co) {
   briefCourse = co;
   $("brief-course").textContent = co.daily ? `Today's course, ${co.len}m` : `Course ${co.idx + 1}, ${co.tech.toLowerCase()}, ${co.len}m ${raceMode === "duel" ? "for two players" : "against Kip"}`;
   $("brief-title").textContent = co.daily ? "Daily Dash" : co.name;
-  Voice.say(co.daily ? "A new course every day. Breathe well." : SAGE_SAY[co.key], true, "sage");
+  Voice.say(co.daily ? "A new course every day. Keep breathing normally." : SAGE_SAY[co.key], true, "sage");
   $("brief-tip").textContent = `Sage: "${co.tip} ${SAGE_LINES[(co.idx + 5) % SAGE_LINES.length]}"`;
   const st = profile.stars[co.key] || [];
   $("brief-ch").innerHTML = raceMode === "duel" ? "" : co.ch.map((c, j) => `<li class="${st[j] ? "got" : ""}"><span>★</span><span>${c.text}</span></li>`).join("");
@@ -50,36 +52,22 @@ function openBrief(co) {
   }
   $("brief-bench").innerHTML = bench.join("");
   $("brief-controls").innerHTML = raceMode === "duel"
-    ? "Player 1: <kbd>W</kbd> or <kbd>Space</kbd>, or tap the left half. Player 2: <kbd>↑</kbd> or <kbd>L</kbd>, or tap the right half. Tap to jump, hold to hold your breath."
-    : "<kbd>Space</kbd> <kbd>↑</kbd> <kbd>W</kbd>, click or tap to jump. Keep holding to hold your breath. Let go to breathe out." + (co.sigh ? " Double tap to sigh." : "");
+    ? "Player 1: <kbd>W</kbd> or <kbd>Space</kbd>, or tap the left half. Player 2: <kbd>↑</kbd> or <kbd>L</kbd>, or tap the right half. Tap to jump. Keep the button pressed for a screen shield. Breathe normally."
+    : "<kbd>Space</kbd> <kbd>↑</kbd> <kbd>W</kbd>, click or tap to jump. Keep the button pressed for a screen shield. Release to recharge it. Keep breathing normally." + (co.sigh ? " Double tap for a gust." : "");
   if (state !== "menu") toMenu("ov-brief"); else show("ov-brief");
 }
-let deepSub = "static";
-function openDeep(sub) {
-  if (sub) deepSub = sub;
-  if (state !== "menu") toMenu("ov-deep");
-  menuView = "ov-deep";
-  $("tab-static").setAttribute("aria-selected", String(deepSub === "static")); $("tab-dash").setAttribute("aria-selected", String(deepSub === "dash"));
-  $("deep-sub-desc").textContent = deepSub === "static"
-    ? "Static: pure breath hold. Bodie glides through the deep for as long as you hold. Your score is time."
-    : "Dash: keep your thumb down to hold your breath, and tap with a second finger to swim up past jellyfish, coral and urchins. On a keyboard, hold Space and tap ↑. Your score is distance.";
-  const rec = profile.deep[deepSub], f = deepSub === "static" ? (e) => fmtT(e.t) : (e) => e.d + "m";
-  $("deep-bench").innerHTML = rec.best ? `<span>Best <b>${f(rec.best)}</b></span><span>Last <b>${f(rec.last)}</b></span><span>Dives <b>${rec.hist.length}</b></span>` : `<span>No dives yet. Your first one sets the flag to beat.</span>`;
-  const ch = deepChart(deepSub); $("deep-chart").setAttribute("viewBox", "0 0 560 120"); $("deep-chart").innerHTML = ch.svg;
-  show("ov-deep");
-}
 function renderSurfList() {
-  $("surf-list").innerHTML = PATTERNS.map((p, i) => { const r = profile.surf[p.key]; return `<button class="pick" type="button" data-i="${i}"><span class="n"><span>${p.goal}</span>${r ? starStr([r.stars > 0, r.stars > 1, r.stars > 2]) : ""}</span><span class="t">${p.name}</span><span class="b">${p.desc}${r ? ` Best ${r.best}%, last ${r.last}%.` : ""}</span></button>`; }).join("");
+  $("surf-list").innerHTML = PATTERNS.map((p, i) => `<button class="pick" type="button" data-i="${i}"><span class="t">${p.name}</span><span class="b">${p.desc}</span></button>`).join("");
   $("surf-list").querySelectorAll(".pick").forEach((b) => b.addEventListener("click", () => { Sound.play("click"); surfStart(+b.dataset.i); }));
 }
 let shopTab = "up";
 const UPS = [
-  { id: "lungs", name: "Bigger Lungs", desc: (lv) => `+1 second of breath to hold in races. Level ${lv}/3.`, cost: (lv) => [40, 90, 160][lv], max: 3 },
+  { id: "lungs", name: "Larger shield", desc: (lv) => `+1 second of screen-shield charge in races. Level ${lv}/3.`, cost: (lv) => [40, 90, 160][lv], max: 3 },
   { id: "spring", name: "Spring Roots", desc: () => "Double jump: tap again in the air.", cost: () => 120, max: 1 },
-  { id: "magnet", name: "Seed Magnet", desc: () => "Pulls nearby Breath Seeds to Bodie.", cost: () => 80, max: 1 },
+  { id: "magnet", name: "Seed Magnet", desc: () => "Pulls nearby Trail Seeds to Bodie.", cost: () => 80, max: 1 },
   { id: "aura", name: "Calm Aura", desc: () => "Your first Worry Cloud each race can't pop you.", cost: () => 60, max: 1 },
-  { id: "sigh", name: "Sigh Charger", desc: () => "Your sigh recharges in 2 seconds instead of 3.", cost: () => 100, max: 1 },
-  { id: "charge", name: "Power Lungs", desc: () => "Each power breath charges 8% instead of 6%.", cost: () => 90, max: 1 },
+  { id: "sigh", name: "Gust charger", desc: () => "Your gust recharges in 2 seconds instead of 3.", cost: () => 100, max: 1 },
+  { id: "charge", name: "Power shield", desc: () => "Each pad tap charges 8% instead of 6%.", cost: () => 90, max: 1 },
 ];
 function renderShop() {
   $("tab-up").setAttribute("aria-selected", String(shopTab === "up")); $("tab-looks").setAttribute("aria-selected", String(shopTab === "looks"));
@@ -101,10 +89,11 @@ function renderShop() {
   }));
 }
 
-// ---------------------------------------------------------------- Hall of Breath (shared scores via the artifact's db)
-const HALL_TABS = [...COURSES.map((c, i) => ({ name: c.name, field: "b" + i, fmt: (v) => String(v) })), { name: "Daily Dash", field: "ds", daily: true, fmt: (v) => String(v) }, { name: "Big Hold", field: "hold", fmt: (v) => fmtT(v) }, { name: "Hold Dash", field: "hdash", fmt: (v) => v + "m" }];
+// ---------------------------------------------------------------- Trail board (shared scores via the artifact's db)
+const HALL_TABS = [...COURSES.map((c, i) => ({ name: c.name, field: "b" + i, fmt: (v) => String(v) })), { name: "Daily Dash", field: "ds", daily: true, fmt: (v) => String(v) }];
 let DB = null, USER = null, myId = null, hallDocs = [], hallTab = 0, hallErr = "", canWrite = true, hallToken = 0, dbTried = false;
 async function initDB() {
+  if (window.GroundPreview?.active()) { dbTried = true; renderHall(); return; }
   try {
     const w = window.claude; if (!w || !w.use) { dbTried = true; renderHall(); return; }
     const [db, user] = await Promise.all([w.use("db"), w.use("user")]); DB = db; USER = user;
@@ -115,8 +104,6 @@ async function initDB() {
       if (snap.exists) {
         const d = snap.data();
         for (let i = 0; i < COURSES.length; i++) { const v = Number(d["b" + i]) || 0; if (v > (profile.best[i] || 0)) profile.best[i] = v; }
-        const hold = Number(d.hold) || 0; if (hold && (!profile.deep.static.best || profile.deep.static.best.t < hold)) profile.deep.static.best = { t: hold, d: Math.round(hold * STATIC_SPEED), at: 0, bonks: 0 };
-        const hd = Number(d.hdash) || 0; if (hd && (!profile.deep.dash.best || profile.deep.dash.best.d < hd)) profile.deep.dash.best = { t: 0, d: hd, at: 0, bonks: 0 };
         if (d.dd === dayKey() && (profile.daily.date !== dayKey() || Number(d.ds) > profile.daily.best)) profile.daily = { date: dayKey(), best: Number(d.ds) || 0 };
         save(); refreshWallets();
       }
@@ -127,11 +114,11 @@ async function initDB() {
 }
 let posting = false, postAgain = false;
 async function postScore() {
-  if (!DB || !myId || !canWrite) return;
+  if (window.GroundPreview?.active() || !DB || !myId || !canWrite) return;
   if (posting) { postAgain = true; return; }
   posting = true;
   const b = COURSES.map((c, i) => profile.best[i] || 0);
-  const doc = { total: b.reduce((a, v) => a + v, 0), wins: profile.wins, hold: profile.deep.static.best ? profile.deep.static.best.t : 0, hdash: profile.deep.dash.best ? profile.deep.dash.best.d : 0, dd: profile.daily.date || "", ds: profile.daily.best || 0, at: Date.now() };
+  const doc = { total: b.reduce((a, v) => a + v, 0), wins: profile.wins, dd: profile.daily.date || "", ds: profile.daily.best || 0, at: Date.now() };
   b.forEach((v, i) => (doc["b" + i] = v));
   try { await DB.doc("scores/" + myId).set(doc); } catch (e) { if (e && e.code === "invalid_argument") canWrite = false; }
   posting = false; if (postAgain) { postAgain = false; postScore(); }
@@ -140,7 +127,7 @@ async function renderHall() {
   $("hall-tabs").innerHTML = HALL_TABS.map((t, i) => `<button class="tab" type="button" role="tab" data-i="${i}" aria-selected="${i === hallTab}">${t.name}</button>`).join("");
   $("hall-tabs").querySelectorAll(".tab").forEach((b) => b.addEventListener("click", () => { hallTab = +b.dataset.i; renderHall(); }));
   const list = $("hall-list"), note = $("hall-note"), tab = HALL_TABS[hallTab];
-  if (!DB) { list.innerHTML = ""; note.textContent = dbTried ? "The Hall of Breath shows up when you open this page signed in to claude.ai. Your records are still saved in this browser." : "Loading the Hall..."; return; }
+  if (!DB) { list.innerHTML = ""; note.textContent = dbTried ? "The Trail board shows up when you open this page signed in to claude.ai. Your records are still saved in this browser." : "Loading the Hall..."; return; }
   const f = tab.field, rows = hallDocs.filter((d) => Number(d[f]) > 0 && (!tab.daily || d.dd === dayKey())).sort((a, b) => b[f] - a[f]).slice(0, 10);
   note.textContent = hallErr ? "Couldn't load the latest scores. They'll appear when the connection is back." : !canWrite ? "You can view the Hall. Your records stay in this browser because you have view-only access." : rows.length ? (tab.daily ? "Today's course is the same for everyone. Resets at midnight." : "Your best on each board posts here automatically.") : "No scores here yet. Be the first.";
   const token = ++hallToken;
@@ -204,78 +191,60 @@ function syncButtons() {
   $("btn-glow").textContent = glowOn && composer ? "Glow on" : "Glow off";
 }
 
-// ---------------------------------------------------------------- input
-const pointers = new Map();
+// ---------------------------------------------------------------- finger and keyboard input
+const pointers = new Map(), keysDown = new Set();
+const KEYS1 = ["Space", "ArrowUp", "KeyW"], DUEL1 = ["Space", "KeyW"], DUEL2 = ["ArrowUp", "KeyL"];
 function playerFor(clientX) { if (!G || G.players.length < 2) return 0; const r = stage.getBoundingClientRect(); return clientX - r.left < r.width / 2 ? 0 : 1; }
-function press(i) { if (!G || state !== "play") return; const P = G.players[i]; if (!P) return; if (!P.held) P.edges++; P.held = true; }
-function release(i) { if (!G) return; const P = G.players[i]; if (P) P.held = false; }
+function keyPlayer(code) { if (!G || G.players.length < 2) return KEYS1.includes(code) ? 0 : -1; if (DUEL1.includes(code)) return 0; if (DUEL2.includes(code)) return 1; return -1; }
+function press(i) { if (!G || state !== "play") return; const p = G.players[i]; if (!p) return; if (!p.held) p.edges++; p.held = true; }
+function release(i) { if (G?.players[i]) G.players[i].held = false; }
+function releaseInputs() {
+  G?.players.forEach((p) => p.held = false); if (S) S.pressed = 0;
+  menuHold = false; pointers.clear(); keysDown.clear();
+}
 stage.addEventListener("pointerdown", (e) => {
-  Sound.unlock();
   if (e.target.closest("button, a, input, .panel, .card")) return;
-  try { stage.setPointerCapture(e.pointerId); } catch (_) {}
-  if (state === "play") {
-    e.preventDefault();
-    if (mode === "race") { const i = playerFor(e.clientX); pointers.set(e.pointerId, i); press(i); }
-    else if (mode === "deep") { pointers.set(e.pointerId, "deep"); if (D && D.st === "surface") { if (D.endT > .8) showDeepResult(); return; } deepAnchorDown(e.pointerId); }
-    else if (mode === "surf") { pointers.set(e.pointerId, "surf"); S.pressed++; }
-  } else if (state === "menu") { menuHold = true; menuIdleT = 0; pointers.set(e.pointerId, -1); if (menuBodie) menuBodie.press(); Sound.play("inhale"); }
+  Sound.unlock(); stage.focus({ preventScroll: true });
+  if (state !== "play") return;
+  e.preventDefault(); try { stage.setPointerCapture(e.pointerId); } catch (_) {}
+  if (mode === "race") { const i = playerFor(e.clientX); pointers.set(e.pointerId, i); press(i); }
+  else if (mode === "surf" && S) { pointers.set(e.pointerId, "surf"); S.pressed++; }
 });
 function endPointer(e) {
   if (!pointers.has(e.pointerId)) return;
   const i = pointers.get(e.pointerId); pointers.delete(e.pointerId);
-  if (i === -1) { if (menuHold) Sound.play("exhale"); menuHold = false; }
-  else if (i === "deep") deepAnchorUp(e.pointerId);
-  else if (i === "surf") { if (S) S.pressed = Math.max(0, S.pressed - 1); }
+  if (i === "surf") { if (S) S.pressed = Math.max(0, S.pressed - 1); }
   else if (![...pointers.values()].includes(i)) release(i);
 }
-stage.addEventListener("pointerup", endPointer); stage.addEventListener("pointercancel", endPointer);
-document.addEventListener("pointerdown", () => Sound.unlock(), { capture: true });
-const KEYS1 = ["Space", "ArrowUp", "KeyW"], DUEL1 = ["Space", "KeyW"], DUEL2 = ["ArrowUp", "KeyL"];
-function keyPlayer(code) { if (!G || G.players.length < 2) return KEYS1.includes(code) ? 0 : -1; if (DUEL1.includes(code)) return 0; if (DUEL2.includes(code)) return 1; return -1; }
-const keysDown = new Set();
+stage.addEventListener("pointerup", endPointer); stage.addEventListener("pointercancel", endPointer); stage.addEventListener("lostpointercapture", endPointer);
 window.addEventListener("keydown", (e) => {
-  Sound.unlock();
-  const onButton = e.target && e.target.closest && e.target.closest("button");
+  if (e.target.closest?.("button, a, input, textarea, select")) return;
   if (state === "play") {
-    if (mode === "race") { const i = keyPlayer(e.code); if (i >= 0) { e.preventDefault(); if (!e.repeat) press(i); return; } }
-    else if (mode === "deep" && D) {
-      if (KEYS1.includes(e.code) || e.code === "KeyJ") {
-        e.preventDefault(); if (e.repeat) return;
-        if (D.st === "surface") { if (D.endT > .8) showDeepResult(); return; }
-        if (e.code === "Space" || D.anchorId === null) { keysDown.add(e.code); deepAnchorDown("key:" + e.code); }
-        else deepStroke();
-        return;
-      }
-      if (e.code === "Escape" && D.st === "ready") { toMenu("title"); return; }
-    } else if (mode === "surf" && S && KEYS1.includes(e.code)) { e.preventDefault(); if (!e.repeat && !keysDown.has(e.code)) { keysDown.add(e.code); S.pressed++; } return; }
-    if ((e.code === "Escape" || e.code === "KeyP") && mode !== "deep") pause();
+    if (e.code === "Escape" || e.code === "KeyP") { e.preventDefault(); pause(); return; }
+    if (mode === "race") { const i = keyPlayer(e.code); if (i >= 0) { e.preventDefault(); if (!e.repeat) press(i); } }
+    else if (mode === "surf" && S && KEYS1.includes(e.code)) { e.preventDefault(); if (!e.repeat && !keysDown.has(e.code)) { keysDown.add(e.code); S.pressed++; } }
   } else if (state === "paused" && (e.code === "Escape" || e.code === "KeyP")) resume();
-  else if (state === "menu" && e.code === "Space" && !onButton) { e.preventDefault(); if (!menuHold) { menuHold = true; menuIdleT = 0; Sound.play("inhale"); } }
 });
 window.addEventListener("keyup", (e) => {
-  if (state === "play" && mode === "race") { const i = keyPlayer(e.code); if (i >= 0) release(i); }
-  if (mode === "deep" && D && keysDown.has(e.code)) { keysDown.delete(e.code); deepAnchorUp("key:" + e.code); }
-  if (mode === "surf" && S && keysDown.has(e.code)) { keysDown.delete(e.code); S.pressed = Math.max(0, S.pressed - 1); }
-  if (state === "menu" && e.code === "Space") { if (menuHold) Sound.play("exhale"); menuHold = false; }
-});
-window.addEventListener("blur", () => {
-  if (G) G.players.forEach((P) => (P.held = false)); menuHold = false; if (S) S.pressed = 0;
-  keysDown.clear(); pointers.clear();
-  if (D && D.st === "hold") { D.anchorId = null; D.graceUntil = performance.now(); }
+  if (mode === "race") { const i = keyPlayer(e.code); if (i >= 0) release(i); }
+  if (mode === "surf" && S && keysDown.delete(e.code)) S.pressed = Math.max(0, S.pressed - 1);
 });
 function pause() {
-  if (state !== "play" || mode === "deep") return;
-  if (mode === "race" && (!G || G.over)) return;
-  state = "paused"; if (G) G.players.forEach((P) => (P.held = false)); if (S) S.pressed = 0; keysDown.clear();
-  Sound.hold(false); Sound.danger(0); Sound.music(-1); try { speechSynthesis.cancel(); } catch (e) {} show("ov-pause");
+  if (state !== "play" || (mode === "race" && (!G || G.over))) return;
+  releaseInputs(); state = "paused";
+  Sound.hold(false); Sound.danger(0); Sound.music(-1); try { speechSynthesis.cancel(); } catch (_) {}
+  show("ov-pause");
 }
-function resume() { state = "play"; show(null); if (mode === "race" && G) Sound.music(G.anyFlow ? 2 : 1, G.co.bpm, G.co.key); else Sound.music(3, 72, 0); }
-document.addEventListener("visibilitychange", () => { if (!document.hidden) return; if (mode === "deep" && D && D.st === "hold") { D.anchorId = null; D.graceUntil = performance.now(); } else pause(); });
+function resume() {
+  releaseInputs(); state = "play"; show(null);
+  if (mode === "race" && G) Sound.music(G.anyFlow ? 2 : 1, G.co.bpm, G.co.musicKey); else Sound.music(3, 72, 0);
+}
+window.addEventListener("blur", pause);
+document.addEventListener("visibilitychange", () => { if (document.hidden) pause(); });
 
 $("btn-race").addEventListener("click", () => { Sound.play("click"); raceMode = "kip"; menuView = "ov-courses"; renderCourses(); show("ov-courses"); });
 $("btn-duel").addEventListener("click", () => { Sound.play("click"); raceMode = "duel"; menuView = "ov-courses"; renderCourses(); show("ov-courses"); });
 $("btn-daily").addEventListener("click", () => { Sound.play("click"); raceMode = "kip"; openBrief(dailyCourse()); });
-$("btn-deep").addEventListener("click", () => { Sound.play("click"); openDeep(); });
 $("btn-surf").addEventListener("click", () => { Sound.play("click"); menuView = "ov-surf"; renderSurfList(); show("ov-surf"); });
 $("btn-courses-back").addEventListener("click", () => { Sound.play("click"); menuView = "title"; show("ov-title"); });
 $("btn-shop").addEventListener("click", () => { Sound.play("click"); menuView = "ov-shop"; renderShop(); refreshWallets(); show("ov-shop"); Voice.say("Welcome to the Root Market! Have a look around.", true, "ember"); });
@@ -307,10 +276,6 @@ $("btn-help").addEventListener("click", () => { Sound.play("click"); show("ov-he
 $("btn-help-back").addEventListener("click", () => { Sound.play("click"); show("ov-title"); });
 $("tab-up").addEventListener("click", () => { shopTab = "up"; renderShop(); });
 $("tab-looks").addEventListener("click", () => { shopTab = "looks"; renderShop(); });
-$("tab-static").addEventListener("click", () => openDeep("static"));
-$("tab-dash").addEventListener("click", () => openDeep("dash"));
-$("btn-deep-go").addEventListener("click", () => deepStart(deepSub));
-$("btn-deep-back").addEventListener("click", () => { Sound.play("click"); menuView = "title"; show("ov-title"); });
 $("btn-surf-back").addEventListener("click", () => { Sound.play("click"); menuView = "title"; show("ov-title"); });
 $("btn-shop-back").addEventListener("click", () => { Sound.play("click"); if (state === "result") { show("ov-result"); return; } menuView = "title"; show("ov-title"); refreshWallets(); });
 $("btn-hall-back").addEventListener("click", () => { Sound.play("click"); menuView = "title"; show("ov-title"); });
@@ -322,7 +287,7 @@ $("btn-pause").addEventListener("click", (e) => { e.stopPropagation(); pause(); 
 $("btn-resume").addEventListener("click", resume);
 $("btn-quit").addEventListener("click", () => toMenu("title"));
 $("btn-sound").addEventListener("click", () => { profile.sound = !profile.sound; save(); Sound.unlock(); Sound.setEnabled(profile.sound); if (!profile.sound) try { speechSynthesis.cancel(); } catch (e) {} syncButtons(); });
-$("btn-voice").addEventListener("click", () => { profile.voice = !profile.voice; save(); syncButtons(); if (profile.voice) Voice.say("Hold your breath!", true); });
+$("btn-voice").addEventListener("click", () => { profile.voice = !profile.voice; save(); syncButtons(); if (profile.voice) Voice.say("Use your finger or keyboard. Breathe normally.", true); });
 $("btn-motion").addEventListener("click", () => { profile.motion = !motionOn(); save(); syncButtons(); });
 $("btn-glow").addEventListener("click", () => setGlow(!(glowOn && composer)));
 $("btn-full").addEventListener("click", async () => { try { if (document.fullscreenElement) await document.exitFullscreen(); else await stage.requestFullscreen(); } catch (e) { $("btn-full").hidden = true; } });
@@ -371,7 +336,7 @@ function updateMenu(dt, mdt) {
   menuKip.root.visible = cast ? focus === "kip" : ["title", "ov-courses", "ov-help", "ov-brief"].includes(menuView);
   menuKip.update(mdt, clock, focus === "kip" && castT < 3 ? "sprint" : "cruise");
   menuKip.root.position.set(cast ? 1.7 : 2.3, (cast ? 2.5 : 2.1) + Math.sin(clock * 2.6) * .25 + (focus === "kip" ? Math.sin(clock * 9) * .08 : 0), cast ? -1.5 : -1.2);
-  menuSage.root.visible = cast ? focus === "sage" : menuView === "ov-hall" || menuView === "ov-surf" || menuView === "ov-deep";
+  menuSage.root.visible = cast ? focus === "sage" : menuView === "ov-hall" || menuView === "ov-surf";
   menuSage.root.position.set(cast ? -2.4 : 2.1, 0, cast ? -.9 : -.6); menuSage.root.rotation.y = cast ? .5 : -.5; menuSage.update(mdt, clock);
   menuEmber.root.visible = cast ? focus === "ember" : menuView === "ov-shop";
   menuEmber.root.position.set(cast ? 2.5 : 2.0, 0, cast ? .5 : .3); menuEmber.update(mdt, focus === "ember" ? clock * 2.5 : clock);
@@ -382,10 +347,9 @@ function frame(now) {
   const dt = Math.min(.05, (now - last) / 1000); last = now;
   const mdt = state === "play" || motionOn() ? dt : 0; // scenery time: frozen while Motion is off, outside a run
   clock += mdt;
-  if (state === "play") { if (mode === "race" && G) updateRace(dt); else if (mode === "deep" && D) updateDeep(dt); else if (mode === "surf" && S) updateSurf(dt); }
+  if (state === "play") { if (mode === "race" && G) updateRace(dt); else if (mode === "surf" && S) updateSurf(dt); }
   else if (state === "result") {
     if (mode === "race" && G) { G.endT += mdt; G.players.forEach((P) => figPose(P, false, mdt)); if (G.kip) updateKip(mdt); raceCamera(mdt); }
-    else if (mode === "deep" && D) deepIdle(mdt);
     else if (mode === "surf" && S) surfIdle(mdt);
   } else if (state === "menu") updateMenu(dt, mdt);
   updateParticles(mdt); updateConfetti(mdt); updateSky(clock);
