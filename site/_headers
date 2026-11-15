@@ -47,3 +47,9 @@ https://:project.groundapp.pages.dev/*
 
 /traverse/*
   X-Robots-Tag: noindex
+
+/recon
+  X-Robots-Tag: noindex
+
+/recon/*
+  X-Robots-Tag: noindex

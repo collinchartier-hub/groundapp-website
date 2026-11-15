@@ -21,6 +21,17 @@ test('Traverse keeps its own code email, stylesheet and member identity', () => 
   assert.ok(traverse.emailLine.includes('Traverse already puts breathwork into the sauna and the cold plunge.'));
 });
 
+test('RECON Wellness has its own community identity, stylesheet and code-email introduction', () => {
+  const recon = partnerConfig('recon');
+  assert.equal(recon, PARTNERS.recon);
+  assert.equal(recon.slug, 'recon');
+  assert.equal(recon.name, 'RECON Wellness');
+  assert.equal(recon.short, 'RECON');
+  assert.equal(recon.lockup, 'RECON WELLNESS');
+  assert.equal(recon.css, '/assets/css/recon-v1.css');
+  assert.equal(recon.emailLine, 'RECON helps you build recovery into your training week. GroundApp gives you guided breathwork to practise alongside that routine, wherever you are. Your first year of GroundApp Premium is on me.');
+});
+
 test('unknown slugs have no partner configuration', () => {
   assert.equal(partnerConfig('missing'), null);
   assert.equal(partnerConfig('__proto__'), null);

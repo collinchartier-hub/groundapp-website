@@ -64,6 +64,35 @@ test('Traverse member emails use its own lockup and never name other gyms', () =
   }
 });
 
+test('RECON Wellness emails use its own brand and member link in both formats', () => {
+  const recon = { ...base, partner: partnerConfig('recon') };
+  const reconLink = 'https://groundapp.live/recon/r/abcdefghijklmnopqrstuv';
+  const messages = [
+    renderClaimEmail({ ...recon, code: 'RECONCODE123', link: reconLink }),
+    renderNudgeEmail({ ...recon, link: reconLink, unsubUrl: 'https://groundapp.live/api/unsubscribe?e=x&t=y' }),
+    renderAndroidEmail(recon),
+    renderWaitlistEmail(recon),
+  ];
+  assert.equal(messages[0].subject, 'Your free year of GroundApp, from RECON and Collin');
+  assert.match(messages[0].html, /RECON Wellness<\/span> <span[^>]*>&times;<\/span> GroundApp/);
+  for (const part of [messages[0].html, messages[0].text]) {
+    assert.ok(part.includes('RECON helps you build recovery into your training week.'));
+    assert.ok(part.includes('RECONCODE123'));
+    assert.ok(part.includes(reconLink));
+    assert.ok(part.includes('$39.99 a year unless you cancel'));
+  }
+  for (const part of [messages[1].html, messages[1].text]) {
+    assert.ok(part.includes(reconLink));
+    assert.ok(!part.includes('RECONCODE123'));
+  }
+  for (const message of messages) {
+    for (const part of [message.subject, message.html, message.text]) {
+      assert.ok(!/Arsenal|AION|Traverse/.test(part), 'RECON mail never names another partner');
+      assert.ok(message.html.includes('RECON Wellness') && message.text.includes('RECON Wellness'));
+    }
+  }
+});
+
 test('member emails follow the copy rules', () => {
   const all = [
     renderClaimEmail({ ...base, code: 'ABC', link }),
