@@ -7,7 +7,8 @@ Also:     rewrites the generated blog block in site/_redirects so old
           /posts/<file> and /posts/<file>.md URLs 301 to /blog/<slug>/.
 
 Front matter keys: title, slug, description, date (YYYY-MM-DD, first written),
-updated (YYYY-MM-DD), old (old /posts/ filename without .md, optional).
+updated (YYYY-MM-DD), seo_title, seo_description (optional search metadata),
+old (old /posts/ filename without .md, optional).
 
 Usage:  python3 scripts/build_blog.py
 Needs:  python-markdown  (pip3 install --user markdown)
@@ -347,11 +348,11 @@ def footer():
 """
 
 
-AUTHOR = {"@type": "Person", "name": "Collin Chartier", "url": BASE + "/#story",
-          "jobTitle": "Breathwork and mental performance coach",
-          "sameAs": ["https://instagram.com/collinchartier", "https://collinchartier.com"]}
-PUBLISHER = {"@type": "Organization", "name": "GroundApp", "url": BASE + "/",
-             "logo": {"@type": "ImageObject", "url": BASE + "/apple-touch-icon.png", "width": 180, "height": 180}}
+AUTHOR = {"@type": "Person", "@id": "https://collinchartier.com/#person", "name": "Collin Chartier",
+          "url": "https://collinchartier.com/", "jobTitle": "Endurance athlete, coach and creator"}
+PUBLISHER = {"@type": "Organization", "@id": BASE + "/#organization",
+             "name": "GroundApp", "url": BASE + "/"}
+WEBSITE = {"@id": BASE + "/#website"}
 
 DISCLAIMER = ("This is general education, not medical advice. If you have a heart or lung condition, are pregnant, "
               "or have a history of seizures or fainting, check with your doctor before trying breath holds or fast breathing. "
@@ -364,17 +365,17 @@ def post_page(p, posts):
     mins = read_minutes(p["md"])
     jsonld = {
         "@context": "https://schema.org",
-        "@type": "BlogPosting",
-        "headline": p["title"],
-        "description": p["description"],
-        "image": OG_IMAGE,
-        "datePublished": p["date"],
-        "dateModified": p["updated"],
-        "author": AUTHOR,
-        "publisher": PUBLISHER,
-        "mainEntityOfPage": {"@type": "WebPage", "@id": url},
-        "url": url,
-        "inLanguage": "en",
+        "@graph": [
+            AUTHOR, PUBLISHER,
+            {"@type": "WebPage", "@id": url, "url": url,
+             "name": p["title"], "isPartOf": WEBSITE,
+             "mainEntity": {"@id": url + "#article"}},
+            {"@type": "BlogPosting", "@id": url + "#article",
+             "headline": p["title"], "description": p.get("seo_description", p["description"]),
+             "image": OG_IMAGE, "datePublished": p["date"], "dateModified": p["updated"],
+             "author": {"@id": AUTHOR["@id"]}, "publisher": {"@id": PUBLISHER["@id"]},
+             "mainEntityOfPage": {"@id": url}, "url": url, "inLanguage": "en"}
+        ]
     }
     extra = (f'<meta property="article:published_time" content="{p["date"]}">\n'
              f'<meta property="article:modified_time" content="{p["updated"]}">\n'
@@ -383,7 +384,7 @@ def post_page(p, posts):
     more = "\n".join(
         f'    <li><a class="post-card" href="/blog/{o["slug"]}/"><h3>{E(o["title"])}</h3><p>{E(o["description"])}</p></a></li>'
         for o in others)
-    return (head(f'{p["title"]} | GroundApp', p["description"], url, "article", jsonld, extra)
+    return (head(p.get("seo_title", f'{p["title"]} | GroundApp'), p.get("seo_description", p["description"]), url, "article", jsonld, extra)
             + topbar()
             + f"""<main id="main" class="wrap blog">
 <article>
@@ -415,24 +416,24 @@ def post_page(p, posts):
 
 def index_page(posts):
     url = f"{BASE}/blog/"
-    desc = "Articles by Collin Chartier on breathwork, nervous system regulation and the science of breathing, from the creator of GroundApp."
+    desc = "Read Collin Chartier's articles on breathwork, nervous system regulation, breathing research and the limits of what an app or a practice can promise."
     jsonld = {
         "@context": "https://schema.org",
-        "@type": "Blog",
-        "name": "The GroundApp Blog",
-        "url": url,
-        "description": desc,
-        "author": AUTHOR,
-        "publisher": PUBLISHER,
-        "blogPost": [{"@type": "BlogPosting", "headline": p["title"], "url": f"{BASE}/blog/{p['slug']}/",
-                      "datePublished": p["date"], "dateModified": p["updated"],
-                      "author": {"@type": "Person", "name": "Collin Chartier"}} for p in posts],
+        "@graph": [
+            AUTHOR, PUBLISHER,
+            {"@type": "WebPage", "@id": url, "url": url, "name": "The GroundApp blog",
+             "isPartOf": WEBSITE, "mainEntity": {"@id": url + "#blog"}},
+            {"@type": "Blog", "@id": url + "#blog", "name": "The GroundApp blog",
+             "url": url, "description": desc, "author": {"@id": AUTHOR["@id"]},
+             "publisher": {"@id": PUBLISHER["@id"]},
+             "blogPost": [{"@id": f"{BASE}/blog/{p['slug']}/#article"} for p in posts]}
+        ]
     }
     cards = "\n".join(
         f'    <li><a class="post-card" href="/blog/{p["slug"]}/"><h2>{E(p["title"])}</h2><p>{E(p["description"])}</p>'
         f'<span class="meta">{read_minutes(p["md"])} min read</span></a></li>'
         for p in posts)
-    return (head("Blog | GroundApp", desc, url, "website", jsonld)
+    return (head("Breathwork Articles by Collin Chartier | GroundApp", desc, url, "website", jsonld)
             + topbar()
             + f"""<main id="main" class="wrap blog">
   <p class="crumb"><a href="/">GroundApp</a></p>

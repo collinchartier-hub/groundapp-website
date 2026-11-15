@@ -2,6 +2,8 @@
 title: Breathing patterns for everyday anxious moments
 slug: breathing-techniques-for-anxiety
 description: A gentle comparison of five breathing patterns, with comfort guidance and evidence limits. Not a treatment guide for anxiety disorders or panic.
+seo_title: Breathing Patterns for Anxious Moments | GroundApp Blog
+seo_description: Compare five gentle breathing patterns for everyday anxious moments, with comfort guidance and evidence limits. Not a treatment guide for anxiety or panic.
 date: 2026-03-26
 updated: 2026-11-14
 old: 05-five-breathing-techniques-anxiety

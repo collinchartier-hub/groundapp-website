@@ -1,3 +1,11 @@
+## SEO and AEO metadata pass: November 15, 2026
+
+- Updated unique titles, descriptions and social previews across indexable pages without changing their visible wording or design.
+- Connected the homepage app, organization, Collin Chartier and visible FAQ through JSON-LD IDs. Published US Premium prices in the app graph match the pricing section; no universal trial or rating is asserted.
+- Linked Atlas pages, policies, blog articles and the browser game back to those site entities. Article publication and modification dates come from post front matter.
+- Updated the sitemap for the pages changed on November 15 and refreshed `llms.txt`. Partner pages and the waiting room retain noindex.
+- Regenerate `site/blog/` with `python3 scripts/build_blog.py` and `site/play.html` with `python3 game/build.py` before review. Both commands also touch other generated assets; the publishing owner handles regeneration and verification.
+
 # Private brand alignment preview: November 14, 2026
 
 Owner authorized a complete updated local preview, not publication. Sole worktree: `/Users/collinchartier/dev/brand-preview-groundapp-20261114`. Static root: `site/`; parent serves port 4193 and injects `/__preview/guard.js`. No commits, pushes, deployment, live signup, redemption, payment, account deletion or external service tests ran.

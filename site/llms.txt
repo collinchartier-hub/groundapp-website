@@ -1,8 +1,9 @@
 # GroundApp
 
-> GroundApp offers check-ins with Bodie and guided breathing on iPhone and Apple Watch. Free to download, with a free tier and optional Premium. Current inclusions, local price and any trial eligibility are shown in the app before purchase. GroundApp is coaching and education, not medical or mental health treatment. Website: https://groundapp.live/
+> GroundApp is a breathwork app for iPhone and Apple Watch, created by Collin Chartier. Check in with Bodie and practise guided breathing. Free to download, with a free tier and optional Premium. GroundApp is coaching and education, not medical or mental health treatment. Website: https://groundapp.live/
 
 - App Store: https://apps.apple.com/us/app/groundapp-breathwork/id6760352779
+- Creator: [Collin Chartier](https://collinchartier.com/), an endurance athlete, coach and creator
 - Requires iOS 17 or later. The Apple Watch app requires watchOS 11 or later.
 - Create an account when you start, with Apple, Google or email. You can delete it in Settings.
 
@@ -13,9 +14,9 @@
 
 ## Features
 
-- Breathing techniques with practice guides
-- Check in with Bodie: name how you feel and get breathwork matched to it
-- Advanced O2 and CO2 tables for breath-hold training (dry land only)
+- Breathing techniques with practice guides; current free inclusions are shown in the app
+- Check in with Bodie: name how you feel and see a suggested session, not a diagnosis or a measured nervous-system state
+- Advanced O2 and CO2 tables for breath-hold training. Dry land only. Never in or near water.
 - Guided sessions in Collin's voice, with ambient sound and haptic cues (Premium)
 - Guided meditations
 - Guided sessions use an AI model of Collin's voice, trained on his recordings; haptic-only mode is available
@@ -27,26 +28,26 @@
 
 ## Creator
 
-- [Created by Collin Chartier](https://groundapp.live/#story): Collin created and developed GroundApp. Read [why he built it](https://groundapp.live/blog/why-i-built-groundapp/) or [his story](https://collinchartier.com/#about).
+- [Created by Collin Chartier](https://groundapp.live/#story): Collin created and developed GroundApp. Read [why he built it](https://groundapp.live/blog/why-i-built-groundapp/) or [his story](https://collinchartier.com/#about). His homepage is https://collinchartier.com/.
 
 ## Pages
 
 - [Home](https://groundapp.live/): Bodie, check-in, library, play, connections, pricing, creator, reviews and download
 - [Story](https://groundapp.live/#story): Why Collin built GroundApp, with his intro film and walkthrough transcript
 - [FAQ](https://groundapp.live/#faq): Common questions about GroundApp
-- [Play](https://groundapp.live/play): Bodie's Breath Run, a free browser game
-- [Blog](https://groundapp.live/blog/): Articles by Collin Chartier on breathwork and nervous system regulation
-- [The Breath Atlas: Coherence](https://groundapp.live/atlas/coherence/): Guided audio practice
-- [The Breath Atlas: Three-Part Breath](https://groundapp.live/atlas/three-part-breath/): Guided audio practice
-- [The Breath Atlas: Alternate Nostril](https://groundapp.live/atlas/alternate-nostril/): Guided audio practice
+- [Play](https://groundapp.live/play): Bodie's Breath Run, a free finger- and keyboard-controlled browser game
+- [Blog](https://groundapp.live/blog/): Articles by Collin Chartier on breathwork, nervous system regulation and evidence limits
+- [The Breath Atlas: Coherence](https://groundapp.live/atlas/coherence/): An even, unforced audio practice with a transcript
+- [The Breath Atlas: Three-Part Breath](https://groundapp.live/atlas/three-part-breath/): A gentle belly, ribs and chest audio practice with a transcript
+- [The Breath Atlas: Alternate Nostril](https://groundapp.live/atlas/alternate-nostril/): A gentle alternate-nostril audio practice with a transcript
 
 ## Blog Posts
 
-- [Why I built GroundApp: between coached sessions](https://groundapp.live/blog/why-i-built-groundapp/)
-- [Nervous system regulation, without the promises](https://groundapp.live/blog/nervous-system-regulation-explained/)
-- [The science of breathwork, and its limits](https://groundapp.live/blog/science-of-breathwork/)
-- [Where Breathwork Tech Is Going (and What It Should Never Replace)](https://groundapp.live/blog/future-of-breathwork-tech/)
-- [Breathing patterns for everyday anxious moments](https://groundapp.live/blog/breathing-techniques-for-anxiety/)
+- [Why I built GroundApp: between coached sessions](https://groundapp.live/blog/why-i-built-groundapp/): Why Collin made a between-session check-in and guided breathing app
+- [Nervous system regulation, without the promises](https://groundapp.live/blog/nervous-system-regulation-explained/): Stress and breathing without self-diagnosis or treatment promises
+- [The science of breathwork, and its limits](https://groundapp.live/blog/science-of-breathwork/): Breathing research, HRV and the limits of applying study findings to an app
+- [Where breathwork tech is going](https://groundapp.live/blog/future-of-breathwork-tech/): Present app capabilities and Collin's views on privacy and human care
+- [Breathing patterns for everyday anxious moments](https://groundapp.live/blog/breathing-techniques-for-anxiety/): Five patterns with comfort guidance, not a treatment guide
 
 ## Free game
 
@@ -71,6 +72,7 @@
 - [Privacy Policy](https://groundapp.live/privacy): How GroundApp handles app and website data
 - [Terms of Service](https://groundapp.live/terms): Terms for using GroundApp
 - [Support](https://groundapp.live/support): Contact and quick answers on Premium, purchases, account deletion and wearables
+- [Delete account](https://groundapp.live/delete-account): App and email deletion routes; subscription cancellation is separate
 - [Accessibility](https://groundapp.live/accessibility): WCAG level AA design aim, current review status, known limits and how to report a problem. Not a claim of conformance or legal certification.
 - [Legal notice](https://groundapp.live/legal-notice): Legal notice (Impressum): who runs GroundApp, postal address, email and phone
 - Contact: collin@groundapp.live

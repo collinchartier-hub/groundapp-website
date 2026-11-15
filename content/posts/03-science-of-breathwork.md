@@ -2,6 +2,8 @@
 title: The science of breathwork, and its limits
 slug: science-of-breathwork
 description: What approved breathing studies report, why an HRV change is not a diagnosis, and why research on a practice is not proof of an app's results.
+seo_title: The Science of Breathwork and Its Limits | GroundApp
+seo_description: Read what breathing studies report, what their limits are, why HRV is not a diagnosis and why research on a practice does not prove GroundApp's results.
 date: 2026-03-26
 updated: 2026-11-14
 old: 03-science-of-breathwork

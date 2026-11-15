@@ -2,6 +2,8 @@
 title: Why I built GroundApp: between coached sessions
 slug: why-i-built-groundapp
 description: Collin Chartier on building a check-in and guided breathing practice for the moments between sessions. A creator's account, not evidence of user outcomes.
+seo_title: Why I Built GroundApp Between Sessions | Collin Chartier
+seo_description: Collin Chartier explains why he built GroundApp for the moments between coached sessions, how its check-in works and why a phone does not replace a coach.
 date: 2026-03-26
 updated: 2026-11-14
 old: 01-why-i-built-ground-app
