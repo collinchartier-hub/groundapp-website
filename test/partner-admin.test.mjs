@@ -23,7 +23,7 @@ beforeEach(() => {
     calls.push({ url: u, method, headers: init.headers, body: init.body ? JSON.parse(init.body) : null });
     if (state.throwOnPatchFor && method === 'PATCH' && u.includes(`partner_claims?id=eq.${state.throwOnPatchFor}`)) throw new Error('connection lost');
     if (method === 'PATCH' && u.includes('partner_programs?') && u.includes('low_stock_alerted')) return new Response('[]', { status: 200 });
-    if (method === 'GET' && u.includes('partner_programs?select=slug,name,status&order=created_at.asc')) return new Response(JSON.stringify([{ slug: 'arsenal', name: 'Arsenal Health', status: 'live' }, { slug: 'aion', name: 'AION', status: 'paused' }]), { status: state.programsStatus });
+    if (method === 'GET' && u.includes('partner_programs?select=slug,name,status&order=created_at.asc')) return new Response(JSON.stringify([{ slug: 'arsenal', name: 'Arsenal Health', status: 'live' }, { slug: 'aion', name: 'AION', status: 'paused' }, { slug: 'recon', name: 'RECON Wellness', status: 'paused' }]), { status: state.programsStatus });
     if (u.endsWith('/rpc/partner_admin_summary')) return new Response(JSON.stringify({ program: { slug: init.body ? JSON.parse(init.body).p_partner : 'arsenal', status: 'live' }, codes: { left: 440 }, rows: [] }), { status: 200 });
     if (u.endsWith('/rpc/partner_release_waitlist')) return new Response(JSON.stringify(state.released), { status: 200 });
     if (method === 'GET' && u.includes('partner_claims')) return new Response(JSON.stringify(state.claimRows), { status: 200 });
@@ -60,6 +60,7 @@ test('GET without a slug lists available partner programs', async () => {
     programs: [
       { slug: 'arsenal', name: 'Arsenal Health', status: 'live' },
       { slug: 'aion', name: 'AION', status: 'paused' },
+      { slug: 'recon', name: 'RECON Wellness', status: 'paused' },
     ],
   });
   assert.equal(calls[0].method, 'GET');
@@ -70,6 +71,12 @@ test('GET with AION slug returns only its own summary', async () => {
   const res = await get('?slug=aion');
   assert.equal((await res.json()).program.slug, 'aion');
   assert.deepEqual(calls[0].body, { p_partner: 'aion' });
+});
+
+test('RECON admin summary is scoped to its own partner', async () => {
+  const res = await get('?slug=recon');
+  assert.equal((await res.json()).program.slug, 'recon');
+  assert.deepEqual(calls[0].body, { p_partner: 'recon' });
 });
 
 test('GET program list reports a backend failure', async () => {
@@ -102,6 +109,17 @@ test('resend sends the claim its code again and stamps it', async () => {
   assert.ok(sends()[0].body.html.includes('CODEc1'));
   assert.ok(calls.some((c) => c.method === 'PATCH' && c.url.includes('partner_claims?id=eq.c1') && c.body.emailed_at));
   assert.match(sends()[0].headers['idempotency-key'], /^partner-claim\/c1\/\d+\/\d+$/);
+});
+
+test('RECON admin resend looks up only its claim and sends its own branded link', async () => {
+  state.claimRows = [{ ...state.claimRows[0], partner: 'recon' }];
+  state.codeRows = [{ code: 'RECONCODE123', redeem_url: 'https://apps.apple.com/redeem?code=RECONCODE123' }];
+  const res = await post({ action: 'resend', slug: 'recon', claim_id: 'c1' });
+  assert.deepEqual(await res.json(), { ok: true, sent: 1 });
+  assert.ok(calls.some((c) => c.url.includes('partner_claims?id=eq.c1&partner=eq.recon')));
+  assert.ok(sends()[0].body.html.includes('https://groundapp.live/recon/r/abcdefghijklmnopqrstuv'));
+  assert.ok(sends()[0].body.html.includes('RECON Wellness'));
+  assert.ok(!/Arsenal|AION|Traverse/.test(sends()[0].body.html));
 });
 
 test('resend for an unknown claim: 404', async () => {

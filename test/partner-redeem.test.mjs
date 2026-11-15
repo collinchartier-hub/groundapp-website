@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import { onRequestGet } from '../functions/arsenal/r/[token].js';
 import { onRequestGet as onAionRequestGet } from '../functions/aion/r/[token].js';
 import { onRequestGet as onTraverseRequestGet } from '../functions/traverse/r/[token].js';
+import { onRequestGet as onReconRequestGet } from '../functions/recon/r/[token].js';
 
 const env = { SUPABASE_URL: 'https://sb.example.co', SUPABASE_SERVICE_ROLE_KEY: 'sb_service', RESEND_API_KEY: 're_test' };
 const TOKEN = 'abcdefghijklmnopqrstuv';
@@ -51,6 +52,61 @@ const getTraverse = (token, ua) =>
     env,
     waitUntil: (p) => waited.push(p),
   });
+const getRecon = (token, ua) =>
+  onReconRequestGet({
+    params: { token },
+    request: new Request(`https://groundapp.live/recon/r/${token}`, { headers: { 'user-agent': ua } }),
+    env,
+    waitUntil: (p) => waited.push(p),
+  });
+
+test('RECON iPhone link counts only its claim and redirects to its App Store offer', async () => {
+  state.tap.partner = 'recon';
+  state.tap.redeem_url = 'https://apps.apple.com/redeem?ctx=offercodes&id=6761865560&code=RECONCODE123';
+  const res = await getRecon(TOKEN, IPHONE);
+  assert.equal(res.status, 302);
+  assert.equal(res.headers.get('location'), state.tap.redeem_url);
+  assert.deepEqual(calls[0].body, { p_token: TOKEN, p_ios: true, p_partner: 'recon' });
+  await Promise.all(waited);
+  assert.ok(calls.some((c) => c.url.endsWith('/cancel')));
+});
+
+test('RECON desktop link shows only its own brand, code, QR and return link', async () => {
+  state.tap.partner = 'recon';
+  state.tap.code = 'RECONCODE123';
+  const res = await getRecon(TOKEN, MAC);
+  assert.equal(res.status, 200);
+  assert.deepEqual(calls[0].body, { p_token: TOKEN, p_ios: false, p_partner: 'recon' });
+  const markup = await res.text();
+  assert.ok(markup.includes('RECON WELLNESS × GroundApp'));
+  assert.ok(markup.includes('/assets/css/recon-v1.css'));
+  assert.ok(markup.includes(`data-qr="https://groundapp.live/recon/r/${TOKEN}"`));
+  assert.ok(markup.includes('RECONCODE123'));
+  assert.ok(markup.includes('Back to the RECON Wellness page'));
+  assert.ok(!/Arsenal|AION|Traverse/.test(markup));
+  assert.equal(res.headers.get('x-robots-tag'), 'noindex');
+});
+
+test('RECON rejects another partner token before cancellation or redirect', async () => {
+  for (const other of ['arsenal', 'aion', 'traverse']) {
+    state.tap.partner = other;
+    const res = await getRecon(TOKEN, IPHONE);
+    assert.equal(res.status, 404);
+    assert.deepEqual(calls.at(-1).body, { p_token: TOKEN, p_ios: true, p_partner: 'recon' });
+    assert.ok((await res.text()).includes('href="/recon"'));
+  }
+  assert.equal(waited.length, 0);
+  assert.equal(calls.filter((c) => c.url.endsWith('/cancel')).length, 0);
+});
+
+test('RECON token on another partner route cannot redeem', async () => {
+  state.tap.partner = 'recon';
+  assert.equal((await get(TOKEN, IPHONE)).status, 404);
+  assert.equal((await getAion(TOKEN, IPHONE)).status, 404);
+  assert.equal((await getTraverse(TOKEN, IPHONE)).status, 404);
+  assert.deepEqual(calls.map((c) => c.body.p_partner), ['arsenal', 'aion', 'traverse']);
+  assert.equal(waited.length, 0);
+});
 
 test('Traverse iPhone link asks for its own claim and redirects to Apple', async () => {
   state.tap.partner = 'traverse';

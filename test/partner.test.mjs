@@ -27,6 +27,14 @@ test('validateClaim returns a clean value for good input', () => {
   });
 });
 
+test('RECON community claim keeps the shared attestation and channel rules', () => {
+  const validated = validateClaim({ ...good, partner: 'recon', location: 'RECON Wellness', newsletter: false, src: 'proposal' });
+  assert.equal(validated.value.partner, 'recon');
+  assert.equal(validated.value.location, 'RECON Wellness');
+  assert.equal(validated.value.newsletter, false);
+  assert.equal(validated.value.src, 'proposal');
+});
+
 test('validateClaim names the first bad field', () => {
   assert.deepEqual(validateClaim({ ...good, first_name: '' }), { error: 'first_name' });
   assert.deepEqual(validateClaim({ ...good, last_name: '@' }), { error: 'last_name' });
@@ -62,4 +70,5 @@ test('isIosUA is true for iPhone and iPad only', () => {
 
 test('redeemLink builds the member link', () => {
   assert.equal(redeemLink('arsenal', 'abc'), 'https://groundapp.live/arsenal/r/abc');
+  assert.equal(redeemLink('recon', 'abc'), 'https://groundapp.live/recon/r/abc');
 });
