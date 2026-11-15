@@ -9,8 +9,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.join(HERE, "..", "site")
 OUT = os.path.join(HERE, "out")  # artifact build and syntax-check files, gitignored
 os.makedirs(OUT, exist_ok=True)
-VER = "v2"
-OG_VER = "v1"  # the share image (site/img/play/bodie-run-og-v1.jpg) has its own number
+VER = "v3"
 src = lambda n: open(os.path.join(HERE, "src", n)).read()
 page = src("1-page.html")
 js = "".join(src(n) for n in ["2-core.js", "3-models.js", "4-race.js", "5-modes.js", "6-app.js"])
@@ -29,8 +28,8 @@ open(os.path.join(OUT, "test-short.html"), "w").write(short)
 style_open, style_close = page.index("<style>"), page.index("</style>")
 css = page[style_open + len("<style>"):style_close].strip("\n")
 body = page[style_close + len("</style>"):].lstrip("\n")
-FONTS = """@font-face { font-family: "Source Serif 4"; src: url("../fonts/source-serif-4-v1.woff2") format("woff2"); font-weight: 200 900; font-style: normal; font-display: swap; }
-@font-face { font-family: "Source Code Pro"; src: url("../fonts/source-code-pro-v1.woff2") format("woff2"); font-weight: 200 900; font-style: normal; font-display: swap; }
+FONTS = """@font-face { font-family: "Source Serif 4"; src: url("../fonts/source-serif-4-latin-v1.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Ground Font Type"; src: url("../fonts/ground-font-type-v1.woff2") format("woff2"); font-weight: 100 900; font-style: normal; font-display: swap; }
 *, *::before, *::after { box-sizing: border-box; }
 body { margin: 0; }
 img { max-width: 100%; }
@@ -84,10 +83,10 @@ assert body.count('  <header class="top">') == 1
 web_body = (body.replace('<div class="wrap">\n', '<div class="wrap">\n' + BAR, 1)
             .replace('  <header class="top">', '  <main class="game-main" id="main">\n  <header class="top">', 1)
             .replace("</section>\n</div>\n\n<script>", "</section>\n  </main>\n</div>\n\n" + FOOT + "\n<script>", 1))
-TITLE = "Bodie's Breath Run | A breathwork game by GroundApp"
-DESC = ("A free breathwork game from GroundApp. Race Kip the Caffeine Crow with one button, hold your breath through "
-        "Worry Clouds, and try The Big Hold to beat your own breath-hold record. Plays in your browser.")
-OG_IMG = f"https://groundapp.live/img/play/bodie-run-og-{OG_VER}.jpg"
+TITLE = "Bodie's Breath Run | Finger-control game by GroundApp"
+DESC = ("Play with Bodie using finger or keyboard controls while breathing normally. "
+        "Screen shields, jumps and a noncompetitive ribbon ride. No breath-hold test or dive challenge.")
+OG_IMG = "https://groundapp.live/og-image.jpg"
 head = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -120,6 +119,7 @@ head = f"""<!DOCTYPE html>
 <link rel="preload" href="/assets/fonts/source-serif-4-latin-v1.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/ground-font-type-v1.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/css/ground-tokens-v1.css">
+<script src="/js/preview-mode-v1.js"></script>
 <link rel="stylesheet" href="/assets/css/site-v4.css">
 <link rel="stylesheet" href="/assets/css/bodie-run-{VER}.css">
 <style>
@@ -146,7 +146,7 @@ body > .site-foot a {{ color: var(--text-2); }}
 </style>
 <script type="application/ld+json">
 {{"@context": "https://schema.org", "@type": "VideoGame", "name": "Bodie's Breath Run", "url": "https://groundapp.live/play",
-  "description": "{DESC}", "genre": ["Casual", "Health and fitness"], "gamePlatform": "Web browser", "applicationCategory": "Game",
+  "description": "{DESC}", "genre": ["Casual"], "gamePlatform": "Web browser", "applicationCategory": "Game",
   "offers": {{"@type": "Offer", "price": "0", "priceCurrency": "USD"}},
   "publisher": {{"@type": "Organization", "name": "GroundApp", "url": "https://groundapp.live"}}, "image": "{OG_IMG}"}}
 </script>
@@ -154,7 +154,7 @@ body > .site-foot a {{ color: var(--text-2); }}
 <body>
 """
 tail = f"""<script type="module" src="/js/bodie-run-{VER}.js"></script>
-<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{{"token": "03e507bb97d74e78bc8de83dc6b261ec"}}'></script>
+<script src="/js/site-analytics-v1.js" defer></script>
 <script src="/js/app-links-v3.js" defer></script>
 <script src="/js/site-menu-v1.js" defer></script>
 </body>
@@ -172,6 +172,11 @@ if "--artifact-only" not in sys.argv:
     open(os.path.join(SITE, "play.html"), "w").write(web_html)
     open(os.path.join(SITE, "js", f"bodie-run-{VER}.js"), "w").write(web_js)
     open(os.path.join(SITE, "assets", "css", f"bodie-run-{VER}.css"), "w").write(web_css)
+    # Clean cutover: the old physiological-challenge bundle must not remain a public asset.
+    for stale in ("js/bodie-run-v2.js", "assets/css/bodie-run-v2.css"):
+        old_path = os.path.join(SITE, stale)
+        if os.path.isfile(old_path):
+            os.remove(old_path)
     print("site/play.html, site/js/bodie-run-%s.js, site/assets/css/bodie-run-%s.css written" % (VER, VER))
 # syntax check both module scripts
 for name, code in [("artifact", art[art.index('<script type="module">') + 22:art.rindex("</script>")]), ("web", web_js)]:

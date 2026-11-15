@@ -2,11 +2,12 @@
    Everything that isn't Bodie runs first and on its own (clips, film, the Library list, the dock, the newsletter), so
    a failed 3D download never breaks them. The menu is /js/site-menu-v1.js. Bodie (/js/bodie-v3.js, three.js from
    jsDelivr) loads last through a caught dynamic import; if it fails his still image stays.
-   Bodie is ONE canvas (#bodie). He sits in a [data-slot] box in the layout; when another slot comes into view he moves
-   there and reacts (data-react). On desktop he flies when his path stays clear of copy, else he fades out and back in.
+   Bodie is ONE canvas (#bodie). His slots follow the DOM: hero, library, play, story, download. When a slot
+   comes into view he moves there and reacts (data-react). On desktop he flies when his path stays clear of copy,
+   else he fades out and back in.
    Clips play muted while in view; a refused play() means Low Power Mode, so Bodie goes still and clips keep their still.
    "Pause motion" in the hero (WCAG 2.2.2) holds Bodie and the clips still the same way and is remembered in localStorage.
-   Bump the filename (v7) when editing after a deploy: Cloudflare caches .js at the edge for 7 days. */
+   A separately approved production release must version the filename because edge JS caches last seven days. */
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const root = document.documentElement;
@@ -169,10 +170,17 @@ $$('[data-pattern]').forEach((btn) => btn.addEventListener('click', () => {
 /* ---------- Intro film: sound, on tap only ---------- */
 const film = $('#intro');
 if (film) {
+  // The owned recording stays intact. Proposed playback removes the unsupported clinical claim segment.
+  const skipOlderClaims = () => {
+    if (film.currentTime >= 117 && film.currentTime < 149.76) film.currentTime = 149.76;
+  };
+  film.addEventListener('timeupdate', skipOlderClaims);
+  film.addEventListener('seeking', skipOlderClaims);
+}
+if (film) {
   const frame = film.closest('.film');
   film.addEventListener('playing', () => film.classList.add('is-playing'));
   $$('[data-film-play]').forEach((b) => b.addEventListener('click', () => {
-    if (b.dataset.filmPlay === 'jump') frame.scrollIntoView({ block: 'center', behavior: reduced ? 'auto' : 'smooth' });
     frame.classList.add('is-on');
     film.muted = false;
     film.controls = true;
@@ -252,6 +260,12 @@ if (form) {
     if (busy) return;
     const email = emailIn.value.trim(), name = nameIn.value.trim();
     if (!EMAIL_RE.test(email)) { showErr(MSG.invalid_email); emailIn.focus(); return; }
+    if (window.GroundPreview?.active()) {
+      clearErr();
+      okEl.textContent = 'Private preview. Nothing was sent and no subscription was created.';
+      okEl.focus({ preventScroll: true });
+      return;
+    }
     clearErr(); busy = true; btn.disabled = true; btn.textContent = 'Joining...';
     const data = { email, source: 'inline', website: hpIn ? hpIn.value : '', t: Date.now() - T0 };
     if (name) data.name = name;
@@ -269,7 +283,7 @@ if (form) {
   });
 }
 
-/* ---------- Bodie: loaded last, so nothing above waits on three.js ---------- */
+/* ---------- Bodie: DOM-ordered slots, loaded last so nothing above waits on three.js ---------- */
 // Desktop flight: true when Bodie's box, flown in a straight line from `from` to `to` (scaling as it goes), would pass
 // over copy or a button. Then he fades out where he was and fades in at the new slot instead.
 const COPY = 'main :is(h1, h2, h3, p, li, dt, dd, blockquote, figcaption, .btn, .tech)';

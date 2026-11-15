@@ -13,32 +13,31 @@ const fmtT = (s) => { s = Math.max(0, s); const m = Math.floor(s / 60), r = s - 
 
 // ---------------------------------------------------------------- profile (this browser only)
 // The Hall of Breath runs on the Claude artifact database. Where that is missing (groundapp.live), records stay on this device.
-const HAS_HALL = !!(window.claude && window.claude.use);
-const KEY = "bodie-run-v3";
+const HAS_HALL = !window.GroundPreview?.active() && !!(window.claude && window.claude.use);
+const KEY = "bodie-controls-v1";
 const DEF = () => ({
   leaves: 0, unlocked: 1, wins: 0, best: {}, bestTime: {}, last: {}, stars: {},
   up: { lungs: 0, spring: 0, magnet: 0, aura: 0, sigh: 0, charge: 0 }, owned: ["classic"], skin: "classic", acc: [],
-  sound: true, voice: true, glow: null, motion: null, // motion null: follow the device's reduced-motion setting
-  deep: { static: { best: null, last: null, hist: [] }, dash: { best: null, last: null, hist: [] } },
+  sound: false, voice: false, glow: null, motion: null, // motion null: follow the device's reduced-motion setting
   surf: {}, daily: { date: "", best: 0 },
 });
 function loadProfile() {
   try {
-    const raw = localStorage.getItem(KEY) || localStorage.getItem("bodie-run-v2");
+    const raw = localStorage.getItem(KEY);
     const p = JSON.parse(raw);
     if (p && p.up) {
-      const d = DEF(), pd = p.deep || {};
+      const d = DEF();
       return { ...d, ...p, up: { ...d.up, ...p.up }, best: { ...(p.best || {}) }, bestTime: { ...(p.bestTime || {}) }, last: { ...(p.last || {}) }, stars: { ...(p.stars || {}) },
         owned: p.owned || d.owned, acc: p.acc || [], surf: { ...(p.surf || {}) }, daily: { ...d.daily, ...(p.daily || {}) },
-        deep: { static: { ...d.deep.static, ...(pd.static || {}) }, dash: { ...d.deep.dash, ...(pd.dash || {}) } } };
+      };
     }
   } catch (e) {}
   return DEF();
 }
 let profile = loadProfile();
 function save() { try { localStorage.setItem(KEY, JSON.stringify(profile)); } catch (e) {} }
-function loadGhost(k) { try { const g = JSON.parse(localStorage.getItem("bodie-ghost-" + k)); return g && g.xs ? g : null; } catch (e) { return null; } }
-function saveGhost(k, g) { try { localStorage.setItem("bodie-ghost-" + k, JSON.stringify(g)); } catch (e) {} }
+function loadGhost(k) { try { const g = JSON.parse(localStorage.getItem("bodie-controls-ghost-" + k)); return g && g.xs ? g : null; } catch (e) { return null; } }
+function saveGhost(k, g) { try { localStorage.setItem("bodie-controls-ghost-" + k, JSON.stringify(g)); } catch (e) {} }
 const totalStars = () => Object.values(profile.stars).reduce((a, s) => a + (s || []).filter(Boolean).length, 0);
 
 const SKINS = {
@@ -49,37 +48,37 @@ const SKINS = {
   moon: { name: "Moonstone", desc: "Pale and glowing. Needs 9 stars.", body: "#dcd6cf", cheek: "#c4935a", cost: 300, stars: 9 },
 };
 const ACCS = {
-  sprout: { name: "Bodhi Sprout", desc: "A heart-shaped bodhi leaf on top.", cost: 80 },
+  sprout: { name: "Bodie Sprout", desc: "A heart-shaped bodhi leaf on top.", cost: 80 },
   scarf: { name: "Amber Scarf", desc: "Flaps when Bodie runs.", cost: 60 },
   halo: { name: "Ring Halo", desc: "Concentric rings of light. Needs 5 stars.", cost: 250, stars: 5 },
 };
 
-// ---------------------------------------------------------------- courses: each one teaches a breathwork technique
+// ---------------------------------------------------------------- courses: finger-control courses, never physiological instruction
 const COURSES = [
-  { key: "hollow", name: "Root Hollow", tech: "Box Breathing", len: 420, kip: .94, seed: 1101,
-    f: { pits: .26, rocks: .5, clouds: .36, lake: 0, storms: 0, pads: 0, vents: 0, bubbles: .04 }, refill: 1.7, bpm: 150, key: 0,
+  { key: "hollow", name: "Root Hollow", tech: "Shield control", len: 420, kip: .94, seed: 1101,
+    f: { pits: .26, rocks: .5, clouds: .36, lake: 0, storms: 0, pads: 0, vents: 0, bubbles: .04 }, refill: 1.7, bpm: 150, musicKey: 0,
     sky: ["#0d0806", "#22150e", "#4a2b1b"], fog: 0x2b1b13, hills: [0x3a2618, 0x2c1d14, 0x22170f], ground: 0x3a2a1e, top: 0x4a3626, trees: "round",
-    tip: "Tap to jump rocks and gaps. When the game says HOLD YOUR BREATH, press and keep holding: Bodie walks right through the Worry Cloud. Breathe that smog in and he POPS. Hold 4 seconds for a Box Breath.",
-    ch: [{ text: "Beat Kip to the Great Tree", test: (P, r) => r.won }, { text: "Hold your breath through 5 Worry Clouds", test: (P) => P.calm >= 5 }, { text: "Win without a single POP", test: (P, r) => r.won && P.pops === 0 }] },
-  { key: "lake", name: "Still Lake", tech: "Breath-hold dives", len: 500, kip: .97, seed: 2202,
-    f: { pits: .2, rocks: .36, clouds: .38, lake: .34, storms: 0, pads: 0, vents: 0, bubbles: .08 }, refill: 1.6, bpm: 156, key: 2,
+    tip: "Tap to jump. Keep the button pressed for a screen shield, then release to recharge. Keep breathing normally.",
+    ch: [{ text: "Beat Kip to the Great Tree", test: (P, r) => r.won }, { text: "Use the screen shield through 5 clouds", test: (P) => P.calm >= 5 }, { text: "Win without a single POP", test: (P, r) => r.won && P.pops === 0 }] },
+  { key: "lake", name: "Still Lake", tech: "Obstacle control", len: 500, kip: .97, seed: 2202,
+    f: { pits: .2, rocks: .36, clouds: .38, lake: 0, storms: 0, pads: 0, vents: 0, bubbles: .08 }, refill: 1.6, bpm: 156, musicKey: 2,
     sky: ["#090a0a", "#18201e", "#3b3a30"], fog: 0x1e2422, hills: [0x2b2c27, 0x23251f, 0x1b1d19], ground: 0x35281d, top: 0x463525, trees: "round",
-    tip: "On the lake, holding your breath makes Bodie dive. Stay under to slip below the logs, and grab the seeds down there. A long dive is also a Box Breath.",
-    ch: [{ text: "Beat Kip to the Great Tree", test: (P, r) => r.won }, { text: "Dive under 6 logs without a bonk", test: (P) => P.dives >= 6 }, { text: "Land 2 Box Breaths", test: (P) => P.boxes >= 2 }] },
-  { key: "swamp", name: "Sigh Swamp", tech: "Physiological Sigh", len: 540, kip: .99, seed: 3303, sigh: true,
-    f: { pits: .2, rocks: .34, clouds: .3, lake: .1, storms: .2, pads: 0, vents: 0, bubbles: .06 }, refill: 1.6, bpm: 160, key: 5,
+    tip: "Tap to jump obstacles. The shield is a finger control, not a breathing cue.",
+    ch: [{ text: "Beat Kip to the Great Tree", test: (P, r) => r.won }, { text: "Pass 6 clouds with the shield", test: (P) => P.calm >= 6 }, { text: "Use 2 shield releases", test: (P) => P.boxes >= 2 }] },
+  { key: "swamp", name: "Sigh Swamp", tech: "Double-tap gust", len: 540, kip: .99, seed: 3303, sigh: true,
+    f: { pits: .2, rocks: .34, clouds: .3, lake: 0, storms: .2, pads: 0, vents: 0, bubbles: .06 }, refill: 1.6, bpm: 160, musicKey: 5,
     sky: ["#080907", "#1a1d14", "#3a3524"], fog: 0x1f2117, hills: [0x2c2c20, 0x23241a, 0x1b1c14], ground: 0x342a1c, top: 0x3f3a24, trees: "round",
-    tip: "Storm clouds zap you even if you hold your breath. Double tap fast to do a physiological sigh: two quick breaths in, one long breath out. The big exhale blows the storm away. It recharges in a few seconds.",
-    ch: [{ text: "Beat Kip to the Great Tree", test: (P, r) => r.won }, { text: "Sigh away 4 storms", test: (P) => P.storms >= 4 }, { text: "Grab 60 Breath Seeds", test: (P) => P.seeds + P.gold * 5 >= 60 }] },
-  { key: "peaks", name: "Power Peaks", tech: "Power Breaths", len: 600, kip: 1.01, seed: 4404,
-    f: { pits: .26, rocks: .34, clouds: .32, lake: 0, storms: 0, pads: .2, vents: 0, bubbles: .14 }, refill: 1.1, bpm: 166, key: -3, snow: true,
+    tip: "Double tap for a gust that clears nearby storm clouds. No breathing action is involved.",
+    ch: [{ text: "Beat Kip to the Great Tree", test: (P, r) => r.won }, { text: "Clear 4 storms with a gust", test: (P) => P.storms >= 4 }, { text: "Grab 60 Trail Seeds", test: (P) => P.seeds + P.gold * 5 >= 60 }] },
+  { key: "peaks", name: "Power Peaks", tech: "Power pads", len: 600, kip: 1.01, seed: 4404,
+    f: { pits: .26, rocks: .34, clouds: .32, lake: 0, storms: 0, pads: .2, vents: 0, bubbles: .14 }, refill: 1.1, bpm: 166, musicKey: -3, snow: true,
     sky: ["#07060a", "#1c1418", "#47302a"], fog: 0x24191b, hills: [0x3a2c28, 0x2e2320, 0x241b19], ground: 0x3e2e24, top: 0x52402f, trees: "pine",
-    tip: "Thin air up here. On a glowing power pad, tap tap tap: every tap is a power breath that charges your lungs past 100%. Then hold through the thin air all the way. Air bubbles top you up.",
-    ch: [{ text: "Beat Kip to the Great Tree", test: (P, r) => r.won }, { text: "Charge your lungs to 150%", test: (P) => P.maxCharge >= .5 }, { text: "Cross thin air without a single cough", test: (P) => P.thinCleared >= 1 && P.thinPops === 0 }] },
+    tip: "On a glowing pad, tap to charge the screen shield, then keep the button pressed through the windy zone. Release when the shield meter is low.",
+    ch: [{ text: "Beat Kip to the Great Tree", test: (P, r) => r.won }, { text: "Charge the screen shield to 150%", test: (P) => P.maxCharge >= .5 }, { text: "Cross a windy zone without a shield bump", test: (P) => P.thinCleared >= 1 && P.thinPops === 0 }] },
   { key: "temple", name: "Starfall Temple", tech: "Glide control", len: 640, kip: 1.04, seed: 5505, sigh: true,
-    f: { pits: .22, rocks: .32, clouds: .3, lake: .1, storms: .1, pads: .08, vents: .16, bubbles: .08 }, refill: 1.5, bpm: 172, key: 7,
+    f: { pits: .22, rocks: .32, clouds: .3, lake: 0, storms: .1, pads: .08, vents: .16, bubbles: .08 }, refill: 1.5, bpm: 172, musicKey: 7,
     sky: ["#08060c", "#1d1422", "#4a2d33"], fog: 0x221824, hills: [0x33263a, 0x2a1f2f, 0x211824], ground: 0x3a2c2a, top: 0x4c3a34, trees: "pine",
-    tip: "Everything you've learned, plus updrafts. Step on a vent to launch, then hold your breath to glide down through the rhythm rings. Every ring in a row is worth more. Kip is at full caffeine.",
+    tip: "Ride the updraft and press the button to glide through rings. Your own breathing stays normal.",
     ch: [{ text: "Beat Kip to the Great Tree", test: (P, r) => r.won }, { text: "Fly through 10 rhythm rings", test: (P) => P.rings >= 10 }, { text: "Win by 20m or more", test: (P, r) => r.won && r.margin >= 20 }] },
 ];
 COURSES.forEach((c, i) => (c.idx = i));
@@ -88,12 +87,12 @@ function hashStr(s) { let h = 2166136261; for (const ch of s) { h ^= ch.charCode
 function mulberry(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 function dailyCourse() {
   const k = dayKey(), r = mulberry(hashStr(k)), th = COURSES[Math.floor(r() * COURSES.length)];
-  const f = { pits: .18 + r() * .1, rocks: .3 + r() * .15, clouds: .26 + r() * .14, lake: r() < .5 ? .12 : 0, storms: r() < .55 ? .14 : 0, pads: r() < .45 ? .1 : 0, vents: r() < .5 ? .1 : 0, bubbles: .08 };
+  const f = { pits: .18 + r() * .1, rocks: .3 + r() * .15, clouds: .26 + r() * .14, lake: 0, storms: r() < .55 ? .14 : 0, pads: r() < .45 ? .1 : 0, vents: r() < .5 ? .1 : 0, bubbles: .08 };
   return { ...th, key: "daily-" + k, idx: -1, daily: true, name: "Daily Dash", len: 480, kip: .99, seed: hashStr(k), f, sigh: f.storms > 0, refill: 1.5, tech: "A bit of everything",
-    tip: "Today's course mixes hazards from every course, and it's the same course for everyone today." + (HAS_HALL ? " Check the Hall of Breath to see who's on top." : "") + " Double tap to sigh storms away, and tap fast on power pads.", ch: [] };
+    tip: "Today's course mixes hazards from every course, and it's the same course for everyone today." + (HAS_HALL ? " Check the Hall of Breath to see who's on top." : "") + " Double tap to clear storms, and tap on power pads.", ch: [] };
 }
-const SAGE_LINES = ["Slow is smooth. Smooth is fast.", "Your breath is the one thing Kip can't buy.", "Breathe out longer than you breathe in.", "Calm lungs, fast feet.", "The ring you're in is the only ring."];
-const KIP_LINES = ["Breathing is for slowpokes!", "Espresso number seven!", "Fast fast fast fast!", "Who needs lungs?!", "Can't stop! Won't stop!", "CAW CAW CAW!", "Decaf is a myth!"];
+const SAGE_LINES = ["One button at a time.", "This is finger-control play.", "Keep breathing normally.", "Pause whenever you want.", "Follow the trail."];
+const KIP_LINES = ["Catch me on the trail!", "Espresso number seven!", "Fast fast fast fast!", "Who needs decaf?!", "Can't stop! Won't stop!", "CAW CAW CAW!", "Decaf is a myth!"];
 
 // ---------------------------------------------------------------- sound: chiptune music, sfx, voice
 const SILENT_WAV = "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABAAZGF0YQAAAAA=";
@@ -237,10 +236,10 @@ const Sound = (() => {
 })();
 // The cast. Each one has a voice: the browser's own speech with a pitch, speed and preferred voice per character.
 const CAST = {
-  bodie: { name: "Bodie", role: "Hero", line: "Hi, I'm Bodie! When I hold my breath, my belly fills up and glows gold. Want to breathe with me?", fact: "Runs on belly breaths. Has never skipped an exhale." },
-  kip: { name: "Kip the Caffeine Crow", role: "Rival", line: "CAW! Kip's the name, speed's the game! Breathing? Never heard of it. Bet you can't catch me!", fact: "Favorite drink: espresso. Second favorite: also espresso." },
+  bodie: { name: "Bodie", role: "Hero", line: "Hi, I'm Bodie! Tap to jump and press for my screen shield. Keep breathing normally while we play.", fact: "A finger-control game, not a breathing test." },
+  kip: { name: "Kip the Caffeine Crow", role: "Rival", line: "CAW! Kip's the name, speed's the game! A shortcut? Never heard of it. Bet you can't catch me!", fact: "Favorite drink: espresso. Second favorite: also espresso." },
   sage: { name: "Sage the Owl", role: "Coach", line: "Hello, friend. I'm Sage. I live in the Great Tree at the end of every course. Slow is smooth, and smooth is fast.", fact: "Has never rushed. Not once. Not even for dessert." },
-  ember: { name: "Ember the Fox", role: "Shopkeeper", line: "Ember's the name, deals are my game! Bring me Breath Seeds and I'll swap them for Gold Leaves. Fancy a new look?", fact: "Accepts seeds, leaves and compliments." },
+  ember: { name: "Ember the Fox", role: "Shopkeeper", line: "Ember's the name, deals are my game! Bring me Trail Seeds and I'll swap them for Gold Leaves. Fancy a new look?", fact: "Accepts seeds, leaves and compliments." },
 };
 const DEEP_VOICE = /Daniel|Arthur|Aaron|Alex|Fred|Rishi|Oliver|Google UK English Male|\bMale\b/i;
 const VOICE_STYLE = {
@@ -319,7 +318,7 @@ const TEX = {
 TEX.roots.wrapS = THREE.RepeatWrapping;
 function skyTexture(c) { return canvasTex(256, (g, s) => { const gr = g.createLinearGradient(0, 0, 0, s); gr.addColorStop(0, c[0]); gr.addColorStop(.55, c[1]); gr.addColorStop(1, c[2]); g.fillStyle = gr; g.fillRect(0, 0, s, s); }); }
 function textSprite(text, color = "#E8DDD0", size = .9) {
-  const c = document.createElement("canvas"), g = c.getContext("2d"), fs = 56, font = `700 ${fs}px "Source Code Pro", ui-monospace, monospace`;
+  const c = document.createElement("canvas"), g = c.getContext("2d"), fs = 56, font = `600 ${fs}px "Ground Font Type", sans-serif`;
   g.font = font; const w = Math.ceil(g.measureText(text).width) + 44; c.width = w; c.height = fs + 32;
   g.font = font; g.fillStyle = "rgba(26,17,14,.78)"; if (g.roundRect) { g.beginPath(); g.roundRect(0, 0, w, c.height, 22); g.fill(); } else g.fillRect(0, 0, w, c.height);
   g.fillStyle = color; g.textBaseline = "middle"; g.fillText(text, 22, c.height / 2 + 2);

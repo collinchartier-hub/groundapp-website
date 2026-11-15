@@ -1,92 +1,58 @@
 ---
-title: 5 breathing techniques that actually help with anxiety
+title: Breathing patterns for everyday anxious moments
 slug: breathing-techniques-for-anxiety
-description: The Physiological Sigh, 4-7-8, Box Breathing, Coherent Breathing and the long exhale. How each one works, what the research says, and when to use which.
+description: A gentle comparison of five breathing patterns, with comfort guidance and evidence limits. Not a treatment guide for anxiety disorders or panic.
 date: 2026-03-26
-updated: 2026-10-02
+updated: 2026-11-14
 old: 05-five-breathing-techniques-anxiety
 ---
 
-When anxiety hits, your body doesn't need a pep talk. It needs something physical to do. These five breathing techniques work on your body first, and your mind follows.
+There is no breathing pattern I can promise will stop anxiety. These are descriptions of practices, not a prescription or a test you need to pass.
 
-I'm a breathwork coach, and these are the techniques I reach for with clients (and myself) when anxiety is real and in the moment. No fluff. Just how they work and how to do them.
+This is coaching and education, not medical or mental health treatment. If you're dealing with panic attacks, trauma, or thoughts of hurting yourself, start with a licensed professional. In the US you can call or text 988 any time.
 
-## 1. Physiological Sigh: the fastest reset (1 breath cycle)
+## Before choosing a pattern
 
-**The technique:** Two inhales through your nose (a full inhale, then a short "sip" of air on top), followed by a long, slow exhale through your mouth.
+Sit comfortably on dry land. You can keep breathing naturally instead of changing anything. Never practise while driving, standing, in heat, or in or near water.
 
-**Why it works:** When you're stressed and breathing shallowly, some of the tiny air sacs in your lungs partly collapse. The second sip of air helps re-open them, and the long exhale is where the calming happens: your heart rate slows on the way out.
+Do not force a deeper breath or a longer exhale. Skip pauses and stop if you feel dizzy, tingly, breathless, more anxious or unwell. If you are pregnant, have a heart or lung condition, or a history of seizures or fainting, check with your doctor before a new practice.
 
-**The research:** In a 2023 Stanford study (Balban, Huberman, Spiegel and colleagues, published in *Cell Reports Medicine*), people who did five minutes of cyclic sighing a day for a month had bigger improvements in mood and a bigger drop in breathing rate than people who practiced mindfulness meditation.
+## Physiological sigh
 
-**Protocol:** 3 to 5 breath cycles. That's it. You can do this in a meeting, in your car, or right before you walk on stage. Under a minute.
+The familiar description is an inhale, a small second inhale, then an easy exhale. It is not a request to keep taking bigger breaths.
 
-**Best for:** Acute anxiety, the first wave of panic, nerves before a performance, stress in the middle of a conversation.
+In [Balban and colleagues' 2023 study](https://pmc.ncbi.nlm.nih.gov/articles/PMC9873947/), repeated daily cyclic sighing was associated with a greater improvement in positive affect and reduction in breathing rate than mindfulness. The groups did not differ in state-anxiety change. The study does not establish a one-breath panic treatment or a "fastest reset."
 
-## 2. 4-7-8 Breathing: the anxiety and sleep technique
+## 4-7-8 breathing
 
-**The technique:** Inhale through your nose for 4 counts. Hold for 7 counts. Exhale through your mouth for 8 counts.
+The name describes an inhale, a pause and an exhale with those relative counts. A long pause is not necessary to participate in gentle breathing, and there is no reason to work up to it here.
 
-**Why it works:** The exhale is twice as long as the inhale, so you spend more time on the side of the breath that slows your heart. The long hold slows the whole cycle way down.
+We do not use broader slow-breathing research as proof that this exact pattern treats anxiety or sleep problems. If pauses feel uncomfortable, choose a pattern without them.
 
-**The research:** Popularized by Dr. Andrew Weil, based on yogic breathing (pranayama). Research on 4-7-8 itself is still small, but it fits what we know about slow breathing with long exhales.
+## Box breathing
 
-**Protocol:** 4 cycles to start. Work up to 8 cycles as it gets comfortable. Twice a day if you want it to become a habit. If the hold makes you anxious, shorten the counts and keep the ratio.
+Box breathing has equal inhale, pause, exhale and pause phases. Common guides use four counts for each. That is the shape of the pattern, not a requirement to complete a round.
 
-**Best for:** Anxiety before sleep, racing thoughts, trouble unwinding at night.
+There is no hold-to-win element and no need to increase a stopwatch score. Skip the pauses or choose ordinary breathing if they bring air hunger or distress. We do not claim this builds a clinically meaningful CO2 tolerance or treats panic.
 
-## 3. Box Breathing: composure under pressure (4-4-4-4)
+## Even paced breathing
 
-**The technique:** Inhale for 4 counts. Hold for 4. Exhale for 4. Hold for 4. Repeat.
+This is a gentle inhale and exhale without pauses. A guide can offer a rhythm, but comfort takes priority over keeping time.
 
-**Why it works:** Equal counts keep you calm without making you sleepy, and the steady count gives your mind a job besides spiraling. The holds also build your tolerance to CO2, which matters because CO2 sensitivity is closely linked to panic.
+The [science article](/blog/science-of-breathwork/) explains why a change in HRV is not a measure of your worth, safety or mental health. We do not promise a universal ideal breathing rate.
 
-**The background:** Popularized by former Navy SEAL Mark Divine and widely taught to military, police and first responders for staying composed under stress.
+## A comfortably longer exhale
 
-**Protocol:** 5 minutes, which is about 19 rounds at a 4-count. Go to 10 minutes or more when you want a deeper reset.
+Some guides invite an exhale a little longer than the inhale. There is no need to force a two-to-one ratio or keep going until your lungs feel empty.
 
-**Best for:** High-pressure moments, nerves before a performance, staying alert but calm, decisions under stress. It's also one of the four techniques that are free forever in GroundApp.
+You may prefer simply noticing your natural breath. Choosing not to control it is an option, not a failed session.
 
-## 4. Coherent Breathing: the HRV builder (5.5 in, 5.5 out)
+## What the broader evidence means
 
-**The technique:** Inhale for about 5.5 seconds. Exhale for about 5.5 seconds. No holds. Smooth and continuous.
+[Fincham and colleagues' 2023 meta-analysis](https://www.nature.com/articles/s41598-022-27247-y) linked breathwork with lower self-reported stress than control conditions, with important study-quality limitations. It does not rank these five patterns for you or show that GroundApp treats an anxiety disorder.
 
-**Why it works:** Breathing at around 5.5 to 6 breaths a minute lines up your breathing with your body's heart rate and blood pressure rhythms. For most people, that produces the biggest swings in heart rate variability (HRV), one of the best windows we have into how your nervous system handles stress.
+## If you want guidance
 
-**The research:** Stephen Elliott popularized the name "coherent breathing," and researchers like Paul Lehrer have studied slow breathing near this rate for decades as HRV biofeedback. A 2017 meta-analysis found that HRV biofeedback training reduced self-reported stress and anxiety.
+GroundApp's check-in suggests a session from your answers. It is not a clinical assessment. The app is free to download on iPhone and Apple Watch, with a free tier and optional Premium. Current inclusions and terms are shown before purchase.
 
-**Protocol:** 10 to 20 minutes a day for a training effect. 5 minutes when you need to settle in the moment. Think of it as your daily vitamin: consistency matters more than length.
-
-**Best for:** Daily nervous system maintenance, HRV training, lowering your everyday anxiety baseline, long-term resilience.
-
-## 5. Extended Exhale Breathing: the simplest calm-down (4-8 or 3-6)
-
-**The technique:** Inhale for 4 counts, exhale for 8. Or inhale for 3, exhale for 6. The exact numbers don't matter. What matters is that the exhale is about twice as long as the inhale.
-
-**Why it works:** Your heart rate naturally slows on every exhale. A longer exhale means more time with the brakes on.
-
-**The research:** Slow breathing in general is well studied. A 2018 systematic review (Zaccaro and colleagues, *Frontiers in Human Neuroscience*) linked slow breathing to higher HRV, more relaxation and less anxiety.
-
-**Protocol:** 2 to 5 minutes. Start with whatever counts feel comfortable, even 2 in and 4 out. The ratio matters more than the numbers.
-
-**Best for:** Beginners, moments when you can't remember anything else, regulating throughout the day. GroundApp's free 2-to-1 Breathing is built on this same long-exhale idea.
-
-## Which one should you use right now?
-
-Here's my decision tree as a breathwork coach:
-
-- **Panic or acute anxiety, right this second:** Physiological Sigh (3 to 5 breaths, under a minute)
-- **Anxious and can't sleep:** 4-7-8 Breathing (4 to 8 cycles, a few minutes)
-- **Need to perform under pressure:** Box Breathing (5 minutes)
-- **Want to build long-term resilience:** Coherent Breathing (10 minutes a day)
-- **Don't know what to do, just need to calm down:** Extended Exhale (2 to 5 minutes)
-
-Or let GroundApp's check-in do the choosing. Tap how you feel on the feelings wheel, add intensity and energy, and it matches you to a session.
-
-## The one rule
-
-The best breathing technique is the one you actually do. Pick one from this list and try it right now. Not later. Now.
-
-Close your eyes. Breathe. Feel the difference.
-
-If you want to be guided, GroundApp is free to download, with Box Breathing, Deep Slow Breathing, 2-to-1 Breathing and Triangle Breathing free forever. GroundApp Premium is $39.99 a year in the US and adds all techniques and guided sessions in Collin's voice.
+[See the app](/#check-in) or return to [nervous system regulation, without the promises](/blog/nervous-system-regulation-explained/).

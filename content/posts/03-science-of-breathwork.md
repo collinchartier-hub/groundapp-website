@@ -1,91 +1,58 @@
 ---
-title: The science of breathwork: what actually happens when you control your breathing
+title: The science of breathwork, and its limits
 slug: science-of-breathwork
-description: The vagus nerve, CO2, heart rate variability and your diaphragm. A plain-language look at what changes in your body when you change how you breathe.
+description: What approved breathing studies report, why an HRV change is not a diagnosis, and why research on a practice is not proof of an app's results.
 date: 2026-03-26
-updated: 2026-10-02
+updated: 2026-11-14
 old: 03-science-of-breathwork
 ---
 
-Breathwork isn't mystical. It's mechanical. When you change the way you breathe, you change your blood chemistry and your heart rate within seconds, and with practice you can change how your body handles stress. Here's what's actually going on.
+Breathing research is worth reading carefully. A possible benefit is not a guarantee. A proposed mechanism is not proof that a particular app works.
 
-## Your breath is a remote control for your nervous system
+## Not a manual override
 
-Most of your autonomic nervous system runs on autopilot. You can't decide to slow your heart or speed up your digestion. But you can decide how you breathe. And because breathing is tightly wired into the rest of that system, starting with your heart rate, **it gives you a manual override.**
+I would not describe your breath as a remote control, a parasympathetic switch or an assurance that your body is safe. Those phrases make a complicated system sound more certain than the evidence allows.
 
-That's the unique power of breathwork: breathing is one of the few automatic functions you can also run on purpose, and it pulls the others along with it.
+Breathing and heart-rate rhythms interact. That does not mean one pattern synchronizes every system, or that everyone should follow the same pace.
 
-## Mechanism 1: the vagus nerve
+## What a controlled study found
 
-The vagus nerve is the longest cranial nerve in your body. It runs from your brainstem down through your neck, chest and abdomen, connecting to your heart, lungs and digestive organs. It's the main highway of the parasympathetic (rest and digest) nervous system.
+[Balban and colleagues, 2023](https://pmc.ncbi.nlm.nih.gov/articles/PMC9873947/), compared daily five-minute breathing exercises with mindfulness meditation over one month. In that study, cyclic sighing was associated with a greater increase in positive affect and reduction in breathing rate than mindfulness.
 
-Your heart rate naturally rises a little as you inhale and falls as you exhale. That's the vagus nerve at work: on the exhale, it applies the brakes. Long, slow exhales give the brakes more time. Over a few minutes of slow breathing:
+The groups did not differ in their change in state anxiety, and trait anxiety did not significantly change. A study of repeated practice does not prove that a single sigh stops panic. It did not test GroundApp.
 
-- Heart rate tends to settle
-- Blood pressure can come down
-- Your body gets the signal that it's safe to rest and digest
+## What a review found
 
-This is why so many calming techniques, like 4-7-8 Breathing, Coherent Breathing and the Physiological Sigh, put the emphasis on the exhale. The exhale is the parasympathetic switch.
+[Fincham and colleagues, 2023](https://www.nature.com/articles/s41598-022-27247-y), found breathwork was associated with lower self-reported stress than non-breathwork controls. The review also reported limitations, including moderate risk of bias in most stress studies and variation between interventions.
 
-## Mechanism 2: blood gas chemistry (CO2 and O2)
+That is a reason to study the practice, not to promise treatment, a universal response or an exact dose.
 
-Your urge to breathe isn't mainly triggered by low oxygen. It's triggered by rising carbon dioxide (CO2). Sensors in your brainstem track CO2 and trigger the breathing reflex.
+## HRV is not a resilience score
 
-This matters because **CO2 sensitivity is closely linked to panic.** People who are more sensitive to CO2 feel the urge to breathe sooner, which creates a sensation of "not getting enough air." That can lead to faster breathing, which blows off CO2 and brings tingling and lightheadedness, which feels like even more evidence that something is wrong. A vicious cycle.
+Heart rate variability describes variation in the intervals between heartbeats. Slow-breathing research examines heart rate and HRV, but a wearable reading is not a diagnosis or an all-purpose score of emotional health.
 
-Slow breathing and gentle breath holds, like the holds in Box Breathing, are commonly used to build CO2 tolerance. The BOLT test, a simple breath-hold measure, is one way to track it, and it's free in GroundApp.
+We do not claim that a fixed rhythm produces your maximum HRV, that a larger reading always means a better session, or that a breath-hold stopwatch measures anxiety. GroundApp's sample progress screen is an interface example, not a participant result.
 
-Fast-breathing techniques like the Wim Hof Method work the other way. The rapid breathing deliberately drops CO2, which shifts your blood chemistry for a while and brings tingling, lightheadedness and a surge of adrenaline. People use it for energy and cold exposure. Never practice it in water, while driving, or anywhere passing out would be dangerous.
+## Compare the pattern, not a promised outcome
 
-## Mechanism 3: heart rate variability (HRV)
+| Pattern | What the guide describes | Important limit |
+|---|---|---|
+| Even paced breathing | An easy inhale and exhale without a required pause | A count is optional, not a performance target |
+| Sigh pattern | An inhale, a small second inhale, then an easy exhale | The repeated study protocol is not evidence of an immediate panic treatment |
+| Box breathing | Equal phases with pauses | Skip pauses if uncomfortable; no hold record is needed |
+| Longer exhale | An exhale that is comfortably longer than the inhale | Do not force the ratio or empty your lungs |
+| Alternate nostril | Gently alternating the open nostril | Do not force airflow through congestion |
 
-Heart rate variability is the variation in time between heartbeats. Higher HRV is associated with better cardiovascular health, emotional regulation and stress resilience. It's one of the most useful windows we have into how your nervous system is handling stress.
+Fast-breathing and maximal-hold protocols are not beginner instructions here. There is no claim that CO2 tolerance training treats anxiety or that the BOLT measure proves a clinical change.
 
-HRV isn't random. A big part of it comes from **respiratory sinus arrhythmia (RSA)**: your heart rate speeds up a little when you inhale and slows down when you exhale. That's normal and healthy.
+## What about duration?
 
-For most adults, breathing somewhere around 5.5 to 6 breaths a minute lines your breathing up with your body's blood pressure reflexes and produces the biggest swings in heart rate. That's why slow paced breathing is often called HRV training, and why HRV biofeedback, studied for decades by researchers like Paul Lehrer, is built around it. A 2017 meta-analysis of HRV biofeedback found it reduced self-reported stress and anxiety.
+The Balban study used five minutes a day for a month. That describes its design. It does not prove that five minutes is best, that daily always beats weekly, or that you should continue when uncomfortable.
 
-## Mechanism 4: your thinking brain under stress
+If you choose to practise, sit on dry land. Keep it gentle and stop if dizzy, tingly, breathless or unwell. Never practise in or near water, in heat, while standing or driving. Ask your doctor first if you are pregnant, have a heart or lung condition, or a history of seizures or fainting.
 
-When you're stressed, your brain shifts resources toward threat detection and away from the prefrontal cortex, the part of your brain that plans, focuses and makes decisions. That's why it's so hard to think clearly when you're anxious.
+This is coaching and education, not medical or mental health treatment. If you're dealing with panic attacks, trauma, or thoughts of hurting yourself, start with a licensed professional. In the US you can call or text 988 any time.
 
-Controlled breathing gives you a way to interrupt the loop. Paced breathing takes just enough focus to pull your attention off the spiral, and as your heart rate settles, the body signals that keep the alarm going start to quiet down.
+## Product, separately
 
-It's a big reason Box Breathing is so popular with people who have to perform under pressure, from first responders to athletes.
-
-## Mechanism 5: the diaphragm
-
-Under stress, a lot of people shift toward fast, shallow chest breathing. Diaphragmatic (belly) breathing is slower and deeper.
-
-When your diaphragm moves down on the inhale, it changes the pressure inside your chest. That helps blood flow back to your heart and works with the pressure sensors (baroreceptors) that help regulate your heart rate.
-
-Shifting from fast chest breathing to slow belly breathing is one of the simplest ways to settle your body.
-
-## Technique breakdown
-
-| Technique | What it does | Best for |
-|-----------|--------------|----------|
-| **4-7-8 Breathing** | A long hold and an exhale twice as long as the inhale | Sleep, winding down |
-| **Physiological Sigh** | Two inhales through the nose, one long exhale | A fast reset in the moment |
-| **Coherent Breathing** | Around 5.5 breaths a minute, in step with your heart rate rhythm | HRV training, daily baseline |
-| **Box Breathing** | Equal counts with holds; builds CO2 tolerance and focus | Composure under pressure |
-| **Wim Hof Method** | Fast breathing then a hold; drops CO2 and spikes adrenaline | Energy (not for anxiety, never in water) |
-| **Alternate Nostril** | Slow breathing through one nostril at a time | Steady, calm focus |
-
-## The dosage question
-
-There's no perfect dose, but a few principles hold up:
-
-- **In a single session:** a few minutes of slow breathing is enough to feel your heart rate settle
-- **Over time:** short daily practice adds up. The 2023 Stanford sighing study used just five minutes a day for a month
-- **Frequency:** daily beats occasional, the same way daily walks beat one long hike a month
-
-Consistency over intensity. Five minutes a day beats thirty minutes once a week.
-
-## Why matching matters
-
-Not every technique works for every person in every state. Telling someone in the middle of a panic attack to do fast Wim Hof breathing can make them feel worse, not better. Telling someone who needs energy before a workout to do 4-7-8 breathing might put them to sleep.
-
-This is why GroundApp starts with a check-in. You tap how you feel on the feelings wheel, add intensity and energy, and it matches you to a session that fits: calming, energizing, focusing or balancing.
-
-The science is clear: controlled breathing changes your physiology. The real question is which technique, and when. That's the question GroundApp is built around.
+[GroundApp](/#check-in) offers check-ins and guided breathing on iPhone and Apple Watch, with a free tier and optional Premium. That is a product description, not scientific substantiation. Read the guide, choose whether to practise and use the store's current terms before any purchase.

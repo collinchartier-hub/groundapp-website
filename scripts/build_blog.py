@@ -197,6 +197,11 @@ SIGNUP_JS = r"""
       return;
     }
     errEl.textContent = '';
+    if (window.GroundPreview && window.GroundPreview.active()) {
+      okEl.textContent = 'Private preview. Nothing was sent and no subscription was created.';
+      okEl.hidden = false;
+      return;
+    }
     btn.disabled = true;
     btn.textContent = 'Joining...';
     var ctrl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
@@ -224,7 +229,7 @@ SIGNUP_JS = r"""
 </script>
 """
 
-BEACON = """<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "03e507bb97d74e78bc8de83dc6b261ec"}'></script>"""
+BEACON = '<script src="/js/site-analytics-v1.js" defer></script>'
 
 
 def head(title, desc, url, og_type, jsonld, extra=""):
@@ -261,6 +266,7 @@ def head(title, desc, url, og_type, jsonld, extra=""):
 <link rel="preload" href="/assets/fonts/source-serif-4-latin-v1.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/ground-font-type-v1.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/css/ground-tokens-v1.css">
+<script src="/js/preview-mode-v1.js"></script>
 <link rel="stylesheet" href="/assets/css/site-v4.css">
 <style>{CSS}</style>
 </head>
@@ -296,7 +302,7 @@ def topbar():
 def app_box(heading="Breathe with Collin, anywhere"):
     return f"""<section class="box" aria-labelledby="appTitle">
   <h2 id="appTitle">{heading}</h2>
-  <p>GroundApp is a breathwork app for iPhone and Apple Watch with more than 40 techniques, guided sessions in Collin's voice, and a check-in that matches how you feel to a breath. Free to download, with four techniques free forever. GroundApp Premium is $39.99 a year in the US.</p>
+  <p>GroundApp offers check-ins with Bodie and guided breathing on iPhone and Apple Watch. Free to download, with a free tier and optional Premium. Current inclusions, local price and any trial eligibility are shown in the app before purchase. Research discussed here does not establish results from the app.</p>
   <a class="btn btn-gold" href="{APP_BASE}blog-cta" data-ct="blog-cta">{APPLE_ICON}Download on the App Store</a>
 </section>
 """
@@ -431,7 +437,7 @@ def index_page(posts):
             + f"""<main id="main" class="wrap blog">
   <p class="crumb"><a href="/">GroundApp</a></p>
   <h1 class="h2 title">The GroundApp blog</h1>
-  <p class="intro">Notes from Collin Chartier on breathwork, your nervous system, and how to use your breath when it counts.</p>
+  <p class="intro">Notes by Collin Chartier on breathing practice, the limits of the evidence and the product he built. Education, not medical or mental health treatment.</p>
   <ul class="post-list">
 {cards}
   </ul>

@@ -1,72 +1,46 @@
 ---
-title: Why I built GroundApp: from breathwork coach to app creator
+title: Why I built GroundApp: between coached sessions
 slug: why-i-built-groundapp
-description: Collin Chartier on the gap between coaching sessions, why most breathwork apps hand you a menu, and what he built instead.
+description: Collin Chartier on building a check-in and guided breathing practice for the moments between sessions. A creator's account, not evidence of user outcomes.
 date: 2026-03-26
-updated: 2026-10-02
+updated: 2026-11-14
 old: 01-why-i-built-ground-app
 ---
 
-I never planned to build an app. I'm a breathwork coach. I coach people through breathing: in person, one-on-one, in groups. I watch their shoulders drop, their jaw unclench, their eyes soften after three minutes of controlled breathing. That moment when someone shifts out of fight-or-flight and into calm is the most rewarding thing I do.
-
-But I kept running into the same problem.
+I'm a breathwork coach, and I built GroundApp. The question behind it was simple: what could someone return to between our sessions?
 
 ## The gap between sessions
 
-My clients would leave a session feeling incredible: regulated, grounded, present in their body. Then they'd go back to their inbox, their commute, their 14-hour workday. By the time our next session came around, they were right back where they started. Chest tight, breathing shallow, nervous system on fire.
+A coached session has a person in the room. There is time to ask a question, change the pace or decide not to practise. An app is different. I wanted a clear starting point that someone could use on an ordinary day, without pretending a phone is a coach or a clinician.
 
-They'd try breathwork apps. Generic ones with countdown timers and ambient sounds. But none of them answered the question my clients actually needed answered: **"I feel anxious right now. What should I breathe?"**
+That became a check-in with Bodie.
 
-That's the question that started GroundApp.
+## A place to start
 
-## The problem with most breathwork apps
+In GroundApp you name how you feel, rate its intensity and your energy, and see a suggested session. You can also choose a technique and read its practice guide.
 
-I tried a lot of breathwork apps. Most of them did the same thing: gave you a menu of techniques and let you pick one.
+The suggestion is guidance based on your answers, not a diagnosis or a reading of your nervous system. A check-in does not establish what is medically appropriate for you.
 
-But here's the thing about someone in fight-or-flight: **they can't choose well.** Under acute stress, the part of your brain that handles careful planning and decisions works less well. Asking someone in a stress response to scroll a menu of 30 breathing techniques and pick the right one is like asking someone who's drowning to choose which life raft to swim to.
+The app's matching and optional AI plan features should not be confused. Local matching uses app rules; optional AI plans involve a separate service and data flow described in the [privacy policy](/privacy). Neither is a human assessment.
 
-What they need is for someone to say: *"I hear you. Here's exactly what to do right now. Follow my voice."*
+## Why the voice matters to me
 
-That's what I do in person. That's what I wanted an app to do.
+I wanted the guidance to sound familiar. The guided narration uses an AI model of my voice, trained on my recordings. I want that disclosed plainly, not hidden behind the words "my voice."
 
-## Building the app I wished existed
-
-GroundApp starts the way a good coaching session starts: with a check-in. You open the app and tap how you feel on a feelings wheel. Anxious. Overwhelmed. Flat. Wired. There are 102 feelings in there, from broad to specific. Add how intense it is and how much energy you have, and the app matches you to a breathing session: calming, energizing, focusing or balancing. The matching is simple and rule-based. No guesswork in the moment.
-
-Then it guides you through it. And if you don't want to think at all, there's Instant Calm: one tap, no voice, and it works offline.
-
-No decision fatigue. Just: tell me what's happening, and breathe.
-
-## Why the voice matters
-
-In my coaching, I noticed that how someone is guided matters as much as the technique. A calm, steady voice that tells you exactly when to breathe in and when to let go gives your nervous system something to follow.
-
-That's why the guided sessions in GroundApp are narrated in my voice. To be straight with you about how: the narration is an AI model of my voice, trained on my own recordings. And if you'd rather not hear a voice at all, there's a haptic-only mode that lets you breathe with vibrations.
+The app also has haptic guidance. The point is a usable practice, not a requirement to listen to me.
 
 ## What the name means
 
-The name isn't an accident. From the mind into the body, this is where we feel grounded.
+From the mind into the body, this is where we feel grounded. That is how I describe the practice, not a promised result.
 
-Every technique in the app is a tool for the same thing: getting out of your head and into your body. When your nervous system is dysregulated (anxious, scattered, burned out, overstimulated) you're living in your mind. Ruminating, catastrophizing, replaying. Breathwork is the bridge back to your body.
+My own history explains why I care about it. It does not prove an outcome for anyone else. You can read that history on [my personal site](https://collinchartier.com/).
 
-GroundApp is that bridge in your pocket.
+## What you can try
 
-## Who this is for
+GroundApp is free to download on iPhone, with an Apple Watch app, a free tier and optional Premium. The app shows current inclusions, local pricing and any eligible trial before you subscribe.
 
-I built GroundApp for the people I coach:
+If you choose to practise, sit comfortably on dry land. Keep breathing easy. Shorten a count, skip a hold or stop whenever you want. Stop if you feel dizzy, tingly, breathless or unwell. If you are pregnant, have a heart or lung condition, or a history of seizures or fainting, check with your doctor before a new breathing practice.
 
-- **The burned-out professional** who hasn't taken a full breath all day
-- **The athlete** who needs to dial in their nervous system before competition
-- **The new parent** who lies awake at 2am with a racing mind
-- **The person in therapy** who needs a tool between sessions
-- **Anyone** who has ever googled "how to stop feeling anxious right now"
+This is coaching and education, not medical or mental health treatment. If you're dealing with panic attacks, trauma, or thoughts of hurting yourself, start with a licensed professional. In the US you can call or text 988 any time.
 
-If you've ever needed someone to tell you exactly how to breathe in a moment of stress, GroundApp is what I built for you.
-
-## Try it
-
-GroundApp is on the App Store for iPhone, with an Apple Watch app included. It's free to download, and four techniques are free forever: Box Breathing, Deep Slow Breathing, 2-to-1 Breathing and Triangle Breathing, along with the breathing timer, streaks and basic stats. GroundApp Premium is $39.99 a year in the US and adds all techniques and guided sessions in Collin's voice.
-
-From the mind into the body.
-
-Let's get grounded.
+[Explore GroundApp](/#check-in), or read [what the research does and does not show](/blog/science-of-breathwork/).

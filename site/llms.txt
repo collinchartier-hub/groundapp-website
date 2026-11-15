@@ -1,39 +1,38 @@
 # GroundApp
 
-> GroundApp is a breathwork app for iPhone and Apple Watch, created and developed by performance breathwork coach Collin Chartier. Bodie is its breathing companion. Check in with how you feel and see a breathing plan before you start. More than 40 techniques, practice guides, guided sessions, Meditations, live heart rate and Apple Health. Free to download, with four core techniques free and an optional Premium subscription. Website: https://groundapp.live/
+> GroundApp offers check-ins with Bodie and guided breathing on iPhone and Apple Watch. Free to download, with a free tier and optional Premium. Current inclusions, local price and any trial eligibility are shown in the app before purchase. GroundApp is coaching and education, not medical or mental health treatment. Website: https://groundapp.live/
 
 - App Store: https://apps.apple.com/us/app/groundapp-breathwork/id6760352779
-- Rated 5.0 on the US App Store (12 ratings as of November 2026)
 - Requires iOS 17 or later. The Apple Watch app requires watchOS 11 or later.
 - Create an account when you start, with Apple, Google or email. You can delete it in Settings.
 
 ## Pricing
 
-- Free to download. Box breathing, Deep slow breathing, 2-to-1 breathing and Triangle breathing are free, along with the session timer, streaks, basic stats, check-ins with Bodie and live heart rate.
-- GroundApp Premium is $39.99 a year or $6.99 a month (US). It adds all techniques, the Advanced O2 and CO2 tables, guided sessions, Bodie's AI plans and Meditations. Eligible new subscribers get a 3-day free trial. Billed through Apple; cancel any time in Settings > your name > Subscriptions.
+- Free to download, with a free tier and optional Premium. No fixed catalog or free-technique count is promised.
+- Published US Premium pricing is $39.99 a year or $6.99 a month. The store confirms local price, inclusions and any eligible trial before purchase. Apple subscriptions renew unless cancelled through Apple.
 
 ## Features
 
-- More than 40 breathing techniques, each with a practice guide
+- Breathing techniques with practice guides
 - Check in with Bodie: name how you feel and get breathwork matched to it
 - Advanced O2 and CO2 tables for breath-hold training (dry land only)
 - Guided sessions in Collin's voice, with ambient sound and haptic cues (Premium)
-- Meditations: eight guided meditations by Collin, 3 to 19 minutes (Premium)
+- Guided meditations
 - Guided sessions use an AI model of Collin's voice, trained on his recordings; haptic-only mode is available
 - Live heart rate and HRV from a Bluetooth heart rate monitor or a Whoop or Garmin broadcasting heart rate
 - Apple Health, plus Whoop, Garmin, Oura and COROS through Apple Health
 - Apple Watch app
-- Streaks, session history and a BOLT score over time
-- 4 core techniques, the session timer, streaks and basic stats are free
+- Streaks and session history. Sample progress screens are not user outcomes.
+- Current free inclusions and Premium features are shown in the app before purchase.
 
-## About the Creator
+## Creator
 
-- [Collin Chartier](https://groundapp.live/#story): Performance breathwork coach. IRONMAN champion, PTO US Open winner and Team USA athlete. Ran 2,000 miles from Boulder to the Lincoln Memorial for the Herren Project. He created and developed GroundApp.
+- [Created by Collin Chartier](https://groundapp.live/#story): Collin created and developed GroundApp. Read [why he built it](https://groundapp.live/blog/why-i-built-groundapp/) or [his story](https://collinchartier.com/#about).
 
 ## Pages
 
-- [Home](https://groundapp.live/): Meet Bodie, the app section by section, pricing, reviews and the download link
-- [Story](https://groundapp.live/#story): Collin's story, in his words
+- [Home](https://groundapp.live/): Bodie, check-in, library, play, connections, pricing, creator, reviews and download
+- [Story](https://groundapp.live/#story): Why Collin built GroundApp, with his intro film and walkthrough transcript
 - [FAQ](https://groundapp.live/#faq): Common questions about GroundApp
 - [Play](https://groundapp.live/play): Bodie's Breath Run, a free browser game
 - [Blog](https://groundapp.live/blog/): Articles by Collin Chartier on breathwork and nervous system regulation
@@ -43,15 +42,15 @@
 
 ## Blog Posts
 
-- [Why I Built GroundApp: From Breathwork Coach to App Creator](https://groundapp.live/blog/why-i-built-groundapp/)
-- [Nervous System Regulation: The Skill Nobody Taught You](https://groundapp.live/blog/nervous-system-regulation-explained/)
-- [The Science of Breathwork: What Actually Happens When You Control Your Breathing](https://groundapp.live/blog/science-of-breathwork/)
+- [Why I built GroundApp: between coached sessions](https://groundapp.live/blog/why-i-built-groundapp/)
+- [Nervous system regulation, without the promises](https://groundapp.live/blog/nervous-system-regulation-explained/)
+- [The science of breathwork, and its limits](https://groundapp.live/blog/science-of-breathwork/)
 - [Where Breathwork Tech Is Going (and What It Should Never Replace)](https://groundapp.live/blog/future-of-breathwork-tech/)
-- [5 Breathing Techniques That Actually Help With Anxiety](https://groundapp.live/blog/breathing-techniques-for-anxiety/)
+- [Breathing patterns for everyday anxious moments](https://groundapp.live/blog/breathing-techniques-for-anxiety/)
 
 ## Free game
 
-- [Bodie's Breath Run](https://groundapp.live/play): a free browser game with Bodie, GroundApp's breathing companion. Race Kip the Caffeine Crow on five courses built around box breathing, breath-hold dives, the physiological sigh, power breaths and glide control. The Big Hold times your longest breath hold (sit down, never in water) and Breath Surf guides resonance, box, 4-7-8, physiological sigh and power breathing. Records stay in your browser.
+- [Bodie's Breath Run](https://groundapp.live/play): a free browser game with finger and keyboard controls, screen shields, jumps and a noncompetitive ribbon ride. Breathe normally. No maximal-hold mode, physiological score or dive challenge. Game records use a new browser-only namespace, separate from the removed breath-hold records.
 
 ## Use Cases
 
@@ -72,6 +71,6 @@
 - [Privacy Policy](https://groundapp.live/privacy): How GroundApp handles app and website data
 - [Terms of Service](https://groundapp.live/terms): Terms for using GroundApp
 - [Support](https://groundapp.live/support): Contact and quick answers on Premium, purchases, account deletion and wearables
-- [Accessibility](https://groundapp.live/accessibility): The accessibility standard the site aims for (WCAG 2.0 AA), what was checked, known limits and how to report a problem
+- [Accessibility](https://groundapp.live/accessibility): WCAG level AA design aim, current review status, known limits and how to report a problem. Not a claim of conformance or legal certification.
 - [Legal notice](https://groundapp.live/legal-notice): Legal notice (Impressum): who runs GroundApp, postal address, email and phone
 - Contact: collin@groundapp.live

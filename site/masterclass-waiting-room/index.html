@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Masterclass waiting room | GroundApp</title>
-<meta name="description" content="Breathe with Bodie while the masterclass gets ready: box breathing on a 6 count, on a loop.">
+<meta name="description" content="A quiet Ground event waiting room with Bodie. Check the host's invitation for event status. Optional gentle movement, sound off until chosen.">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#1A110E">
 <link rel="icon" type="image/svg+xml" href="/lung-logo.svg">
@@ -13,6 +13,7 @@
 <link rel="preload" href="/assets/fonts/ground-font-type-v1.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/css/home-v4.css">
 <link rel="stylesheet" href="/assets/css/ground-tokens-v1.css">
+<script src="/js/preview-mode-v1.js"></script>
 <style>
   /* The waiting room is one screen, shared in Zoom before the masterclass: the hero pacer and Bodie, nothing else. */
   /* Kit v5 type over home-v4.css: Source Serif 4 headlines in sentence case, Ground Font Type for everything else
@@ -30,9 +31,10 @@
   .wr-brand img{width:28px;height:28px}
   .wr-brand a{color:var(--text-2);text-decoration:underline;text-underline-offset:3px;margin-left:.4rem}
   .stage .controls{justify-content:center}
+  .stage .controls,.stage .pc-track,.stage .pc-desc,.stage .hero-foot{animation:none}
+  @media(max-width:700px){.hero h1 .h-a,.hero h1 .h-b,.hero-foot{text-align:center}.hero-foot{align-items:center}}
   @media (max-width: 700px){.wr-brand{position:static;justify-content:center;margin-top:12px}}
-  /* Endless loop: no stop square on the running pill (a tap never stops it here). */
-  .hero [data-loop].is-running .dial .pc-go::before{display:none}
+  .wr-note a{color:var(--text);text-decoration:underline;text-underline-offset:3px}
 </style>
 <script type="importmap">{ "imports": {
   "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/+esm",
@@ -41,9 +43,9 @@
 <body>
 <main id="main">
 <section class="hero" id="hero">
-  <div class="stage" id="try-a-breath" data-pacer data-start="box6" data-loop data-autostart="600" data-sound-default="on" data-begin-word="Breathe with Bodie" data-stop-hint="">
+  <div class="stage" id="try-a-breath" data-pacer data-start="deepslow" data-begin-word="Optional gentle rhythm" data-stop-hint=" Tap again to stop.">
     <div class="row">
-      <h1><span class="h-a">Breathe with Bodie</span> <span class="h-b">We start soon</span></h1>
+      <h1><span class="h-a">A moment with Bodie</span> <span class="h-b" id="eventStatus">No event time is posted here</span></h1>
       <div class="dial">
         <div class="hero-art">
           <picture>
@@ -52,46 +54,31 @@
           </picture>
           <canvas aria-hidden="true"></canvas>
         </div>
-        <button type="button" class="pc-go" aria-pressed="false" aria-label="Begin Box Breathing"><span class="pc-word">Breathe with Bodie</span><span class="pc-count" aria-hidden="true"></span></button>
+        <button type="button" class="pc-go" aria-pressed="false" aria-label="Begin optional gentle rhythm"><span class="pc-word">Optional gentle rhythm</span><span class="pc-count" aria-hidden="true"></span></button>
         <ol class="pc-track" aria-hidden="true"></ol>
       </div>
     </div>
     <div class="controls">
-      <button type="button" class="snd" data-sound aria-pressed="true">
+      <button type="button" class="snd" data-sound aria-pressed="false">
         <svg class="off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H3v6h3l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg>
         <svg class="on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.8 5.2a9.5 9.5 0 0 1 0 13.6"/></svg>
-        <span class="pc-sound-label">Sound on</span>
+        <span class="pc-sound-label">Sound off</span>
       </button>
       <button type="button" class="snd" data-pause>Pause</button>
     </div>
-    <p class="pc-desc">Box Breathing: <span class="data">6 in, 6 hold, 6 out, 6 hold</span>.</p>
+    <p class="pc-desc">Optional easy inhale and exhale, with no holds. The count is a guide, not a target.</p>
     <p class="vh" aria-live="polite" aria-atomic="true"><span class="pc-live"></span></p>
     <div class="hero-foot">
-      <p class="wr-cap">Performance Breathwork Masterclass</p>
-      <p class="wr-when">With Collin Chartier. We start at 6:00 pm Mountain. <span class="wr-soon" id="wr-soon"></span></p>
-      <p class="wr-note">Breathe through your nose and follow Bodie. If a hold feels like too much, just breathe normally and rejoin on the next round. Mics are muted; camera is up to you.</p>
+      <p class="wr-cap">Ground event support with Collin Chartier</p>
+      <p class="wr-when" id="eventDetail">Check the host's invitation for the date, time and joining link.</p>
+      <p class="wr-note">You can simply wait. Nothing starts automatically. If you choose the rhythm, stay seated on dry land and keep your breathing comfortable. Shorten the count or stop if dizzy, tingly, breathless or unwell. No holds. <a href="/">Skip the rhythm and explore GroundApp</a>.</p>
+      <p class="wr-note">This is coaching and education, not medical or mental health treatment. Ask your doctor before a new breathing practice if pregnant or if you have a heart or lung condition, seizures or a history of fainting. The app and this event are separate.</p>
     </div>
   </div>
-  <p class="wr-brand"><img src="/lung-logo.svg" alt=""> GroundApp: free on the App Store <a href="/accessibility">Accessibility</a> <a href="/legal-notice">Legal notice</a></p>
+  <p class="wr-brand"><img src="/lung-logo.svg" alt=""> GroundApp: free to download <a href="/accessibility">Accessibility</a> <a href="/legal-notice">Legal notice</a></p>
 </section>
 </main>
-<script>
-/* "Starts in 12 min" until 6:00 pm Mountain, then "Starting now". Reads the clock in America/Denver, so it is right
-   for viewers anywhere and on either side of a daylight-saving change. */
-(function () {
-  var el = document.getElementById('wr-soon');
-  if (!el || !window.Intl) return;
-  var fmt = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Denver', hour: 'numeric', minute: 'numeric', hourCycle: 'h23' });
-  function tick() {
-    var p = {}; fmt.formatToParts(new Date()).forEach(function (x) { p[x.type] = x.value; });
-    var left = 18 * 60 - (Number(p.hour) * 60 + Number(p.minute));
-    if (left > 90 || left < -60) el.textContent = '';
-    else if (left > 0) el.textContent = left === 1 ? 'Starts in 1 min.' : 'Starts in ' + left + ' min.';
-    else el.textContent = 'Starting now.';
-  }
-  tick(); setInterval(tick, 15000);
-})();
-</script>
+<script src="/js/event-status-v1.js" defer></script>
 <script src="/js/pacer-v9.js" defer></script>
 <script type="module" src="/js/breath-figure-v2.js"></script>
 </body>
