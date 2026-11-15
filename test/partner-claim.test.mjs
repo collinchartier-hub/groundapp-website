@@ -85,6 +85,33 @@ test('new iPhone claim: code emailed, reminder scheduled, claim stamped', async 
   assert.equal(patches()[1].body.nudge_email_id, 'email_2');
 });
 
+test('RECON iPhone claim uses its own program location, email and private redemption path', async () => {
+  state.rpc = rpcResult({ code: 'RECONCODE123', redeem_url: 'https://apps.apple.com/redeem?ctx=offercodes&id=6761865560&code=RECONCODE123' });
+  const res = await post({ partner: 'recon', location: 'RECON Wellness' });
+  const response = await res.json();
+  assert.deepEqual(response, { ok: true, status: 'assigned' });
+  assert.ok(!JSON.stringify(response).includes('RECONCODE123'));
+  assert.equal(rpcs()[0].body.p_partner, 'recon');
+  assert.equal(rpcs()[0].body.p_location, 'RECON Wellness');
+  assert.equal(sends().length, 2);
+  assert.ok(sends()[0].body.html.includes(`https://groundapp.live/recon/r/${TOKEN}`));
+  assert.ok(sends()[0].body.html.includes('RECONCODE123'));
+  assert.ok(sends()[1].body.html.includes('RECON Wellness'));
+  assert.ok(sends()[1].body.scheduled_at);
+  assert.ok(!JSON.stringify(response).includes(TOKEN));
+});
+
+test('paused RECON program delivers a branded waitlist note, not a code', async () => {
+  state.rpc = rpcResult({ outcome: 'waitlist', claim: claimRow({ status: 'waitlist' }), code: null, redeem_url: null, codes_left: 500 });
+  const res = await post({ partner: 'recon', location: 'RECON Wellness' });
+  assert.deepEqual(await res.json(), { ok: true, status: 'waitlist' });
+  assert.equal(rpcs()[0].body.p_partner, 'recon');
+  assert.equal(sends().length, 1);
+  assert.ok(sends()[0].body.html.includes('RECON Wellness'));
+  assert.equal(sends()[0].body.scheduled_at, undefined);
+  assert.ok(!sends()[0].body.html.includes('/recon/r/'));
+});
+
 test('the database gets clean values, a 22 character token and a hashed ip', async () => {
   await post({ first_name: '  Sam ', email: 'Sam.Lee+gym@Gmail.com' });
   const b = rpcs()[0].body;

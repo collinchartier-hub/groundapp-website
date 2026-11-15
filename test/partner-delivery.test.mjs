@@ -55,6 +55,38 @@ test('AION delivery uses its own email copy and redemption link', async () => {
   assert.ok(!sends()[0].body.html.includes('Arsenal'));
 });
 
+test('RECON delivery emails its own code link and schedules a branded reminder', async () => {
+  const sent = await sendForClaim(env, 'recon', { ...claim, code: 'RECONCODE123' }, { withNudge: true });
+  assert.equal(sent.ok, true);
+  assert.equal(sent.nudgeId, 'email_1');
+  assert.equal(sends().length, 2);
+  const [mail, nudge] = sends().map((call) => call.body);
+  for (const body of [mail, nudge]) {
+    assert.ok(body.html.includes('RECON Wellness'));
+    assert.ok(body.text.includes('RECON Wellness'));
+    assert.ok(body.html.includes('https://groundapp.live/recon/r/abcdefghijklmnopqrstuv'));
+    assert.ok(!/Arsenal|AION|Traverse/.test(body.html));
+  }
+  assert.ok(mail.html.includes('RECONCODE123'));
+  assert.equal(mail.scheduled_at, undefined);
+  assert.ok(nudge.scheduled_at);
+  assert.ok(!nudge.html.includes('RECONCODE123'));
+});
+
+test('RECON Android and paused waitlist claims receive partner-specific notes without codes', async () => {
+  for (const status of ['android_waitlist', 'waitlist']) {
+    const sent = await sendForClaim(env, 'recon', { ...claim, claim: { ...claim.claim, status } }, { withNudge: true });
+    assert.equal(sent.ok, true);
+    assert.equal(sent.nudgeId, null);
+    const body = sends().at(-1).body;
+    assert.ok(body.html.includes('RECON Wellness'));
+    assert.ok(body.text.includes('RECON Wellness'));
+    assert.ok(!body.html.includes('TESTCODE123'));
+    assert.ok(!body.html.includes('/recon/r/'));
+  }
+  assert.equal(sends().length, 2);
+});
+
 test('unknown partner does not send a member email', async () => {
   assert.deepEqual(await sendForClaim(env, 'missing', claim, { withNudge: true }),
     { ok: false, id: null, error: 'unknown partner', nudgeId: null });
@@ -87,6 +119,15 @@ test('74 codes left claims threshold 75 and emails only if a row was updated', a
   programRows = [];
   await maybeAlertLowStock(env, 'arsenal', 74);
   assert.equal(sends().length, 0);
+});
+
+test('RECON low-stock alert claims only RECON inventory and identifies its partner', async () => {
+  programRows = [{ slug: 'recon' }];
+  await maybeAlertLowStock(env, 'recon', 25);
+  assert.ok(calls[0].url.includes('partner_programs?slug=eq.recon&or=(low_stock_alerted.is.null,low_stock_alerted.gt.25)'));
+  assert.equal(calls[0].body.low_stock_alerted, 25);
+  assert.equal(sends().length, 1);
+  assert.ok(sends()[0].body.subject.includes('recon'));
 });
 
 test('zero codes left claims threshold zero', async () => {
