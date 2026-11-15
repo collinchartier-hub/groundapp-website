@@ -107,10 +107,10 @@ body.ax, body.ax-redeem {
 .ax-ga img { width: 32px; height: 32px; flex: none; }
 
 /* ---------- hero: "Bodie at RECON" ----------
-   Layers, back to front: GroundApp's Obsidian ground, RECON's own home-page photo (a woman settling into compression
-   boots in a blue-lit recovery lounge) set in from the right and masked so it dissolves into Obsidian to the left and
-   below, a fade to RECON's charcoal at the bottom that lands on the form, then the content. Bodie sits on the floor at
-   the seam, beside the recovery chair, not over her. The type sits where the photo has faded out. */
+   Layers, back to front: GroundApp's Obsidian ground, RECON's own home-page photo (a woman in a RECON Lumi red light
+   session, mask and wrap on the bed) set in from the right and masked so it dissolves into Obsidian to the left and
+   below, a fade to RECON's charcoal at the bottom that lands on the form, then the content. Bodie sits at the seam,
+   beside her. The type sits where the photo has faded out. */
 .ax-hero {
   position: relative;
   isolation: isolate;
@@ -157,7 +157,7 @@ body.ax, body.ax-redeem {
 .ax-btn-gold:focus-visible { outline-color: var(--gold); }
 .ax-hero-note { color: #d5c7b8; font: 400 16px/1.5 var(--font-text); }
 
-/* the photo takes the right of the hero; its left (the chair and the boot pump) is where it fades out */
+/* the photo takes the right of the hero; its left (the pillows) is where it fades out */
 .ax-hero-3 .ax-hero-bg {
   left: 42%;
   -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 34%), linear-gradient(180deg, #000 58%, transparent 97%);
@@ -166,7 +166,7 @@ body.ax, body.ax-redeem {
   mask-composite: intersect;
 }
 .ax-hero-3 .ax-hero-photo { object-position: 0% 40%; }
-/* the GroundApp half of the lockup sits on the blue wall: keep it dark up there */
+/* the GroundApp half of the lockup sits on the headboard and curtain: keep it dark up there */
 .ax-hero-3 .ax-hero-bg::after {
   content: "";
   position: absolute; left: 0; right: 0; top: 0;
@@ -693,7 +693,7 @@ body.ax-redeem {
   .ax-btn-gold { width: 100%; }
   .ax-hero-note { font-size: 15px; }
 
-  /* Bodie on the lounge floor at her feet, low and right, then the serif line under him on Obsidian */
+  /* Bodie on the RECON wrap beside her, low and right, then the serif line under him on Obsidian */
   .ax-hero-3 { padding-top: calc(var(--ax-top-h) + 4px); }
   .ax-h3-grid { display: flex; flex-direction: column; gap: 0; }
   .ax-h3-floor { order: -1; align-self: auto; justify-self: auto; width: 136px; margin: 110px 6% 20px auto; }
@@ -718,7 +718,7 @@ body.ax-redeem {
   .ax-at-card img { aspect-ratio: 4 / 3; }
   .ax-at-cards li:nth-child(1) img { object-position: 50% 25%; }   /* the rider in the air */
   .ax-at-cards li:nth-child(2) img { object-position: 50% 20%; }   /* Andy behind the sled */
-  .ax-at-cards li:nth-child(3) img { object-position: 50% 62%; }   /* her on the mat, not the sign */
+  .ax-at-cards li:nth-child(3) img { object-position: 50% 62%; }   /* the RECON sign and Andy in the boots */
   .ax-at-card figcaption { padding: 60px 18px 18px; font-size: 22px; }
   .ax-band-sep { display: block; height: 0; overflow: hidden; }
 

@@ -102,4 +102,4 @@ No. The O2 and CO2 tables are for dry land only. Never in the sauna, and never i
 
 ## Files
 
-- Share image: https://groundapp.live/img/recon/og.jpg
+- Share image: https://groundapp.live/img/recon/og-lumi.jpg
