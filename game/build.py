@@ -83,9 +83,9 @@ assert body.count('  <header class="top">') == 1
 web_body = (body.replace('<div class="wrap">\n', '<div class="wrap">\n' + BAR, 1)
             .replace('  <header class="top">', '  <main class="game-main" id="main">\n  <header class="top">', 1)
             .replace("</section>\n</div>\n\n<script>", "</section>\n  </main>\n</div>\n\n" + FOOT + "\n<script>", 1))
-TITLE = "Bodie's Breath Run | Finger-control game by GroundApp"
-DESC = ("Play with Bodie using finger or keyboard controls while breathing normally. "
-        "Screen shields, jumps and a noncompetitive ribbon ride. No breath-hold test or dive challenge.")
+TITLE = "Bodie's Breath Run: Browser Game | GroundApp"
+DESC = ("Play Bodie's Breath Run in your browser using finger or keyboard controls while breathing normally. "
+        "Race Kip, use screen shields and jumps, or try a noncompetitive ribbon ride.")
 OG_IMG = "https://groundapp.live/og-image.jpg"
 head = f"""<!DOCTYPE html>
 <html lang="en">
@@ -98,21 +98,21 @@ head = f"""<!DOCTYPE html>
 <meta name="author" content="Collin Chartier">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="apple-itunes-app" content="app-id=6760352779, affiliate-data=pt=128638571&amp;ct=site-banner">
-<meta property="og:title" content="Bodie's Breath Run">
-<meta property="og:description" content="Race Kip the Caffeine Crow, push your longest breath hold, and learn real breathing techniques. A free game from GroundApp.">
+<meta property="og:title" content="{TITLE}">
+<meta property="og:description" content="{DESC}">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://groundapp.live/play">
 <meta property="og:image" content="{OG_IMG}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Bodie, GroundApp's breathing figure, sitting on his cushion next to Kip the Caffeine Crow">
+<meta property="og:image:alt" content="GroundApp breathwork app preview image">
 <meta property="og:site_name" content="GroundApp">
 <meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Bodie's Breath Run">
-<meta name="twitter:description" content="Race Kip, push your longest breath hold, and learn real breathing techniques. A free game from GroundApp.">
+<meta name="twitter:title" content="{TITLE}">
+<meta name="twitter:description" content="{DESC}">
 <meta name="twitter:image" content="{OG_IMG}">
-<meta name="twitter:image:alt" content="Bodie, GroundApp's breathing figure, sitting on his cushion next to Kip the Caffeine Crow">
+<meta name="twitter:image:alt" content="GroundApp breathwork app preview image">
 <link rel="canonical" href="https://groundapp.live/play">
 <link rel="icon" type="image/svg+xml" href="/lung-logo.svg">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -145,10 +145,17 @@ body > .site-foot a {{ color: var(--text-2); }}
 @media (hover: hover) and (pointer: fine) {{ body > .site-foot .foot-nav a:hover {{ color: var(--text); }} }}
 </style>
 <script type="application/ld+json">
-{{"@context": "https://schema.org", "@type": "VideoGame", "name": "Bodie's Breath Run", "url": "https://groundapp.live/play",
-  "description": "{DESC}", "genre": ["Casual"], "gamePlatform": "Web browser", "applicationCategory": "Game",
-  "offers": {{"@type": "Offer", "price": "0", "priceCurrency": "USD"}},
-  "publisher": {{"@type": "Organization", "name": "GroundApp", "url": "https://groundapp.live"}}, "image": "{OG_IMG}"}}
+{{"@context": "https://schema.org", "@graph": [
+  {{"@type": "WebPage", "@id": "https://groundapp.live/play", "url": "https://groundapp.live/play",
+    "name": "Bodie's Breath Run", "isPartOf": {{"@id": "https://groundapp.live/#website"}},
+    "mainEntity": {{"@id": "https://groundapp.live/play#game"}}}},
+  {{"@type": "VideoGame", "@id": "https://groundapp.live/play#game", "name": "Bodie's Breath Run",
+    "url": "https://groundapp.live/play", "description": "{DESC}", "genre": ["Casual"],
+    "gamePlatform": "Web browser", "applicationCategory": "Game",
+    "offers": {{"@type": "Offer", "price": "0", "priceCurrency": "USD"}},
+    "publisher": {{"@id": "https://groundapp.live/#organization"}},
+    "creator": {{"@id": "https://collinchartier.com/#person"}}, "image": "{OG_IMG}"}}
+]}}
 </script>
 </head>
 <body>

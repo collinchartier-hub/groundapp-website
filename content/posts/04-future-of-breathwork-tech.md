@@ -2,6 +2,8 @@
 title: Where breathwork tech is going (and what it should never replace)
 slug: future-of-breathwork-tech
 description: What GroundApp does today, what Collin hopes future tools may offer, and why privacy and human care stay separate from a product roadmap.
+seo_title: Breathwork Technology and Human Care | GroundApp Blog
+seo_description: Collin Chartier explains what GroundApp does today, what future breathwork tools might offer and why privacy and human care remain separate from an app.
 date: 2026-03-26
 updated: 2026-11-14
 old: 04-ai-powered-breathwork-future

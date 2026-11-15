@@ -2,6 +2,8 @@
 title: Nervous system regulation, without the promises
 slug: nervous-system-regulation-explained
 description: A practical way to talk about stress and breathing without diagnosing yourself, promising a reset or confusing coaching with treatment.
+seo_title: Nervous System Regulation Without Promises | GroundApp
+seo_description: A practical look at nervous system regulation, stress and breathing without self-diagnosis, a promised reset or confusing breathwork coaching with treatment.
 date: 2026-03-26
 updated: 2026-11-14
 old: 02-nervous-system-regulation-explained
