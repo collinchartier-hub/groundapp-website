@@ -35,6 +35,7 @@ export async function onRequestPost({ request, env }) {
   try {
     const { state, row } = await upsertSubscriber(env, { email, firstName, source });
     if (state === 'race') return json({ ok: true, status: 'already' });
+    if (state === 'suppressed') return json({ ok: true, status: 'subscribed' });
     if (state === 'active' && emailedWithinADay(row.last_emailed_at)) return json({ ok: true, status: 'already' });
 
     const sent = await sendWelcome(env, email, firstName || row?.first_name || null);

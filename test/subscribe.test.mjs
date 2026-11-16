@@ -19,7 +19,7 @@ let realConsoleError;
 
 beforeEach(() => {
   calls = [];
-  state = { subscriber: null };
+  state = { subscriber: null, unsubscribed: false };
   realFetch = globalThis.fetch;
   realConsoleError = console.error;
   console.error = () => {};
@@ -30,6 +30,9 @@ beforeEach(() => {
     if (u.startsWith('https://api.resend.com/')) return new Response(JSON.stringify({ id: 'email_1' }), { status: 200 });
     if (method === 'GET' && u.includes('newsletter_subscribers')) {
       return new Response(JSON.stringify(state.subscriber ? [state.subscriber] : []), { status: 200 });
+    }
+    if (method === 'GET' && u.includes('newsletter_unsubscribed')) {
+      return new Response(JSON.stringify(state.unsubscribed ? [{ email: 'sam@example.com' }] : []), { status: 200 });
     }
     if (method === 'GET') return new Response('[]', { status: 200 });
     return new Response(null, { status: method === 'POST' ? 201 : 204 });
@@ -55,7 +58,43 @@ const welcomes = () => calls.filter((c) => c.url === 'https://api.resend.com/ema
 test('new signup: saved and welcomed', async () => {
   const res = await post();
   assert.deepEqual(await res.json(), { ok: true, status: 'subscribed' });
+  assert.ok(calls.some((c) => c.method === 'POST' && c.url.endsWith('/newsletter_subscribers') && c.body?.status === 'active'));
   assert.equal(welcomes().length, 1);
+});
+
+test('unsubscribed address stays opted out without revealing its status', async () => {
+  state.subscriber = { id: 'u1', status: 'unsubscribed', first_name: 'Sam', last_emailed_at: null };
+  state.unsubscribed = true;
+  const res = await post();
+  assert.deepEqual(await res.json(), { ok: true, status: 'subscribed' });
+  assert.equal(calls.filter((c) => c.method === 'DELETE' && c.url.includes('newsletter_unsubscribed')).length, 0);
+  assert.equal(calls.filter((c) => c.method === 'PATCH' && c.url.includes('newsletter_subscribers')).length, 0);
+  assert.equal(welcomes().length, 0);
+});
+
+test('bounced address is not reactivated or welcomed', async () => {
+  state.subscriber = { id: 'u1', status: 'bounced', first_name: 'Sam', last_emailed_at: null };
+  const res = await post();
+  assert.deepEqual(await res.json(), { ok: true, status: 'subscribed' });
+  assert.equal(calls.filter((c) => c.method === 'PATCH' && c.url.includes('newsletter_subscribers')).length, 0);
+  assert.equal(welcomes().length, 0);
+});
+
+test('suppression row blocks an otherwise active subscriber', async () => {
+  state.subscriber = { id: 'u1', status: 'active', first_name: 'Sam', last_emailed_at: null };
+  state.unsubscribed = true;
+  const res = await post();
+  assert.deepEqual(await res.json(), { ok: true, status: 'subscribed' });
+  assert.equal(calls.filter((c) => c.method !== 'GET' && c.url.includes('newsletter_')).length, 0);
+  assert.equal(welcomes().length, 0);
+});
+
+test('suppression row blocks signup even without a subscriber row', async () => {
+  state.unsubscribed = true;
+  const res = await post();
+  assert.deepEqual(await res.json(), { ok: true, status: 'subscribed' });
+  assert.equal(calls.filter((c) => c.method !== 'GET' && c.url.includes('newsletter_')).length, 0);
+  assert.equal(welcomes().length, 0);
 });
 
 test('already active (imported or signed up before): still welcomed and stamped', async () => {
