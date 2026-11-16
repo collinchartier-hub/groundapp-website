@@ -20,7 +20,7 @@ let realConsoleError;
 
 beforeEach(() => {
   calls = [];
-  state = { rpc: rpcResult(), turnstile: true, resendStatus: 200, alertRow: false, nudgeAttached: true };
+  state = { rpc: rpcResult(), turnstile: true, resendStatus: 200, alertRow: false, nudgeAttached: true, subscriber: null, unsubscribed: false };
   realFetch = globalThis.fetch;
   realConsoleError = console.error;
   console.error = () => {};
@@ -34,6 +34,12 @@ beforeEach(() => {
     if (u.endsWith('/rpc/partner_claim')) return new Response(JSON.stringify(state.rpc), { status: 200 });
     if (u === 'https://api.resend.com/emails') {
       return new Response(JSON.stringify({ id: `email_${calls.filter((c) => c.url === u).length}` }), { status: state.resendStatus });
+    }
+    if (method === 'GET' && u.includes('newsletter_subscribers')) {
+      return new Response(JSON.stringify(state.subscriber ? [state.subscriber] : []), { status: 200 });
+    }
+    if (method === 'GET' && u.includes('newsletter_unsubscribed')) {
+      return new Response(JSON.stringify(state.unsubscribed ? [{ email: 'sam@example.com' }] : []), { status: 200 });
     }
     if (method === 'GET') return new Response('[]', { status: 200 });
     if (u.includes('partner_claims?') && method === 'PATCH' && u.includes('redeem_tapped_at=is.null')) {
@@ -225,6 +231,15 @@ test('newsletter box ticked: added to the list as arsenal', async () => {
   const ins = calls.find((c) => c.method === 'POST' && c.url.endsWith('/newsletter_subscribers'));
   assert.equal(ins.body.email, 'sam@example.com');
   assert.equal(ins.body.source, 'groundapp_site:arsenal');
+});
+
+test('opted-out partner claim delivers its code without rejoining the newsletter', async () => {
+  state.subscriber = { id: 'u1', status: 'unsubscribed', first_name: 'Sam', last_emailed_at: null };
+  state.unsubscribed = true;
+  const res = await post({ newsletter: true });
+  assert.deepEqual(await res.json(), { ok: true, status: 'assigned' });
+  assert.ok(sends().some((c) => c.body.html.includes(CODE)));
+  assert.equal(calls.filter((c) => c.method !== 'GET' && c.url.includes('newsletter_')).length, 0);
 });
 
 test('newsletter box not ticked: the list is not touched', async () => {
