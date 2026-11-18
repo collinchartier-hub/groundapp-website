@@ -43,7 +43,7 @@ test('home graph connects app, founder, organization and visible FAQ without inv
   assert.equal(app.author['@id'], 'https://collinchartier.com/#person');
   assert.equal(byId[origin + '/#organization'].founder['@id'], 'https://collinchartier.com/#person');
   assert.deepEqual(app.offers.map(o => [o.price, o.priceCurrency, o.priceSpecification?.billingDuration]), [
-    ['0', 'USD', undefined], ['39.99', 'USD', 'P1Y'], ['6.99', 'USD', 'P1M'],
+    ['0', 'USD', undefined], ['69.99', 'USD', 'P1Y'], ['6.99', 'USD', 'P1M'],
   ]);
   assert.ok(!('aggregateRating' in app));
   for (const question of byId[origin + '/#faq'].mainEntity) {
