@@ -36,3 +36,14 @@ test('unknown slugs have no partner configuration', () => {
   assert.equal(partnerConfig('missing'), null);
   assert.equal(partnerConfig('__proto__'), null);
 });
+
+test('all partner forms load the new claim asset rather than the cached old version', async () => {
+  const { readFile } = await import('node:fs/promises');
+  for (const slug of ['arsenal', 'aion', 'traverse', 'recon']) {
+    const markup = await readFile(new URL(`../site/${slug}/index.html`, import.meta.url), 'utf8');
+    assert.ok(markup.includes('/assets/js/partner-claim-v2.js'));
+    assert.ok(!markup.includes('/assets/js/partner-claim-v1.js'));
+  }
+  const script = await readFile(new URL('../site/assets/js/partner-claim-v2.js', import.meta.url), 'utf8');
+  assert.ok(script.includes('Your link is on the way to {email}'));
+});

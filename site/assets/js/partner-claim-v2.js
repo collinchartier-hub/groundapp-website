@@ -1,5 +1,5 @@
 // Shared partner form: sends a claim to POST /api/partner/claim and shows what happened.
-// The code itself only ever arrives by email.
+// The member's code and link are never shown on this form page.
 (function () {
   'use strict';
   var form = document.getElementById('claim-form');
@@ -32,8 +32,8 @@
   }
 
   var MESSAGES = {
-    assigned: 'Check your inbox. Your code and link are on the way to {email}. Open it on your iPhone.',
-    existing: 'You already claimed your year. We just sent your code again to {email}.',
+    assigned: 'Check your inbox. Your link is on the way to {email}. Open it on your iPhone.',
+    existing: 'You already claimed your year. We just sent your link again to {email}.',
     android: "GroundApp is iPhone only for now. You're on the list, and we'll email you when Android is ready.",
     waitlist: "Codes are being restocked. You're on the list and yours will arrive by email.",
     first_name: 'Add your first name.',

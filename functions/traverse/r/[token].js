@@ -1,4 +1,4 @@
-// GET /traverse/r/<token>: a Traverse Fitness member's own link from their email.
+// GET/POST /traverse/r/<token>: tracked member redemption link.
 import { redeemHandler } from '../../../lib/partner-redeem.js';
 
-export const onRequestGet = redeemHandler('traverse');
+export const { onRequestGet, onRequestPost } = redeemHandler('traverse');

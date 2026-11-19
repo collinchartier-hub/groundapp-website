@@ -1,6 +1,6 @@
 # RECON Wellness x GroundApp: launch kit
 
-The RECON Wellness community gets a free year (12 months) of GroundApp Premium. People claim it at groundapp.live/recon: first name, last name, email, and a tick to say they're part of the RECON Wellness community. Their own one-time code and link arrive by email, and they tap it on their iPhone.
+The RECON Wellness community gets a free year (12 months) of GroundApp Premium. People claim it at groundapp.live/recon: first name, last name, email, and a tick to say they're part of the RECON Wellness community. Their own link arrives by email, and they tap it on their iPhone.
 
 RECON is a recovery equipment brand, not a gym. Everything here speaks to RECON's customers and community, wherever they train. Nothing here names a RECON facility or membership.
 
@@ -39,7 +39,7 @@ GroundApp is the breathwork app created by Collin Chartier, a performance breath
 
 Claim yours: https://groundapp.live/recon?src=email
 
-Enter your name and email, then tap your own code and link on your iPhone.
+Enter your name and email, then tap your own link on your iPhone.
 
 iPhone only. One code per person, tied to your email. Free for 12 months, then $39.99 a year unless you cancel. Cancel any time in Settings > your name > Subscriptions.
 
