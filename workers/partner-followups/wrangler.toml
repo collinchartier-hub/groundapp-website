@@ -1,0 +1,14 @@
+# Secret: PARTNER_CRON_SECRET (same value on the Pages project).
+name = "groundapp-partner-followups"
+main = "src/index.js"
+compatibility_date = "2025-09-01"
+workers_dev = false
+
+[triggers]
+crons = ["0 * * * *"]
+
+[vars]
+PARTNER_FOLLOWUPS_URL = "https://groundapp.live/api/partner/followups"
+
+[observability]
+enabled = true

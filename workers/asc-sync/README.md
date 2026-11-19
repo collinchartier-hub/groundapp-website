@@ -61,7 +61,7 @@ curl -X POST -H "x-sync-token: $(cat /tmp/asc-sync-token)" https://groundapp-asc
 | `ASC_MAX_SUBREQUESTS` | `45` | Workers Free allows 50 subrequests per run. The sync stops before the limit and picks up the rest next run. On Workers Paid set it to `900`. |
 | `ASC_INCLUDE_SNAPSHOT` | `0` | `1` makes the Worker also read the ONE_TIME_SNAPSHOT request. Normally the history backfill is done once with the CLI instead. |
 
-A normal day costs about 40 subrequests (1 state read, 1 report list, about 9 instance lists, 1 imports check, about 18 segment calls and downloads, up to 7 dim cleanups, 1 upsert, 1 imports write, 1 state write).
+A normal day costs about 40 subrequests (1 state read, 1 report list, about 9 instance lists, 1 imports check, about 18 segment calls and downloads, Standard `source:`/`offer:` and Detailed `campaign:` dim cleanups, 1 upsert, 1 imports write, 1 state write).
 
 ## How the sync works
 
@@ -70,7 +70,7 @@ A normal day costs about 40 subrequests (1 state read, 1 report list, about 9 in
 3. Skip instances already in `groundapp_asc_imports`.
 4. Oldest `processingDate` first: list segments, download every segment (presigned S3 urls, no auth header, they expire in about 5 minutes so they're fetched right away), gunzip with `DecompressionStream`, parse, aggregate. All segments of one instance are summed.
 5. **Latest processingDate wins per date.** Apple restates recent dates in newer instances and says not to merge records across instances ([Data completeness and corrections](https://developer.apple.com/documentation/analytics-reports/data-completeness-corrections)). Each (report family, Standard/Detailed, date) remembers which processingDate wrote it (`watermarks` in state), so an older instance processed later (for example the snapshot) never overwrites newer data.
-6. Write: delete the old `source:`/`campaign:` dims for the dates being replaced, upsert rows (`Prefer: resolution=merge-duplicates`, `on_conflict=date,metric,dim`, batches of 1000), record the instances in `groundapp_asc_imports`, save `watermarks` and `last_run` to `groundapp_asc_state`.
+6. Write: delete the old `source:`/`campaign:` dims and Subscription Event Standard `offer:` dims for the dates being replaced, upsert rows (`Prefer: resolution=merge-duplicates`, `on_conflict=date,metric,dim`, batches of 1000), record the instances in `groundapp_asc_imports`, save `watermarks` and `last_run` to `groundapp_asc_state`.
 
 If a run fails halfway, nothing is recorded as imported, so the next run redoes it. Writes are idempotent.
 
@@ -123,7 +123,7 @@ Doc: https://developer.apple.com/documentation/analytics-reports/app-sessions. C
 | `session_seconds` | sum of `Total Session Duration` (seconds). Average session = `session_seconds / sessions`. |
 
 ### App Store Subscription Event (Standard + Detailed)
-Doc: https://developer.apple.com/documentation/analytics-reports/subscription-event. Columns: `Event Date` (this report uses Event Date, not Date), `App Apple Identifier`, `Event Sub Type`, `Event Grouping`, `App Download Source Type`, `Campaign`, `Counts`. History starts 2025-01-01.
+Doc: https://developer.apple.com/documentation/analytics-reports/subscription-event. Columns: `Event Date` (this report uses Event Date, not Date), `App Apple Identifier`, `Event Name` and/or `Event Sub Type`, `Event Grouping`, `Offer Type`, `Offer ID`, `App Download Source Type`, `Campaign`, `Counts`. History starts 2025-01-01.
 
 | metric | rule |
 | --- | --- |
@@ -134,8 +134,9 @@ Doc: https://developer.apple.com/documentation/analytics-reports/subscription-ev
 | `churn_voluntary` | `Event Grouping` = Voluntary Churn |
 | `churn_involuntary` | `Event Grouping` = Involuntary Churn |
 | `refunds` | `Event Sub Type` starts with "Refunds from" |
+| `offer_code_redemptions` | Standard report only: `Offer Type` = Offer code and `Offer ID` present, with either `Event Name` starting with Free trial start / Paid offer start (including reactivation), or `Event Sub Type` = Free Trial Starts / Paid Offer Starts. No start-name or sub-type column means no offer redemptions emitted. |
 
-Dims: `source:` and `campaign:` for trial_starts, trial_conversions, subscription_starts.
+Dims: `source:` and `campaign:` for trial_starts, trial_conversions, subscription_starts. `offer_code_redemptions` uses only `offer:<Offer ID>` from Standard; it has no `total`, source or campaign row.
 
 ### App Store Subscription State (Standard)
 Doc: https://developer.apple.com/documentation/analytics-reports/subscription-state. Columns: `Date`, `App Apple Identifier`, `State Metric`, `State Metric Grouping`, `Counts`.
@@ -160,9 +161,31 @@ These are point-in-time counts per day. Don't sum them across days.
 
 ## Table contract
 
-- `groundapp_asc_daily(date, metric, dim, value, report, updated_at)`, PK `(date, metric, dim)`. `dim` is `total`, `source:<Apple source type>` (for example `source:App Store search`, `source:Web referrer`) or `campaign:<token>` (for example `campaign:site-hero`). Totals are always written (zero included); dims only when non-zero. No territory/device/version breakdowns.
+- `groundapp_asc_daily(date, metric, dim, value, report, updated_at)`, PK `(date, metric, dim)`. `dim` is `total`, `source:<Apple source type>` (for example `source:App Store search`, `source:Web referrer`), `campaign:<token>` (for example `campaign:site-hero`), or `offer:<Offer ID>` for `offer_code_redemptions`. Totals are always written (zero included); dims only when non-zero. Standard Subscription Event re-imports delete stale `offer:` dims for replaced dates before upserting. No territory/device/version breakdowns.
 - `groundapp_asc_imports(instance_id, report_name, granularity, processing_date, rows_imported, imported_at)`. `rows_imported` = rows this instance contributed to `groundapp_asc_daily`.
 - `groundapp_asc_state(key, value)`: `requests` (`{appId, ongoing, snapshots[], stopped[]}`), `watermarks` (`{"family:level": {date: processingDate}}`, last 70 days), `last_run` (counts and first errors).
+
+### Re-read already imported Subscription Event reports
+
+After updating the worker, the operator can backfill available Apple Standard report instances without touching downloads or other report families. Preview which rows would be cleared, then run the following SQL against the intended Supabase project (not from this checkout):
+
+```sql
+select instance_id, report_name, processing_date
+  from public.groundapp_asc_imports
+ where granularity = 'DAILY'
+   and report_name ilike '%subscription event%standard'
+ order by processing_date, instance_id;
+
+delete from public.groundapp_asc_imports
+ where granularity = 'DAILY'
+   and report_name ilike '%subscription event%standard';
+
+update public.groundapp_asc_state
+   set value = value - 'subscription_events:standard', updated_at = now()
+ where key = 'watermarks';
+```
+
+Then run `node scripts/asc.mjs sync --write` with the Sales key and Supabase credentials; by default the CLI includes the stored snapshot request and sorts available instances oldest `processingDate` first. Do not use `--since` or `--no-snapshot` for the full backfill. The run re-imports only Standard Subscription Event rows cleared above (and any other newly arrived reports). It deletes stale `offer:` dims for dates re-read; dates whose Apple instances have expired cannot be recovered without a new snapshot. Check `instancesProcessed`, `rowsWritten`, `errors` and `columnsSeen` in the CLI output. The daily Worker itself also re-reads cleared ONGOING instances, but normally excludes snapshots.
 
 ## Known limits
 

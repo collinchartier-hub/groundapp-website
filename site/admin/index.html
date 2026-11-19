@@ -472,17 +472,24 @@
   }
   function csvCell(v) { v = v == null ? '' : String(v); if (/^[=+\-@\t\r]/.test(v)) v = "'" + v; return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
   function downloadCsv(slug, rows) {
-    var head = ['first_name', 'last_name', 'email', 'device', 'location', 'src', 'status', 'newsletter_opt_in', 'created_at', 'emailed_at', 'redeem_tapped_at', 'tap_count', 'code_seq'];
+    var head = ['first_name', 'last_name', 'email', 'device', 'location', 'src', 'status', 'newsletter_opt_in', 'created_at', 'emailed_at', 'redeem_tapped_at', 'code_opened_at', 'followup_kind', 'followup_sent_at', 'followup_email_id', 'followup_error', 'tap_count', 'code_seq'];
     var text = [head.join(',')].concat(rows.map(function (r) { return head.map(function (h) { return csvCell(r[h]); }).join(','); })).join('\n');
     var a = el('a', { href: URL.createObjectURL(new Blob([text], { type: 'text/csv' })), download: slug + '-claims-' + new Date().toISOString().slice(0, 10) + '.csv' });
     document.body.appendChild(a); a.click(); a.remove();
   }
   function renderPartner(d, slug, name) {
-    var c = d.claims || {}, codes = d.codes || {}, paused = d.program && d.program.status === 'paused';
+    var c = d.claims || {}, codes = d.codes || {}, apple = d.apple || {}, paused = d.program && d.program.status === 'paused';
     var k = clear(slot('partner-kpis'));
-    k.appendChild(tile('Codes left', fmt(codes.left), 'of ' + fmt(codes.total) + (codes.expires_on ? ', expire ' + shortDate(codes.expires_on) : '')));
-    k.appendChild(tile('Codes sent', fmt(c.assigned), fmt(c.email_failed) + ' emails failed'));
-    k.appendChild(tile('Tapped on iPhone', fmt(c.tapped), c.assigned ? Math.round(c.tapped / c.assigned * 100) + '% of codes sent' : ''));
+    k.appendChild(tile('Bucket size', codes.cap == null ? 'No cap' : fmt(codes.cap), fmt(codes.total) + ' codes loaded'));
+    k.appendChild(tile('Assigned', fmt(codes.assigned), fmt(c.email_failed) + ' emails failed'));
+    k.appendChild(tile('Left', fmt(codes.left), codes.expires_on ? 'Next code expiry ' + shortDate(codes.expires_on) : 'Available to assign'));
+    k.appendChild(tile('Tapped on iPhone', fmt(c.tapped), codes.assigned ? Math.round(c.tapped / codes.assigned * 100) + '% of assigned codes' : ''));
+    k.appendChild(tile('Redeemed in the App Store', fmt(apple.redemptions), apple.last_date
+      ? 'Through ' + shortDate(apple.last_date) + ', ' + apple.last_date.slice(0, 4) + '. Apple updates daily.'
+      : apple.offer_id ? 'Apple updates daily; no report yet.' : 'Dedicated Apple offer not linked yet. Apple updates daily.'));
+    k.appendChild(tile('Code opened', fmt(c.opened || 0), 'iPhone link or Show my code'));
+    k.appendChild(tile('Welcome sent', fmt(c.welcome_sent || 0), 'Opened their code'));
+    k.appendChild(tile('Reminder sent', fmt(c.reminder_sent || 0), 'No code open recorded'));
     k.appendChild(tile('Waiting for a code', fmt(c.waitlist), fmt(c.android_waitlist) + ' on the Android list'));
     k.appendChild(tile('Joined your list', fmt(c.newsletter), 'Ticked the newsletter box'));
 
@@ -505,9 +512,12 @@
     var rows = d.rows || [];
     if (!rows.length) { empty(slot('partner-rows'), 'No claims yet.'); return; }
     var box = clear(slot('partner-rows'));
-    var tv = tableView(['Name', 'Email', 'Location', 'Phone', 'Status', 'Claimed', 'Tapped', ''], rows.map(function (r) {
+    var tv = tableView(['Name', 'Email', 'Location', 'Phone', 'Status', 'Claimed', 'Tapped', 'Code opened', 'Follow-up', ''], rows.map(function (r) {
+      var notConfirmed = (r.followup_kind === 'welcome' || r.followup_kind === 'reminder') && !r.followup_email_id && !r.followup_error;
+      var followup = r.followup_error ? 'Error: ' + r.followup_error
+        : r.followup_kind ? r.followup_kind + (r.followup_sent_at ? ' · ' + when(r.followup_sent_at) : '') + (notConfirmed ? ' · not confirmed' : '') : '';
       return [r.first_name + ' ' + r.last_name, r.email, r.location, r.device === 'iphone' ? 'iPhone' : 'Android',
-        r.email_error ? 'Email failed' : (STATUS_NAMES[r.status] || r.status), when(r.created_at), when(r.redeem_tapped_at), ''];
+        r.email_error ? 'Email failed' : (STATUS_NAMES[r.status] || r.status), when(r.created_at), when(r.redeem_tapped_at), when(r.code_opened_at), followup, ''];
     }), true);
     tv.querySelector('summary').textContent = 'Everyone who claimed (' + rows.length + ')';
     Array.prototype.forEach.call(tv.querySelectorAll('tbody tr'), function (tr, i) {
@@ -553,12 +563,12 @@
             Array.prototype.forEach.call(choices.querySelectorAll('button'), function (b) {
               b.setAttribute('aria-pressed', String(b === button));
             });
-            $('#partner-note').textContent = 'Free-year codes for ' + selectedPartner.name + ' members from groundapp.live/' + PARTNER + '. \"Tapped\" means they opened their link on an iPhone. Apple reports redemptions per offer, not per person.';
+            $('#partner-note').textContent = 'Free-year codes for ' + selectedPartner.name + ' members from groundapp.live/' + PARTNER + '. \"Code opened\" means an iPhone link visit or a tap on Show my code. Apple reports redemptions per offer, not per person.';
             loadPartner();
           });
           choices.appendChild(button);
         });
-        $('#partner-note').textContent = 'Free-year codes for ' + selectedPartner.name + ' members from groundapp.live/' + PARTNER + '. \"Tapped\" means they opened their link on an iPhone. Apple reports redemptions per offer, not per person.';
+        $('#partner-note').textContent = 'Free-year codes for ' + selectedPartner.name + ' members from groundapp.live/' + PARTNER + '. \"Code opened\" means an iPhone link visit or a tap on Show my code. Apple reports redemptions per offer, not per person.';
         loadPartner();
       })
       .catch(partnerLoadFailed);

@@ -1,11 +1,10 @@
 // POST /api/partner/claim
-// A partner's member asks for their free-year code. The database locks one unique code to them (db/2026-11-13_partner_codes.sql,
-// partner_claim) and the code goes out by email only: the response never carries it, so every code needs a working inbox.
+// A partner member claims a free-year link. The database assigns a unique code,
+// but neither the response nor the email contains the plain code.
 import { json, supabase, sha256Hex } from '../../../lib/util.js';
 import { validateClaim, newToken, RESEND_WINDOW_MS } from '../../../lib/partner.js';
 import { sendForClaim, alertAdmin, maybeAlertLowStock } from '../../../lib/partner-delivery.js';
 import { upsertSubscriber, stampEmailed } from '../../../lib/list.js';
-import { cancelEmail } from '../../../lib/partner-email.js';
 
 const ALLOWED_ORIGIN = /^https:\/\/((www\.)?groundapp\.live|([a-z0-9-]+\.)?groundapp\.pages\.dev)$|^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/;
 
@@ -50,19 +49,12 @@ export async function onRequestPost({ request, env }) {
 
     const emailedRecently = claim.emailed_at && Date.now() - Date.parse(claim.emailed_at) < RESEND_WINDOW_MS;
     if (!emailedRecently) {
-      const sent = await sendForClaim(env, c.partner, r, { withNudge: claim.status === 'assigned' && !claim.emailed_at });
+      const sent = await sendForClaim(env, c.partner, r);
       const patch = sent.ok
         ? { emailed_at: new Date().toISOString(), email_error: null }
         : { email_error: sent.error };
       const stamped = await supabase(env, `partner_claims?id=eq.${claim.id}`, { method: 'PATCH', prefer: 'return=minimal', body: patch });
       if (!stamped.ok) console.error('partner claim bookkeeping failed', claim.id, stamped.status);
-      if (sent.nudgeId) {
-        const attached = await supabase(env, `partner_claims?id=eq.${claim.id}&redeem_tapped_at=is.null`, {
-          method: 'PATCH', prefer: 'return=representation', body: { nudge_email_id: sent.nudgeId },
-        });
-        if (!attached.ok) console.error('partner reminder bookkeeping failed', claim.id, attached.status);
-        else if (!attached.data?.length) await cancelEmail(env, sent.nudgeId);
-      }
       if (!sent.ok) {
         await alertAdmin(env, c.partner, 'email_failed', `${claim.email}: ${sent.error}`);
         return json({ ok: false, error: 'email' }, 502);

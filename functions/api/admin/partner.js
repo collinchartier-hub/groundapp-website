@@ -1,7 +1,7 @@
 // /api/admin/partner (behind Cloudflare Access, see lib/access.js)
 // GET  ?slug=<partner>                        everything the Partners panel shows; no slug lists programs
 // POST { action: 'pause' | 'resume', slug }   turn the form into a waitlist, or back
-// POST { action: 'resend', slug, claim_id }   send one member their email again
+// POST { action: 'resend', slug, claim_id }   resend only the code email (tracked link)
 // POST { action: 'release_waitlist', slug }   give up to 10 waiting iPhone claims a code and email them
 import { json, supabase } from '../../../lib/util.js';
 import { requireAdmin } from '../../../lib/access.js';
@@ -44,14 +44,11 @@ export async function onRequestPost({ request, env }) {
     if (body.action === 'resend') {
       const id = String(body.claim_id || '');
       if (!UUID_RE.test(id)) return json({ ok: false, error: 'invalid' }, 400);
-      const [claims, codes] = await Promise.all([
-        supabase(env, `partner_claims?id=eq.${id}&partner=eq.${slug}&select=id,status,first_name,email,token,emailed_at`),
-        supabase(env, `partner_codes?claim_id=eq.${id}&select=code,redeem_url`),
-      ]);
-      if (!claims.ok || !codes.ok) throw new Error(`lookup ${claims.status}/${codes.status}`);
+      const claims = await supabase(env, `partner_claims?id=eq.${id}&partner=eq.${slug}&select=id,status,first_name,email,token,emailed_at`);
+      if (!claims.ok) throw new Error(`lookup ${claims.status}`);
       const claim = claims.data[0];
       if (!claim) return json({ ok: false, error: 'not_found' }, 404);
-      const sent = await deliver(env, slug, { claim, code: codes.data[0]?.code || null, redeem_url: codes.data[0]?.redeem_url || null }, false, true);
+      const sent = await deliver(env, slug, { claim }, true);
       return sent ? json({ ok: true, sent: 1 }) : json({ ok: false, error: 'email' }, 502);
     }
 
@@ -62,7 +59,7 @@ export async function onRequestPost({ request, env }) {
       let failed = 0;
       for (const r of rpc.data) {
         try {
-          (await deliver(env, slug, r, true)) ? sent++ : failed++;
+          (await deliver(env, slug, r)) ? sent++ : failed++;
         } catch (err) {
           console.error('partner release delivery failed', r.claim.id, err?.message || err);
           failed++;
@@ -79,10 +76,10 @@ export async function onRequestPost({ request, env }) {
   }
 }
 
-async function deliver(env, slug, r, withNudge, fresh = false) {
-  const sent = await sendForClaim(env, slug, r, { withNudge, fresh });
+async function deliver(env, slug, r, fresh = false) {
+  const sent = await sendForClaim(env, slug, r, { fresh });
   const patch = sent.ok
-    ? { emailed_at: new Date().toISOString(), email_error: null, ...(sent.nudgeId ? { nudge_email_id: sent.nudgeId } : {}) }
+    ? { emailed_at: new Date().toISOString(), email_error: null }
     : { email_error: sent.error };
   const stamped = await supabase(env, `partner_claims?id=eq.${r.claim.id}`, { method: 'PATCH', prefer: 'return=minimal', body: patch });
   if (!stamped.ok) console.error('partner admin bookkeeping failed', r.claim.id, stamped.status);

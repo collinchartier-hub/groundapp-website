@@ -302,6 +302,74 @@ test('installs, sessions, subscription event (Event Date) and state, with header
   assert.equal(st['2026-09-28 active_subscriptions total'], 25);
 });
 
+test('offer-code starts aggregate by Apple offer ID without counting non-offer or renewal events', () => {
+  const headers = [...SUBEV_STD, 'Event Name', 'Offer ID'];
+  const row = { ...base, 'Event Date': '2026-09-28', 'Event Sub Type': 'Free Trial Starts', 'Event Grouping': 'Offer Starts', 'Offer Type': 'Offer code' };
+  const result = aggregateReport({ family: 'subscription_events', level: 'standard' }, [parseDelimited(tsv(headers, [
+    { ...row, 'Event Name': 'Free trial start activation', 'Offer ID': 'offer-a', Counts: '3' },
+    { ...row, 'Event Name': 'Free trial start activation', 'Offer ID': 'offer-a', Counts: '2' },
+    { ...row, 'Event Sub Type': 'Reactivation', 'Event Name': 'Free trial start reactivation', 'Offer ID': 'offer-a', Counts: '6' },
+    { ...row, 'Event Sub Type': 'Paid Offer Starts', 'Event Name': 'Paid offer start offer from offer', 'Offer ID': 'offer-b', Counts: '4' },
+    { ...row, 'Event Name': 'Free trial start activation', 'Offer Type': 'Introductory offer', 'Offer ID': 'offer-a', Counts: '20' },
+    { ...row, 'Event Name': 'Free trial start activation', 'Offer ID': '', Counts: '7' },
+    { ...row, 'Event Sub Type': 'Full Price Renewals', 'Event Grouping': 'Renewals', 'Event Name': 'Offer renewal', 'Offer ID': 'offer-a', Counts: '9' },
+  ]))], { appId: APP });
+  const values = valuesOf(result);
+  assert.equal(values['2026-09-28 offer_code_redemptions offer:offer-a'], 11);
+  assert.equal(values['2026-09-28 offer_code_redemptions offer:offer-b'], 4);
+  assert.equal(values['2026-09-28 trial_starts total'], 32, 'existing subscription metrics stay unchanged');
+  assert.ok(!Object.keys(values).some((key) => key.includes('offer_code_redemptions total') || key.includes('offer_code_redemptions source:')));
+});
+
+test('offer-code sub-type starts count without Event Name, but absent start columns do not count', () => {
+  const row = { ...base, 'Event Date': '2026-09-28', 'Event Grouping': 'Offer Starts',
+    'Offer Type': 'OFFER CODE', 'Offer ID': 'offer-a', Counts: '3' };
+  const withoutName = aggregateReport({ family: 'subscription_events', level: 'standard' },
+    [parseDelimited(tsv([...SUBEV_STD, 'Offer ID'], [{ ...row, 'Event Sub Type': 'Free Trial Starts' }]))], { appId: APP });
+  assert.equal(valuesOf(withoutName)['2026-09-28 offer_code_redemptions offer:offer-a'], 3);
+  const withoutStarts = aggregateReport({ family: 'subscription_events', level: 'standard' },
+    [parseDelimited(tsv(SUBEV_STD.filter((h) => h !== 'Event Sub Type').concat('Offer ID'), [row]))], { appId: APP });
+  assert.equal(valuesOf(withoutStarts)['2026-09-28 offer_code_redemptions offer:offer-a'], undefined);
+});
+
+test("Apple's current Event Group / Event Name columns: subscription metrics and offer-code redemptions", () => {
+  // Header set as served by Apple for GroundApp in November 2026 (no Event Sub Type, "Event Group" singular values).
+  const headers = ['Event Date', 'App Name', 'App Apple Identifier', 'Event Group', 'Event Name', 'Subscription Name', 'Subscription Identifier',
+    'Subscription Duration', 'Billing Frequency', 'Billing Period', 'Subscription Group', 'Subscription Group Identifier', 'Offer Type', 'Offer Name',
+    'Offer ID', 'Vanity Code', 'Offer Pricing', 'Offer Duration', 'Plan Change Type', 'Previous Subscription Name', 'Previous Subscription Identifier',
+    'Family Sharing', 'Cancellation Reason', 'Churn Tenure', 'Paid Service Days Recovered', 'App Download Source Type', 'Page Type', 'Pre-Order',
+    'Original Purchase Device', 'Territory', 'Counts'];
+  const row = { ...base, 'Event Date': '2026-11-10' };
+  const result = aggregateReport({ family: 'subscription_events', level: 'standard' }, [parseDelimited(tsv(headers, [
+    { ...row, 'Event Group': 'Offer start', 'Event Name': 'Free trial start activation', 'Offer Type': 'Offer code', 'Offer ID': 'offer-a', Counts: '2' },
+    { ...row, 'Event Group': 'Offer start', 'Event Name': 'Paid offer start offer from offer', 'Offer Type': 'Offer code', 'Offer ID': 'offer-b', Counts: '1' },
+    { ...row, 'Event Group': 'Offer start', 'Event Name': 'Free trial start activation', 'Offer Type': 'Introductory offer', 'Offer ID': '', Counts: '4' },
+    { ...row, 'Event Group': 'Paid subscription from offer', 'Event Name': 'Full price from free trial', 'Offer Type': 'Introductory offer', Counts: '3' },
+    { ...row, 'Event Group': 'Exit', 'Event Name': 'Offer to offer', 'Offer Type': 'Introductory offer', Counts: '1' },
+    { ...row, 'Event Group': 'Voluntary churn', 'Event Name': 'Voluntary churn from free trial', 'Offer Type': 'Introductory offer', Counts: '2' },
+  ]))], { appId: APP });
+  assert.deepEqual(result.errors ?? [], []);
+  const values = valuesOf(result);
+  assert.equal(values['2026-11-10 offer_code_redemptions offer:offer-a'], 2);
+  assert.equal(values['2026-11-10 offer_code_redemptions offer:offer-b'], 1);
+  assert.equal(values['2026-11-10 trial_starts total'], 6);
+  assert.equal(values['2026-11-10 trial_conversions total'], 3);
+  assert.equal(values['2026-11-10 churn_voluntary total'], 2);
+});
+
+test('newer subscription event processing dates replace per-offer redemption counts', () => {
+  const headers = [...SUBEV_STD, 'Event Name', 'Offer ID'];
+  const row = { ...base, 'Event Date': '2026-09-28', 'Event Sub Type': 'Free Trial Starts', 'Event Grouping': 'Offer Starts',
+    'Event Name': 'Free trial start activation', 'Offer Type': 'Offer code', 'Offer ID': 'offer-a' };
+  const aggregate = (count) => aggregateReport({ family: 'subscription_events', level: 'standard' },
+    [parseDelimited(tsv(headers, [{ ...row, Counts: String(count) }]))], { appId: APP });
+  const run = { blocks: new Map() }, watermarks = {};
+  const instance = (id, processingDate) => ({ id, processingDate, family: 'subscription_events', level: 'standard', reportName: 'App Store Subscription Event Report Standard' });
+  mergeInstance(run, instance('old', '2026-09-29'), aggregate(2), watermarks);
+  mergeInstance(run, instance('new', '2026-09-30'), aggregate(5), watermarks);
+  assert.equal(rowMap(buildRows(run).rows)['2026-09-28 offer_code_redemptions offer:offer-a'], 5);
+});
+
 test('missing required column is reported as an error instead of writing zeros', () => {
   const t = parseDelimited(tsv(['Date', 'App Apple Identifier', 'Counts'], [{ Date: '2026-09-28', 'App Apple Identifier': APP, Counts: '3' }]));
   const r = aggregateReport({ family: 'downloads', level: 'standard' }, [t], { appId: APP });
@@ -423,7 +491,7 @@ function fakeWorld({ requests, reports, instances, segments, files, db = {} }) {
 const inst = (id, processingDate) => ({ type: 'analyticsReportInstances', id, attributes: { granularity: 'DAILY', processingDate } });
 const seg = (path, bytes) => ({ type: 'analyticsReportSegments', id: path, attributes: { url: `https://s3.test${path}?X-Amz-Signature=s`, sizeInBytes: bytes.length, checksum: 'x' } });
 
-async function scenario({ preImported = [], state = [] } = {}) {
+async function scenario({ preImported = [], state = [], withSubscriptionCorrection = false } = {}) {
   const { pem } = await newP256Pem();
   const std1a = await gzip(tsv(DL_STD, [
     { ...base, Date: '2026-09-28', 'Download Type': 'First-time download', 'Source Type': 'Web referrer', Counts: '6' },
@@ -445,6 +513,10 @@ async function scenario({ preImported = [], state = [] } = {}) {
     { ...base, Date: '2026-09-28', Event: 'Impression', 'Page Type': 'No page', 'Source Type': 'App Store search', Counts: '50', 'Unique Counts': '40' },
     { ...base, Date: '2026-09-28', Event: 'Page view', 'Page Type': 'Product page', 'Source Type': 'Web referrer', Counts: '10', 'Unique Counts': '9' },
   ]));
+  const subCorrection = withSubscriptionCorrection ? await gzip(tsv([...SUBEV_STD, 'Event Name', 'Offer ID'], [
+    { ...base, 'Event Date': '2026-09-28', 'Event Sub Type': 'Free Trial Starts', 'Event Grouping': 'Offer Starts',
+      'Event Name': 'Free trial start activation', 'Offer Type': 'Introductory offer', 'Offer ID': 'offer-x', Counts: '8' },
+  ])) : null;
   const world = fakeWorld({
     requests: [
       { type: 'analyticsReportRequests', id: 'req-ongoing', attributes: { accessType: 'ONGOING', stoppedDueToInactivity: false } },
@@ -455,6 +527,7 @@ async function scenario({ preImported = [], state = [] } = {}) {
         { id: 'r-dl-det', attributes: { name: 'App Downloads Detailed', category: 'COMMERCE' } },
         { id: 'r-eng-std', attributes: { name: 'App Store Discovery and Engagement Standard', category: 'APP_STORE_ENGAGEMENT' } },
         { id: 'r-crash', attributes: { name: 'App Crashes', category: 'APP_USAGE' } },
+        ...(withSubscriptionCorrection ? [{ id: 'r-sub-std', attributes: { name: 'App Store Subscription Event Report Standard', category: 'COMMERCE' } }] : []),
         { id: 'r-old', attributes: { name: 'App Sessions Standard', category: 'APP_USAGE' } },
       ],
     },
@@ -463,6 +536,7 @@ async function scenario({ preImported = [], state = [] } = {}) {
       'r-dl-det': [inst('i-det-1', '2026-09-30')],
       'r-eng-std': [inst('i-eng-1', '2026-09-30')],
       'r-old': [inst('i-ses-old', '2026-09-20')],
+      ...(withSubscriptionCorrection ? { 'r-sub-std': [inst('i-sub-new', '2026-10-01')] } : {}),
     },
     segments: {
       'i-dl-1': [seg('/dl1a.csv.gz', std1a), seg('/dl1b.csv.gz', std1b)],
@@ -470,8 +544,10 @@ async function scenario({ preImported = [], state = [] } = {}) {
       'i-det-1': [seg('/det1.csv.gz', det1)],
       'i-eng-1': [seg('/eng1.csv.gz', eng1)],
       'i-ses-old': [seg('/ses-old.csv.gz', std2)],
+      ...(withSubscriptionCorrection ? { 'i-sub-new': [seg('/sub-new.csv.gz', subCorrection)] } : {}),
     },
-    files: { '/dl1a.csv.gz': std1a, '/dl1b.csv.gz': std1b, '/dl2.csv.gz': std2, '/det1.csv.gz': det1, '/eng1.csv.gz': eng1, '/ses-old.csv.gz': std2 },
+    files: { '/dl1a.csv.gz': std1a, '/dl1b.csv.gz': std1b, '/dl2.csv.gz': std2, '/det1.csv.gz': det1, '/eng1.csv.gz': eng1, '/ses-old.csv.gz': std2,
+      ...(withSubscriptionCorrection ? { '/sub-new.csv.gz': subCorrection } : {}) },
     db: {
       groundapp_asc_imports: preImported.map((id) => ({ instance_id: id, report_name: 'App Sessions Standard', granularity: 'DAILY', processing_date: '2026-09-20', rows_imported: 3 })),
       groundapp_asc_state: [
@@ -483,6 +559,10 @@ async function scenario({ preImported = [], state = [] } = {}) {
         { date: '2026-09-28', metric: 'downloads_first_time', dim: 'source:App referrer', value: 9, report: 'App Downloads Standard' },
         { date: '2026-09-28', metric: 'downloads_first_time', dim: 'campaign:old-token', value: 9, report: 'App Downloads Detailed' },
         { date: '2026-09-01', metric: 'downloads_first_time', dim: 'source:App referrer', value: 1, report: 'App Downloads Standard' },
+        ...(withSubscriptionCorrection ? [
+          { date: '2026-09-28', metric: 'offer_code_redemptions', dim: 'offer:offer-x', value: 9, report: 'App Store Subscription Event Report Standard' },
+          { date: '2026-09-01', metric: 'offer_code_redemptions', dim: 'offer:offer-x', value: 2, report: 'App Store Subscription Event Report Standard' },
+        ] : []),
       ],
     },
   });
@@ -530,6 +610,16 @@ test('sync: skips imported instances, sums segments, standard totals vs detailed
   assert.equal(again.instancesNew, 0);
   assert.equal(again.rowsWritten, 0);
   assert.ok(!world.calls.slice(before).some((c) => c.kind === 's3'));
+});
+
+test('sync removes stale offer dims for a corrected date but preserves earlier dates', async () => {
+  const { world, asc, db } = await scenario({ preImported: ['i-ses-old'], withSubscriptionCorrection: true });
+  const summary = await runSync({ asc, db, appId: APP, now: new Date('2026-10-02T14:00:00Z') });
+  assert.deepEqual(summary.errors, []);
+  const daily = Object.fromEntries([...world.tables.groundapp_asc_daily.values()].map((r) => [`${r.date} ${r.metric} ${r.dim}`, Number(r.value)]));
+  assert.equal(daily['2026-09-28 offer_code_redemptions offer:offer-x'], undefined);
+  assert.equal(daily['2026-09-01 offer_code_redemptions offer:offer-x'], 2);
+  assert.equal(daily['2026-09-28 trial_starts total'], 8, 'corrected non-offer event still keeps its date eligible for cleanup');
 });
 
 test('sync: a stored watermark from a newer instance blocks older data for that date', async () => {

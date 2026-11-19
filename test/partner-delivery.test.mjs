@@ -1,4 +1,4 @@
-// test/partner-delivery.test.mjs: member resend keys, reminder failures and low-stock alerts.
+// test/partner-delivery.test.mjs: member resend keys and low-stock alerts.
 import { test, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { sendForClaim, maybeAlertLowStock } from '../lib/partner-delivery.js';
@@ -11,13 +11,11 @@ const claim = { claim: { id: 'c1', status: 'assigned', first_name: 'Sam', email:
 let calls;
 let realFetch;
 let programRows;
-let nudgeStatus;
 let realError;
 
 beforeEach(() => {
   calls = [];
   programRows = [{ slug: 'arsenal' }];
-  nudgeStatus = 200;
   realFetch = globalThis.fetch;
   realError = console.error;
   console.error = () => {};
@@ -26,7 +24,7 @@ beforeEach(() => {
     calls.push(call);
     if (call.url.includes('/partner_programs?')) return new Response(JSON.stringify(programRows), { status: 200 });
     if (call.url === 'https://api.resend.com/emails') {
-      return new Response(JSON.stringify({ id: 'email_1' }), { status: call.body.scheduled_at ? nudgeStatus : 200 });
+      return new Response(JSON.stringify({ id: 'email_1' }), { status: 200 });
     }
     throw new Error(`unexpected request: ${call.url}`);
   };
@@ -36,48 +34,40 @@ afterEach(() => { globalThis.fetch = realFetch; console.error = realError; });
 const sends = () => calls.filter((c) => c.url === 'https://api.resend.com/emails');
 
 test('an admin resend gets a fresh idempotency key and no reminder', async () => {
-  const regular = await sendForClaim(env, 'arsenal', claim, { withNudge: false });
+  const regular = await sendForClaim(env, 'arsenal', claim);
   assert.equal(regular.ok, true);
   const originalKey = sends()[0].headers['idempotency-key'];
-  const fresh = await sendForClaim(env, 'arsenal', claim, { withNudge: true, fresh: true });
+  const fresh = await sendForClaim(env, 'arsenal', claim, { fresh: true });
   assert.equal(fresh.ok, true);
-  assert.equal(fresh.nudgeId, null);
   assert.equal(sends().length, 2);
   assert.match(sends()[1].headers['idempotency-key'], /^partner-claim\/c1\/\d+\/\d+$/);
   assert.notEqual(sends()[1].headers['idempotency-key'], originalKey);
 });
 
 test('AION delivery uses its own email copy and redemption link', async () => {
-  const sent = await sendForClaim(env, 'aion', claim, { withNudge: false });
+  const sent = await sendForClaim(env, 'aion', claim);
   assert.equal(sent.ok, true);
   assert.ok(sends()[0].body.html.includes('AION builds your strength and your engine.'));
   assert.ok(sends()[0].body.html.includes('https://groundapp.live/aion/r/abcdefghijklmnopqrstuv'));
   assert.ok(!sends()[0].body.html.includes('Arsenal'));
 });
 
-test('RECON delivery emails its own code link and schedules a branded reminder', async () => {
-  const sent = await sendForClaim(env, 'recon', { ...claim, code: 'RECONCODE123' }, { withNudge: true });
+test('RECON delivery sends the private link without code or scheduled reminder', async () => {
+  const sent = await sendForClaim(env, 'recon', { ...claim, code: 'RECONCODE123' });
   assert.equal(sent.ok, true);
-  assert.equal(sent.nudgeId, 'email_1');
-  assert.equal(sends().length, 2);
-  const [mail, nudge] = sends().map((call) => call.body);
-  for (const body of [mail, nudge]) {
-    assert.ok(body.html.includes('RECON Wellness'));
-    assert.ok(body.text.includes('RECON Wellness'));
-    assert.ok(body.html.includes('https://groundapp.live/recon/r/abcdefghijklmnopqrstuv'));
-    assert.ok(!/Arsenal|AION|Traverse/.test(body.html));
-  }
-  assert.ok(mail.html.includes('RECONCODE123'));
+  assert.equal(sends().length, 1);
+  const mail = sends()[0].body;
+  assert.ok(mail.html.includes('RECON Wellness'));
+  assert.ok(mail.text.includes('https://groundapp.live/recon/r/abcdefghijklmnopqrstuv'));
+  assert.ok(!mail.html.includes('RECONCODE123'));
+  assert.ok(!mail.text.includes('RECONCODE123'));
   assert.equal(mail.scheduled_at, undefined);
-  assert.ok(nudge.scheduled_at);
-  assert.ok(!nudge.html.includes('RECONCODE123'));
 });
 
 test('RECON Android and paused waitlist claims receive partner-specific notes without codes', async () => {
   for (const status of ['android_waitlist', 'waitlist']) {
-    const sent = await sendForClaim(env, 'recon', { ...claim, claim: { ...claim.claim, status } }, { withNudge: true });
+    const sent = await sendForClaim(env, 'recon', { ...claim, claim: { ...claim.claim, status } });
     assert.equal(sent.ok, true);
-    assert.equal(sent.nudgeId, null);
     const body = sends().at(-1).body;
     assert.ok(body.html.includes('RECON Wellness'));
     assert.ok(body.text.includes('RECON Wellness'));
@@ -88,18 +78,11 @@ test('RECON Android and paused waitlist claims receive partner-specific notes wi
 });
 
 test('unknown partner does not send a member email', async () => {
-  assert.deepEqual(await sendForClaim(env, 'missing', claim, { withNudge: true }),
-    { ok: false, id: null, error: 'unknown partner', nudgeId: null });
+  assert.deepEqual(await sendForClaim(env, 'missing', claim),
+    { ok: false, id: null, error: 'unknown partner' });
   assert.equal(calls.length, 0);
 });
 
-test('a failed reminder is logged while the member email still succeeds', async () => {
-  nudgeStatus = 500;
-  const sent = await sendForClaim(env, 'arsenal', claim, { withNudge: true });
-  assert.equal(sent.ok, true);
-  assert.equal(sent.nudgeId, null);
-  assert.equal(sends().length, 2);
-});
 
 test('more than 75 codes left does not ask the database or email an alert', async () => {
   await maybeAlertLowStock(env, 'arsenal', 80);

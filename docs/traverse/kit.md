@@ -1,6 +1,6 @@
 # Traverse x GroundApp: launch kit
 
-Every Traverse member gets a free year (12 months) of GroundApp Premium. They claim it at groundapp.live/traverse: first name, last name, email and their club (South Broadway or Highlands). Their own one-time code and link arrive by email, and they tap it on their iPhone.
+Every Traverse member gets a free year (12 months) of GroundApp Premium. They claim it at groundapp.live/traverse: first name, last name, email and their club (South Broadway or Highlands). Their own link arrives by email, and they tap it on their iPhone.
 
 Copy below is ready to paste. Swap in your own words wherever you like, but keep the facts as written.
 
@@ -26,7 +26,7 @@ GroundApp is the breathwork app created by Collin Chartier, a performance breath
 
 Claim yours: https://groundapp.live/traverse?src=email
 
-Enter your name and email, pick your club, then tap your own code and link on your iPhone.
+Enter your name and email, pick your club, then tap your own link on your iPhone.
 
 iPhone only. One code per person, tied to your email. Free for 12 months, then $39.99 a year unless you cancel. Cancel any time in Settings > your name > Subscriptions.
 

@@ -20,7 +20,7 @@ let realConsoleError;
 
 beforeEach(() => {
   calls = [];
-  state = { rpc: rpcResult(), turnstile: true, resendStatus: 200, alertRow: false, nudgeAttached: true, subscriber: null, unsubscribed: false };
+  state = { rpc: rpcResult(), turnstile: true, resendStatus: 200, alertRow: false, subscriber: null, unsubscribed: false };
   realFetch = globalThis.fetch;
   realConsoleError = console.error;
   console.error = () => {};
@@ -42,13 +42,9 @@ beforeEach(() => {
       return new Response(JSON.stringify(state.unsubscribed ? [{ email: 'sam@example.com' }] : []), { status: 200 });
     }
     if (method === 'GET') return new Response('[]', { status: 200 });
-    if (u.includes('partner_claims?') && method === 'PATCH' && u.includes('redeem_tapped_at=is.null')) {
-      return new Response(JSON.stringify(state.nudgeAttached ? [{ id: 'c1' }] : []), { status: 200 });
-    }
     if (u.includes('partner_programs?') && method === 'PATCH') {
       return new Response(JSON.stringify(state.alertRow ? [{ slug: 'arsenal' }] : []), { status: 200 });
     }
-    if (u.endsWith('/cancel') && method === 'POST') return new Response('{}', { status: 200 });
     return new Response(null, { status: method === 'POST' ? 201 : 204 });
   };
 });
@@ -68,27 +64,20 @@ const sends = () => calls.filter((c) => c.url === 'https://api.resend.com/emails
 const rpcs = () => calls.filter((c) => c.url.endsWith('/rpc/partner_claim'));
 const patches = () => calls.filter((c) => c.method === 'PATCH' && c.url.includes('partner_claims'));
 
-test('new iPhone claim: code emailed, reminder scheduled, claim stamped', async () => {
+test('new iPhone claim emails only a tracked link, never a code or scheduled reminder', async () => {
   const res = await post();
   assert.equal(res.status, 200);
   assert.deepEqual(await res.json(), { ok: true, status: 'assigned' });
-
-  const [mail, nudge] = sends();
-  assert.equal(sends().length, 2);
+  assert.equal(sends().length, 1);
+  const mail = sends()[0];
   assert.deepEqual(mail.body.to, ['sam@example.com']);
-  assert.ok(mail.body.html.includes(CODE));
+  assert.ok(!mail.body.html.includes(CODE));
+  assert.ok(!mail.body.text.includes(CODE));
   assert.ok(mail.body.html.includes(`https://groundapp.live/arsenal/r/${TOKEN}`));
   assert.equal(mail.body.scheduled_at, undefined);
-  const due = Date.parse(nudge.body.scheduled_at) - Date.now();
-  assert.ok(due > 2.9 * 86400e3 && due < 3.1 * 86400e3);
-  assert.ok(nudge.body.headers['List-Unsubscribe']);
-
-  assert.equal(patches().length, 2);
-  assert.ok(patches()[0].url.includes('id=eq.c1'));
+  assert.equal(patches().length, 1);
   assert.ok(patches()[0].body.emailed_at);
   assert.equal(patches()[0].body.nudge_email_id, undefined);
-  assert.ok(patches()[1].url.includes('redeem_tapped_at=is.null'));
-  assert.equal(patches()[1].body.nudge_email_id, 'email_2');
 });
 
 test('RECON iPhone claim uses its own program location, email and private redemption path', async () => {
@@ -99,11 +88,9 @@ test('RECON iPhone claim uses its own program location, email and private redemp
   assert.ok(!JSON.stringify(response).includes('RECONCODE123'));
   assert.equal(rpcs()[0].body.p_partner, 'recon');
   assert.equal(rpcs()[0].body.p_location, 'RECON Wellness');
-  assert.equal(sends().length, 2);
+  assert.equal(sends().length, 1);
   assert.ok(sends()[0].body.html.includes(`https://groundapp.live/recon/r/${TOKEN}`));
-  assert.ok(sends()[0].body.html.includes('RECONCODE123'));
-  assert.ok(sends()[1].body.html.includes('RECON Wellness'));
-  assert.ok(sends()[1].body.scheduled_at);
+  assert.ok(!sends()[0].body.html.includes('RECONCODE123'));
   assert.ok(!JSON.stringify(response).includes(TOKEN));
 });
 
@@ -144,29 +131,21 @@ test('repeat within 15 minutes: no email, status existing', async () => {
   assert.equal(patches().length, 0);
 });
 
-test('repeat after 15 minutes: the same code is sent again, no second reminder', async () => {
+test('repeat after 15 minutes resends the same link without a reminder', async () => {
   state.rpc = rpcResult({ outcome: 'existing', claim: claimRow({ emailed_at: new Date(Date.now() - 20 * 60e3).toISOString() }) });
   assert.deepEqual(await (await post()).json(), { ok: true, status: 'existing' });
   assert.equal(sends().length, 1);
-  assert.ok(sends()[0].body.html.includes(CODE));
+  assert.ok(!sends()[0].body.html.includes(CODE));
   assert.equal(patches()[0].body.nudge_email_id, undefined);
 });
 
-test('a repeat after a failed first send gets its code and reminder', async () => {
+test('repeat after a failed first send resends the link without scheduling', async () => {
   state.rpc = rpcResult({ outcome: 'existing', claim: claimRow({ emailed_at: null }) });
   assert.deepEqual(await (await post()).json(), { ok: true, status: 'existing' });
-  assert.equal(sends().length, 2);
-  assert.ok(sends()[0].body.html.includes(CODE));
-  assert.ok(sends()[1].body.scheduled_at);
-  assert.equal(patches()[1].body.nudge_email_id, 'email_2');
+  assert.equal(sends().length, 1);
+  assert.ok(!sends()[0].body.html.includes(CODE));
 });
 
-test('a reminder is cancelled when the member tapped before it was attached', async () => {
-  state.nudgeAttached = false;
-  assert.deepEqual(await (await post()).json(), { ok: true, status: 'assigned' });
-  assert.ok(patches()[1].url.includes('redeem_tapped_at=is.null'));
-  assert.ok(calls.some((c) => c.url === 'https://api.resend.com/emails/email_2/cancel' && c.method === 'POST'));
-});
 
 test('android: on the list, one email without a code', async () => {
   state.rpc = rpcResult({ outcome: 'android_waitlist', claim: claimRow({ status: 'android_waitlist' }), code: null, redeem_url: null });
@@ -238,7 +217,7 @@ test('opted-out partner claim delivers its code without rejoining the newsletter
   state.unsubscribed = true;
   const res = await post({ newsletter: true });
   assert.deepEqual(await res.json(), { ok: true, status: 'assigned' });
-  assert.ok(sends().some((c) => c.body.html.includes(CODE)));
+  assert.ok(sends().some((c) => c.body.html.includes(`https://groundapp.live/arsenal/r/${TOKEN}`)));
   assert.equal(calls.filter((c) => c.method !== 'GET' && c.url.includes('newsletter_')).length, 0);
 });
 
