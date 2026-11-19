@@ -389,7 +389,10 @@ const COLUMN_ALIASES = {
   uniqueDevices: ['unique devices', 'unique device count'],
   duration: ['total session duration', 'total session duration seconds', 'total session duration (seconds)', 'session duration'],
   subType: ['event sub type', 'event subtype', 'event sub-type'],
-  grouping: ['event grouping'],
+  eventName: ['event name'],
+  offerType: ['offer type'],
+  offerId: ['offer id'],
+  grouping: ['event grouping', 'event group'],
   stateMetric: ['state metric'],
   stateGrouping: ['state metric grouping'],
 };
@@ -424,10 +427,14 @@ const NULLISH = new Set(['', 'null', 'none', 'na', 'n a', 'nan', 'undefined', 'n
 
 const PRODUCT_PAGE_TYPES = new Set(['product page', 'store sheet']);
 const DOWNLOAD_TYPES_IGNORED = new Set(['manual update', 'auto update', 'automatic update', 'update', 'updates', 'restore', 'restores']);
+// Apple's current Standard report has "Event Group" with singular values ("Offer start", "Exit");
+// older files used "Event Grouping" with plural ones. Both are listed.
 const SUB_EVENT_GROUPS = new Set([
   'offer starts', 'offer renewals', 'paid subscriptions from offers', 'paid subscription starts', 'renewals',
   'commitment based payments', 'entered billing issue', 'recoveries from billing issue', 'involuntary churn',
   'voluntary churn', 'exits', 'extensions', 'refunds',
+  'offer start', 'offer renewal', 'paid subscription from offer', 'paid subscription start', 'renewal',
+  'commitment based payment', 'recovery from billing issue', 'exit', 'extension', 'refund',
 ]);
 const SUB_STATE_METRICS = new Set([
   'free trials', 'paid offers', 'full price', 'preserved price', 'contingent price', 'grace period',
@@ -509,22 +516,34 @@ export const FAMILIES = {
     names: ['app store subscription event', 'app store subscription events', 'subscription event', 'subscription events'],
     metrics: ['trial_starts', 'trial_conversions', 'subscription_starts', 'renewals', 'churn_voluntary', 'churn_involuntary', 'refunds'],
     dimMetrics: ['trial_starts', 'trial_conversions', 'subscription_starts'],
+    offerDimMetrics: ['offer_code_redemptions'],
     detailed: true,
     required: ['date', 'counts', ['subType', 'grouping']],
-    describe: (r) => `Event Sub Type=${r.raw('subType')} / Event Grouping=${r.raw('grouping')}`,
+    describe: (r) => `Event Sub Type/Name=${r.raw('subType') || r.raw('eventName')} / Event Grouping=${r.raw('grouping')}`,
     extract(r) {
-      const sub = r.v('subType');
+      // Current files carry the event in "Event Name" (e.g. "Free trial start activation"); older ones in "Event Sub Type".
+      const sub = r.v('subType') || r.v('eventName');
       const grp = r.v('grouping');
       const n = r.n('counts');
-      if (sub === 'free trial starts') return [['trial_starts', n]];
-      if (sub === 'full price from free trial' || sub === 'contingent price from free trial') return [['trial_conversions', n]];
-      if (grp === 'paid subscription starts' || sub === 'full price subscription starts' || sub === 'contingent price subscription starts') return [['subscription_starts', n]];
-      if (grp === 'renewals' || /^(full|preserved|contingent) price renewals?( from .+)?$/.test(sub)) return [['renewals', n]];
-      if (grp === 'voluntary churn' || sub.startsWith('voluntary churn')) return [['churn_voluntary', n]];
-      if (grp === 'involuntary churn' || sub.startsWith('involuntary churn')) return [['churn_involuntary', n]];
-      if (sub.startsWith('refunds')) return [['refunds', n]];
-      if (SUB_EVENT_GROUPS.has(grp)) return [];
-      return null;
+      let metrics;
+      if (/^free trial starts?\b/.test(sub)) metrics = [['trial_starts', n]];
+      else if (sub === 'full price from free trial' || sub === 'contingent price from free trial') metrics = [['trial_conversions', n]];
+      else if (grp === 'paid subscription starts' || grp === 'paid subscription start' || /^(full|contingent) price subscription starts?\b/.test(sub)) metrics = [['subscription_starts', n]];
+      else if (grp === 'renewals' || grp === 'renewal' || /^(full|preserved|contingent) price renewals?( from .+)?$/.test(sub)) metrics = [['renewals', n]];
+      else if (grp === 'voluntary churn' || sub.startsWith('voluntary churn')) metrics = [['churn_voluntary', n]];
+      else if (grp === 'involuntary churn' || sub.startsWith('involuntary churn')) metrics = [['churn_involuntary', n]];
+      else if (sub.startsWith('refund')) metrics = [['refunds', n]];
+      else if (SUB_EVENT_GROUPS.has(grp)) metrics = [];
+      else metrics = null;
+
+      // Offer code redemptions are starts, including Apple's later activation/reactivation suffixes.
+      // A report without Event Name and Event Sub Type has no evidence of a start.
+      if (r.v('offerType') === 'offer code' && r.raw('offerId').trim() &&
+          (/^(free trial|paid offer) start\b/.test(r.v('eventName')) ||
+           sub === 'free trial starts' || sub === 'paid offer starts')) {
+        return [...(metrics || []), ['offer_code_redemptions', n]];
+      }
+      return metrics;
     },
   },
   subscription_state: {
@@ -722,6 +741,7 @@ export function aggregateReport({ family, level }, tables, { appId = null } = {}
     headers: null,
   };
   const dimMetrics = new Set(def.dimMetrics);
+  const offerDimMetrics = new Set(def.offerDimMetrics || []);
 
   for (const table of tables) {
     if (!table.headers.length) continue;
@@ -768,10 +788,15 @@ export function aggregateReport({ family, level }, tables, { appId = null } = {}
         if (Number.isNaN(value)) { result.stats.badNumber++; continue; }
         const dims = [];
         if (level === 'standard') {
-          dims.push('total');
-          if (dimMetrics.has(metric) && cols.sourceType != null) {
-            const src = get('sourceType');
-            if (src && !NULLISH.has(normVal(src))) dims.push('source:' + canonicalSource(src));
+          if (offerDimMetrics.has(metric)) {
+            const offerId = get('offerId');
+            if (offerId) dims.push('offer:' + offerId);
+          } else {
+            dims.push('total');
+            if (dimMetrics.has(metric) && cols.sourceType != null) {
+              const src = get('sourceType');
+              if (src && !NULLISH.has(normVal(src))) dims.push('source:' + canonicalSource(src));
+            }
           }
         } else if (dimMetrics.has(metric)) {
           const ct = campaignToken(get('campaign'));
@@ -847,7 +872,8 @@ function flushCost(run, extraGroup = null) {
     let dates = blocks ? blocks.size : 0;
     if (blocks) for (const b of blocks.values()) rows += b.values.size;
     if (g === extraGroup) dates += 3;
-    if (groupHasDims(g)) calls += Math.max(1, Math.ceil(dates / DELETE_DATE_CHUNK));
+    if (groupHasDims(g)) calls += Math.max(1, Math.ceil(dates / DELETE_DATE_CHUNK)) *
+      (g === 'subscription_events:standard' ? 2 : 1);
   }
   return calls + Math.ceil((rows + 300) / UPSERT_BATCH);
 }
@@ -857,14 +883,19 @@ function flushCost(run, extraGroup = null) {
 async function deleteDims(db, group, dates) {
   const [family, level] = group.split(':');
   const def = FAMILIES[family];
-  if (!def || !def.dimMetrics.length || !dates.length) return;
-  const prefix = level === 'detailed' ? 'campaign:' : 'source:';
-  const metrics = def.dimMetrics.join(',');
-  for (const part of chunk(dates.sort(), DELETE_DATE_CHUNK)) {
-    await db.req(
-      `groundapp_asc_daily?date=in.(${part.join(',')})&metric=in.(${metrics})&dim=like.${encodeURIComponent(prefix + '*')}`,
-      { method: 'DELETE', prefer: 'return=minimal' },
-    );
+  if (!def || !dates.length) return;
+  const targets = [
+    { metrics: def.dimMetrics, prefix: level === 'detailed' ? 'campaign:' : 'source:' },
+    { metrics: level === 'standard' ? def.offerDimMetrics || [] : [], prefix: 'offer:' },
+  ];
+  for (const { metrics, prefix } of targets) {
+    if (!metrics.length) continue;
+    for (const part of chunk(dates.sort(), DELETE_DATE_CHUNK)) {
+      await db.req(
+        `groundapp_asc_daily?date=in.(${part.join(',')})&metric=in.(${metrics.join(',')})&dim=like.${encodeURIComponent(prefix + '*')}`,
+        { method: 'DELETE', prefer: 'return=minimal' },
+      );
+    }
   }
 }
 
