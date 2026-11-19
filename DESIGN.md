@@ -186,7 +186,7 @@ This is a conservative copy record, not a fresh store/release certification.
 |---|---|---|
 | Product | GroundApp; companion Bodie; iPhone and Apple Watch | Current store version, OS requirements and exact feature names |
 | Catalog and free access | Free to download, free tier and optional Premium; no technique/free counts | Catalog and entitlement counts in the shipping build and store |
-| Pricing | Existing published US $39.99/year or $6.99/month, presented as published context | Current local store pricing, offer and trial eligibility; no universal trial promise |
+| Pricing | Published US $69.99/year or $6.99/month from the 1.5 launch (was $39.99/year), presented as published context | Current local store pricing, offer and trial eligibility; no universal trial promise |
 | Suggestions | Check-in answers suggest a session; not diagnosis or measured nervous-system state | Released UI labels and plan logic |
 | Local and AI plans | Local rules and optional AI processing are different; policy explains data flow | Privacy/product owner verifies each processor, context field and retention rule |
 | Voice | Guided narration uses an AI model trained on Collin's recordings | Any recording/voice-mode changes |

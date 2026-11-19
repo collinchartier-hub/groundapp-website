@@ -4,7 +4,7 @@ Every AION member gets a free year (12 months) of GroundApp Premium. They claim 
 
 Copy below is ready to paste. Swap in your own words wherever you like, but keep the facts as written.
 
-**The terms, in one line (use it anywhere the offer appears):** iPhone only. Free for 12 months, then $39.99 a year unless you cancel. Cancel any time in Settings > your name > Subscriptions.
+**The terms, in one line (use it anywhere the offer appears):** iPhone only. Free for 12 months, then $69.99 a year unless you cancel. Cancel any time in Settings > your name > Subscriptions.
 
 ## Email for AION to send its members
 
@@ -28,7 +28,7 @@ Claim yours: https://groundapp.live/aion?src=email
 
 Enter your name and email, then tap your own code and link on your iPhone.
 
-iPhone only. One code per person, tied to your email. Free for 12 months, then $39.99 a year unless you cancel. Cancel any time in Settings > your name > Subscriptions.
+iPhone only. One code per person, tied to your email. Free for 12 months, then $69.99 a year unless you cancel. Cancel any time in Settings > your name > Subscriptions.
 
 ## Instagram caption for @aiontraining__
 
@@ -36,7 +36,7 @@ New at AION: a free year of GroundApp Premium for every member.
 
 GroundApp is breathwork from Collin Chartier, IRONMAN champion and performance breathwork coach. 40+ techniques to settle before a heavy set and steady the run.
 
-Claim yours at groundapp.live/aion and tap your own link on your iPhone. iPhone only. Free for 12 months, then $39.99 a year unless you cancel.
+Claim yours at groundapp.live/aion and tap your own link on your iPhone. iPhone only. Free for 12 months, then $69.99 a year unless you cancel.
 
 **Link:** the caption says groundapp.live/aion. For the bio link or a story link sticker, use the tracked link: https://groundapp.live/aion?src=ig
 
@@ -46,7 +46,7 @@ I spent my twenties as a pro triathlete. Now I coach breathwork, and I built Gro
 
 Every @aiontraining__ member gets a free year of GroundApp Premium: 40+ techniques, guided sessions in my voice and an Apple Watch app. Strength. Engine. Now your breath.
 
-Claim yours at groundapp.live/aion. iPhone only. Then $39.99 a year unless you cancel.
+Claim yours at groundapp.live/aion. iPhone only. Then $69.99 a year unless you cancel.
 
 **Link:** same as above. Tracked link for the bio or story sticker: https://groundapp.live/aion?src=ig
 
@@ -69,7 +69,7 @@ Pick one (8 words or fewer each):
 Yes. Every AION member gets 12 months of GroundApp Premium, on us. It's one code per person, tied to your email, and it works on iPhone.
 
 **What happens after a year?**
-After 12 months it renews at $39.99 a year unless you cancel. You can cancel any time in Settings > your name > Subscriptions.
+After 12 months it renews at $69.99 a year unless you cancel. You can cancel any time in Settings > your name > Subscriptions.
 
 **I have Android.**
 GroundApp is iPhone only for now. Leave your email on groundapp.live/aion and you'll hear when Android is ready.

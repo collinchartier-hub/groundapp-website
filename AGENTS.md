@@ -60,7 +60,7 @@ These are done from Collin's laptop, through Claude Code only. If a change needs
 - No em dashes. Casual and direct. Spell it GroundApp. The companion is Bodie.
 - Current conservative consumer-copy authority: `DESIGN.md`, "Product-facts record, 2026-11-14", and the authorized full-preview contract. Older release/listing counts are not reconciled and must not be repeated.
   - Free to download, with a free tier and optional Premium. Do not promise a fixed catalog/free-technique count or entitlement.
-  - Existing published US Premium pricing is $39.99/year or $6.99/month. The store confirms local price, inclusions and any eligible trial before purchase; no trial is promised to every user.
+  - Published US Premium pricing is $69.99/year or $6.99/month from the 1.5 launch (raised from $39.99; existing subscribers keep their price). The store confirms local price, inclusions and any eligible trial before purchase; no trial is promised to every user.
   - iPhone and Apple Watch. Apple Health syncing and compatible Bluetooth/live HR broadcast are distinct from native Garmin or Amazfit store availability. Do not announce a Google Play launch from a policy disclosure.
   - Check-in guidance is not diagnosis or a measured nervous-system state. Local rules and optional AI plans are different; guided narration uses an AI model trained on Collin's recordings.
 - Advanced tables always carry: "Dry land only. Never in or near water."

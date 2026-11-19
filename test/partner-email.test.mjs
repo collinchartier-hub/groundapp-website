@@ -12,7 +12,7 @@ test('claim email: code, link, renewal line and address in both parts', () => {
   for (const part of [m.html, m.text]) {
     assert.ok(part.includes('ABC123XYZ'));
     assert.ok(part.includes(link));
-    assert.ok(part.includes('$39.99 a year unless you cancel'));
+    assert.ok(part.includes('$69.99 a year unless you cancel'));
     assert.ok(part.includes('123 Test St, Denver, CO 80202'));
     assert.ok(part.includes('Sam'));
   }
@@ -79,7 +79,7 @@ test('RECON Wellness emails use its own brand and member link in both formats', 
     assert.ok(part.includes('RECON helps you build recovery into your training week.'));
     assert.ok(part.includes('RECONCODE123'));
     assert.ok(part.includes(reconLink));
-    assert.ok(part.includes('$39.99 a year unless you cancel'));
+    assert.ok(part.includes('$69.99 a year unless you cancel'));
   }
   for (const part of [messages[1].html, messages[1].text]) {
     assert.ok(part.includes(reconLink));
